@@ -1,0 +1,1 @@
+import RefundCenter from '@/components/dashboard/Financial/RefundCenter'; export default function RefundsPage() { return <div className='space-y-8'><div><h1 className='text-3xl font-bold text-gray-900'>Refund Center</h1><p className='text-gray-600 mt-2'>Request refunds within our 90-day money-back guarantee</p></div><RefundCenter /></div>; }

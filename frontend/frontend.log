@@ -1,0 +1,17 @@
+
+> tundua-saas-frontend@1.0.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+  ▲ Next.js 14.2.33
+  - Local:        http://localhost:3001
+  - Environments: .env.local
+
+ ✓ Starting...
+[Error: EPERM: operation not permitted, open 'C:\Users\obeda\Desktop\tundua.com\tundua-saas\frontend\.next\trace'] {
+  errno: -4048,
+  code: 'EPERM',
+  syscall: 'open',
+  path: 'C:\\Users\\obeda\\Desktop\\tundua.com\\tundua-saas\\frontend\\.next\\trace'
+}
+ ✓ Ready in 4.9s

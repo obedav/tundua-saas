@@ -1,0 +1,1055 @@
+[Fri Nov  7 16:08:27 2025] PHP 8.2.12 Development Server (http://localhost:8000) started
+[Sat Nov  8 06:29:35 2025] [::1]:49735 Accepted
+[Sat Nov  8 06:29:35 2025] [::1]:49735 [200]: GET /api/auth/me
+[Sat Nov  8 06:29:35 2025] [::1]:49735 Closing
+[Sat Nov  8 06:29:35 2025] [::1]:54637 Accepted
+[Sat Nov  8 06:29:35 2025] [::1]:54637 [200]: GET /api/auth/me
+[Sat Nov  8 06:29:35 2025] [::1]:54637 Closing
+[Sat Nov  8 06:29:35 2025] [::1]:54216 Accepted
+[Sat Nov  8 06:29:36 2025] [::1]:54216 [200]: GET /api/auth/me
+[Sat Nov  8 06:29:36 2025] [::1]:54216 Closing
+[Sat Nov  8 06:29:36 2025] [::1]:60781 Accepted
+[Sat Nov  8 06:29:36 2025] [::1]:60781 [200]: GET /api/auth/me
+[Sat Nov  8 06:29:36 2025] [::1]:60781 Closing
+[Sat Nov  8 06:29:36 2025] [::1]:51535 Accepted
+[Sat Nov  8 06:29:36 2025] [::1]:51535 [200]: GET /api/auth/me
+[Sat Nov  8 06:29:36 2025] [::1]:51535 Closing
+[Sat Nov  8 06:29:36 2025] [::1]:63636 Accepted
+[Sat Nov  8 06:29:36 2025] [::1]:63636 [200]: GET /api/auth/me
+[Sat Nov  8 06:29:36 2025] [::1]:63636 Closing
+[Sat Nov  8 06:31:08 2025] [::1]:64219 Accepted
+[Sat Nov  8 06:31:08 2025] [::1]:64219 [200]: GET /api/applications
+[Sat Nov  8 06:31:08 2025] [::1]:64219 Closing
+[Sat Nov  8 06:31:08 2025] [::1]:54350 Accepted
+[Sat Nov  8 06:31:09 2025] [::1]:54350 [200]: GET /api/applications
+[Sat Nov  8 06:31:09 2025] [::1]:54350 Closing
+[Sat Nov  8 06:58:06 2025] [::1]:56122 Accepted
+[Sat Nov  8 06:58:07 2025] JWT verification failed: Expired token
+[Sat Nov  8 06:58:07 2025] [::1]:56122 [401]: GET /api/auth/me
+[Sat Nov  8 06:58:07 2025] [::1]:56122 Closing
+[Sat Nov  8 06:58:07 2025] [::1]:55562 Accepted
+[Sat Nov  8 06:58:07 2025] JWT verification failed: Expired token
+[Sat Nov  8 06:58:07 2025] [::1]:55562 [401]: GET /api/auth/me
+[Sat Nov  8 06:58:07 2025] [::1]:55562 Closing
+[Sat Nov  8 06:58:07 2025] [::1]:51885 Accepted
+[Sat Nov  8 06:58:07 2025] JWT verification failed: Expired token
+[Sat Nov  8 06:58:07 2025] [::1]:51885 [401]: GET /api/auth/me
+[Sat Nov  8 06:58:07 2025] [::1]:51885 Closing
+[Sat Nov  8 06:58:07 2025] [::1]:63082 Accepted
+[Sat Nov  8 06:58:07 2025] JWT verification failed: Expired token
+[Sat Nov  8 06:58:07 2025] [::1]:63082 [401]: GET /api/auth/me
+[Sat Nov  8 06:58:07 2025] [::1]:63082 Closing
+[Sat Nov  8 06:58:31 2025] [::1]:51185 Accepted
+[Sat Nov  8 06:58:31 2025] [::1]:51185 [200]: POST /api/auth/login
+[Sat Nov  8 06:58:31 2025] [::1]:51185 Closing
+[Sat Nov  8 06:58:48 2025] [::1]:63678 Accepted
+[Sat Nov  8 06:58:48 2025] [::1]:63678 [200]: GET /api/auth/me
+[Sat Nov  8 06:58:48 2025] [::1]:63678 Closing
+[Sat Nov  8 06:58:48 2025] [::1]:63091 Accepted
+[Sat Nov  8 06:58:48 2025] [::1]:63091 [200]: GET /api/auth/me
+[Sat Nov  8 06:58:48 2025] [::1]:63091 Closing
+[Sat Nov  8 06:58:48 2025] [::1]:60651 Accepted
+[Sat Nov  8 06:58:48 2025] [::1]:60651 [200]: GET /api/auth/me
+[Sat Nov  8 06:58:48 2025] [::1]:60651 Closing
+[Sat Nov  8 06:58:48 2025] [::1]:55363 Accepted
+[Sat Nov  8 06:58:48 2025] [::1]:55363 [200]: GET /api/auth/me
+[Sat Nov  8 06:58:48 2025] [::1]:55363 Closing
+[Sat Nov  8 06:58:48 2025] [::1]:54670 Accepted
+[Sat Nov  8 06:58:48 2025] [::1]:54670 [200]: GET /api/auth/me
+[Sat Nov  8 06:58:48 2025] [::1]:54670 Closing
+[Sat Nov  8 06:58:48 2025] [::1]:58659 Accepted
+[Sat Nov  8 06:58:48 2025] [::1]:58659 [200]: GET /api/auth/me
+[Sat Nov  8 06:58:48 2025] [::1]:58659 Closing
+[Sat Nov  8 06:59:44 2025] [::1]:65095 Accepted
+[Sat Nov  8 06:59:44 2025] [::1]:65095 [200]: GET /api/auth/me
+[Sat Nov  8 06:59:44 2025] [::1]:65095 Closing
+[Sat Nov  8 06:59:44 2025] [::1]:54543 Accepted
+[Sat Nov  8 06:59:44 2025] [::1]:54543 [200]: GET /api/auth/me
+[Sat Nov  8 06:59:44 2025] [::1]:54543 Closing
+[Sat Nov  8 06:59:44 2025] [::1]:56007 Accepted
+[Sat Nov  8 06:59:45 2025] [::1]:56007 [200]: GET /api/auth/me
+[Sat Nov  8 06:59:45 2025] [::1]:56007 Closing
+[Sat Nov  8 06:59:45 2025] [::1]:50889 Accepted
+[Sat Nov  8 06:59:45 2025] [::1]:50889 [200]: GET /api/auth/me
+[Sat Nov  8 06:59:45 2025] [::1]:50889 Closing
+[Sat Nov  8 06:59:45 2025] [::1]:64806 Accepted
+[Sat Nov  8 06:59:45 2025] [::1]:64806 [200]: GET /api/auth/me
+[Sat Nov  8 06:59:45 2025] [::1]:64806 Closing
+[Sat Nov  8 06:59:45 2025] [::1]:54643 Accepted
+[Sat Nov  8 06:59:45 2025] [::1]:54643 [200]: GET /api/auth/me
+[Sat Nov  8 06:59:45 2025] [::1]:54643 Closing
+[Sat Nov  8 07:02:18 2025] [::1]:54502 Accepted
+[Sat Nov  8 07:02:18 2025] [::1]:54502 [200]: GET /api/auth/me
+[Sat Nov  8 07:02:18 2025] [::1]:54502 Closing
+[Sat Nov  8 07:02:18 2025] [::1]:63719 Accepted
+[Sat Nov  8 07:02:18 2025] [::1]:63719 [200]: GET /api/auth/me
+[Sat Nov  8 07:02:18 2025] [::1]:63719 Closing
+[Sat Nov  8 07:02:18 2025] [::1]:50671 Accepted
+[Sat Nov  8 07:02:18 2025] [::1]:50671 [200]: GET /api/auth/me
+[Sat Nov  8 07:02:18 2025] [::1]:50671 Closing
+[Sat Nov  8 07:02:18 2025] [::1]:63841 Accepted
+[Sat Nov  8 07:02:18 2025] [::1]:63841 [200]: GET /api/auth/me
+[Sat Nov  8 07:02:18 2025] [::1]:63841 Closing
+[Sat Nov  8 07:02:18 2025] [::1]:58470 Accepted
+[Sat Nov  8 07:02:19 2025] [::1]:58470 [200]: GET /api/auth/me
+[Sat Nov  8 07:02:19 2025] [::1]:58470 Closing
+[Sat Nov  8 07:02:19 2025] [::1]:52964 Accepted
+[Sat Nov  8 07:02:19 2025] [::1]:52964 [200]: GET /api/auth/me
+[Sat Nov  8 07:02:19 2025] [::1]:52964 Closing
+[Sat Nov  8 07:03:06 2025] [::1]:64031 Accepted
+[Sat Nov  8 07:03:06 2025] [::1]:64031 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:06 2025] [::1]:64031 Closing
+[Sat Nov  8 07:03:06 2025] [::1]:62554 Accepted
+[Sat Nov  8 07:03:06 2025] [::1]:62554 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:06 2025] [::1]:62554 Closing
+[Sat Nov  8 07:03:06 2025] [::1]:53795 Accepted
+[Sat Nov  8 07:03:06 2025] [::1]:53795 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:06 2025] [::1]:53795 Closing
+[Sat Nov  8 07:03:06 2025] [::1]:55329 Accepted
+[Sat Nov  8 07:03:06 2025] [::1]:55329 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:06 2025] [::1]:55329 Closing
+[Sat Nov  8 07:03:06 2025] [::1]:52825 Accepted
+[Sat Nov  8 07:03:06 2025] [::1]:52825 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:06 2025] [::1]:52825 Closing
+[Sat Nov  8 07:03:06 2025] [::1]:56572 Accepted
+[Sat Nov  8 07:03:06 2025] [::1]:56572 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:06 2025] [::1]:56572 Closing
+[Sat Nov  8 07:03:11 2025] [::1]:63837 Accepted
+[Sat Nov  8 07:03:11 2025] [::1]:63837 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:11 2025] [::1]:63837 Closing
+[Sat Nov  8 07:03:11 2025] [::1]:61405 Accepted
+[Sat Nov  8 07:03:12 2025] [::1]:61405 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:12 2025] [::1]:61405 Closing
+[Sat Nov  8 07:03:21 2025] [::1]:56564 Accepted
+[Sat Nov  8 07:03:21 2025] [::1]:56564 [200]: POST /api/auth/login
+[Sat Nov  8 07:03:21 2025] [::1]:56564 Closing
+[Sat Nov  8 07:03:22 2025] [::1]:62128 Accepted
+[Sat Nov  8 07:03:22 2025] [::1]:62128 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:22 2025] [::1]:62128 Closing
+[Sat Nov  8 07:03:22 2025] [::1]:50295 Accepted
+[Sat Nov  8 07:03:22 2025] [::1]:50295 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:22 2025] [::1]:50295 Closing
+[Sat Nov  8 07:03:22 2025] [::1]:57916 Accepted
+[Sat Nov  8 07:03:22 2025] [::1]:57916 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:22 2025] [::1]:57916 Closing
+[Sat Nov  8 07:03:22 2025] [::1]:49988 Accepted
+[Sat Nov  8 07:03:22 2025] [::1]:49988 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:22 2025] [::1]:49988 Closing
+[Sat Nov  8 07:03:22 2025] [::1]:65180 Accepted
+[Sat Nov  8 07:03:22 2025] [::1]:65180 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:22 2025] [::1]:65180 Closing
+[Sat Nov  8 07:03:22 2025] [::1]:54383 Accepted
+[Sat Nov  8 07:03:22 2025] [::1]:54383 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:22 2025] [::1]:54383 Closing
+[Sat Nov  8 07:03:46 2025] [::1]:52545 Accepted
+[Sat Nov  8 07:03:46 2025] [::1]:52545 [200]: GET /api/applications
+[Sat Nov  8 07:03:46 2025] [::1]:52545 Closing
+[Sat Nov  8 07:03:46 2025] [::1]:65283 Accepted
+[Sat Nov  8 07:03:46 2025] [::1]:65283 [200]: GET /api/applications
+[Sat Nov  8 07:03:46 2025] [::1]:65283 Closing
+[Sat Nov  8 07:03:48 2025] [::1]:61679 Accepted
+[Sat Nov  8 07:03:48 2025] [::1]:56742 Accepted
+[Sat Nov  8 07:03:48 2025] [::1]:61679 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:48 2025] [::1]:61679 Closing
+[Sat Nov  8 07:03:49 2025] [::1]:56742 [200]: GET /api/applications
+[Sat Nov  8 07:03:49 2025] [::1]:56742 Closing
+[Sat Nov  8 07:03:49 2025] [::1]:57648 Accepted
+[Sat Nov  8 07:03:49 2025] [::1]:55392 Accepted
+[Sat Nov  8 07:03:49 2025] [::1]:57648 [200]: GET /api/auth/me
+[Sat Nov  8 07:03:49 2025] [::1]:57648 Closing
+[Sat Nov  8 07:03:49 2025] [::1]:55392 [200]: GET /api/applications
+[Sat Nov  8 07:03:49 2025] [::1]:55392 Closing
+[Sat Nov  8 07:06:24 2025] [::1]:58414 Accepted
+[Sat Nov  8 07:06:25 2025] [::1]:58414 [200]: GET /api/applications
+[Sat Nov  8 07:06:25 2025] [::1]:58414 Closing
+[Sat Nov  8 07:06:25 2025] [::1]:53871 Accepted
+[Sat Nov  8 07:06:25 2025] [::1]:53871 [200]: GET /api/applications
+[Sat Nov  8 07:06:25 2025] [::1]:53871 Closing
+[Sat Nov  8 07:06:26 2025] [::1]:56898 Accepted
+[Sat Nov  8 07:06:26 2025] [::1]:59575 Accepted
+[Sat Nov  8 07:06:26 2025] [::1]:56898 [200]: GET /api/auth/me
+[Sat Nov  8 07:06:26 2025] [::1]:56898 Closing
+[Sat Nov  8 07:06:26 2025] [::1]:59575 [200]: GET /api/applications
+[Sat Nov  8 07:06:26 2025] [::1]:59575 Closing
+[Sat Nov  8 07:06:26 2025] [::1]:53650 Accepted
+[Sat Nov  8 07:06:26 2025] [::1]:53650 [200]: GET /api/auth/me
+[Sat Nov  8 07:06:26 2025] [::1]:53650 Closing
+[Sat Nov  8 07:06:26 2025] [::1]:64077 Accepted
+[Sat Nov  8 07:06:27 2025] [::1]:64077 [200]: GET /api/applications
+[Sat Nov  8 07:06:27 2025] [::1]:64077 Closing
+[Sat Nov  8 07:07:22 2025] [::1]:54213 Accepted
+[Sat Nov  8 07:07:22 2025] [::1]:54213 [200]: GET /api/auth/me
+[Sat Nov  8 07:07:22 2025] [::1]:54213 Closing
+[Sat Nov  8 07:07:22 2025] [::1]:55251 Accepted
+[Sat Nov  8 07:07:22 2025] [::1]:55251 [200]: GET /api/auth/me
+[Sat Nov  8 07:07:22 2025] [::1]:55251 Closing
+[Sat Nov  8 07:07:22 2025] [::1]:52003 Accepted
+[Sat Nov  8 07:07:22 2025] [::1]:52003 [200]: GET /api/auth/me
+[Sat Nov  8 07:07:22 2025] [::1]:52003 Closing
+[Sat Nov  8 07:07:22 2025] [::1]:50154 Accepted
+[Sat Nov  8 07:07:23 2025] [::1]:50154 [200]: GET /api/auth/me
+[Sat Nov  8 07:07:23 2025] [::1]:50154 Closing
+[Sat Nov  8 07:07:23 2025] [::1]:63975 Accepted
+[Sat Nov  8 07:07:23 2025] [::1]:63975 [200]: GET /api/auth/me
+[Sat Nov  8 07:07:23 2025] [::1]:63975 Closing
+[Sat Nov  8 07:07:23 2025] [::1]:62817 Accepted
+[Sat Nov  8 07:07:23 2025] [::1]:62817 [200]: GET /api/auth/me
+[Sat Nov  8 07:07:23 2025] [::1]:62817 Closing
+[Sat Nov  8 07:11:08 2025] [::1]:55339 Accepted
+[Sat Nov  8 07:11:08 2025] [::1]:55339 [200]: OPTIONS /api/auth/logout
+[Sat Nov  8 07:11:08 2025] [::1]:55339 Closing
+[Sat Nov  8 07:11:08 2025] [::1]:60538 Accepted
+[Sat Nov  8 07:11:08 2025] [::1]:60538 [200]: POST /api/auth/logout
+[Sat Nov  8 07:11:08 2025] [::1]:60538 Closing
+[Sat Nov  8 07:11:24 2025] [::1]:52511 Accepted
+[Sat Nov  8 07:11:24 2025] [::1]:52511 [200]: POST /api/auth/login
+[Sat Nov  8 07:11:24 2025] [::1]:52511 Closing
+[Sat Nov  8 07:11:24 2025] [::1]:60437 Accepted
+[Sat Nov  8 07:11:24 2025] [::1]:60437 [200]: GET /api/auth/me
+[Sat Nov  8 07:11:24 2025] [::1]:60437 Closing
+[Sat Nov  8 07:11:24 2025] [::1]:50102 Accepted
+[Sat Nov  8 07:11:24 2025] [::1]:50102 [200]: GET /api/auth/me
+[Sat Nov  8 07:11:24 2025] [::1]:50102 Closing
+[Sat Nov  8 07:11:24 2025] [::1]:56362 Accepted
+[Sat Nov  8 07:11:24 2025] [::1]:56362 [200]: GET /api/auth/me
+[Sat Nov  8 07:11:24 2025] [::1]:56362 Closing
+[Sat Nov  8 07:11:24 2025] [::1]:59902 Accepted
+[Sat Nov  8 07:11:24 2025] [::1]:59902 [200]: GET /api/auth/me
+[Sat Nov  8 07:11:24 2025] [::1]:59902 Closing
+[Sat Nov  8 07:11:24 2025] [::1]:56324 Accepted
+[Sat Nov  8 07:11:24 2025] [::1]:56324 [200]: GET /api/auth/me
+[Sat Nov  8 07:11:24 2025] [::1]:56324 Closing
+[Sat Nov  8 07:11:24 2025] [::1]:53369 Accepted
+[Sat Nov  8 07:11:25 2025] [::1]:53369 [200]: GET /api/auth/me
+[Sat Nov  8 07:11:25 2025] [::1]:53369 Closing
+[Sat Nov  8 07:12:15 2025] [::1]:64890 Accepted
+[Sat Nov  8 07:12:15 2025] [::1]:64890 [200]: GET /api/auth/me
+[Sat Nov  8 07:12:15 2025] [::1]:64890 Closing
+[Sat Nov  8 07:12:15 2025] [::1]:60439 Accepted
+[Sat Nov  8 07:12:15 2025] [::1]:60439 [200]: GET /api/auth/me
+[Sat Nov  8 07:12:15 2025] [::1]:60439 Closing
+[Sat Nov  8 07:12:15 2025] [::1]:64652 Accepted
+[Sat Nov  8 07:12:15 2025] [::1]:64652 [200]: GET /api/auth/me
+[Sat Nov  8 07:12:15 2025] [::1]:64652 Closing
+[Sat Nov  8 07:12:15 2025] [::1]:49157 Accepted
+[Sat Nov  8 07:12:15 2025] [::1]:49157 [200]: GET /api/auth/me
+[Sat Nov  8 07:12:15 2025] [::1]:49157 Closing
+[Sat Nov  8 07:12:15 2025] [::1]:53823 Accepted
+[Sat Nov  8 07:12:16 2025] [::1]:53823 [200]: GET /api/auth/me
+[Sat Nov  8 07:12:16 2025] [::1]:53823 Closing
+[Sat Nov  8 07:12:16 2025] [::1]:65389 Accepted
+[Sat Nov  8 07:12:16 2025] [::1]:65389 [200]: GET /api/auth/me
+[Sat Nov  8 07:12:16 2025] [::1]:65389 Closing
+[Sat Nov  8 07:12:18 2025] [::1]:63254 Accepted
+[Sat Nov  8 07:12:19 2025] [::1]:63254 [200]: GET /api/applications
+[Sat Nov  8 07:12:19 2025] [::1]:63254 Closing
+[Sat Nov  8 07:12:19 2025] [::1]:62820 Accepted
+[Sat Nov  8 07:12:19 2025] [::1]:62820 [200]: GET /api/applications
+[Sat Nov  8 07:12:19 2025] [::1]:62820 Closing
+[Sat Nov  8 07:14:34 2025] [::1]:59739 Accepted
+[Sat Nov  8 07:14:34 2025] [::1]:59739 [200]: POST /api/auth/logout
+[Sat Nov  8 07:14:34 2025] [::1]:59739 Closing
+[Sat Nov  8 07:16:11 2025] [::1]:65472 Accepted
+[Sat Nov  8 07:16:11 2025] [::1]:65472 [200]: POST /api/auth/login
+[Sat Nov  8 07:16:11 2025] [::1]:65472 Closing
+[Sat Nov  8 07:16:14 2025] [::1]:49635 Accepted
+[Sat Nov  8 07:16:14 2025] [::1]:49635 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:14 2025] [::1]:49635 Closing
+[Sat Nov  8 07:16:14 2025] [::1]:52373 Accepted
+[Sat Nov  8 07:16:14 2025] [::1]:52373 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:14 2025] [::1]:52373 Closing
+[Sat Nov  8 07:16:14 2025] [::1]:61319 Accepted
+[Sat Nov  8 07:16:14 2025] [::1]:61319 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:14 2025] [::1]:61319 Closing
+[Sat Nov  8 07:16:14 2025] [::1]:57752 Accepted
+[Sat Nov  8 07:16:14 2025] [::1]:57752 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:14 2025] [::1]:57752 Closing
+[Sat Nov  8 07:16:14 2025] [::1]:63009 Accepted
+[Sat Nov  8 07:16:14 2025] [::1]:63009 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:14 2025] [::1]:63009 Closing
+[Sat Nov  8 07:16:14 2025] [::1]:62706 Accepted
+[Sat Nov  8 07:16:14 2025] [::1]:62706 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:14 2025] [::1]:62706 Closing
+[Sat Nov  8 07:16:34 2025] [::1]:58437 Accepted
+[Sat Nov  8 07:16:34 2025] [::1]:58437 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:34 2025] [::1]:58437 Closing
+[Sat Nov  8 07:16:34 2025] [::1]:56552 Accepted
+[Sat Nov  8 07:16:34 2025] [::1]:56552 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:34 2025] [::1]:56552 Closing
+[Sat Nov  8 07:16:34 2025] [::1]:57599 Accepted
+[Sat Nov  8 07:16:34 2025] [::1]:57599 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:34 2025] [::1]:57599 Closing
+[Sat Nov  8 07:16:34 2025] [::1]:62618 Accepted
+[Sat Nov  8 07:16:34 2025] [::1]:62618 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:34 2025] [::1]:62618 Closing
+[Sat Nov  8 07:16:34 2025] [::1]:63351 Accepted
+[Sat Nov  8 07:16:35 2025] [::1]:63351 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:35 2025] [::1]:63351 Closing
+[Sat Nov  8 07:16:35 2025] [::1]:65254 Accepted
+[Sat Nov  8 07:16:35 2025] [::1]:65254 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:35 2025] [::1]:65254 Closing
+[Sat Nov  8 07:16:39 2025] [::1]:51783 Accepted
+[Sat Nov  8 07:16:40 2025] [::1]:51783 [200]: GET /api/applications
+[Sat Nov  8 07:16:40 2025] [::1]:51783 Closing
+[Sat Nov  8 07:16:40 2025] [::1]:63698 Accepted
+[Sat Nov  8 07:16:40 2025] [::1]:63698 [200]: GET /api/applications
+[Sat Nov  8 07:16:40 2025] [::1]:63698 Closing
+[Sat Nov  8 07:16:42 2025] [::1]:54662 Accepted
+[Sat Nov  8 07:16:42 2025] [::1]:54662 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:42 2025] [::1]:54662 Closing
+[Sat Nov  8 07:16:42 2025] [::1]:59632 Accepted
+[Sat Nov  8 07:16:42 2025] [::1]:59632 [200]: GET /api/applications
+[Sat Nov  8 07:16:42 2025] [::1]:59632 Closing
+[Sat Nov  8 07:16:42 2025] [::1]:57971 Accepted
+[Sat Nov  8 07:16:43 2025] [::1]:57971 [200]: GET /api/auth/me
+[Sat Nov  8 07:16:43 2025] [::1]:57971 Closing
+[Sat Nov  8 07:16:43 2025] [::1]:57159 Accepted
+[Sat Nov  8 07:16:43 2025] [::1]:57159 [200]: GET /api/applications
+[Sat Nov  8 07:16:43 2025] [::1]:57159 Closing
+[Sat Nov  8 07:18:21 2025] [::1]:55761 Accepted
+[Sat Nov  8 07:18:21 2025] [::1]:55761 [200]: GET /api/auth/me
+[Sat Nov  8 07:18:21 2025] [::1]:55761 Closing
+[Sat Nov  8 07:18:21 2025] [::1]:53457 Accepted
+[Sat Nov  8 07:18:21 2025] [::1]:53457 [200]: GET /api/auth/me
+[Sat Nov  8 07:18:21 2025] [::1]:53457 Closing
+[Sat Nov  8 07:18:21 2025] [::1]:60803 Accepted
+[Sat Nov  8 07:18:21 2025] [::1]:60803 [200]: GET /api/applications
+[Sat Nov  8 07:18:21 2025] [::1]:60803 Closing
+[Sat Nov  8 07:18:21 2025] [::1]:52495 Accepted
+[Sat Nov  8 07:18:21 2025] [::1]:54398 Accepted
+[Sat Nov  8 07:18:21 2025] [::1]:52495 [200]: GET /api/auth/me
+[Sat Nov  8 07:18:21 2025] [::1]:52495 Closing
+[Sat Nov  8 07:18:21 2025] [::1]:54398 [200]: GET /api/applications
+[Sat Nov  8 07:18:21 2025] [::1]:54398 Closing
+[Sat Nov  8 07:18:21 2025] [::1]:51231 Accepted
+[Sat Nov  8 07:18:22 2025] [::1]:51231 [200]: GET /api/auth/me
+[Sat Nov  8 07:18:22 2025] [::1]:51231 Closing
+[Sat Nov  8 07:18:22 2025] [::1]:55335 Accepted
+[Sat Nov  8 07:18:22 2025] [::1]:55335 [200]: GET /api/auth/me
+[Sat Nov  8 07:18:22 2025] [::1]:55335 Closing
+[Sat Nov  8 07:18:22 2025] [::1]:57722 Accepted
+[Sat Nov  8 07:18:22 2025] [::1]:57722 [200]: GET /api/auth/me
+[Sat Nov  8 07:18:22 2025] [::1]:57722 Closing
+[Sat Nov  8 07:19:27 2025] [::1]:60672 Accepted
+[Sat Nov  8 07:19:27 2025] [::1]:60672 [200]: POST /api/auth/logout
+[Sat Nov  8 07:19:27 2025] [::1]:60672 Closing
+[Sat Nov  8 07:20:07 2025] [::1]:62381 Accepted
+[Sat Nov  8 07:20:07 2025] [::1]:62381 [200]: POST /api/auth/login
+[Sat Nov  8 07:20:07 2025] [::1]:62381 Closing
+[Sat Nov  8 07:20:08 2025] [::1]:53666 Accepted
+[Sat Nov  8 07:20:08 2025] [::1]:53666 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:08 2025] [::1]:53666 Closing
+[Sat Nov  8 07:20:08 2025] [::1]:63556 Accepted
+[Sat Nov  8 07:20:09 2025] [::1]:63556 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:09 2025] [::1]:63556 Closing
+[Sat Nov  8 07:20:09 2025] [::1]:63826 Accepted
+[Sat Nov  8 07:20:09 2025] [::1]:63826 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:09 2025] [::1]:63826 Closing
+[Sat Nov  8 07:20:09 2025] [::1]:50603 Accepted
+[Sat Nov  8 07:20:09 2025] [::1]:50603 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:09 2025] [::1]:50603 Closing
+[Sat Nov  8 07:20:09 2025] [::1]:52877 Accepted
+[Sat Nov  8 07:20:09 2025] [::1]:52877 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:09 2025] [::1]:52877 Closing
+[Sat Nov  8 07:20:09 2025] [::1]:63487 Accepted
+[Sat Nov  8 07:20:09 2025] [::1]:63487 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:09 2025] [::1]:63487 Closing
+[Sat Nov  8 07:20:18 2025] [::1]:60217 Accepted
+[Sat Nov  8 07:20:18 2025] [::1]:60217 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:18 2025] [::1]:60217 Closing
+[Sat Nov  8 07:20:18 2025] [::1]:64877 Accepted
+[Sat Nov  8 07:20:18 2025] [::1]:64877 [200]: GET /api/applications
+[Sat Nov  8 07:20:18 2025] [::1]:64877 Closing
+[Sat Nov  8 07:20:18 2025] [::1]:59609 Accepted
+[Sat Nov  8 07:20:19 2025] [::1]:59609 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:19 2025] [::1]:59609 Closing
+[Sat Nov  8 07:20:19 2025] [::1]:51622 Accepted
+[Sat Nov  8 07:20:19 2025] [::1]:51622 [200]: GET /api/applications
+[Sat Nov  8 07:20:19 2025] [::1]:51622 Closing
+[Sat Nov  8 07:20:36 2025] [::1]:56622 Accepted
+[Sat Nov  8 07:20:36 2025] [::1]:56622 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:36 2025] [::1]:56622 Closing
+[Sat Nov  8 07:20:36 2025] [::1]:61943 Accepted
+[Sat Nov  8 07:20:36 2025] [::1]:61943 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:36 2025] [::1]:61943 Closing
+[Sat Nov  8 07:20:36 2025] [::1]:60383 Accepted
+[Sat Nov  8 07:20:37 2025] [::1]:60383 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:37 2025] [::1]:60383 Closing
+[Sat Nov  8 07:20:37 2025] [::1]:50767 Accepted
+[Sat Nov  8 07:20:37 2025] [::1]:50767 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:37 2025] [::1]:50767 Closing
+[Sat Nov  8 07:20:37 2025] [::1]:51110 Accepted
+[Sat Nov  8 07:20:37 2025] [::1]:51110 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:37 2025] [::1]:51110 Closing
+[Sat Nov  8 07:20:37 2025] [::1]:57956 Accepted
+[Sat Nov  8 07:20:37 2025] [::1]:57956 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:37 2025] [::1]:57956 Closing
+[Sat Nov  8 07:20:50 2025] [::1]:63095 Accepted
+[Sat Nov  8 07:20:50 2025] [::1]:63095 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:50 2025] [::1]:63095 Closing
+[Sat Nov  8 07:20:50 2025] [::1]:64006 Accepted
+[Sat Nov  8 07:20:50 2025] [::1]:64006 [200]: GET /api/applications
+[Sat Nov  8 07:20:50 2025] [::1]:64006 Closing
+[Sat Nov  8 07:20:50 2025] [::1]:62430 Accepted
+[Sat Nov  8 07:20:50 2025] [::1]:62430 [200]: GET /api/auth/me
+[Sat Nov  8 07:20:50 2025] [::1]:62430 Closing
+[Sat Nov  8 07:20:50 2025] [::1]:57499 Accepted
+[Sat Nov  8 07:20:50 2025] [::1]:57499 [200]: GET /api/applications
+[Sat Nov  8 07:20:50 2025] [::1]:57499 Closing
+[Sat Nov  8 07:20:51 2025] [::1]:65338 Accepted
+[Sat Nov  8 07:20:52 2025] [::1]:65338 [200]: GET /api/applications
+[Sat Nov  8 07:20:52 2025] [::1]:65338 Closing
+[Sat Nov  8 07:20:52 2025] [::1]:60424 Accepted
+[Sat Nov  8 07:20:52 2025] [::1]:60424 [200]: GET /api/applications
+[Sat Nov  8 07:20:52 2025] [::1]:60424 Closing
+[Sat Nov  8 07:23:18 2025] [::1]:49759 Accepted
+[Sat Nov  8 07:23:18 2025] [::1]:49759 [200]: GET /api/auth/me
+[Sat Nov  8 07:23:18 2025] [::1]:49759 Closing
+[Sat Nov  8 07:23:18 2025] [::1]:62976 Accepted
+[Sat Nov  8 07:23:18 2025] [::1]:62976 [200]: GET /api/auth/me
+[Sat Nov  8 07:23:18 2025] [::1]:62976 Closing
+[Sat Nov  8 07:23:18 2025] [::1]:60537 Accepted
+[Sat Nov  8 07:23:18 2025] [::1]:60537 [200]: GET /api/auth/me
+[Sat Nov  8 07:23:18 2025] [::1]:60537 Closing
+[Sat Nov  8 07:23:18 2025] [::1]:53416 Accepted
+[Sat Nov  8 07:23:18 2025] [::1]:53416 [200]: GET /api/applications
+[Sat Nov  8 07:23:18 2025] [::1]:53416 Closing
+[Sat Nov  8 07:23:18 2025] [::1]:62245 Accepted
+[Sat Nov  8 07:23:18 2025] [::1]:60915 Accepted
+[Sat Nov  8 07:23:18 2025] [::1]:62245 [200]: GET /api/auth/me
+[Sat Nov  8 07:23:18 2025] [::1]:62245 Closing
+[Sat Nov  8 07:23:19 2025] [::1]:60915 [200]: GET /api/applications
+[Sat Nov  8 07:23:19 2025] [::1]:60915 Closing
+[Sat Nov  8 07:24:41 2025] [::1]:61393 Accepted
+[Sat Nov  8 07:24:41 2025] [::1]:61393 [200]: GET /api/auth/me
+[Sat Nov  8 07:24:41 2025] [::1]:61393 Closing
+[Sat Nov  8 07:24:41 2025] [::1]:57172 Accepted
+[Sat Nov  8 07:24:41 2025] [::1]:57172 [200]: GET /api/auth/me
+[Sat Nov  8 07:24:41 2025] [::1]:57172 Closing
+[Sat Nov  8 07:24:41 2025] [::1]:53680 Accepted
+[Sat Nov  8 07:24:41 2025] [::1]:53680 [200]: GET /api/applications
+[Sat Nov  8 07:24:41 2025] [::1]:53680 Closing
+[Sat Nov  8 07:24:41 2025] [::1]:54730 Accepted
+[Sat Nov  8 07:24:41 2025] [::1]:54730 [200]: GET /api/auth/me
+[Sat Nov  8 07:24:41 2025] [::1]:54730 Closing
+[Sat Nov  8 07:24:41 2025] [::1]:53891 Accepted
+[Sat Nov  8 07:24:42 2025] [::1]:53891 [200]: GET /api/applications
+[Sat Nov  8 07:24:42 2025] [::1]:53891 Closing
+[Sat Nov  8 07:24:42 2025] [::1]:65093 Accepted
+[Sat Nov  8 07:24:42 2025] [::1]:65093 [200]: GET /api/auth/me
+[Sat Nov  8 07:24:42 2025] [::1]:65093 Closing
+[Sat Nov  8 07:24:50 2025] [::1]:62701 Accepted
+[Sat Nov  8 07:24:50 2025] [::1]:62701 [200]: GET /api/auth/me
+[Sat Nov  8 07:24:50 2025] [::1]:62701 Closing
+[Sat Nov  8 07:24:50 2025] [::1]:49159 Accepted
+[Sat Nov  8 07:24:50 2025] [::1]:49159 [200]: GET /api/auth/me
+[Sat Nov  8 07:24:50 2025] [::1]:49159 Closing
+[Sat Nov  8 07:24:50 2025] [::1]:54999 Accepted
+[Sat Nov  8 07:24:50 2025] [::1]:53887 Accepted
+[Sat Nov  8 07:24:50 2025] [::1]:54999 [200]: OPTIONS /api/admin/analytics
+[Sat Nov  8 07:24:50 2025] [::1]:54999 Closing
+[Sat Nov  8 07:24:50 2025] [::1]:60086 Accepted
+[Sat Nov  8 07:24:50 2025] [::1]:53887 [200]: OPTIONS /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:24:50 2025] [::1]:53887 Closing
+[Sat Nov  8 07:24:50 2025] [::1]:59862 Accepted
+[Sat Nov  8 07:24:50 2025] [::1]:60086 [200]: OPTIONS /api/admin/analytics
+[Sat Nov  8 07:24:50 2025] [::1]:60086 Closing
+[Sat Nov  8 07:24:50 2025] [::1]:55627 Accepted
+[Sat Nov  8 07:24:50 2025] [::1]:59862 [200]: OPTIONS /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:24:50 2025] [::1]:59862 Closing
+[Sat Nov  8 07:24:50 2025] [::1]:52288 Accepted
+[Sat Nov  8 07:24:50 2025] [::1]:55627 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:24:50 2025] [::1]:55627 Closing
+[Sat Nov  8 07:24:51 2025] [::1]:52288 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:24:51 2025] [::1]:52288 Closing
+[Sat Nov  8 07:24:51 2025] [::1]:51316 Accepted
+[Sat Nov  8 07:24:51 2025] [::1]:51316 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:24:51 2025] [::1]:51316 Closing
+[Sat Nov  8 07:24:51 2025] [::1]:53498 Accepted
+[Sat Nov  8 07:24:51 2025] [::1]:53498 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:24:51 2025] [::1]:53498 Closing
+[Sat Nov  8 07:26:54 2025] [::1]:53703 Accepted
+[Sat Nov  8 07:26:54 2025] [::1]:53703 [200]: GET /api/applications
+[Sat Nov  8 07:26:54 2025] [::1]:53703 Closing
+[Sat Nov  8 07:26:54 2025] [::1]:59949 Accepted
+[Sat Nov  8 07:26:55 2025] [::1]:59949 [200]: GET /api/applications
+[Sat Nov  8 07:26:55 2025] [::1]:59949 Closing
+[Sat Nov  8 07:26:56 2025] [::1]:61838 Accepted
+[Sat Nov  8 07:26:56 2025] [::1]:61838 [200]: GET /api/auth/me
+[Sat Nov  8 07:26:56 2025] [::1]:61838 Closing
+[Sat Nov  8 07:26:56 2025] [::1]:62119 Accepted
+[Sat Nov  8 07:26:57 2025] [::1]:62119 [200]: GET /api/applications
+[Sat Nov  8 07:26:57 2025] [::1]:62119 Closing
+[Sat Nov  8 07:26:57 2025] [::1]:56760 Accepted
+[Sat Nov  8 07:26:57 2025] [::1]:56760 [200]: GET /api/auth/me
+[Sat Nov  8 07:26:57 2025] [::1]:56760 Closing
+[Sat Nov  8 07:26:57 2025] [::1]:52640 Accepted
+[Sat Nov  8 07:26:57 2025] [::1]:52640 [200]: GET /api/applications
+[Sat Nov  8 07:26:57 2025] [::1]:52640 Closing
+[Sat Nov  8 07:26:59 2025] [::1]:54218 Accepted
+[Sat Nov  8 07:26:59 2025] [::1]:54218 [200]: GET /api/auth/me
+[Sat Nov  8 07:26:59 2025] [::1]:54218 Closing
+[Sat Nov  8 07:26:59 2025] [::1]:53346 Accepted
+[Sat Nov  8 07:26:59 2025] [::1]:53346 [200]: GET /api/auth/me
+[Sat Nov  8 07:26:59 2025] [::1]:53346 Closing
+[Sat Nov  8 07:26:59 2025] [::1]:60538 Accepted
+[Sat Nov  8 07:26:59 2025] [::1]:64935 Accepted
+[Sat Nov  8 07:26:59 2025] [::1]:60538 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:26:59 2025] [::1]:60538 Closing
+[Sat Nov  8 07:26:59 2025] [::1]:64935 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:26:59 2025] [::1]:64935 Closing
+[Sat Nov  8 07:26:59 2025] [::1]:58778 Accepted
+[Sat Nov  8 07:26:59 2025] [::1]:58778 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:26:59 2025] [::1]:58778 Closing
+[Sat Nov  8 07:26:59 2025] [::1]:60952 Accepted
+[Sat Nov  8 07:26:59 2025] [::1]:60952 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:26:59 2025] [::1]:60952 Closing
+[Sat Nov  8 07:27:48 2025] [::1]:59809 Accepted
+[Sat Nov  8 07:27:48 2025] [::1]:59809 [200]: POST /api/auth/login
+[Sat Nov  8 07:27:48 2025] [::1]:59809 Closing
+[Sat Nov  8 07:27:49 2025] [::1]:56072 Accepted
+[Sat Nov  8 07:27:49 2025] [::1]:56072 [200]: GET /api/auth/me
+[Sat Nov  8 07:27:49 2025] [::1]:56072 Closing
+[Sat Nov  8 07:27:49 2025] [::1]:54861 Accepted
+[Sat Nov  8 07:27:49 2025] [::1]:54861 [200]: GET /api/auth/me
+[Sat Nov  8 07:27:49 2025] [::1]:54861 Closing
+[Sat Nov  8 07:27:49 2025] [::1]:56308 Accepted
+[Sat Nov  8 07:27:49 2025] [::1]:56308 [200]: GET /api/auth/me
+[Sat Nov  8 07:27:49 2025] [::1]:56308 Closing
+[Sat Nov  8 07:27:49 2025] [::1]:49571 Accepted
+[Sat Nov  8 07:27:49 2025] [::1]:49571 [200]: GET /api/auth/me
+[Sat Nov  8 07:27:49 2025] [::1]:49571 Closing
+[Sat Nov  8 07:27:49 2025] [::1]:58702 Accepted
+[Sat Nov  8 07:27:49 2025] [::1]:58702 [200]: GET /api/auth/me
+[Sat Nov  8 07:27:49 2025] [::1]:58702 Closing
+[Sat Nov  8 07:27:49 2025] [::1]:51333 Accepted
+[Sat Nov  8 07:27:49 2025] [::1]:51333 [200]: GET /api/auth/me
+[Sat Nov  8 07:27:49 2025] [::1]:51333 Closing
+[Sat Nov  8 07:27:49 2025] [::1]:59167 Accepted
+[Sat Nov  8 07:27:49 2025] [::1]:55397 Accepted
+[Sat Nov  8 07:27:49 2025] [::1]:59167 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:27:49 2025] [::1]:59167 Closing
+[Sat Nov  8 07:27:49 2025] [::1]:55397 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:27:49 2025] [::1]:55397 Closing
+[Sat Nov  8 07:27:49 2025] [::1]:60446 Accepted
+[Sat Nov  8 07:27:49 2025] [::1]:60446 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:27:49 2025] [::1]:60446 Closing
+[Sat Nov  8 07:27:49 2025] [::1]:61649 Accepted
+[Sat Nov  8 07:27:50 2025] [::1]:61649 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:27:50 2025] [::1]:61649 Closing
+[Sat Nov  8 07:30:03 2025] [::1]:61566 Accepted
+[Sat Nov  8 07:30:03 2025] [::1]:61566 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:03 2025] [::1]:61566 Closing
+[Sat Nov  8 07:30:03 2025] [::1]:57917 Accepted
+[Sat Nov  8 07:30:03 2025] [::1]:57917 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:03 2025] [::1]:57917 Closing
+[Sat Nov  8 07:30:03 2025] [::1]:60997 Accepted
+[Sat Nov  8 07:30:03 2025] [::1]:57777 Accepted
+[Sat Nov  8 07:30:03 2025] [::1]:60997 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:30:03 2025] [::1]:60997 Closing
+[Sat Nov  8 07:30:04 2025] [::1]:57777 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:30:04 2025] [::1]:57777 Closing
+[Sat Nov  8 07:30:04 2025] [::1]:64002 Accepted
+[Sat Nov  8 07:30:04 2025] [::1]:64002 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:30:04 2025] [::1]:64002 Closing
+[Sat Nov  8 07:30:04 2025] [::1]:54997 Accepted
+[Sat Nov  8 07:30:04 2025] [::1]:54997 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:30:04 2025] [::1]:54997 Closing
+[Sat Nov  8 07:30:33 2025] [::1]:63015 Accepted
+[Sat Nov  8 07:30:33 2025] [::1]:63015 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:33 2025] [::1]:63015 Closing
+[Sat Nov  8 07:30:33 2025] [::1]:51170 Accepted
+[Sat Nov  8 07:30:33 2025] [::1]:51170 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:33 2025] [::1]:51170 Closing
+[Sat Nov  8 07:30:33 2025] [::1]:55525 Accepted
+[Sat Nov  8 07:30:33 2025] [::1]:55525 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:33 2025] [::1]:55525 Closing
+[Sat Nov  8 07:30:33 2025] [::1]:62065 Accepted
+[Sat Nov  8 07:30:33 2025] [::1]:62065 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:33 2025] [::1]:62065 Closing
+[Sat Nov  8 07:30:33 2025] [::1]:53520 Accepted
+[Sat Nov  8 07:30:34 2025] [::1]:53520 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:34 2025] [::1]:53520 Closing
+[Sat Nov  8 07:30:34 2025] [::1]:62812 Accepted
+[Sat Nov  8 07:30:34 2025] [::1]:62812 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:34 2025] [::1]:62812 Closing
+[Sat Nov  8 07:30:34 2025] [::1]:50472 Accepted
+[Sat Nov  8 07:30:34 2025] [::1]:50246 Accepted
+[Sat Nov  8 07:30:34 2025] [::1]:50472 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:30:34 2025] [::1]:50472 Closing
+[Sat Nov  8 07:30:34 2025] [::1]:50246 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:30:34 2025] [::1]:50246 Closing
+[Sat Nov  8 07:30:34 2025] [::1]:50862 Accepted
+[Sat Nov  8 07:30:34 2025] [::1]:50862 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:30:34 2025] [::1]:50862 Closing
+[Sat Nov  8 07:30:34 2025] [::1]:60250 Accepted
+[Sat Nov  8 07:30:34 2025] [::1]:60250 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:30:34 2025] [::1]:60250 Closing
+[Sat Nov  8 07:30:55 2025] [::1]:53750 Accepted
+[Sat Nov  8 07:30:55 2025] [::1]:53750 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:55 2025] [::1]:53750 Closing
+[Sat Nov  8 07:30:55 2025] [::1]:52791 Accepted
+[Sat Nov  8 07:30:55 2025] [::1]:52791 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:55 2025] [::1]:52791 Closing
+[Sat Nov  8 07:30:55 2025] [::1]:52802 Accepted
+[Sat Nov  8 07:30:55 2025] [::1]:52802 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:55 2025] [::1]:52802 Closing
+[Sat Nov  8 07:30:55 2025] [::1]:54443 Accepted
+[Sat Nov  8 07:30:55 2025] [::1]:54443 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:55 2025] [::1]:54443 Closing
+[Sat Nov  8 07:30:55 2025] [::1]:54597 Accepted
+[Sat Nov  8 07:30:55 2025] [::1]:54597 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:55 2025] [::1]:54597 Closing
+[Sat Nov  8 07:30:55 2025] [::1]:64023 Accepted
+[Sat Nov  8 07:30:56 2025] [::1]:64023 [200]: GET /api/auth/me
+[Sat Nov  8 07:30:56 2025] [::1]:64023 Closing
+[Sat Nov  8 07:30:56 2025] [::1]:50060 Accepted
+[Sat Nov  8 07:30:56 2025] [::1]:57098 Accepted
+[Sat Nov  8 07:30:56 2025] [::1]:50060 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:30:56 2025] [::1]:50060 Closing
+[Sat Nov  8 07:30:56 2025] [::1]:57098 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:30:56 2025] [::1]:57098 Closing
+[Sat Nov  8 07:30:56 2025] [::1]:64049 Accepted
+[Sat Nov  8 07:30:56 2025] [::1]:64049 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:30:56 2025] [::1]:64049 Closing
+[Sat Nov  8 07:30:56 2025] [::1]:57935 Accepted
+[Sat Nov  8 07:30:56 2025] [::1]:57935 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:30:56 2025] [::1]:57935 Closing
+[Sat Nov  8 07:31:23 2025] [::1]:50678 Accepted
+[Sat Nov  8 07:31:23 2025] [::1]:50678 [200]: GET /api/applications
+[Sat Nov  8 07:31:23 2025] [::1]:50678 Closing
+[Sat Nov  8 07:31:23 2025] [::1]:51276 Accepted
+[Sat Nov  8 07:31:23 2025] [::1]:51276 [200]: GET /api/applications
+[Sat Nov  8 07:31:23 2025] [::1]:51276 Closing
+[Sat Nov  8 07:31:26 2025] [::1]:63374 Accepted
+[Sat Nov  8 07:31:26 2025] [::1]:63374 [200]: GET /api/auth/me
+[Sat Nov  8 07:31:26 2025] [::1]:63374 Closing
+[Sat Nov  8 07:31:26 2025] [::1]:63504 Accepted
+[Sat Nov  8 07:31:26 2025] [::1]:63504 [200]: GET /api/applications
+[Sat Nov  8 07:31:26 2025] [::1]:63504 Closing
+[Sat Nov  8 07:31:26 2025] [::1]:52957 Accepted
+[Sat Nov  8 07:31:26 2025] [::1]:52223 Accepted
+[Sat Nov  8 07:31:26 2025] [::1]:52957 [200]: GET /api/auth/me
+[Sat Nov  8 07:31:26 2025] [::1]:52957 Closing
+[Sat Nov  8 07:31:26 2025] [::1]:52223 [200]: GET /api/applications
+[Sat Nov  8 07:31:26 2025] [::1]:52223 Closing
+[Sat Nov  8 07:31:27 2025] [::1]:54489 Accepted
+[Sat Nov  8 07:31:28 2025] [::1]:54489 [200]: GET /api/applications
+[Sat Nov  8 07:31:28 2025] [::1]:54489 Closing
+[Sat Nov  8 07:31:28 2025] [::1]:64731 Accepted
+[Sat Nov  8 07:31:28 2025] [::1]:64731 [200]: GET /api/applications
+[Sat Nov  8 07:31:28 2025] [::1]:64731 Closing
+[Sat Nov  8 07:31:31 2025] [::1]:61926 Accepted
+[Sat Nov  8 07:31:31 2025] [::1]:61926 [200]: GET /api/auth/me
+[Sat Nov  8 07:31:31 2025] [::1]:61926 Closing
+[Sat Nov  8 07:31:31 2025] [::1]:59547 Accepted
+[Sat Nov  8 07:31:31 2025] [::1]:59547 [200]: GET /api/auth/me
+[Sat Nov  8 07:31:31 2025] [::1]:59547 Closing
+[Sat Nov  8 07:31:31 2025] [::1]:59853 Accepted
+[Sat Nov  8 07:31:31 2025] [::1]:59853 [200]: GET /api/applications
+[Sat Nov  8 07:31:31 2025] [::1]:59853 Closing
+[Sat Nov  8 07:31:31 2025] [::1]:57722 Accepted
+[Sat Nov  8 07:31:31 2025] [::1]:57722 [200]: GET /api/auth/me
+[Sat Nov  8 07:31:31 2025] [::1]:57722 Closing
+[Sat Nov  8 07:31:31 2025] [::1]:56597 Accepted
+[Sat Nov  8 07:31:32 2025] [::1]:56597 [200]: GET /api/applications
+[Sat Nov  8 07:31:32 2025] [::1]:56597 Closing
+[Sat Nov  8 07:31:32 2025] [::1]:52957 Accepted
+[Sat Nov  8 07:31:32 2025] [::1]:52957 [200]: GET /api/auth/me
+[Sat Nov  8 07:31:32 2025] [::1]:52957 Closing
+[Sat Nov  8 07:31:37 2025] [::1]:50656 Accepted
+[Sat Nov  8 07:31:37 2025] [::1]:50656 [200]: POST /api/auth/logout
+[Sat Nov  8 07:31:37 2025] [::1]:50656 Closing
+[Sat Nov  8 07:32:12 2025] [::1]:56076 Accepted
+[Sat Nov  8 07:32:12 2025] [::1]:56076 [200]: POST /api/auth/login
+[Sat Nov  8 07:32:12 2025] [::1]:56076 Closing
+[Sat Nov  8 07:32:13 2025] [::1]:52603 Accepted
+[Sat Nov  8 07:32:13 2025] [::1]:52603 [200]: GET /api/auth/me
+[Sat Nov  8 07:32:13 2025] [::1]:52603 Closing
+[Sat Nov  8 07:32:13 2025] [::1]:53852 Accepted
+[Sat Nov  8 07:32:14 2025] [::1]:53852 [200]: GET /api/auth/me
+[Sat Nov  8 07:32:14 2025] [::1]:53852 Closing
+[Sat Nov  8 07:32:14 2025] [::1]:60471 Accepted
+[Sat Nov  8 07:32:14 2025] [::1]:60471 [200]: GET /api/auth/me
+[Sat Nov  8 07:32:14 2025] [::1]:60471 Closing
+[Sat Nov  8 07:32:14 2025] [::1]:57518 Accepted
+[Sat Nov  8 07:32:14 2025] [::1]:57518 [200]: GET /api/auth/me
+[Sat Nov  8 07:32:14 2025] [::1]:57518 Closing
+[Sat Nov  8 07:32:14 2025] [::1]:57735 Accepted
+[Sat Nov  8 07:32:14 2025] [::1]:57735 [200]: GET /api/auth/me
+[Sat Nov  8 07:32:14 2025] [::1]:57735 Closing
+[Sat Nov  8 07:32:14 2025] [::1]:62306 Accepted
+[Sat Nov  8 07:32:14 2025] [::1]:62306 [200]: GET /api/auth/me
+[Sat Nov  8 07:32:14 2025] [::1]:62306 Closing
+[Sat Nov  8 07:32:14 2025] [::1]:57411 Accepted
+[Sat Nov  8 07:32:14 2025] [::1]:52510 Accepted
+[Sat Nov  8 07:32:14 2025] [::1]:57411 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:32:14 2025] [::1]:57411 Closing
+[Sat Nov  8 07:32:14 2025] [::1]:52510 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:32:14 2025] [::1]:52510 Closing
+[Sat Nov  8 07:32:14 2025] [::1]:55764 Accepted
+[Sat Nov  8 07:32:14 2025] [::1]:55764 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:32:14 2025] [::1]:55764 Closing
+[Sat Nov  8 07:32:14 2025] [::1]:61463 Accepted
+[Sat Nov  8 07:32:15 2025] [::1]:61463 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:32:15 2025] [::1]:61463 Closing
+[Sat Nov  8 07:32:20 2025] [::1]:61411 Accepted
+[Sat Nov  8 07:32:20 2025] [::1]:61411 [200]: GET /api/applications
+[Sat Nov  8 07:32:20 2025] [::1]:61411 Closing
+[Sat Nov  8 07:32:20 2025] [::1]:50156 Accepted
+[Sat Nov  8 07:32:20 2025] [::1]:50156 [200]: GET /api/applications
+[Sat Nov  8 07:32:20 2025] [::1]:50156 Closing
+[Sat Nov  8 07:33:04 2025] [::1]:53621 Accepted
+[Sat Nov  8 07:33:04 2025] [::1]:53621 [200]: GET /api/auth/me
+[Sat Nov  8 07:33:04 2025] [::1]:53621 Closing
+[Sat Nov  8 07:33:04 2025] [::1]:63025 Accepted
+[Sat Nov  8 07:33:05 2025] [::1]:63025 [200]: GET /api/auth/me
+[Sat Nov  8 07:33:05 2025] [::1]:63025 Closing
+[Sat Nov  8 07:33:05 2025] [::1]:58656 Accepted
+[Sat Nov  8 07:33:05 2025] [::1]:58656 [200]: GET /api/applications
+[Sat Nov  8 07:33:05 2025] [::1]:58656 Closing
+[Sat Nov  8 07:33:05 2025] [::1]:55649 Accepted
+[Sat Nov  8 07:33:05 2025] [::1]:63285 Accepted
+[Sat Nov  8 07:33:05 2025] [::1]:55649 [200]: GET /api/auth/me
+[Sat Nov  8 07:33:05 2025] [::1]:55649 Closing
+[Sat Nov  8 07:33:05 2025] [::1]:63285 [200]: GET /api/applications
+[Sat Nov  8 07:33:05 2025] [::1]:63285 Closing
+[Sat Nov  8 07:33:05 2025] [::1]:52624 Accepted
+[Sat Nov  8 07:33:05 2025] [::1]:52624 [200]: GET /api/auth/me
+[Sat Nov  8 07:33:05 2025] [::1]:52624 Closing
+[Sat Nov  8 07:33:10 2025] [::1]:52745 Accepted
+[Sat Nov  8 07:33:10 2025] [::1]:52745 [200]: GET /api/auth/me
+[Sat Nov  8 07:33:10 2025] [::1]:52745 Closing
+[Sat Nov  8 07:33:10 2025] [::1]:64712 Accepted
+[Sat Nov  8 07:33:10 2025] [::1]:64712 [200]: GET /api/auth/me
+[Sat Nov  8 07:33:10 2025] [::1]:64712 Closing
+[Sat Nov  8 07:33:10 2025] [::1]:61885 Accepted
+[Sat Nov  8 07:33:10 2025] [::1]:61361 Accepted
+[Sat Nov  8 07:33:11 2025] [::1]:61885 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:33:11 2025] [::1]:61885 Closing
+[Sat Nov  8 07:33:11 2025] [::1]:61361 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:33:11 2025] [::1]:61361 Closing
+[Sat Nov  8 07:33:11 2025] [::1]:65235 Accepted
+[Sat Nov  8 07:33:11 2025] [::1]:65235 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:33:11 2025] [::1]:65235 Closing
+[Sat Nov  8 07:33:11 2025] [::1]:51166 Accepted
+[Sat Nov  8 07:33:11 2025] [::1]:51166 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:33:11 2025] [::1]:51166 Closing
+[Sat Nov  8 07:33:22 2025] [::1]:63646 Accepted
+[Sat Nov  8 07:33:22 2025] [::1]:63646 [200]: GET /api/auth/me
+[Sat Nov  8 07:33:22 2025] [::1]:63646 Closing
+[Sat Nov  8 07:33:22 2025] [::1]:58658 Accepted
+[Sat Nov  8 07:33:22 2025] [::1]:58658 [200]: GET /api/applications
+[Sat Nov  8 07:33:22 2025] [::1]:58658 Closing
+[Sat Nov  8 07:33:22 2025] [::1]:62918 Accepted
+[Sat Nov  8 07:33:22 2025] [::1]:62918 [200]: GET /api/auth/me
+[Sat Nov  8 07:33:22 2025] [::1]:62918 Closing
+[Sat Nov  8 07:33:22 2025] [::1]:49418 Accepted
+[Sat Nov  8 07:33:22 2025] [::1]:49418 [200]: GET /api/applications
+[Sat Nov  8 07:33:22 2025] [::1]:49418 Closing
+[Sat Nov  8 07:33:59 2025] [::1]:49160 Accepted
+[Sat Nov  8 07:33:59 2025] [::1]:49160 [200]: GET /api/auth/me
+[Sat Nov  8 07:33:59 2025] [::1]:49160 Closing
+[Sat Nov  8 07:33:59 2025] [::1]:54427 Accepted
+[Sat Nov  8 07:33:59 2025] [::1]:54427 [200]: GET /api/auth/me
+[Sat Nov  8 07:33:59 2025] [::1]:54427 Closing
+[Sat Nov  8 07:33:59 2025] [::1]:50917 Accepted
+[Sat Nov  8 07:33:59 2025] [::1]:50917 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:33:59 2025] [::1]:50917 Closing
+[Sat Nov  8 07:33:59 2025] [::1]:64760 Accepted
+[Sat Nov  8 07:33:59 2025] [::1]:64760 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:33:59 2025] [::1]:64760 Closing
+[Sat Nov  8 07:33:59 2025] [::1]:55920 Accepted
+[Sat Nov  8 07:33:59 2025] [::1]:55920 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:33:59 2025] [::1]:55920 Closing
+[Sat Nov  8 07:33:59 2025] [::1]:50152 Accepted
+[Sat Nov  8 07:33:59 2025] [::1]:50152 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:33:59 2025] [::1]:50152 Closing
+[Sat Nov  8 07:37:49 2025] [::1]:62808 Accepted
+[Sat Nov  8 07:37:49 2025] [::1]:62808 [200]: GET /api/auth/me
+[Sat Nov  8 07:37:49 2025] [::1]:62808 Closing
+[Sat Nov  8 07:37:49 2025] [::1]:53312 Accepted
+[Sat Nov  8 07:37:49 2025] [::1]:53312 [200]: GET /api/auth/me
+[Sat Nov  8 07:37:49 2025] [::1]:53312 Closing
+[Sat Nov  8 07:37:49 2025] [::1]:52760 Accepted
+[Sat Nov  8 07:37:49 2025] [::1]:52760 [200]: GET /api/auth/me
+[Sat Nov  8 07:37:49 2025] [::1]:52760 Closing
+[Sat Nov  8 07:37:49 2025] [::1]:53235 Accepted
+[Sat Nov  8 07:37:49 2025] [::1]:53235 [200]: GET /api/auth/me
+[Sat Nov  8 07:37:49 2025] [::1]:53235 Closing
+[Sat Nov  8 07:37:49 2025] [::1]:58353 Accepted
+[Sat Nov  8 07:37:49 2025] [::1]:58353 [200]: GET /api/auth/me
+[Sat Nov  8 07:37:49 2025] [::1]:58353 Closing
+[Sat Nov  8 07:37:49 2025] [::1]:56966 Accepted
+[Sat Nov  8 07:37:49 2025] [::1]:56966 [200]: GET /api/auth/me
+[Sat Nov  8 07:37:49 2025] [::1]:56966 Closing
+[Sat Nov  8 07:37:49 2025] [::1]:58049 Accepted
+[Sat Nov  8 07:37:49 2025] [::1]:55562 Accepted
+[Sat Nov  8 07:37:49 2025] [::1]:58049 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:37:49 2025] [::1]:58049 Closing
+[Sat Nov  8 07:37:50 2025] [::1]:55562 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:37:50 2025] [::1]:55562 Closing
+[Sat Nov  8 07:37:50 2025] [::1]:61603 Accepted
+[Sat Nov  8 07:37:50 2025] [::1]:61603 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:37:50 2025] [::1]:61603 Closing
+[Sat Nov  8 07:37:50 2025] [::1]:56001 Accepted
+[Sat Nov  8 07:37:50 2025] [::1]:56001 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:37:50 2025] [::1]:56001 Closing
+[Sat Nov  8 07:37:51 2025] [::1]:64560 Accepted
+[Sat Nov  8 07:37:51 2025] [::1]:64560 [200]: GET /api/auth/me
+[Sat Nov  8 07:37:51 2025] [::1]:64560 Closing
+[Sat Nov  8 07:37:51 2025] [::1]:61560 Accepted
+[Sat Nov  8 07:37:51 2025] [::1]:61560 [200]: GET /api/auth/me
+[Sat Nov  8 07:37:51 2025] [::1]:61560 Closing
+[Sat Nov  8 07:37:51 2025] [::1]:52069 Accepted
+[Sat Nov  8 07:37:52 2025] [::1]:52069 [200]: GET /api/auth/me
+[Sat Nov  8 07:37:52 2025] [::1]:52069 Closing
+[Sat Nov  8 07:37:52 2025] [::1]:53782 Accepted
+[Sat Nov  8 07:37:52 2025] [::1]:53782 [200]: GET /api/auth/me
+[Sat Nov  8 07:37:52 2025] [::1]:53782 Closing
+[Sat Nov  8 07:37:52 2025] [::1]:51116 Accepted
+[Sat Nov  8 07:37:52 2025] [::1]:51116 [200]: GET /api/auth/me
+[Sat Nov  8 07:37:52 2025] [::1]:51116 Closing
+[Sat Nov  8 07:37:52 2025] [::1]:49382 Accepted
+[Sat Nov  8 07:37:52 2025] [::1]:49382 [200]: GET /api/auth/me
+[Sat Nov  8 07:37:52 2025] [::1]:49382 Closing
+[Sat Nov  8 07:37:52 2025] [::1]:50634 Accepted
+[Sat Nov  8 07:37:52 2025] [::1]:55677 Accepted
+[Sat Nov  8 07:37:52 2025] [::1]:50634 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:37:52 2025] [::1]:50634 Closing
+[Sat Nov  8 07:37:52 2025] [::1]:55677 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:37:52 2025] [::1]:55677 Closing
+[Sat Nov  8 07:37:52 2025] [::1]:55254 Accepted
+[Sat Nov  8 07:37:52 2025] [::1]:55254 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:37:52 2025] [::1]:55254 Closing
+[Sat Nov  8 07:37:52 2025] [::1]:64313 Accepted
+[Sat Nov  8 07:37:52 2025] [::1]:64313 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:37:52 2025] [::1]:64313 Closing
+[Sat Nov  8 07:39:56 2025] [::1]:64036 Accepted
+[Sat Nov  8 07:39:56 2025] [::1]:64036 [200]: GET /api/auth/me
+[Sat Nov  8 07:39:56 2025] [::1]:64036 Closing
+[Sat Nov  8 07:39:56 2025] [::1]:50461 Accepted
+[Sat Nov  8 07:39:56 2025] [::1]:50461 [200]: GET /api/auth/me
+[Sat Nov  8 07:39:56 2025] [::1]:50461 Closing
+[Sat Nov  8 07:39:56 2025] [::1]:57731 Accepted
+[Sat Nov  8 07:39:56 2025] [::1]:57731 [200]: GET /api/auth/me
+[Sat Nov  8 07:39:56 2025] [::1]:57731 Closing
+[Sat Nov  8 07:39:56 2025] [::1]:58659 Accepted
+[Sat Nov  8 07:39:56 2025] [::1]:58659 [200]: GET /api/auth/me
+[Sat Nov  8 07:39:56 2025] [::1]:58659 Closing
+[Sat Nov  8 07:39:56 2025] [::1]:58013 Accepted
+[Sat Nov  8 07:39:56 2025] [::1]:58013 [200]: GET /api/auth/me
+[Sat Nov  8 07:39:56 2025] [::1]:58013 Closing
+[Sat Nov  8 07:39:56 2025] [::1]:58820 Accepted
+[Sat Nov  8 07:39:56 2025] [::1]:58820 [200]: GET /api/auth/me
+[Sat Nov  8 07:39:56 2025] [::1]:58820 Closing
+[Sat Nov  8 07:39:56 2025] [::1]:54237 Accepted
+[Sat Nov  8 07:39:56 2025] [::1]:60733 Accepted
+[Sat Nov  8 07:39:57 2025] [::1]:54237 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:39:57 2025] [::1]:54237 Closing
+[Sat Nov  8 07:39:57 2025] [::1]:60733 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:39:57 2025] [::1]:60733 Closing
+[Sat Nov  8 07:39:57 2025] [::1]:61049 Accepted
+[Sat Nov  8 07:39:57 2025] [::1]:61049 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:39:57 2025] [::1]:61049 Closing
+[Sat Nov  8 07:39:57 2025] [::1]:61326 Accepted
+[Sat Nov  8 07:39:57 2025] [::1]:61326 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:39:57 2025] [::1]:61326 Closing
+[Sat Nov  8 07:42:09 2025] [::1]:58907 Accepted
+[Sat Nov  8 07:42:09 2025] [::1]:58907 [200]: GET /api/auth/me
+[Sat Nov  8 07:42:09 2025] [::1]:58907 Closing
+[Sat Nov  8 07:42:09 2025] [::1]:57446 Accepted
+[Sat Nov  8 07:42:10 2025] [::1]:57446 [200]: GET /api/auth/me
+[Sat Nov  8 07:42:10 2025] [::1]:57446 Closing
+[Sat Nov  8 07:42:10 2025] [::1]:62275 Accepted
+[Sat Nov  8 07:42:10 2025] [::1]:62275 [200]: GET /api/auth/me
+[Sat Nov  8 07:42:10 2025] [::1]:62275 Closing
+[Sat Nov  8 07:42:10 2025] [::1]:54613 Accepted
+[Sat Nov  8 07:42:10 2025] [::1]:54613 [200]: GET /api/auth/me
+[Sat Nov  8 07:42:10 2025] [::1]:54613 Closing
+[Sat Nov  8 07:42:10 2025] [::1]:59963 Accepted
+[Sat Nov  8 07:42:10 2025] [::1]:59963 [200]: GET /api/auth/me
+[Sat Nov  8 07:42:10 2025] [::1]:59963 Closing
+[Sat Nov  8 07:42:10 2025] [::1]:53659 Accepted
+[Sat Nov  8 07:42:10 2025] [::1]:53659 [200]: GET /api/auth/me
+[Sat Nov  8 07:42:10 2025] [::1]:53659 Closing
+[Sat Nov  8 07:42:10 2025] [::1]:55017 Accepted
+[Sat Nov  8 07:42:10 2025] [::1]:62274 Accepted
+[Sat Nov  8 07:42:10 2025] [::1]:55017 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:42:10 2025] [::1]:55017 Closing
+[Sat Nov  8 07:42:10 2025] [::1]:62274 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:42:10 2025] [::1]:62274 Closing
+[Sat Nov  8 07:42:10 2025] [::1]:58720 Accepted
+[Sat Nov  8 07:42:10 2025] [::1]:58720 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:42:10 2025] [::1]:58720 Closing
+[Sat Nov  8 07:42:10 2025] [::1]:61895 Accepted
+[Sat Nov  8 07:42:10 2025] [::1]:61895 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:42:10 2025] [::1]:61895 Closing
+[Sat Nov  8 07:44:41 2025] [::1]:56337 Accepted
+[Sat Nov  8 07:44:41 2025] [::1]:56337 [200]: GET /api/auth/me
+[Sat Nov  8 07:44:41 2025] [::1]:56337 Closing
+[Sat Nov  8 07:44:41 2025] [::1]:53836 Accepted
+[Sat Nov  8 07:44:41 2025] [::1]:53836 [200]: GET /api/auth/me
+[Sat Nov  8 07:44:41 2025] [::1]:53836 Closing
+[Sat Nov  8 07:44:41 2025] [::1]:62998 Accepted
+[Sat Nov  8 07:44:41 2025] [::1]:50060 Accepted
+[Sat Nov  8 07:44:41 2025] [::1]:62998 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:44:41 2025] [::1]:62998 Closing
+[Sat Nov  8 07:44:41 2025] [::1]:50060 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:44:41 2025] [::1]:50060 Closing
+[Sat Nov  8 07:44:41 2025] [::1]:62310 Accepted
+[Sat Nov  8 07:44:41 2025] [::1]:62310 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:44:41 2025] [::1]:62310 Closing
+[Sat Nov  8 07:44:41 2025] [::1]:57825 Accepted
+[Sat Nov  8 07:44:41 2025] [::1]:57825 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:44:41 2025] [::1]:57825 Closing
+[Sat Nov  8 07:45:24 2025] [::1]:52571 Accepted
+[Sat Nov  8 07:45:24 2025] [::1]:52571 [200]: GET /api/auth/me
+[Sat Nov  8 07:45:24 2025] [::1]:52571 Closing
+[Sat Nov  8 07:45:24 2025] [::1]:60166 Accepted
+[Sat Nov  8 07:45:24 2025] [::1]:60166 [200]: GET /api/auth/me
+[Sat Nov  8 07:45:24 2025] [::1]:60166 Closing
+[Sat Nov  8 07:45:24 2025] [::1]:50468 Accepted
+[Sat Nov  8 07:45:24 2025] [::1]:50468 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:45:24 2025] [::1]:50468 Closing
+[Sat Nov  8 07:45:24 2025] [::1]:62299 Accepted
+[Sat Nov  8 07:45:24 2025] [::1]:62299 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:45:24 2025] [::1]:62299 Closing
+[Sat Nov  8 07:45:24 2025] [::1]:61452 Accepted
+[Sat Nov  8 07:45:25 2025] [::1]:61452 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:45:25 2025] [::1]:61452 Closing
+[Sat Nov  8 07:45:25 2025] [::1]:63818 Accepted
+[Sat Nov  8 07:45:25 2025] [::1]:63818 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:45:25 2025] [::1]:63818 Closing
+[Sat Nov  8 07:47:09 2025] [::1]:50589 Accepted
+[Sat Nov  8 07:47:10 2025] [::1]:50589 [200]: GET /api/auth/me
+[Sat Nov  8 07:47:10 2025] [::1]:50589 Closing
+[Sat Nov  8 07:47:10 2025] [::1]:65416 Accepted
+[Sat Nov  8 07:47:10 2025] [::1]:65416 [200]: GET /api/auth/me
+[Sat Nov  8 07:47:10 2025] [::1]:65416 Closing
+[Sat Nov  8 07:47:10 2025] [::1]:62061 Accepted
+[Sat Nov  8 07:47:10 2025] [::1]:62061 [200]: GET /api/auth/me
+[Sat Nov  8 07:47:10 2025] [::1]:62061 Closing
+[Sat Nov  8 07:47:10 2025] [::1]:60442 Accepted
+[Sat Nov  8 07:47:10 2025] [::1]:60442 [200]: GET /api/auth/me
+[Sat Nov  8 07:47:10 2025] [::1]:60442 Closing
+[Sat Nov  8 07:47:10 2025] [::1]:62842 Accepted
+[Sat Nov  8 07:47:10 2025] [::1]:62842 [200]: GET /api/auth/me
+[Sat Nov  8 07:47:10 2025] [::1]:62842 Closing
+[Sat Nov  8 07:47:10 2025] [::1]:63839 Accepted
+[Sat Nov  8 07:47:10 2025] [::1]:63839 [200]: GET /api/auth/me
+[Sat Nov  8 07:47:10 2025] [::1]:63839 Closing
+[Sat Nov  8 07:47:10 2025] [::1]:63793 Accepted
+[Sat Nov  8 07:47:10 2025] [::1]:55187 Accepted
+[Sat Nov  8 07:47:11 2025] [::1]:63793 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:47:11 2025] [::1]:63793 Closing
+[Sat Nov  8 07:47:11 2025] [::1]:55187 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:47:11 2025] [::1]:55187 Closing
+[Sat Nov  8 07:47:11 2025] [::1]:59280 Accepted
+[Sat Nov  8 07:47:11 2025] [::1]:59280 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:47:11 2025] [::1]:59280 Closing
+[Sat Nov  8 07:47:11 2025] [::1]:52405 Accepted
+[Sat Nov  8 07:47:11 2025] [::1]:52405 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:47:11 2025] [::1]:52405 Closing
+[Sat Nov  8 07:54:28 2025] [::1]:64248 Accepted
+[Sat Nov  8 07:54:29 2025] [::1]:64248 [200]: OPTIONS /api/auth/me
+[Sat Nov  8 07:54:29 2025] [::1]:64248 Closing
+[Sat Nov  8 07:54:29 2025] [::1]:61309 Accepted
+[Sat Nov  8 07:54:29 2025] [::1]:53785 Accepted
+[Sat Nov  8 07:54:29 2025] [::1]:61309 [200]: OPTIONS /api/auth/me
+[Sat Nov  8 07:54:29 2025] [::1]:61309 Closing
+[Sat Nov  8 07:54:29 2025] [::1]:62663 Accepted
+[Sat Nov  8 07:54:29 2025] [::1]:53785 [200]: OPTIONS /api/auth/me
+[Sat Nov  8 07:54:29 2025] [::1]:53785 Closing
+[Sat Nov  8 07:54:29 2025] [::1]:55470 Accepted
+[Sat Nov  8 07:54:29 2025] [::1]:62663 [200]: OPTIONS /api/auth/me
+[Sat Nov  8 07:54:29 2025] [::1]:62663 Closing
+[Sat Nov  8 07:54:29 2025] [::1]:55470 [200]: GET /api/auth/me
+[Sat Nov  8 07:54:29 2025] [::1]:55470 Closing
+[Sat Nov  8 07:54:29 2025] [::1]:56634 Accepted
+[Sat Nov  8 07:54:29 2025] [::1]:56634 [200]: GET /api/auth/me
+[Sat Nov  8 07:54:29 2025] [::1]:56634 Closing
+[Sat Nov  8 07:54:29 2025] [::1]:54794 Accepted
+[Sat Nov  8 07:54:29 2025] [::1]:54794 [200]: GET /api/auth/me
+[Sat Nov  8 07:54:29 2025] [::1]:54794 Closing
+[Sat Nov  8 07:54:29 2025] [::1]:54469 Accepted
+[Sat Nov  8 07:54:29 2025] [::1]:54469 [200]: GET /api/auth/me
+[Sat Nov  8 07:54:29 2025] [::1]:54469 Closing
+[Sat Nov  8 07:54:29 2025] [::1]:58005 Accepted
+[Sat Nov  8 07:54:30 2025] [::1]:58005 [200]: GET /api/auth/me
+[Sat Nov  8 07:54:30 2025] [::1]:58005 Closing
+[Sat Nov  8 07:54:30 2025] [::1]:63633 Accepted
+[Sat Nov  8 07:54:30 2025] [::1]:63633 [200]: GET /api/auth/me
+[Sat Nov  8 07:54:30 2025] [::1]:63633 Closing
+[Sat Nov  8 07:54:30 2025] [::1]:54045 Accepted
+[Sat Nov  8 07:54:30 2025] [::1]:58868 Accepted
+[Sat Nov  8 07:54:30 2025] [::1]:54045 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:54:30 2025] [::1]:54045 Closing
+[Sat Nov  8 07:54:30 2025] [::1]:58868 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:54:30 2025] [::1]:58868 Closing
+[Sat Nov  8 07:54:30 2025] [::1]:61634 Accepted
+[Sat Nov  8 07:54:30 2025] [::1]:61634 [403]: GET /api/admin/analytics
+[Sat Nov  8 07:54:30 2025] [::1]:61634 Closing
+[Sat Nov  8 07:54:30 2025] [::1]:56346 Accepted
+[Sat Nov  8 07:54:30 2025] [::1]:56346 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 07:54:30 2025] [::1]:56346 Closing
+[Sat Nov  8 08:00:10 2025] [::1]:52151 Accepted
+[Sat Nov  8 08:00:10 2025] [::1]:52151 [200]: GET /api/auth/me
+[Sat Nov  8 08:00:10 2025] [::1]:52151 Closing
+[Sat Nov  8 08:00:10 2025] [::1]:53833 Accepted
+[Sat Nov  8 08:00:11 2025] [::1]:53833 [200]: GET /api/auth/me
+[Sat Nov  8 08:00:11 2025] [::1]:53833 Closing
+[Sat Nov  8 08:00:11 2025] [::1]:55113 Accepted
+[Sat Nov  8 08:00:11 2025] [::1]:55113 [200]: GET /api/auth/me
+[Sat Nov  8 08:00:11 2025] [::1]:55113 Closing
+[Sat Nov  8 08:00:11 2025] [::1]:60844 Accepted
+[Sat Nov  8 08:00:11 2025] [::1]:60844 [200]: GET /api/auth/me
+[Sat Nov  8 08:00:11 2025] [::1]:60844 Closing
+[Sat Nov  8 08:00:11 2025] [::1]:62412 Accepted
+[Sat Nov  8 08:00:11 2025] [::1]:62412 [200]: GET /api/auth/me
+[Sat Nov  8 08:00:11 2025] [::1]:62412 Closing
+[Sat Nov  8 08:00:11 2025] [::1]:56561 Accepted
+[Sat Nov  8 08:00:11 2025] [::1]:56561 [200]: GET /api/auth/me
+[Sat Nov  8 08:00:11 2025] [::1]:56561 Closing
+[Sat Nov  8 08:00:11 2025] [::1]:50806 Accepted
+[Sat Nov  8 08:00:11 2025] [::1]:49164 Accepted
+[Sat Nov  8 08:00:11 2025] [::1]:50806 [403]: GET /api/admin/analytics
+[Sat Nov  8 08:00:11 2025] [::1]:50806 Closing
+[Sat Nov  8 08:00:11 2025] [::1]:49164 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 08:00:11 2025] [::1]:49164 Closing
+[Sat Nov  8 08:00:11 2025] [::1]:64566 Accepted
+[Sat Nov  8 08:00:11 2025] [::1]:64566 [403]: GET /api/admin/analytics
+[Sat Nov  8 08:00:11 2025] [::1]:64566 Closing
+[Sat Nov  8 08:00:11 2025] [::1]:54997 Accepted
+[Sat Nov  8 08:00:11 2025] [::1]:54997 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 08:00:11 2025] [::1]:54997 Closing
+[Sat Nov  8 08:03:05 2025] [::1]:58576 Accepted
+[Sat Nov  8 08:03:05 2025] [::1]:58576 [200]: GET /api/auth/me
+[Sat Nov  8 08:03:05 2025] [::1]:58576 Closing
+[Sat Nov  8 08:03:05 2025] [::1]:63242 Accepted
+[Sat Nov  8 08:03:05 2025] [::1]:63242 [200]: GET /api/auth/me
+[Sat Nov  8 08:03:05 2025] [::1]:63242 Closing
+[Sat Nov  8 08:03:05 2025] [::1]:65188 Accepted
+[Sat Nov  8 08:03:06 2025] [::1]:65188 [200]: GET /api/auth/me
+[Sat Nov  8 08:03:06 2025] [::1]:65188 Closing
+[Sat Nov  8 08:03:06 2025] [::1]:55543 Accepted
+[Sat Nov  8 08:03:06 2025] [::1]:55543 [200]: GET /api/auth/me
+[Sat Nov  8 08:03:06 2025] [::1]:55543 Closing
+[Sat Nov  8 08:03:06 2025] [::1]:63576 Accepted
+[Sat Nov  8 08:03:06 2025] [::1]:63576 [200]: GET /api/auth/me
+[Sat Nov  8 08:03:06 2025] [::1]:63576 Closing
+[Sat Nov  8 08:03:06 2025] [::1]:55614 Accepted
+[Sat Nov  8 08:03:06 2025] [::1]:55614 [200]: GET /api/auth/me
+[Sat Nov  8 08:03:06 2025] [::1]:55614 Closing
+[Sat Nov  8 08:03:06 2025] [::1]:65435 Accepted
+[Sat Nov  8 08:03:06 2025] [::1]:57388 Accepted
+[Sat Nov  8 08:03:06 2025] [::1]:65435 [403]: GET /api/admin/analytics
+[Sat Nov  8 08:03:06 2025] [::1]:65435 Closing
+[Sat Nov  8 08:03:06 2025] [::1]:57388 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 08:03:06 2025] [::1]:57388 Closing
+[Sat Nov  8 08:03:06 2025] [::1]:65418 Accepted
+[Sat Nov  8 08:03:06 2025] [::1]:65418 [403]: GET /api/admin/analytics
+[Sat Nov  8 08:03:06 2025] [::1]:65418 Closing
+[Sat Nov  8 08:03:06 2025] [::1]:59766 Accepted
+[Sat Nov  8 08:03:06 2025] [::1]:59766 [403]: GET /api/admin/applications?limit=5&sort=created_at&order=desc
+[Sat Nov  8 08:03:06 2025] [::1]:59766 Closing
