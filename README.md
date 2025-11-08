@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+# tundua-saas
+A study abroad saas platform
+=======
 # Tundua Study Abroad SaaS Platform
 
 A comprehensive study abroad application platform built with **Next.js 14** (frontend) and **PHP Slim 4** (backend). Inspired by the SwiftPass visa platform model, adapted for university applications.
@@ -684,3 +688,4 @@ Proprietary - All rights reserved
 5. Build admin panel
 
 Ready to transform Tundua into a revenue-generating SaaS platform! 🚀
+>>>>>>> a9e6c2f (Initial commit)
