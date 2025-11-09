@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, Check, Save, Clock, AlertCircle } from "lucide-react";
+import { useRouter, useParams } from "next/navigation";
+import { ChevronLeft, ChevronRight, Check, Save, Clock, AlertCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import Step1Personal from "@/components/wizard/Step1Personal";
 import Step2Academic from "@/components/wizard/Step2Academic";
@@ -11,6 +11,7 @@ import Step4ServiceTier from "@/components/wizard/Step4ServiceTier";
 import Step5AddOns from "@/components/wizard/Step5AddOns";
 import Step6Review from "@/components/wizard/Step6Review";
 import { apiClient } from "@/lib/api-client";
+import { ApplicationData } from "../../new/page";
 
 const STEPS = [
   { number: 1, title: "Personal Info", description: "Basic information", estimatedTime: "2-3 min" },
@@ -21,74 +22,104 @@ const STEPS = [
   { number: 6, title: "Review", description: "Review & submit", estimatedTime: "2-3 min" },
 ];
 
-export type ApplicationData = {
-  // Step 1: Personal Information
-  first_name?: string;
-  last_name?: string;
-  email?: string;
-  phone?: string;
-  date_of_birth?: string;
-  nationality?: string;
-  passport_number?: string;
-  current_country?: string;
-  current_city?: string;
-
-  // Step 2: Academic Background
-  highest_education?: string;
-  field_of_study?: string;
-  institution_name?: string;
-  institution_start_date?: string;
-  institution_end_date?: string;
-  graduation_year?: number;
-  gpa?: number; // Optional for High School students
-  english_test_type?: string;
-  english_test_score?: string;
-
-  // Step 3: Destination & Universities
-  destination_country?: string;
-  universities?: string[];
-  program_type?: string;
-  intended_major?: string;
-  intake_season?: string;
-  intake_year?: number;
-
-  // Step 4: Service Tier
-  service_tier_id?: number;
-  service_tier_name?: string;
-  base_price?: number;
-
-  // Step 5: Add-Ons
-  addon_services?: Array<{
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
-  }>;
-  addon_total?: number;
-
-  // Totals
-  subtotal?: number;
-  total_amount?: number;
-};
-
-export default function NewApplicationPage() {
+export default function EditApplicationPage() {
   const router = useRouter();
+  const params = useParams();
+  const applicationId = params.id as string;
+
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
-  const [applicationId, setApplicationId] = useState<number | null>(null);
   const [formData, setFormData] = useState<ApplicationData>({});
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+
+  // Load existing application data
+  useEffect(() => {
+    const loadApplication = async () => {
+      try {
+        setIsLoading(true);
+        const response = await apiClient.getApplication(Number(applicationId));
+        const app = response.data.application;
+
+        // Map API data to form data
+        const loadedData: ApplicationData = {
+          // Personal Info
+          first_name: app.first_name || "",
+          last_name: app.last_name || "",
+          email: app.email || "",
+          phone: app.phone || "",
+          date_of_birth: app.date_of_birth || "",
+          nationality: app.nationality || "",
+          passport_number: app.passport_number || "",
+          current_country: app.current_country || "",
+          current_city: app.current_city || "",
+
+          // Academic
+          highest_education: app.highest_education || "",
+          field_of_study: app.field_of_study || "",
+          institution_name: app.institution_name || "",
+          institution_start_date: app.institution_start_date || "",
+          institution_end_date: app.institution_end_date || "",
+          graduation_year: app.graduation_year || undefined,
+          gpa: app.gpa || undefined,
+          english_test_type: app.english_test_type || "",
+          english_test_score: app.english_test_score || "",
+
+          // Destination
+          destination_country: app.destination_country || "",
+          universities: app.universities ? (Array.isArray(app.universities) ? app.universities : JSON.parse(app.universities)) : [],
+          program_type: app.program_type || "",
+          intended_major: app.intended_major || "",
+          intake_season: app.intake_season || "",
+          intake_year: app.intake_year || undefined,
+
+          // Service Tier
+          service_tier_id: app.service_tier_id || undefined,
+          service_tier_name: app.service_tier?.name || "",
+          base_price: app.base_price ? parseFloat(app.base_price) : undefined,
+
+          // Add-ons
+          addon_services: app.addon_services ? (Array.isArray(app.addon_services) ? app.addon_services : JSON.parse(app.addon_services)) : [],
+          addon_total: app.addon_total ? parseFloat(app.addon_total) : undefined,
+          total_amount: app.total_amount ? parseFloat(app.total_amount) : undefined,
+        };
+
+        setFormData(loadedData);
+
+        // Set current step based on saved progress
+        if (app.current_step) {
+          setCurrentStep(app.current_step);
+        }
+
+        // Mark all steps before current as completed
+        const completed = [];
+        for (let i = 1; i < (app.current_step || 1); i++) {
+          completed.push(i);
+        }
+        setCompletedSteps(completed);
+
+      } catch (error: any) {
+        console.error("Failed to load application:", error);
+        toast.error("Failed to load application data");
+        router.push("/dashboard/applications");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (applicationId) {
+      loadApplication();
+    }
+  }, [applicationId, router]);
 
   const updateFormData = (data: Partial<ApplicationData>) => {
     setFormData((prev) => ({ ...prev, ...data }));
   };
 
-  // Calculate progress percentage
   const progressPercentage = Math.round((currentStep / STEPS.length) * 100);
 
-  // Auto-save indicator
   useEffect(() => {
     if (lastSaved) {
       const timer = setTimeout(() => setLastSaved(null), 5000);
@@ -99,7 +130,6 @@ export default function NewApplicationPage() {
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger if user is typing in an input
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement).tagName)) {
         return;
       }
@@ -123,25 +153,13 @@ export default function NewApplicationPage() {
   }, [currentStep, isSaving]);
 
   const handleNext = async () => {
-    // Save draft to backend before moving to next step
     setIsSaving(true);
     try {
-      if (!applicationId) {
-        // Create new application
-        const response = await apiClient.createApplication({
-          ...formData,
-          current_step: currentStep + 1,
-        });
-        setApplicationId(response.data.application.id);
-      } else {
-        // Update existing application
-        await apiClient.updateApplication(applicationId, {
-          ...formData,
-          current_step: currentStep + 1,
-        });
-      }
+      await apiClient.updateApplication(Number(applicationId), {
+        ...formData,
+        current_step: currentStep + 1,
+      });
 
-      // Mark current step as completed
       if (!completedSteps.includes(currentStep)) {
         setCompletedSteps([...completedSteps, currentStep]);
       }
@@ -165,22 +183,11 @@ export default function NewApplicationPage() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      let finalApplicationId = applicationId;
+      await apiClient.updateApplication(Number(applicationId), formData);
+      await apiClient.submitApplication(Number(applicationId));
 
-      if (!applicationId) {
-        const response = await apiClient.createApplication(formData);
-        finalApplicationId = response.data.application.id;
-        setApplicationId(finalApplicationId);
-        await apiClient.submitApplication(finalApplicationId);
-      } else {
-        await apiClient.updateApplication(applicationId, formData);
-        await apiClient.submitApplication(applicationId);
-      }
-
-      toast.success("Application submitted! Redirecting to payment...");
-
-      // Redirect to payment page
-      router.push(`/dashboard/applications/${finalApplicationId}/payment`);
+      toast.success("Application updated and submitted! Redirecting to payment...");
+      router.push(`/dashboard/applications/${applicationId}/payment`);
     } catch (error: any) {
       console.error("Submit error:", error);
       toast.error(error.response?.data?.error || error.response?.data?.message || "Failed to submit application");
@@ -215,6 +222,17 @@ export default function NewApplicationPage() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-primary-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading application data...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
       {/* Header */}
@@ -223,7 +241,7 @@ export default function NewApplicationPage() {
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-3">
-                <h1 className="text-2xl font-bold text-gray-900">New Application</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Edit Application #{applicationId}</h1>
                 <div className="flex items-center gap-2 text-sm">
                   <div className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full font-medium">
                     {progressPercentage}% Complete
@@ -250,7 +268,7 @@ export default function NewApplicationPage() {
               </div>
             </div>
             <button
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/dashboard/applications")}
               className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
             >
               Save & Exit
@@ -281,7 +299,6 @@ export default function NewApplicationPage() {
                 return (
                   <li key={step.number} className="flex-1 relative">
                     <div className="flex items-center">
-                      {/* Connector Line */}
                       {index !== 0 && (
                         <div
                           className={`absolute left-0 top-5 -ml-px h-0.5 w-full -translate-x-1/2 transition-colors duration-300 ${
@@ -291,7 +308,6 @@ export default function NewApplicationPage() {
                         />
                       )}
 
-                      {/* Step Circle */}
                       <button
                         onClick={() => isClickable && setCurrentStep(step.number)}
                         disabled={!isClickable}
@@ -342,7 +358,6 @@ export default function NewApplicationPage() {
                           )}
                         </div>
 
-                        {/* Tooltip on hover for clickable steps */}
                         {isClickable && (
                           <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                             <div className="bg-gray-900 text-white text-xs px-3 py-1 rounded whitespace-nowrap">
@@ -362,7 +377,6 @@ export default function NewApplicationPage() {
 
       {/* Step Content */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Step indicator card */}
         <div className="bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-lg p-4 mb-6">
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold">
@@ -379,7 +393,6 @@ export default function NewApplicationPage() {
           </div>
         </div>
 
-        {/* Step form */}
         <div className="bg-white rounded-lg shadow-sm p-8 border border-gray-200">
           {renderStep()}
         </div>
@@ -410,12 +423,10 @@ export default function NewApplicationPage() {
 
               <button
                 onClick={() => {
-                  // Trigger form submission for current step
                   const submitBtn = document.getElementById(`step${currentStep}-submit-btn`);
                   if (submitBtn) {
                     submitBtn.click();
                   } else {
-                    // Fallback for steps without forms
                     handleNext();
                   }
                 }}
@@ -436,7 +447,6 @@ export default function NewApplicationPage() {
               </button>
             </div>
 
-            {/* Keyboard shortcuts hint */}
             <div className="hidden lg:flex items-center justify-center gap-4 mt-3 text-xs text-gray-500">
               <span className="flex items-center gap-1">
                 <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded">←</kbd>
