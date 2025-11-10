@@ -1,6 +1,6 @@
 "use client";
 
-import { Shield, Ban, CheckCircle } from "lucide-react";
+import { Shield } from "lucide-react";
 
 export default function UserModeration() {
   return (

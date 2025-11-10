@@ -13,6 +13,9 @@ export interface User {
   role: "user" | "admin" | "super_admin";
   email_verified: boolean;
   is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+  last_login?: string;
 }
 
 export function useAuth() {

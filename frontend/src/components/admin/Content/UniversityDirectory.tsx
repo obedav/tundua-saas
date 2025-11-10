@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { School, Plus, Edit, Trash2, Search, Globe, X } from "lucide-react";
 import { toast } from "sonner";
 

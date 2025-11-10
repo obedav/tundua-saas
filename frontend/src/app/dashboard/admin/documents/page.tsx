@@ -106,13 +106,13 @@ export default function AdminDocumentsPage() {
       needs_revision: { color: "bg-orange-100 text-orange-700", icon: AlertCircle, text: "Needs Revision" },
     };
 
-    const badge = badges[status] || badges.pending;
-    const Icon = badge.icon;
+    const badge = badges[status] || badges['pending'];
+    const Icon = badge!.icon;
 
     return (
-      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${badge.color}`}>
+      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>
         <Icon className="h-3 w-3" />
-        {badge.text}
+        {badge?.text}
       </span>
     );
   };

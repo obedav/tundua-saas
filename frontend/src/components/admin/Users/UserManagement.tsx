@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, Filter, UserCheck, UserX, Eye, Mail, Ban, CheckCircle } from "lucide-react";
+import { Search, UserCheck, UserX, Eye, Ban, CheckCircle } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
 
@@ -95,9 +95,9 @@ export default function UserManagement() {
       suspended: { color: "bg-red-100 text-red-700", text: "Suspended" },
     };
 
-    const badge = badges[status] || badges.active;
+    const badge = badges[status] || badges['active'];
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge.color}`}>
+      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>
         {badge.text}
       </span>
     );
@@ -110,10 +110,10 @@ export default function UserManagement() {
       super_admin: { color: "bg-orange-100 text-orange-700", text: "Super Admin" },
     };
 
-    const badge = badges[role] || badges.user;
+    const badge = badges[role] || badges['user'];
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge.color}`}>
-        {badge.text}
+      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>
+        {badge!.text}
       </span>
     );
   };

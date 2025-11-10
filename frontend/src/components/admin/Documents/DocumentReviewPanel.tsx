@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Download, Check, X, AlertCircle } from "lucide-react";
+import { FileText, Download, Check, X } from "lucide-react";
 
 interface DocumentReviewPanelProps {
   documentId: number;
@@ -10,7 +10,7 @@ interface DocumentReviewPanelProps {
 }
 
 export default function DocumentReviewPanel({
-  documentId,
+  documentId: _documentId,
   onApprove,
   onReject
 }: DocumentReviewPanelProps) {

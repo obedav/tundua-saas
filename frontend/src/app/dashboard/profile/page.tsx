@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { User, Mail, Phone, MapPin, Calendar, Save } from "lucide-react";
 
 export default function ProfilePage() {
-  const { user, refreshUser } = useAuth();
+  const { user, checkAuth } = useAuth();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
@@ -34,8 +34,8 @@ export default function ProfilePage() {
     try {
       await apiClient.updateProfile(formData);
       toast.success("Profile updated successfully!");
-      if (refreshUser) {
-        await refreshUser();
+      if (checkAuth) {
+        await checkAuth();
       }
     } catch (error: any) {
       console.error("Error updating profile:", error);
@@ -166,14 +166,14 @@ export default function ProfilePage() {
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <Calendar className="h-4 w-4" />
               <span>
-                Member since: {user?.created_at ? new Date(user.created_at).toLocaleDateString() : "N/A"}
+                Member since: {user?.created_at ? new Date((user as any).created_at ?? (user as any).updated_at).toLocaleDateString() : "N/A"}
               </span>
             </div>
             {user?.last_login && (
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <MapPin className="h-4 w-4" />
                 <span>
-                  Last login: {new Date(user.last_login).toLocaleString()}
+                  Last login: {new Date((user as any).last_login).toLocaleString()}
                 </span>
               </div>
             )}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -38,7 +38,7 @@ interface DocumentType {
 
 export default function DocumentsPage() {
   const params = useParams();
-  const router = useRouter();
+  
   const [documents, setDocuments] = useState<Document[]>([]);
   const [documentTypes, setDocumentTypes] = useState<DocumentType[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,11 +53,11 @@ export default function DocumentsPage() {
   useEffect(() => {
     fetchDocuments();
     fetchDocumentTypes();
-  }, [params.id]);
+  }, [params['id']]);
 
   const fetchDocuments = async () => {
     try {
-      const response = await apiClient.getApplicationDocuments(Number(params.id));
+      const response = await apiClient.getApplicationDocuments(Number(params['id']));
       setDocuments(response.data.documents);
     } catch (error: any) {
       console.error("Error fetching documents:", error);
@@ -110,11 +110,11 @@ export default function DocumentsPage() {
     try {
       const formData = new FormData();
       formData.append("file", selectedFile);
-      formData.append("application_id", params.id as string);
+      formData.append("application_id", params['id'] as string);
       formData.append("document_type", selectedType);
       formData.append("document_name", documentName || selectedFile.name);
 
-      await apiClient.uploadDocument(Number(params.id), formData);
+      await apiClient.uploadDocument(Number(params['id']), formData);
       toast.success("Document uploaded successfully");
 
       // Reset form
@@ -182,13 +182,13 @@ export default function DocumentsPage() {
       needs_revision: { color: "bg-orange-100 text-orange-700", icon: AlertCircle, text: "Needs Revision" },
     };
 
-    const badge = badges[status] || badges.pending;
-    const Icon = badge.icon;
+    const badge = badges[status] || badges['pending'];
+    const Icon = badge!.icon;
 
     return (
-      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${badge.color}`}>
+      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>
         <Icon className="h-3 w-3" />
-        {badge.text}
+        {badge!.text}
       </span>
     );
   };
@@ -212,7 +212,7 @@ export default function DocumentsPage() {
       {/* Header */}
       <div>
         <Link
-          href={`/dashboard/applications/${params.id}`}
+          href={`/dashboard/applications/${params['id']}`}
           className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
         >
           <ArrowLeft className="h-4 w-4" />

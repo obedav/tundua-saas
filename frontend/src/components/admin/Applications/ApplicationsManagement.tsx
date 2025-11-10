@@ -113,13 +113,13 @@ export default function ApplicationsManagement() {
       completed: { color: "bg-green-100 text-green-700", icon: CheckCircle, text: "Completed" },
     };
 
-    const badge = badges[status] || badges.draft;
-    const Icon = badge.icon;
+    const badge = badges[status] || badges['draft'];
+    const Icon = badge!.icon;
 
     return (
-      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${badge.color}`}>
+      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>
         <Icon className="h-3 w-3" />
-        {badge.text}
+        {badge!.text}
       </span>
     );
   };
@@ -132,11 +132,11 @@ export default function ApplicationsManagement() {
       refunded: { color: "bg-gray-100 text-gray-700", text: "Refunded" },
     };
 
-    const badge = badges[paymentStatus] || badges.pending;
+    const badge = badges[paymentStatus] || badges['pending'];
 
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge.color}`}>
-        {badge.text}
+      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>
+        {badge!.text}
       </span>
     );
   };

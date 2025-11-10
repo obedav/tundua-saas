@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Clock, CheckCircle, XCircle, AlertCircle, FileText } from "lucide-react";
+import { Clock, CheckCircle, XCircle, AlertCircle } from "lucide-react";
 
 interface Application {
   id: number;
@@ -32,13 +32,13 @@ export default function RecentApplicationsList({
       completed: { color: "bg-green-100 text-green-700", icon: CheckCircle, text: "Completed" },
     };
 
-    const badge = badges[status] || badges.draft;
-    const Icon = badge.icon;
+    const badge = badges[status] || badges['draft'];
+    const Icon = badge!.icon;
 
     return (
-      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${badge.color}`}>
+      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${badge!.color}`}>
         <Icon className="h-3 w-3" />
-        {badge.text}
+        {badge!.text}
       </span>
     );
   };

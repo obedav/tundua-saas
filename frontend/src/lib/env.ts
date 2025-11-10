@@ -40,11 +40,11 @@ const serverEnvSchema = z.object({
 function validateEnv() {
   // Client-side validation (runs in browser)
   const clientEnv = clientEnvSchema.safeParse({
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-    NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
-    NEXT_PUBLIC_PUSHER_CLUSTER: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
-    NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+    NEXT_PUBLIC_API_URL: process.env['NEXT_PUBLIC_API_URL'],
+    NEXT_PUBLIC_APP_URL: process.env['NEXT_PUBLIC_APP_URL'],
+    NEXT_PUBLIC_PUSHER_KEY: process.env['NEXT_PUBLIC_PUSHER_KEY'],
+    NEXT_PUBLIC_PUSHER_CLUSTER: process.env['NEXT_PUBLIC_PUSHER_CLUSTER'],
+    NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env['NEXT_PUBLIC_GA_MEASUREMENT_ID'],
   });
 
   if (!clientEnv.success) {

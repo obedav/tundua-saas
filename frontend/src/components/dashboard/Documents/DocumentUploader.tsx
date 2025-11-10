@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Upload, X, FileText, CheckCircle, AlertCircle } from "lucide-react";
+import { Upload, X, FileText, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
 interface DocumentUploaderProps {
@@ -12,7 +12,7 @@ interface DocumentUploaderProps {
 }
 
 export default function DocumentUploader({
-  applicationId,
+  applicationId: _applicationId,
   acceptedTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"],
   maxSizeMB = 10,
   onUploadComplete,
