@@ -29,15 +29,17 @@ export default function DashboardNotifications() {
       const response = await apiClient.getUserNotifications();
       const notificationData = response.data.notifications || [];
 
-      const mappedNotifications: Notification[] = notificationData.map((item: any) => ({
-        id: item.id,
-        type: item.type || "info",
-        title: item.subject,
-        message: item.message,
-        timestamp: item.created_at,
-        read: item.is_read === 1 || item.is_read === true,
-        actionUrl: item.action_url,
-      }));
+      const mappedNotifications: Notification[] = notificationData.map(
+        (item: any) => ({
+          id: item.id,
+          type: item.type || "info",
+          title: item.subject,
+          message: item.message,
+          timestamp: item.created_at,
+          read: item.is_read === 1 || item.is_read === true,
+          actionUrl: item.action_url,
+        }),
+      );
 
       setNotifications(mappedNotifications);
     } catch (error) {
@@ -50,9 +52,11 @@ export default function DashboardNotifications() {
 
   const markAsRead = async (id: number) => {
     try {
-      await apiClient.markNotificationAsRead(id);
+      await apiClient.markNotificationRead(id);
       setNotifications((prev) =>
-        prev.map((notif) => (notif.id === id ? { ...notif, read: true } : notif))
+        prev.map((notif) =>
+          notif.id === id ? { ...notif, read: true } : notif,
+        ),
       );
     } catch (error) {
       console.error("Error marking notification as read:", error);
@@ -62,8 +66,10 @@ export default function DashboardNotifications() {
 
   const markAllAsRead = async () => {
     try {
-      await apiClient.markAllNotificationsAsRead();
-      setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })));
+      await apiClient.markAllNotificationsRead();
+      setNotifications((prev) =>
+        prev.map((notif) => ({ ...notif, read: true })),
+      );
       toast.success("All notifications marked as read");
     } catch (error) {
       console.error("Error marking all as read:", error);
@@ -85,9 +91,17 @@ export default function DashboardNotifications() {
   const getNotificationIcon = (type: Notification["type"]) => {
     switch (type) {
       case "success":
-        return { Icon: CheckCircle, color: "text-green-600", bg: "bg-green-50" };
+        return {
+          Icon: CheckCircle,
+          color: "text-green-600",
+          bg: "bg-green-50",
+        };
       case "warning":
-        return { Icon: AlertCircle, color: "text-yellow-600", bg: "bg-yellow-50" };
+        return {
+          Icon: AlertCircle,
+          color: "text-yellow-600",
+          bg: "bg-yellow-50",
+        };
       case "error":
         return { Icon: AlertCircle, color: "text-red-600", bg: "bg-red-50" };
       default:
@@ -96,7 +110,9 @@ export default function DashboardNotifications() {
   };
 
   const unreadCount = notifications.filter((n) => !n.read).length;
-  const displayNotifications = showAll ? notifications : notifications.slice(0, 3);
+  const displayNotifications = showAll
+    ? notifications
+    : notifications.slice(0, 3);
 
   if (loading) {
     return (
@@ -147,7 +163,9 @@ export default function DashboardNotifications() {
               <div
                 key={notification.id}
                 className={`flex gap-4 p-4 rounded-lg border ${
-                  notification.read ? "bg-white border-gray-200" : "bg-blue-50 border-blue-200"
+                  notification.read
+                    ? "bg-white border-gray-200"
+                    : "bg-blue-50 border-blue-200"
                 }`}
               >
                 <div className={`${bg} p-2 rounded-full flex-shrink-0`}>
@@ -155,7 +173,9 @@ export default function DashboardNotifications() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-semibold text-gray-900 text-sm">{notification.title}</h3>
+                    <h3 className="font-semibold text-gray-900 text-sm">
+                      {notification.title}
+                    </h3>
                     <div className="flex gap-1">
                       {!notification.read && (
                         <button
@@ -175,7 +195,9 @@ export default function DashboardNotifications() {
                       </button>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    {notification.message}
+                  </p>
                   <p className="text-xs text-gray-500 mt-1">
                     {new Date(notification.timestamp).toLocaleString()}
                   </p>
