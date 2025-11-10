@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import { use } from "react";
 import { useRouter } from "next/navigation";
 import {
-  User, Mail, Phone, Calendar, MapPin, GraduationCap,
-  FileText, DollarSign, Ban, CheckCircle, ArrowLeft, Edit
+  Mail, Phone, Calendar, MapPin, Ban, CheckCircle, ArrowLeft
 } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
@@ -111,8 +110,8 @@ export default function UserDetailsPage({ params }: { params: Promise<{ id: stri
       inactive: { color: "bg-gray-100 text-gray-700", text: "Inactive" },
       suspended: { color: "bg-red-100 text-red-700", text: "Suspended" },
     };
-    const badge = badges[status] || badges.active;
-    return <span className={`px-3 py-1 rounded-full text-xs font-medium ${badge.color}`}>{badge.text}</span>;
+    const badge = badges[status] || badges['active'];
+    return <span className={`px-3 py-1 rounded-full text-xs font-medium ${badge!.color}`}>{badge!.text}</span>;
   };
 
   return (

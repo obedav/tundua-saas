@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, Check, Save, Clock, AlertCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, Check, Save, Clock } from "lucide-react";
 import { toast } from "sonner";
 import Step1Personal from "@/components/wizard/Step1Personal";
 import Step2Academic from "@/components/wizard/Step2Academic";
@@ -94,6 +94,7 @@ export default function NewApplicationPage() {
       const timer = setTimeout(() => setLastSaved(null), 5000);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [lastSaved]);
 
   // Keyboard navigation
@@ -130,15 +131,13 @@ export default function NewApplicationPage() {
         // Create new application
         const response = await apiClient.createApplication({
           ...formData,
-          current_step: currentStep + 1,
-        });
+          });
         setApplicationId(response.data.application.id);
       } else {
         // Update existing application
         await apiClient.updateApplication(applicationId, {
           ...formData,
-          current_step: currentStep + 1,
-        });
+          });
       }
 
       // Mark current step as completed
@@ -168,10 +167,10 @@ export default function NewApplicationPage() {
       let finalApplicationId = applicationId;
 
       if (!applicationId) {
-        const response = await apiClient.createApplication(formData);
+        const response = await apiClient.createApplication(formData as any);
         finalApplicationId = response.data.application.id;
         setApplicationId(finalApplicationId);
-        await apiClient.submitApplication(finalApplicationId);
+        finalApplicationId && await apiClient.submitApplication(finalApplicationId);
       } else {
         await apiClient.updateApplication(applicationId, formData);
         await apiClient.submitApplication(applicationId);
@@ -211,6 +210,7 @@ export default function NewApplicationPage() {
       case 6:
         return <Step6Review {...stepProps} onSubmit={handleSubmit} isSubmitting={isSubmitting} />;
       default:
+        return null;
         return null;
     }
   };

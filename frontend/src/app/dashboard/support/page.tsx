@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
 import {
   HelpCircle,
@@ -111,7 +110,7 @@ export default function SupportPage() {
     const Icon = badge.icon;
 
     return (
-      <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${badge.color}`}>
+      <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${badge?.color}`}>
         <Icon className="h-3 w-3" />
         {badge.text}
       </span>
@@ -128,7 +127,7 @@ export default function SupportPage() {
     const badge = badges[priority as keyof typeof badges] || badges.medium;
 
     return (
-      <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${badge.color}`}>
+      <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${badge?.color}`}>
         {badge.text}
       </span>
     );

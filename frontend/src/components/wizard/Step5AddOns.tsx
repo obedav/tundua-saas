@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Check, Plus, Minus, ShoppingCart, Sparkles, Tag, Clock, DollarSign } from "lucide-react";
+import { Check, Plus, Minus, ShoppingCart, Tag, Clock, DollarSign } from "lucide-react";
 import { ApplicationData } from "@/app/dashboard/applications/new/page";
 import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";

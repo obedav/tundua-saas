@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, Plus, Edit, Trash2 } from "lucide-react";
+import { BookOpen, Plus } from "lucide-react";
 
 export default function KnowledgeBaseEditor() {
   return (

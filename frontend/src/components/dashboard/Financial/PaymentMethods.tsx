@@ -30,7 +30,7 @@ export default function PaymentMethods() {
       is_default: false,
     },
   ]);
-  const [showAddModal, setShowAddModal] = useState(false);
+  
 
   const setDefaultMethod = (id: number) => {
     setMethods(methods.map(m => ({ ...m, is_default: m.id === id })));
