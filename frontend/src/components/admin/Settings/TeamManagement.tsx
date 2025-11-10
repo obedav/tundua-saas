@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Users, UserPlus, Shield, Mail, Edit, Trash2, X } from "lucide-react";
+import { UserPlus, Mail, Edit, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 
 interface TeamMember {
@@ -98,8 +98,8 @@ export default function TeamManagement() {
       admin: { color: "bg-blue-100 text-blue-700", text: "Admin" },
       super_admin: { color: "bg-purple-100 text-purple-700", text: "Super Admin" },
     };
-    const badge = badges[role] || badges.admin;
-    return <span className={`px-3 py-1 rounded-full text-xs font-medium ${badge.color}`}>{badge.text}</span>;
+    const badge = badges[role] || badges['admin'];
+    return <span className={`px-3 py-1 rounded-full text-xs font-medium ${badge!.color}`}>{badge!.text}</span>;
   };
 
   const getStatusBadge = (status: string) => {
@@ -107,8 +107,8 @@ export default function TeamManagement() {
       active: { color: "bg-green-100 text-green-700", text: "Active" },
       inactive: { color: "bg-gray-100 text-gray-700", text: "Inactive" },
     };
-    const badge = badges[status] || badges.active;
-    return <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge.color}`}>{badge.text}</span>;
+    const badge = badges[status] || badges['active'];
+    return <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>{badge!.text}</span>;
   };
 
   return (

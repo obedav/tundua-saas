@@ -45,7 +45,7 @@ export default function PaymentCancelPage() {
           <h3 className="font-semibold text-gray-900 mb-3">What would you like to do?</h3>
           <div className="space-y-3">
             <Link
-              href={`/dashboard/applications/${params.id}/payment`}
+              href={`/dashboard/applications/${params['id']}/payment`}
               className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-primary-600 hover:bg-primary-50 transition-all group"
             >
               <div className="flex-shrink-0">
@@ -60,7 +60,7 @@ export default function PaymentCancelPage() {
             </Link>
 
             <Link
-              href={`/dashboard/applications/${params.id}`}
+              href={`/dashboard/applications/${params['id']}`}
               className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all group"
             >
               <div className="flex-shrink-0">

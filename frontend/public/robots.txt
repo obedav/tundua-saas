@@ -1,0 +1,31 @@
+# Tundua Study Abroad SaaS - Robots.txt
+# This file tells search engines which pages they can/cannot crawl
+
+# Allow all crawlers
+User-agent: *
+
+# Allow all pages except private ones
+Allow: /
+Disallow: /dashboard/
+Disallow: /auth/
+Disallow: /api/
+
+# Allow public pages
+Allow: /$
+Allow: /about
+Allow: /contact
+Allow: /terms
+Allow: /privacy
+
+# Crawl delay (be nice to servers)
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://yourdomain.com/sitemap.xml
+
+# Block specific bots (if needed)
+# User-agent: BadBot
+# Disallow: /
+
+# Host (specify preferred domain)
+# Host: https://yourdomain.com

@@ -37,20 +37,20 @@ export default function PaymentPage() {
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
 
   useEffect(() => {
-    if (params.id) {
+    if (params['id']) {
       fetchApplication();
     }
-  }, [params.id]);
+  }, [params['id']]);
 
   const fetchApplication = async () => {
     try {
-      const response = await apiClient.getApplication(Number(params.id));
+      const response = await apiClient.getApplication(Number(params['id']));
       const app = response.data.application;
 
       // Check if payment is still pending
       if (app.payment_status !== "pending") {
         toast.error("This application has already been paid");
-        router.push(`/dashboard/applications/${params.id}`);
+        router.push(`/dashboard/applications/${params['id']}`);
         return;
       }
 
@@ -67,7 +67,7 @@ export default function PaymentPage() {
   const handlePaystackPayment = async () => {
     setProcessing(true);
     try {
-      const response = await apiClient.initializePaystack(Number(params.id));
+      const response = await apiClient.initializePaystack(Number(params['id']));
 
       if (response.data.success) {
         const { authorization_url } = response.data.data;
@@ -86,11 +86,11 @@ export default function PaymentPage() {
   const handleStripePayment = async () => {
     setProcessing(true);
     try {
-      const successUrl = `${window.location.origin}/dashboard/applications/${params.id}/payment/success?session_id={CHECKOUT_SESSION_ID}`;
-      const cancelUrl = `${window.location.origin}/dashboard/applications/${params.id}/payment`;
+      const successUrl = `${window.location.origin}/dashboard/applications/${params['id']}/payment/success?session_id={CHECKOUT_SESSION_ID}`;
+      const cancelUrl = `${window.location.origin}/dashboard/applications/${params['id']}/payment`;
 
       const response = await apiClient.createStripeCheckout(
-        Number(params.id),
+        Number(params['id']),
         successUrl,
         cancelUrl
       );
@@ -139,7 +139,7 @@ export default function PaymentPage() {
       {/* Header */}
       <div>
         <Link
-          href={`/dashboard/applications/${params.id}`}
+          href={`/dashboard/applications/${params['id']}`}
           className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
         >
           <ArrowLeft className="h-4 w-4" />

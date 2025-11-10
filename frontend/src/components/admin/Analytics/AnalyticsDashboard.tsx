@@ -5,14 +5,12 @@ import {
   FileText,
   CheckCircle,
   Clock,
-  XCircle,
   DollarSign,
   Users,
   TrendingUp,
   AlertCircle,
 } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
-import { toast } from "sonner";
 
 interface Stats {
   total_applications: number;
@@ -50,7 +48,7 @@ export default function AnalyticsDashboard() {
       // Try to fetch from API first
       const [analyticsResponse, applicationsResponse] = await Promise.all([
         apiClient.getAnalytics(),
-        apiClient.getAllApplications({ limit: 5, sort: "created_at", order: "desc" }),
+        apiClient.getAllApplications({ limit: 5, order: "desc" } as any),
       ]);
 
       setStats(analyticsResponse.data.analytics.overview);
@@ -136,10 +134,10 @@ export default function AnalyticsDashboard() {
       completed: { color: "bg-green-100 text-green-700", text: "Completed" },
     };
 
-    const badge = badges[status] || badges.draft;
+    const badge = badges[status] || badges['draft'];
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge.color}`}>
-        {badge.text}
+      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>
+        {badge!.text}
       </span>
     );
   };

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { FileText, Download, Eye, Check, X } from "lucide-react";
+import { useState } from "react";
+import { Eye, Check, X } from "lucide-react";
 
 interface Document {
   id: number;
@@ -14,8 +14,8 @@ interface Document {
 }
 
 export default function DocumentsManagement() {
-  const [documents, setDocuments] = useState<Document[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [documents, _setDocuments] = useState<Document[]>([]);
+  const [loading, _setLoading] = useState(true);
 
   const getStatusBadge = (status: string) => {
     const badges: Record<string, { color: string; text: string }> = {
@@ -24,10 +24,10 @@ export default function DocumentsManagement() {
       rejected: { color: "bg-red-100 text-red-700", text: "Rejected" },
     };
 
-    const badge = badges[status] || badges.pending;
+    const badge = badges[status] || badges['pending'];
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge.color}`}>
-        {badge.text}
+      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>
+        {badge!.text}
       </span>
     );
   };

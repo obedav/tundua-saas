@@ -1,6 +1,7 @@
 // Google Analytics 4 tracking utility
+import { clientEnv } from '@/lib/env';
 
-export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+export const GA_MEASUREMENT_ID = clientEnv.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
 
 // Types for GA events
 export interface GAEvent {

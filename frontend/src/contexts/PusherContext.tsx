@@ -34,7 +34,7 @@ export function PusherProvider({ children }: PusherProviderProps) {
   // Initialize Pusher
   useEffect(() => {
     // Only initialize if we have the required env vars
-    if (!process.env.NEXT_PUBLIC_PUSHER_KEY) {
+    if (!process.env['NEXT_PUBLIC_PUSHER_KEY']) {
       console.warn('Pusher is not configured. Set NEXT_PUBLIC_PUSHER_KEY to enable real-time features.');
       return;
     }
