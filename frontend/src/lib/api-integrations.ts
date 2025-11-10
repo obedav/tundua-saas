@@ -19,12 +19,15 @@ export const fetchDashboardStats = async () => {
     // Calculate current stats
     const stats = {
       total_applications: applications.length,
-      pending_applications: applications.filter(
-        (app: any) => ["draft", "submitted", "under_review"].includes(app.status)
+      pending_applications: applications.filter((app: any) =>
+        ["draft", "submitted", "under_review"].includes(app.status),
       ).length,
-      approved_applications: applications.filter((app: any) => app.status === "approved").length,
-      total_spent: applications.reduce((sum: number, app: any) =>
-        sum + parseFloat(app.total_amount || "0"), 0
+      approved_applications: applications.filter(
+        (app: any) => app.status === "approved",
+      ).length,
+      total_spent: applications.reduce(
+        (sum: number, app: any) => sum + parseFloat(app.total_amount || "0"),
+        0,
       ),
     };
 
@@ -99,7 +102,7 @@ export const fetchNotifications = async () => {
 export const markNotificationAsRead = async (notificationId: number) => {
   try {
     // TODO: Create API endpoint: PATCH /api/notifications/:id/read
-    await apiClient.request({
+    await (apiClient as any).request({
       method: "PATCH",
       url: `/notifications/${notificationId}/read`,
     });
@@ -116,7 +119,7 @@ export const markNotificationAsRead = async (notificationId: number) => {
 export const fetchDocuments = async () => {
   try {
     // TODO: Create API endpoint: GET /api/user/documents
-    const response = await apiClient.request({
+    const response = await (apiClient as any).request({
       method: "GET",
       url: "/documents",
     });
@@ -135,7 +138,7 @@ export const uploadDocument = async (file: File, metadata: any) => {
     formData.append("metadata", JSON.stringify(metadata));
 
     // TODO: Create API endpoint: POST /api/documents/upload
-    const response = await apiClient.request({
+    const response = await (apiClient as any).request({
       method: "POST",
       url: "/documents/upload",
       data: formData,
@@ -154,7 +157,7 @@ export const uploadDocument = async (file: File, metadata: any) => {
 export const deleteDocument = async (documentId: number) => {
   try {
     // TODO: Create API endpoint: DELETE /api/documents/:id
-    await apiClient.request({
+    await (apiClient as any).request({
       method: "DELETE",
       url: `/documents/${documentId}`,
     });
@@ -171,7 +174,7 @@ export const deleteDocument = async (documentId: number) => {
 export const fetchPaymentHistory = async () => {
   try {
     // TODO: Create API endpoint: GET /api/payments/history
-    const response = await apiClient.request({
+    const response = await (apiClient as any).request({
       method: "GET",
       url: "/payments/history",
     });
@@ -186,7 +189,7 @@ export const fetchPaymentHistory = async () => {
 export const fetchPaymentMethods = async () => {
   try {
     // TODO: Create API endpoint: GET /api/payment-methods
-    const response = await apiClient.request({
+    const response = await (apiClient as any).request({
       method: "GET",
       url: "/payment-methods",
     });
@@ -201,7 +204,7 @@ export const fetchPaymentMethods = async () => {
 export const addPaymentMethod = async (methodData: any) => {
   try {
     // TODO: Create API endpoint: POST /api/payment-methods
-    const response = await apiClient.request({
+    const response = await (apiClient as any).request({
       method: "POST",
       url: "/payment-methods",
       data: methodData,
@@ -217,7 +220,7 @@ export const addPaymentMethod = async (methodData: any) => {
 export const setDefaultPaymentMethod = async (methodId: number) => {
   try {
     // TODO: Create API endpoint: PATCH /api/payment-methods/:id/set-default
-    await apiClient.request({
+    await (apiClient as any).request({
       method: "PATCH",
       url: `/payment-methods/${methodId}/set-default`,
     });
@@ -234,7 +237,7 @@ export const setDefaultPaymentMethod = async (methodId: number) => {
 export const fetchRefundRequests = async () => {
   try {
     // TODO: Create API endpoint: GET /api/refunds
-    const response = await apiClient.request({
+    const response = await (apiClient as any).request({
       method: "GET",
       url: "/refunds",
     });
@@ -252,7 +255,7 @@ export const submitRefundRequest = async (data: {
 }) => {
   try {
     // TODO: Create API endpoint: POST /api/refunds
-    const response = await apiClient.request({
+    const response = await (apiClient as any).request({
       method: "POST",
       url: "/refunds",
       data,
@@ -272,7 +275,7 @@ export const submitRefundRequest = async (data: {
 export const fetchAvailableAddOns = async () => {
   try {
     // TODO: Create API endpoint: GET /api/addons/available
-    const response = await apiClient.request({
+    const response = await (apiClient as any).request({
       method: "GET",
       url: "/addons/available",
     });
@@ -287,7 +290,7 @@ export const fetchAvailableAddOns = async () => {
 export const fetchPurchasedAddOns = async () => {
   try {
     // TODO: Create API endpoint: GET /api/addons/purchased
-    const response = await apiClient.request({
+    const response = await (apiClient as any).request({
       method: "GET",
       url: "/addons/purchased",
     });
@@ -299,10 +302,13 @@ export const fetchPurchasedAddOns = async () => {
   }
 };
 
-export const purchaseAddOn = async (addOnId: number, paymentMethodId: number) => {
+export const purchaseAddOn = async (
+  addOnId: number,
+  paymentMethodId: number,
+) => {
   try {
     // TODO: Create API endpoint: POST /api/addons/:id/purchase
-    const response = await apiClient.request({
+    const response = await (apiClient as any).request({
       method: "POST",
       url: `/addons/${addOnId}/purchase`,
       data: { payment_method_id: paymentMethodId },
@@ -326,7 +332,7 @@ export const trackEvent = (event: {
 }) => {
   try {
     // TODO: Create API endpoint: POST /api/analytics/track
-    apiClient.request({
+    (apiClient as any).request({
       method: "POST",
       url: "/analytics/track",
       data: {

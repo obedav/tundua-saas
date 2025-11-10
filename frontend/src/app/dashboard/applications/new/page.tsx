@@ -2,7 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, Check, Save, Clock, AlertCircle } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Check,
+  Save,
+  Clock,
+  AlertCircle,
+} from "lucide-react";
 import { toast } from "sonner";
 import Step1Personal from "@/components/wizard/Step1Personal";
 import Step2Academic from "@/components/wizard/Step2Academic";
@@ -13,12 +20,42 @@ import Step6Review from "@/components/wizard/Step6Review";
 import { apiClient } from "@/lib/api-client";
 
 const STEPS = [
-  { number: 1, title: "Personal Info", description: "Basic information", estimatedTime: "2-3 min" },
-  { number: 2, title: "Academic", description: "Education background", estimatedTime: "2-3 min" },
-  { number: 3, title: "Destination", description: "Universities & program", estimatedTime: "3-5 min" },
-  { number: 4, title: "Service Tier", description: "Choose your package", estimatedTime: "1-2 min" },
-  { number: 5, title: "Add-Ons", description: "Optional services", estimatedTime: "1-2 min" },
-  { number: 6, title: "Review", description: "Review & submit", estimatedTime: "2-3 min" },
+  {
+    number: 1,
+    title: "Personal Info",
+    description: "Basic information",
+    estimatedTime: "2-3 min",
+  },
+  {
+    number: 2,
+    title: "Academic",
+    description: "Education background",
+    estimatedTime: "2-3 min",
+  },
+  {
+    number: 3,
+    title: "Destination",
+    description: "Universities & program",
+    estimatedTime: "3-5 min",
+  },
+  {
+    number: 4,
+    title: "Service Tier",
+    description: "Choose your package",
+    estimatedTime: "1-2 min",
+  },
+  {
+    number: 5,
+    title: "Add-Ons",
+    description: "Optional services",
+    estimatedTime: "1-2 min",
+  },
+  {
+    number: 6,
+    title: "Review",
+    description: "Review & submit",
+    estimatedTime: "2-3 min",
+  },
 ];
 
 export type ApplicationData = {
@@ -100,26 +137,32 @@ export default function NewApplicationPage() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't trigger if user is typing in an input
-      if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement).tagName)) {
+      if (
+        ["INPUT", "TEXTAREA", "SELECT"].includes(
+          (e.target as HTMLElement).tagName,
+        )
+      ) {
         return;
       }
 
-      if (e.key === 'ArrowRight' && currentStep < 6 && !isSaving) {
+      if (e.key === "ArrowRight" && currentStep < 6 && !isSaving) {
         e.preventDefault();
-        const submitBtn = document.getElementById(`step${currentStep}-submit-btn`);
+        const submitBtn = document.getElementById(
+          `step${currentStep}-submit-btn`,
+        );
         if (submitBtn) {
           submitBtn.click();
         } else {
           handleNext();
         }
-      } else if (e.key === 'ArrowLeft' && currentStep > 1 && !isSaving) {
+      } else if (e.key === "ArrowLeft" && currentStep > 1 && !isSaving) {
         e.preventDefault();
         handleBack();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentStep, isSaving]);
 
   const handleNext = async () => {
@@ -171,7 +214,7 @@ export default function NewApplicationPage() {
         const response = await apiClient.createApplication(formData);
         finalApplicationId = response.data.application.id;
         setApplicationId(finalApplicationId);
-        await apiClient.submitApplication(finalApplicationId);
+        await apiClient.submitApplication(finalApplicationId!);
       } else {
         await apiClient.updateApplication(applicationId, formData);
         await apiClient.submitApplication(applicationId);
@@ -183,7 +226,11 @@ export default function NewApplicationPage() {
       router.push(`/dashboard/applications/${finalApplicationId}/payment`);
     } catch (error: any) {
       console.error("Submit error:", error);
-      toast.error(error.response?.data?.error || error.response?.data?.message || "Failed to submit application");
+      toast.error(
+        error.response?.data?.error ||
+          error.response?.data?.message ||
+          "Failed to submit application",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -209,7 +256,13 @@ export default function NewApplicationPage() {
       case 5:
         return <Step5AddOns {...stepProps} />;
       case 6:
-        return <Step6Review {...stepProps} onSubmit={handleSubmit} isSubmitting={isSubmitting} />;
+        return (
+          <Step6Review
+            {...stepProps}
+            onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+          />
+        );
       default:
         return null;
     }
@@ -223,7 +276,9 @@ export default function NewApplicationPage() {
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-3">
-                <h1 className="text-2xl font-bold text-gray-900">New Application</h1>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  New Application
+                </h1>
                 <div className="flex items-center gap-2 text-sm">
                   <div className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full font-medium">
                     {progressPercentage}% Complete
@@ -245,7 +300,8 @@ export default function NewApplicationPage() {
               <div className="flex items-center gap-2 mt-2">
                 <Clock className="h-4 w-4 text-gray-400" />
                 <p className="text-sm text-gray-500">
-                  Step {currentStep} of {STEPS.length} • {STEPS[currentStep - 1]?.estimatedTime} estimated
+                  Step {currentStep} of {STEPS.length} •{" "}
+                  {STEPS[currentStep - 1]?.estimatedTime} estimated
                 </p>
               </div>
             </div>
@@ -293,7 +349,9 @@ export default function NewApplicationPage() {
 
                       {/* Step Circle */}
                       <button
-                        onClick={() => isClickable && setCurrentStep(step.number)}
+                        onClick={() =>
+                          isClickable && setCurrentStep(step.number)
+                        }
                         disabled={!isClickable}
                         className={`relative flex flex-col items-center group ${
                           isClickable ? "cursor-pointer" : "cursor-default"
@@ -304,8 +362,8 @@ export default function NewApplicationPage() {
                             isPast
                               ? "border-primary-600 bg-primary-600 hover:bg-primary-700 hover:scale-110"
                               : isCurrent
-                              ? "border-primary-600 bg-white ring-4 ring-primary-100"
-                              : "border-gray-300 bg-white"
+                                ? "border-primary-600 bg-white ring-4 ring-primary-100"
+                                : "border-gray-300 bg-white"
                           }`}
                         >
                           {isPast ? (
@@ -326,8 +384,8 @@ export default function NewApplicationPage() {
                               isCurrent
                                 ? "text-primary-600"
                                 : currentStep >= step.number
-                                ? "text-gray-900"
-                                : "text-gray-500"
+                                  ? "text-gray-900"
+                                  : "text-gray-500"
                             }`}
                           >
                             {step.title}
@@ -369,11 +427,17 @@ export default function NewApplicationPage() {
               {currentStep}
             </div>
             <div className="flex-1">
-              <h2 className="text-lg font-semibold text-gray-900">{STEPS[currentStep - 1]?.title}</h2>
-              <p className="text-sm text-gray-600 mt-1">{STEPS[currentStep - 1]?.description}</p>
+              <h2 className="text-lg font-semibold text-gray-900">
+                {STEPS[currentStep - 1]?.title}
+              </h2>
+              <p className="text-sm text-gray-600 mt-1">
+                {STEPS[currentStep - 1]?.description}
+              </p>
               <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
                 <Clock className="h-3 w-3" />
-                <span>Estimated time: {STEPS[currentStep - 1]?.estimatedTime}</span>
+                <span>
+                  Estimated time: {STEPS[currentStep - 1]?.estimatedTime}
+                </span>
               </div>
             </div>
           </div>
@@ -404,14 +468,18 @@ export default function NewApplicationPage() {
                   Step {currentStep} of {STEPS.length}
                 </div>
                 <div className="text-xs text-gray-500 mt-1">
-                  {STEPS.length - currentStep} {STEPS.length - currentStep === 1 ? 'step' : 'steps'} remaining
+                  {STEPS.length - currentStep}{" "}
+                  {STEPS.length - currentStep === 1 ? "step" : "steps"}{" "}
+                  remaining
                 </div>
               </div>
 
               <button
                 onClick={() => {
                   // Trigger form submission for current step
-                  const submitBtn = document.getElementById(`step${currentStep}-submit-btn`);
+                  const submitBtn = document.getElementById(
+                    `step${currentStep}-submit-btn`,
+                  );
                   if (submitBtn) {
                     submitBtn.click();
                   } else {
@@ -439,11 +507,15 @@ export default function NewApplicationPage() {
             {/* Keyboard shortcuts hint */}
             <div className="hidden lg:flex items-center justify-center gap-4 mt-3 text-xs text-gray-500">
               <span className="flex items-center gap-1">
-                <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded">←</kbd>
+                <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded">
+                  ←
+                </kbd>
                 <span>Go back</span>
               </span>
               <span className="flex items-center gap-1">
-                <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded">→</kbd>
+                <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded">
+                  →
+                </kbd>
                 <span>Continue</span>
               </span>
             </div>

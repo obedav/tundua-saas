@@ -4,10 +4,17 @@ import { useEffect, useState } from "react";
 import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
-import { User, Mail, Phone, MapPin, Calendar, Save } from "lucide-react";
+import {
+  User as UserIcon,
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  Save,
+} from "lucide-react";
 
 export default function ProfilePage() {
-  const { user, refreshUser } = useAuth();
+  const { user, checkAuth } = useAuth();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
@@ -34,8 +41,8 @@ export default function ProfilePage() {
     try {
       await apiClient.updateProfile(formData);
       toast.success("Profile updated successfully!");
-      if (refreshUser) {
-        await refreshUser();
+      if (checkAuth) {
+        await checkAuth();
       }
     } catch (error: any) {
       console.error("Error updating profile:", error);
@@ -66,7 +73,8 @@ export default function ProfilePage() {
       <div className="bg-white rounded-lg border border-gray-200 p-8">
         <div className="flex items-center gap-6 mb-8 pb-8 border-b">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-100 text-primary-700 text-2xl font-bold">
-            {user?.first_name?.[0]}{user?.last_name?.[0]}
+            {user?.first_name?.[0]}
+            {user?.last_name?.[0]}
           </div>
           <div>
             <h2 className="text-2xl font-bold text-gray-900">
@@ -92,7 +100,7 @@ export default function ProfilePage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <div className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
+                  <UserIcon className="h-4 w-4" />
                   First Name
                 </div>
               </label>
@@ -110,7 +118,7 @@ export default function ProfilePage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <div className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
+                  <UserIcon className="h-4 w-4" />
                   Last Name
                 </div>
               </label>
@@ -166,14 +174,18 @@ export default function ProfilePage() {
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <Calendar className="h-4 w-4" />
               <span>
-                Member since: {user?.created_at ? new Date(user.created_at).toLocaleDateString() : "N/A"}
+                Member since:{" "}
+                {(user as any)?.created_at
+                  ? new Date((user as any).created_at).toLocaleDateString()
+                  : "N/A"}
               </span>
             </div>
-            {user?.last_login && (
+            {(user as any)?.last_login && (
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <MapPin className="h-4 w-4" />
                 <span>
-                  Last login: {new Date(user.last_login).toLocaleString()}
+                  Last login:{" "}
+                  {new Date((user as any).last_login).toLocaleString()}
                 </span>
               </div>
             )}
@@ -195,7 +207,9 @@ export default function ProfilePage() {
 
       {/* Additional Settings */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-4">Account Actions</h3>
+        <h3 className="text-lg font-bold text-gray-900 mb-4">
+          Account Actions
+        </h3>
         <div className="space-y-3">
           <button className="w-full text-left px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
             Change Password
