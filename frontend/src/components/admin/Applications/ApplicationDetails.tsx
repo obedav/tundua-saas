@@ -1,7 +1,5 @@
 "use client";
 
-import { FileText, User, DollarSign, Calendar } from "lucide-react";
-
 interface ApplicationDetailsProps {
   applicationId: number;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { GraduationCap, MapPin, Calendar, Users, Star, ExternalLink, Search } from "lucide-react";
+import { GraduationCap, MapPin, Users, Star, ExternalLink, Search } from "lucide-react";
 
 interface University {
   id: number;

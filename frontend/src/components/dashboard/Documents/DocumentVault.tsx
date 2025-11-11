@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Download, Eye, Trash2, Upload, Search, Filter } from "lucide-react";
+import { FileText, Download, Eye, Trash2, Upload, Search } from "lucide-react";
 
 interface Document {
   id: number;

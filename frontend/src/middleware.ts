@@ -7,7 +7,7 @@ import type { NextRequest } from 'next/server';
  * This runs on EVERY request before reaching your pages.
  * Adds critical security headers to protect against common attacks.
  */
-export function middleware(request: NextRequest) {
+export function middleware(_request: NextRequest) {
   const response = NextResponse.next();
 
   // ============================================================================

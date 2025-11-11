@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Search, Filter, Download, Eye } from "lucide-react";
 import RecentApplicationsList from "./RecentApplicationsList";
 
