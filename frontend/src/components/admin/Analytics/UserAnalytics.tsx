@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Users, UserPlus, UserCheck, UserX, Globe, TrendingUp } from "lucide-react";
-import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
 
 interface UserAnalyticsData {

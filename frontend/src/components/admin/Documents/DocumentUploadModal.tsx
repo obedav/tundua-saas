@@ -14,7 +14,7 @@ export default function DocumentUploadModal({
   onClose,
   onUpload
 }: DocumentUploadModalProps) {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [_selectedFile, _setSelectedFile] = useState<File | null>(null);
 
   if (!isOpen) return null;
 

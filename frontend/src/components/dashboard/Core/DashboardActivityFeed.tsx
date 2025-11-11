@@ -191,7 +191,7 @@ export default function DashboardActivityFeed({ maxItems = 10 }: DashboardActivi
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-900">{activity.title}</p>
                   <p className="text-sm text-gray-600 mt-1">{activity.description}</p>
-                  <p className="text-xs text-gray-500 mt-1">{formatTimestamp(activity.timestamp)}</p>
+                  <p className="text-xs text-gray-500 mt-1">{formatTimestamp(activity?.timestamp)}</p>
                 </div>
               </div>
             );

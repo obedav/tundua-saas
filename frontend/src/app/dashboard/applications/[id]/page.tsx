@@ -70,14 +70,14 @@ export default function ApplicationDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (params.id) {
+    if (params['id']) {
       fetchApplication();
     }
-  }, [params.id]);
+  }, [params['id']]);
 
   const fetchApplication = async () => {
     try {
-      const response = await apiClient.getApplication(Number(params.id));
+      const response = await apiClient.getApplication(Number(params['id']));
       setApplication(response.data.application);
     } catch (error: any) {
       console.error("Error fetching application:", error);
@@ -94,7 +94,7 @@ export default function ApplicationDetailPage() {
     }
 
     try {
-      await apiClient.deleteApplication(Number(params.id));
+      await apiClient.deleteApplication(Number(params['id']));
       toast.success("Application deleted successfully");
       router.push("/dashboard/applications");
     } catch (error: any) {
@@ -114,13 +114,13 @@ export default function ApplicationDetailPage() {
       cancelled: { color: "bg-gray-100 text-gray-700", icon: XCircle, text: "Cancelled" },
     };
 
-    const badge = badges[status] || badges.draft;
-    const Icon = badge.icon;
+    const badge = badges[status] || badges['draft'];
+    const Icon = badge!.icon;
 
     return (
-      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${badge.color}`}>
+      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${badge!.color}`}>
         <Icon className="h-4 w-4" />
-        {badge.text}
+        {badge?.text}
       </span>
     );
   };

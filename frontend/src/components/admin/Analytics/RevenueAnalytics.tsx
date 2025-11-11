@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { DollarSign, TrendingUp, TrendingDown, BarChart3, ArrowUp, ArrowDown } from "lucide-react";
-import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
 
 interface RevenueData {

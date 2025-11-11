@@ -135,8 +135,8 @@ export default function WelcomeWizard() {
             <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mb-4">
               <StepIcon className="w-10 h-10 text-primary-600" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">{currentStepData.title}</h3>
-            <p className="text-gray-600 mb-6 max-w-md">{currentStepData.description}</p>
+            <h3 className="text-xl font-bold text-gray-900 mb-3">{currentStepData?.title}</h3>
+            <p className="text-gray-600 mb-6 max-w-md">{currentStepData?.description}</p>
 
             {/* Step-specific content */}
             {currentStep === 0 && (

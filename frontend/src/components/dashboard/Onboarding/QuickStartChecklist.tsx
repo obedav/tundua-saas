@@ -104,7 +104,7 @@ export default function QuickStartChecklist() {
 
       {/* Task List */}
       <div className="space-y-3">
-        {tasks.map((task, index) => (
+        {tasks.map((task) => (
           <div
             key={task.id}
             className={`bg-white rounded-lg p-4 border transition-all ${

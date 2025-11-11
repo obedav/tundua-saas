@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { CreditCard, DollarSign, AlertCircle } from "lucide-react";
 
 interface Payment {
@@ -25,9 +25,9 @@ export default function BillingManagement() {
       refunded: { color: "bg-gray-100 text-gray-700", text: "Refunded" },
     };
 
-    const badge = badges[status] || badges.pending;
+    const badge = badges[status] || badges['pending'];
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge.color}`}>
+      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>
         {badge.text}
       </span>
     );

@@ -70,6 +70,7 @@ export default function DashboardNotifications() {
       setNotifications((prev) =>
         prev.map((notif) => ({ ...notif, read: true })),
       );
+      setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })));
       toast.success("All notifications marked as read");
     } catch (error) {
       console.error("Error marking all as read:", error);
@@ -158,7 +159,7 @@ export default function DashboardNotifications() {
       ) : (
         <div className="space-y-3">
           {displayNotifications.map((notification) => {
-            const { Icon, color, bg } = getNotificationIcon(notification.type);
+            const { Icon, color, bg } = getNotificationIcon(notification?.type);
             return (
               <div
                 key={notification.id}
@@ -173,9 +174,13 @@ export default function DashboardNotifications() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
+
                     <h3 className="font-semibold text-gray-900 text-sm">
                       {notification.title}
                     </h3>
+
+                    <h3 className="font-semibold text-gray-900 text-sm">{notification?.title}</h3>
+
                     <div className="flex gap-1">
                       {!notification.read && (
                         <button
@@ -195,9 +200,13 @@ export default function DashboardNotifications() {
                       </button>
                     </div>
                   </div>
+
                   <p className="text-sm text-gray-600 mt-1">
                     {notification.message}
                   </p>
+
+                  <p className="text-sm text-gray-600 mt-1">{notification?.message}</p>
+
                   <p className="text-xs text-gray-500 mt-1">
                     {new Date(notification.timestamp).toLocaleString()}
                   </p>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams, useRouter } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle, Loader2, XCircle, ArrowRight } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
@@ -11,7 +11,7 @@ type VerificationStatus = "verifying" | "success" | "failed";
 export default function PaymentSuccessPage() {
   const params = useParams();
   const searchParams = useSearchParams();
-  const router = useRouter();
+  
   const [status, setStatus] = useState<VerificationStatus>("verifying");
   const [paymentDetails, setPaymentDetails] = useState<any>(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -66,7 +66,7 @@ export default function PaymentSuccessPage() {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     try {
-      const response = await apiClient.getApplication(Number(params.id));
+      const response = await apiClient.getApplication(Number(params['id']));
       const application = response.data.application;
 
       if (application.payment_status === "paid") {
@@ -112,13 +112,13 @@ export default function PaymentSuccessPage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href={`/dashboard/applications/${params.id}/payment`}
+              href={`/dashboard/applications/${params['id']}/payment`}
               className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors"
             >
               Try Again
             </Link>
             <Link
-              href={`/dashboard/applications/${params.id}`}
+              href={`/dashboard/applications/${params['id']}`}
               className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
             >
               View Application
@@ -202,7 +202,7 @@ export default function PaymentSuccessPage() {
 
         <div className="flex flex-col sm:flex-row gap-4">
           <Link
-            href={`/dashboard/applications/${params.id}`}
+            href={`/dashboard/applications/${params['id']}`}
             className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors"
           >
             View Application

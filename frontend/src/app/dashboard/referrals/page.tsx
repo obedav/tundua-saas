@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
-import { Copy, Mail, Share2, DollarSign, Users, TrendingUp, Gift, Facebook, Twitter, Linkedin } from "lucide-react";
+import { Copy, Mail, DollarSign, Users, TrendingUp, Gift, Facebook, Twitter, Linkedin } from "lucide-react";
 
 interface ReferralStats {
   total_referrals: number;
@@ -121,9 +121,9 @@ export default function ReferralsPage() {
       converted: { color: "bg-green-100 text-green-700", text: "Converted" },
       rewarded: { color: "bg-purple-100 text-purple-700", text: "Rewarded" },
     };
-    const badge = badges[status as keyof typeof badges] || badges.pending;
+    const badge = badges[status as keyof typeof badges] || badges['pending'];
     return (
-      <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${badge.color}`}>
+      <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${badge?.color}`}>
         {badge.text}
       </span>
     );

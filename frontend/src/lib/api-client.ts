@@ -1,7 +1,8 @@
 import axios, { AxiosInstance, AxiosError } from "axios";
 import Cookies from "js-cookie";
+import { clientEnv } from "@/lib/env";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_URL = clientEnv.NEXT_PUBLIC_API_URL;
 
 class ApiClient {
   private client: AxiosInstance;
@@ -66,7 +67,7 @@ class ApiClient {
     return this.client.get("/api/auth/me");
   }
 
-  async updateProfile(data: any) {
+  async updateProfile(data: import("@/types/api").UpdateProfileRequest) {
     return this.client.put("/api/auth/me", data);
   }
 
@@ -89,7 +90,7 @@ class ApiClient {
   }
 
   // Applications
-  async createApplication(data: any) {
+  async createApplication(data: import("@/types/api").CreateApplicationRequest) {
     return this.client.post("/api/applications", data);
   }
 
@@ -101,7 +102,7 @@ class ApiClient {
     return this.client.get(`/api/applications/${id}`);
   }
 
-  async updateApplication(id: number, data: any) {
+  async updateApplication(id: number, data: import("@/types/api").UpdateApplicationRequest) {
     return this.client.put(`/api/applications/${id}`, data);
   }
 
@@ -113,12 +114,12 @@ class ApiClient {
     return this.client.delete(`/api/applications/${id}`);
   }
 
-  async calculatePricing(id: number, data: any) {
+  async calculatePricing(id: number, data: import("@/types/api").CalculatePricingRequest) {
     return this.client.post(`/api/applications/${id}/calculate`, data);
   }
 
   // Documents
-  async uploadDocument(applicationId: number, formData: FormData) {
+  async uploadDocument(formData: FormData) {
     return this.client.post("/api/documents/upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -203,7 +204,7 @@ class ApiClient {
   }
 
   // Admin endpoints
-  async getAllApplications(params?: any) {
+  async getAllApplications(params?: import("@/types/api").AdminApplicationParams) {
     return this.client.get("/api/admin/applications", { params });
   }
 
@@ -223,7 +224,7 @@ class ApiClient {
     return this.client.put(`/api/admin/documents/${id}/review`, { status, notes });
   }
 
-  async getAllRefunds(params?: any) {
+  async getAllRefunds(params?: import("@/types/api").AdminRefundParams) {
     return this.client.get("/api/admin/refunds", { params });
   }
 
@@ -235,7 +236,7 @@ class ApiClient {
     return this.client.get("/api/admin/analytics");
   }
 
-  async getAllUsers(params?: any) {
+  async getAllUsers(params?: import("@/types/api").AdminUserParams) {
     return this.client.get("/api/admin/users", { params });
   }
 
@@ -243,7 +244,7 @@ class ApiClient {
     return this.client.get(`/api/admin/users/${id}`);
   }
 
-  async updateUser(id: number, data: any) {
+  async updateUser(id: number, data: import("@/types/api").UpdateUserRequest) {
     return this.client.put(`/api/admin/users/${id}`, data);
   }
 
@@ -321,11 +322,11 @@ class ApiClient {
   }
 
   // Admin: Add-On Orders
-  async getAllAddOnOrders(params?: { status?: string; page?: number; per_page?: number }) {
+  async getAllAddOnOrders(params?: import("@/types/api").AddonOrderParams) {
     return this.client.get("/api/admin/addons/orders", { params });
   }
 
-  async updateAddOnOrderStatus(id: number, status: string, data?: { fulfillment_notes?: string; deliverable_url?: string; assigned_to?: number }) {
+  async updateAddOnOrderStatus(id: number, status: string, data?: import("@/types/api").UpdateAddonOrderStatusRequest) {
     return this.client.put(`/api/admin/addons/orders/${id}/status`, { status, ...data });
   }
 

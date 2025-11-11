@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TrendingUp, BarChart3, PieChart, Users, DollarSign, FileText, Target } from "lucide-react";
+import { DollarSign, Target } from "lucide-react";
 
 interface AnalyticsData {
   applications_by_status: { status: string; count: number; color: string }[];
@@ -203,7 +203,7 @@ export default function AdvancedAnalytics() {
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Countries by Applications</h3>
         <div className="space-y-3">
           {data.top_countries.map((country, index) => {
-            const maxApplications = data.top_countries[0].applications;
+            const maxApplications = data.top_countries[0]!.applications;
             const widthPercentage = (country.applications / maxApplications) * 100;
             return (
               <div key={index} className="flex items-center gap-4">
