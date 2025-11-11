@@ -16,7 +16,7 @@ interface SmartProgressTrackerProps {
 }
 
 export default function SmartProgressTracker({
-  applicationId,
+  applicationId: _applicationId,
   applicationStatus = "draft",
 }: SmartProgressTrackerProps) {
   // Generate steps based on application status

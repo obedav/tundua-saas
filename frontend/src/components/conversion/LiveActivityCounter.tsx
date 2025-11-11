@@ -77,7 +77,7 @@ export function LiveActivityCounter() {
 
               <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
                 <span className="inline-block w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                {activity.time}
+                {activity?.time}
               </p>
             </div>
           </div>

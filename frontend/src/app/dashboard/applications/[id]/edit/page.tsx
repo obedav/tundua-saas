@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ChevronLeft, ChevronRight, Check, Save, Clock, AlertCircle, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Check, Save, Clock, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import Step1Personal from "@/components/wizard/Step1Personal";
 import Step2Academic from "@/components/wizard/Step2Academic";
@@ -25,7 +25,7 @@ const STEPS = [
 export default function EditApplicationPage() {
   const router = useRouter();
   const params = useParams();
-  const applicationId = params.id as string;
+  const applicationId = params['id'] as string;
 
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -125,6 +125,7 @@ export default function EditApplicationPage() {
       const timer = setTimeout(() => setLastSaved(null), 5000);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [lastSaved]);
 
   // Keyboard navigation
@@ -157,8 +158,7 @@ export default function EditApplicationPage() {
     try {
       await apiClient.updateApplication(Number(applicationId), {
         ...formData,
-        current_step: currentStep + 1,
-      });
+        });
 
       if (!completedSteps.includes(currentStep)) {
         setCompletedSteps([...completedSteps, currentStep]);
@@ -218,6 +218,7 @@ export default function EditApplicationPage() {
       case 6:
         return <Step6Review {...stepProps} onSubmit={handleSubmit} isSubmitting={isSubmitting} />;
       default:
+        return null;
         return null;
     }
   };

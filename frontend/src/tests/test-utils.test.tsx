@@ -97,9 +97,9 @@ describe('Test Utilities', () => {
         title: 'Custom Title',
       });
 
-      expect(notification.type).toBe('error');
+      expect(notification?.type).toBe('error');
       expect(notification.is_read).toBe(true);
-      expect(notification.title).toBe('Custom Title');
+      expect(notification?.title).toBe('Custom Title');
     });
   });
 
@@ -178,7 +178,7 @@ describe('Test Utilities', () => {
       // TypeScript should allow accessing these properties
       expect(user.email).toBeDefined();
       expect(application.reference_number).toBeDefined();
-      expect(notification.title).toBeDefined();
+      expect(notification?.title).toBeDefined();
 
       // TypeScript should infer correct types
       const userId: number = user.id;

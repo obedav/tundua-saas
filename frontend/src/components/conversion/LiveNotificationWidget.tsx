@@ -77,7 +77,7 @@ export function LiveNotificationWidget() {
             className="bg-white rounded-2xl shadow-2xl p-4 max-w-sm border-2 border-gray-100"
           >
             <div className="flex items-start gap-3">
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${colors[notification.type]} flex items-center justify-center flex-shrink-0`}>
+              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${colors[notification?.type]} flex items-center justify-center flex-shrink-0`}>
                 <Icon className="w-5 h-5 text-white" />
               </div>
 
@@ -85,11 +85,11 @@ export function LiveNotificationWidget() {
                 <div className="flex items-center gap-2 mb-1">
                   <Bell className="w-4 h-4 text-gray-400" />
                   <span className="text-xs text-gray-500 font-medium uppercase tracking-wide">
-                    {notification.type}
+                    {notification?.type}
                   </span>
                 </div>
                 <p className="text-sm text-gray-900 font-medium">
-                  {notification.message}
+                  {notification?.message}
                 </p>
               </div>
 

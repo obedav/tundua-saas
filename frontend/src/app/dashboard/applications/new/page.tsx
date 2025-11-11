@@ -2,14 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Check,
-  Save,
-  Clock,
-  AlertCircle,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Check, Save, Clock, AlertCircle } from "lucide-react";
+
 import { toast } from "sonner";
 import Step1Personal from "@/components/wizard/Step1Personal";
 import Step2Academic from "@/components/wizard/Step2Academic";
@@ -131,6 +125,7 @@ export default function NewApplicationPage() {
       const timer = setTimeout(() => setLastSaved(null), 5000);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [lastSaved]);
 
   // Keyboard navigation
@@ -169,19 +164,17 @@ export default function NewApplicationPage() {
     // Save draft to backend before moving to next step
     setIsSaving(true);
     try {
+      const cleanData = Object.fromEntries(
+        Object.entries(formData).filter(([, v]) => v !== undefined)
+      );
+
       if (!applicationId) {
         // Create new application
-        const response = await apiClient.createApplication({
-          ...formData,
-          current_step: currentStep + 1,
-        });
+        const response = await apiClient.createApplication(cleanData as any);
         setApplicationId(response.data.application.id);
       } else {
         // Update existing application
-        await apiClient.updateApplication(applicationId, {
-          ...formData,
-          current_step: currentStep + 1,
-        });
+        await apiClient.updateApplication(applicationId, cleanData as any);
       }
 
       // Mark current step as completed
@@ -209,14 +202,17 @@ export default function NewApplicationPage() {
     setIsSubmitting(true);
     try {
       let finalApplicationId = applicationId;
+      const cleanData = Object.fromEntries(
+        Object.entries(formData).filter(([, v]) => v !== undefined)
+      );
 
       if (!applicationId) {
-        const response = await apiClient.createApplication(formData);
+        const response = await apiClient.createApplication(cleanData as any);
         finalApplicationId = response.data.application.id;
         setApplicationId(finalApplicationId);
-        await apiClient.submitApplication(finalApplicationId!);
+        finalApplicationId && await apiClient.submitApplication(finalApplicationId);
       } else {
-        await apiClient.updateApplication(applicationId, formData);
+        await apiClient.updateApplication(applicationId, cleanData as any);
         await apiClient.submitApplication(applicationId);
       }
 
@@ -264,6 +260,7 @@ export default function NewApplicationPage() {
           />
         );
       default:
+        return null;
         return null;
     }
   };

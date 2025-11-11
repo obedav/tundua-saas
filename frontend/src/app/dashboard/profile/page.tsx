@@ -174,18 +174,25 @@ export default function ProfilePage() {
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <Calendar className="h-4 w-4" />
               <span>
+
                 Member since:{" "}
                 {(user as any)?.created_at
                   ? new Date((user as any).created_at).toLocaleDateString()
                   : "N/A"}
+
+                Member since: {user?.created_at ? new Date((user as any).created_at ?? (user as any).updated_at).toLocaleDateString() : "N/A"}
+
               </span>
             </div>
             {(user as any)?.last_login && (
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <MapPin className="h-4 w-4" />
                 <span>
+
                   Last login:{" "}
                   {new Date((user as any).last_login).toLocaleString()}
+                  Last login: {new Date((user as any).last_login).toLocaleString()}
+
                 </span>
               </div>
             )}
