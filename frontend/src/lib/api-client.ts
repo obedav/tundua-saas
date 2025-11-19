@@ -375,6 +375,42 @@ class ApiClient {
   async markArticleHelpful(id: number, helpful: boolean) {
     return this.client.post(`/api/knowledge-base/${id}/feedback`, { helpful });
   }
+
+  // ============================================================================
+  // UNIVERSITIES (Intelligence System)
+  // ============================================================================
+
+  async getCountries() {
+    return this.client.get("/api/universities/countries");
+  }
+
+  async searchUniversities(params: {
+    country?: string;
+    budget?: number;
+    gpa?: number;
+    ielts?: number;
+    platform?: string;
+    field?: string;
+    sort?: 'smart' | 'commission' | 'acceptance' | 'tuition';
+    page?: number;
+    per_page?: number;
+  }) {
+    return this.client.get("/api/universities/search", { params });
+  }
+
+  async getUniversityRecommendations(profile: {
+    country?: string;
+    budget?: number;
+    gpa?: number;
+    ielts?: number;
+    field?: string;
+  }) {
+    return this.client.post("/api/universities/recommend", profile);
+  }
+
+  async getUniversityById(id: number) {
+    return this.client.get(`/api/universities/${id}`);
+  }
 }
 
 export const apiClient = new ApiClient();

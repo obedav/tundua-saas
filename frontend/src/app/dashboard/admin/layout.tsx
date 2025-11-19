@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   LayoutDashboard,
   FileText,
@@ -26,6 +27,7 @@ import {
   Mail,
   School,
   ListTodo,
+  Globe,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -191,9 +193,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             padding: '0 24px',
             borderBottom: '1px solid #e5e7eb'
           }}>
-            <Link href="/dashboard/admin" className="flex items-center gap-2">
-              <Shield className="h-8 w-8 text-primary-600" />
-              <span className="text-xl font-bold text-gray-900">Admin Panel</span>
+            <Link
+              href="/dashboard/admin"
+              className="flex flex-col gap-1 transition-all hover:opacity-80 hover:scale-105 cursor-pointer"
+              title="Admin Dashboard Home"
+            >
+              <Image
+                src="/images/logo.png"
+                alt="Tundua Edu Consults"
+                width={120}
+                height={40}
+                className="h-8 w-auto"
+              />
+              <div className="flex items-center gap-1.5">
+                <Shield className="h-3.5 w-3.5 text-primary-600" />
+                <span className="text-xs font-semibold text-gray-600">Admin Panel</span>
+              </div>
             </Link>
             <button
               onClick={() => setSidebarOpen(false)}
@@ -205,6 +220,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* Navigation */}
           <nav style={{ flex: 1, padding: '24px 16px', overflowY: 'auto' }} className="space-y-1">
+            {/* Visit Website Link */}
+            <Link
+              href="/"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors border border-gray-200 mb-4"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Globe className="h-5 w-5" />
+              Visit Website
+            </Link>
+
             {navigationSections.map((section) => {
               const isExpanded = expandedSections.includes(section.name);
               return (
