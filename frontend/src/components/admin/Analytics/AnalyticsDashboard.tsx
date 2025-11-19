@@ -11,6 +11,8 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
+import { toast } from "sonner";
+import { SkeletonDashboardStats, SkeletonTable } from "@/components/ui";
 
 interface Stats {
   total_applications: number;
@@ -45,7 +47,7 @@ export default function AnalyticsDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      // Try to fetch from API first
+      // Fetch real data from API
       const [analyticsResponse, applicationsResponse] = await Promise.all([
         apiClient.getAnalytics(),
         apiClient.getAllApplications({ limit: 5, order: "desc" } as any),
@@ -56,69 +58,30 @@ export default function AnalyticsDashboard() {
     } catch (error: any) {
       console.error("Error fetching dashboard data:", error);
 
-      // Use mock data as fallback
-      const mockStats: Stats = {
-        total_applications: 167,
-        pending_applications: 32,
-        approved_applications: 67,
-        rejected_applications: 8,
-        total_revenue: 45750.00,
-        pending_documents: 24,
-        total_users: 247,
-        applications_this_month: 45,
-        revenue_this_month: 12450.00,
+      // NO MOCK DATA! Show real zeros/empty data instead
+      const emptyStats: Stats = {
+        total_applications: 0,
+        pending_applications: 0,
+        approved_applications: 0,
+        rejected_applications: 0,
+        total_revenue: 0,
+        pending_documents: 0,
+        total_users: 0,
+        applications_this_month: 0,
+        revenue_this_month: 0,
       };
 
-      const mockApplications: RecentApplication[] = [
-        {
-          id: 1,
-          reference_number: "APP-2024-156",
-          applicant_name: "Sarah Johnson",
-          destination_country: "United States",
-          status: "submitted",
-          total_amount: 599.00,
-          created_at: "2024-06-15T10:30:00Z",
-        },
-        {
-          id: 2,
-          reference_number: "APP-2024-155",
-          applicant_name: "Michael Chen",
-          destination_country: "United Kingdom",
-          status: "under_review",
-          total_amount: 299.00,
-          created_at: "2024-06-14T14:20:00Z",
-        },
-        {
-          id: 3,
-          reference_number: "APP-2024-154",
-          applicant_name: "Amina Hassan",
-          destination_country: "Canada",
-          status: "approved",
-          total_amount: 999.00,
-          created_at: "2024-06-13T09:15:00Z",
-        },
-        {
-          id: 4,
-          reference_number: "APP-2024-153",
-          applicant_name: "David Okonkwo",
-          destination_country: "Australia",
-          status: "submitted",
-          total_amount: 599.00,
-          created_at: "2024-06-12T16:45:00Z",
-        },
-        {
-          id: 5,
-          reference_number: "APP-2024-152",
-          applicant_name: "Emma Thompson",
-          destination_country: "Germany",
-          status: "approved",
-          total_amount: 299.00,
-          created_at: "2024-06-11T11:00:00Z",
-        },
-      ];
+      setStats(emptyStats);
+      setRecentApplications([]);
 
-      setStats(mockStats);
-      setRecentApplications(mockApplications);
+      // Show error toast
+      toast.error(
+        error.response?.status === 403
+          ? "Access denied. Please logout and login as admin."
+          : error.response?.status === 401
+          ? "Not logged in. Please login again."
+          : "Failed to load dashboard data. Please refresh."
+      );
     } finally {
       setLoading(false);
     }
@@ -144,8 +107,21 @@ export default function AnalyticsDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="space-y-6">
+        {/* Page Header Skeleton */}
+        <div>
+          <div className="h-9 w-72 bg-gray-200 rounded-lg animate-skeleton mb-2" />
+          <div className="h-6 w-96 bg-gray-100 rounded-lg animate-skeleton" />
+        </div>
+
+        {/* Stats Grid Skeleton */}
+        <SkeletonDashboardStats />
+
+        {/* Recent Applications Table Skeleton */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="h-7 w-48 bg-gray-200 rounded-lg animate-skeleton mb-6" />
+          <SkeletonTable rows={5} columns={6} />
+        </div>
       </div>
     );
   }

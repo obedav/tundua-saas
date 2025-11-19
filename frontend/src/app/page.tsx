@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
-  ArrowRight, CheckCircle, Globe, Users, Shield,
+  ArrowRight, CheckCircle, Users, Shield,
   Star, BookOpen, Target, Menu, X, Sparkles,
   GraduationCap, FileCheck, MessageSquare, Clock,
   Award, ChevronDown, ChevronUp,
@@ -194,16 +195,18 @@ export default function HomePage() {
         <div className="container-custom py-4 flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center gap-2 group"
+            className="flex items-center group relative"
             aria-label="Tundua - Home"
           >
-            <div className="relative">
-              <Globe className="h-8 w-8 text-blue-600 transition-transform group-hover:scale-110" aria-hidden="true" />
-              <Sparkles className="absolute -top-1 -right-1 h-4 w-4 text-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
-            </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Tundua
-            </span>
+            <Image
+              src="/images/logo.png"
+              alt="Tundua Edu Consults"
+              width={180}
+              height={60}
+              priority
+              className="h-12 w-auto transition-transform group-hover:scale-105"
+            />
+            <Sparkles className="absolute -top-1 -right-1 h-4 w-4 text-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -932,9 +935,14 @@ export default function HomePage() {
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
-              <div className="flex items-center gap-2 mb-4">
-                <Globe className="h-8 w-8 text-blue-400" />
-                <span className="text-2xl font-bold">Tundua</span>
+              <div className="mb-4">
+                <Image
+                  src="/images/logo.png"
+                  alt="Tundua Edu Consults"
+                  width={200}
+                  height={67}
+                  className="h-14 w-auto"
+                />
               </div>
               <p className="text-slate-400 mb-6 max-w-md">
                 Your trusted partner in making study abroad dreams a reality. Professional application support with personalized guidance.

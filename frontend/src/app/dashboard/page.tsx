@@ -5,6 +5,7 @@ import Link from "next/link";
 import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { SkeletonDashboardStats, SkeletonCard, SkeletonList } from "@/components/ui";
 
 // Import modular dashboard components
 import DashboardStats from "@/components/dashboard/Core/DashboardStats";
@@ -84,9 +85,33 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-      </div>
+      <DashboardConversionWrapper>
+        <div className="space-y-8">
+          {/* Welcome Section Skeleton */}
+          <div>
+            <div className="h-9 w-64 bg-gray-200 rounded-lg animate-skeleton mb-2" />
+            <div className="h-6 w-80 bg-gray-100 rounded-lg animate-skeleton" />
+          </div>
+
+          {/* Stats Cards Skeleton */}
+          <SkeletonDashboardStats />
+
+          {/* Two-Column Layout Skeleton */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column */}
+            <div className="lg:col-span-2 space-y-8">
+              <SkeletonCard />
+              <SkeletonList items={3} />
+            </div>
+
+            {/* Right Column */}
+            <div className="space-y-8">
+              <SkeletonCard />
+              <SkeletonCard />
+            </div>
+          </div>
+        </div>
+      </DashboardConversionWrapper>
     );
   }
 
