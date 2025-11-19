@@ -1,7 +1,9 @@
-<<<<<<< HEAD
+HEAD
+
 # tundua-saas
-A study abroad saas platform
-=======
+
+# A study abroad saas platform
+
 # Tundua Study Abroad SaaS Platform
 
 A comprehensive study abroad application platform built with **Next.js 14** (frontend) and **PHP Slim 4** (backend). Inspired by the SwiftPass visa platform model, adapted for university applications.
@@ -39,12 +41,14 @@ Tundua is a **full SaaS platform** that helps students apply to universities abr
 ### Core SaaS Features
 
 - ✅ **User Authentication**
+
   - JWT-based authentication
   - Email verification
   - Password reset
   - Role-based access (user, admin, super_admin)
 
 - ✅ **6-Step Application Wizard**
+
   - Personal information
   - Academic background
   - University selection
@@ -54,12 +58,14 @@ Tundua is a **full SaaS platform** that helps students apply to universities abr
   - Review & payment
 
 - ✅ **Payment Integration**
+
   - Stripe Checkout (global payments)
   - M-Pesa (Kenya mobile money)
   - Payment status tracking
   - Receipt generation
 
 - ✅ **Document Management**
+
   - Secure file upload
   - File validation (type, size)
   - Document verification
@@ -67,6 +73,7 @@ Tundua is a **full SaaS platform** that helps students apply to universities abr
   - Download/preview
 
 - ✅ **User Dashboard**
+
   - Application tracking
   - Status updates
   - Document management
@@ -74,6 +81,7 @@ Tundua is a **full SaaS platform** that helps students apply to universities abr
   - Refund requests
 
 - ✅ **Admin Dashboard**
+
   - Application management
   - Document review
   - Payment tracking
@@ -82,6 +90,7 @@ Tundua is a **full SaaS platform** that helps students apply to universities abr
   - User management
 
 - ✅ **Refund Management**
+
   - E-Agreement signing
   - 90-day countdown
   - Admin approval workflow
@@ -98,6 +107,7 @@ Tundua is a **full SaaS platform** that helps students apply to universities abr
 ## 🛠 Tech Stack
 
 ### Frontend
+
 - **Next.js 14** - React framework
 - **TypeScript** - Type safety
 - **Tailwind CSS** - Styling
@@ -108,6 +118,7 @@ Tundua is a **full SaaS platform** that helps students apply to universities abr
 - **Lucide React** - Icons
 
 ### Backend
+
 - **PHP 8.0+** - Server language
 - **Slim Framework 4** - Micro framework
 - **MySQL 8.0+** - Database
@@ -117,6 +128,7 @@ Tundua is a **full SaaS platform** that helps students apply to universities abr
 - **DomPDF** - PDF generation
 
 ### Infrastructure
+
 - **Vercel/Netlify** - Frontend hosting
 - **Apache/Nginx** - Backend hosting
 - **MySQL** - Database
@@ -242,6 +254,7 @@ npm run dev
 ### Backend Installation
 
 1. **Install PHP 8.0+**
+
    ```bash
    # Ubuntu/Debian
    sudo apt update
@@ -254,12 +267,14 @@ npm run dev
    ```
 
 2. **Install Composer**
+
    ```bash
    curl -sS https://getcomposer.org/installer | php
    sudo mv composer.phar /usr/local/bin/composer
    ```
 
 3. **Install MySQL**
+
    ```bash
    # Ubuntu/Debian
    sudo apt install mysql-server
@@ -271,6 +286,7 @@ npm run dev
    ```
 
 4. **Setup Backend**
+
    ```bash
    cd backend
    composer install
@@ -279,6 +295,7 @@ npm run dev
    ```
 
 5. **Configure Database**
+
    ```env
    # .env
    DB_HOST=localhost
@@ -288,6 +305,7 @@ npm run dev
    ```
 
 6. **Create Database & Import Schema**
+
    ```bash
    mysql -u root -p
    CREATE DATABASE tundua_saas CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -297,6 +315,7 @@ npm run dev
    ```
 
 7. **Set Permissions**
+
    ```bash
    chmod -R 775 storage/
    ```
@@ -311,6 +330,7 @@ npm run dev
 ### Frontend Installation
 
 1. **Install Node.js 18+**
+
    ```bash
    # Ubuntu/Debian
    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
@@ -323,6 +343,7 @@ npm run dev
    ```
 
 2. **Setup Frontend**
+
    ```bash
    cd frontend
    npm install
@@ -330,6 +351,7 @@ npm run dev
    ```
 
 3. **Configure Environment**
+
    ```env
    # .env.local
    NEXT_PUBLIC_API_URL=http://localhost:8000
@@ -451,11 +473,13 @@ npm start  # Production server
 ### Backend Deployment (Apache/Nginx)
 
 1. **Upload files to server**
+
    ```bash
    scp -r backend user@server:/var/www/tundua-saas/
    ```
 
 2. **Install dependencies**
+
    ```bash
    ssh user@server
    cd /var/www/tundua-saas/backend
@@ -463,12 +487,14 @@ npm start  # Production server
    ```
 
 3. **Configure environment**
+
    ```bash
    cp .env.example .env
    nano .env  # Edit with production values
    ```
 
 4. **Set permissions**
+
    ```bash
    chmod -R 775 storage/
    chown -R www-data:www-data storage/
@@ -485,6 +511,7 @@ npm start  # Production server
 ### Frontend Deployment (Vercel)
 
 1. **Push to GitHub**
+
    ```bash
    git add .
    git commit -m "Ready for deployment"
@@ -492,6 +519,7 @@ npm start  # Production server
    ```
 
 2. **Deploy to Vercel**
+
    - Go to vercel.com
    - Import GitHub repository
    - Select `frontend` directory as root
@@ -509,11 +537,13 @@ npm start  # Production server
 ### Service Tiers
 
 1. **Standard Package - $299**
+
    - 3 university applications
    - Basic document review
    - Email support
 
 2. **Premium Package - $599**
+
    - 5 university applications
    - Essay review & editing
    - Document verification
@@ -546,10 +576,12 @@ npm start  # Production server
 ### Revenue Projections
 
 **Conservative (Month 6):**
+
 - 30 applications/month × $450 avg = $13,500/month
 - Annual: ~$150,000
 
 **Optimistic (Month 12):**
+
 - 60 applications/month × $600 avg = $36,000/month
 - Annual: ~$430,000
 
@@ -558,6 +590,7 @@ npm start  # Production server
 ## 🗺️ Roadmap
 
 ### ✅ Phase 1: Foundation (Completed)
+
 - [x] Project structure setup
 - [x] Database schema design
 - [x] Basic API endpoints
@@ -565,6 +598,7 @@ npm start  # Production server
 - [x] Service tiers configuration
 
 ### 🚧 Phase 2: Authentication (In Progress)
+
 - [ ] User registration
 - [ ] Email verification
 - [ ] Login/logout
@@ -572,6 +606,7 @@ npm start  # Production server
 - [ ] JWT token management
 
 ### 📋 Phase 3: Application Wizard (Week 3-5)
+
 - [ ] Step 1: Personal information
 - [ ] Step 2: Academic background
 - [ ] Step 3: University selection
@@ -581,24 +616,28 @@ npm start  # Production server
 - [ ] Review & submit
 
 ### 💳 Phase 4: Payments (Week 5-6)
+
 - [ ] Stripe integration
 - [ ] M-Pesa integration
 - [ ] Payment webhooks
 - [ ] Receipt generation
 
 ### 📄 Phase 5: Documents (Week 6-7)
+
 - [ ] File upload
 - [ ] File validation
 - [ ] Document verification
 - [ ] Status tracking
 
 ### 👤 Phase 6: User Dashboard (Week 7-8)
+
 - [ ] Application list
 - [ ] Application details
 - [ ] Document management
 - [ ] Profile settings
 
 ### 🔧 Phase 7: Admin Dashboard (Week 8-9)
+
 - [ ] Application management
 - [ ] Document review
 - [ ] Payment tracking
@@ -606,12 +645,14 @@ npm start  # Production server
 - [ ] Analytics
 
 ### 📧 Phase 8: Notifications (Week 9-10)
+
 - [ ] Email templates
 - [ ] Email automation
 - [ ] SMS notifications (optional)
 - [ ] WhatsApp notifications (optional)
 
 ### 💸 Phase 9: Refunds (Week 10-11)
+
 - [ ] Refund requests
 - [ ] E-Agreement signing
 - [ ] PDF generation
@@ -619,6 +660,7 @@ npm start  # Production server
 - [ ] Admin approval
 
 ### 🚀 Phase 10: Launch (Week 11-12)
+
 - [ ] Testing
 - [ ] Bug fixes
 - [ ] Security audit
@@ -630,15 +672,18 @@ npm start  # Production server
 ## 📞 Support
 
 ### Documentation
+
 - Backend API: See `backend/README.md`
 - Frontend: See `frontend/README.md`
 - Transformation Plan: See `TUNDUA_SAAS_TRANSFORMATION_PLAN.md`
 
 ### Issues
+
 - Report bugs in GitHub Issues
 - Check `/health` endpoint for API status
 
 ### Contact
+
 - Email: support@tundua.com
 - Website: https://tundua.com
 
@@ -681,6 +726,7 @@ Proprietary - All rights reserved
 - ⏳ Refunds
 
 **Next Steps:**
+
 1. Implement authentication system (JWT)
 2. Build application wizard backend
 3. Integrate Stripe payments
@@ -688,4 +734,5 @@ Proprietary - All rights reserved
 5. Build admin panel
 
 Ready to transform Tundua into a revenue-generating SaaS platform! 🚀
->>>>>>> a9e6c2f (Initial commit)
+
+a9e6c2f (Initial commit)

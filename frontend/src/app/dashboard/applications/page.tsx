@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
+import { SkeletonList } from "@/components/ui";
 import AllApplicationsList from "@/components/dashboard/Applications/AllApplicationsList";
 import EmptyApplicationState from "@/components/dashboard/Applications/EmptyApplicationState";
 
@@ -37,8 +38,15 @@ export default function ApplicationsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="space-y-8">
+        {/* Page Header Skeleton */}
+        <div>
+          <div className="h-9 w-64 bg-gray-200 rounded-lg animate-skeleton mb-2" />
+          <div className="h-6 w-96 bg-gray-100 rounded-lg animate-skeleton" />
+        </div>
+
+        {/* Applications List Skeleton */}
+        <SkeletonList items={5} />
       </div>
     );
   }

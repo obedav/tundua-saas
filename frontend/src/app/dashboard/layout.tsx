@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   Home,
@@ -11,7 +12,6 @@ import {
   LogOut,
   Menu,
   X,
-  Globe,
   Bell,
   Settings,
   Shield,
@@ -22,7 +22,8 @@ import {
   BookOpen,
   HelpCircle,
   RotateCcw,
-  Compass
+  Compass,
+  Globe
 } from "lucide-react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/hooks/useAuth";
@@ -86,9 +87,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="flex h-full flex-col">
             {/* Logo */}
             <div className="flex h-16 items-center justify-between px-6 border-b">
-              <Link href="/dashboard" className="flex items-center gap-2">
-                <Globe className="h-8 w-8 text-primary-600" />
-                <span className="text-xl font-bold text-gray-900">Tundua</span>
+              <Link
+                href="/dashboard"
+                className="flex items-center transition-all hover:opacity-80 hover:scale-105 cursor-pointer"
+                title="Dashboard Home"
+              >
+                <Image
+                  src="/images/logo.png"
+                  alt="Tundua Edu Consults"
+                  width={140}
+                  height={47}
+                  className="h-10 w-auto"
+                />
               </Link>
               <button
                 onClick={() => setSidebarOpen(false)}
@@ -100,6 +110,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
             {/* Navigation */}
             <nav className="flex-1 space-y-1 px-3 py-4">
+              {/* Visit Website Link */}
+              <Link
+                href="/"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors border border-gray-200 mb-3"
+                onClick={() => setSidebarOpen(false)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Globe className="h-5 w-5" />
+                Visit Website
+              </Link>
+
               {navigation.map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
                 return (

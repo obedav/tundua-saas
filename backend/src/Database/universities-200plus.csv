@@ -1,0 +1,185 @@
+name,country,city,tuition_min,tuition_max,acceptance_rate,available_on_applyboard,available_on_edvoy,available_on_studygroup,available_on_adventus,applyboard_commission,edvoy_commission,studygroup_commission,adventus_commission,min_gpa,min_ielts,popular,ranking
+"University of Toronto",Canada,Toronto,30000,50000,43.00,1,1,0,1,1500,1200,0,1400,3.0,6.5,1,18
+"McGill University",Canada,Montreal,25000,45000,46.00,1,1,0,1,1500,1200,0,1400,3.2,6.5,1,31
+"University of British Columbia",Canada,Vancouver,28000,48000,52.00,1,1,0,1,1500,1200,0,1400,3.0,6.5,1,34
+"York University",Canada,Toronto,20000,35000,27.00,1,1,0,1,1800,1400,0,1600,2.8,6.0,1,0
+"University of Waterloo",Canada,Waterloo,35000,55000,53.00,1,1,0,1,1500,1200,0,1400,3.3,6.5,1,166
+"Ryerson University",Canada,Toronto,22000,38000,80.00,1,1,0,1,2000,1600,0,1800,2.7,6.0,1,0
+"Concordia University",Canada,Montreal,18000,32000,75.00,1,1,0,1,2000,1500,0,1700,2.5,6.0,1,0
+"University of Alberta",Canada,Edmonton,24000,42000,58.00,1,1,0,1,1600,1300,0,1500,3.0,6.5,1,110
+"University of Ottawa",Canada,Ottawa,26000,44000,41.00,1,1,0,1,1700,1300,0,1500,3.0,6.5,1,230
+"Simon Fraser University",Canada,Burnaby,23000,40000,59.00,1,1,0,1,1800,1400,0,1600,3.0,6.5,1,298
+"Dalhousie University",Canada,Halifax,20000,36000,73.00,1,1,0,1,1900,1500,0,1700,2.8,6.0,1,308
+"University of Manitoba",Canada,Winnipeg,18000,32000,76.00,1,1,0,1,2000,1600,0,1800,2.7,6.0,1,0
+"University of Saskatchewan",Canada,Saskatoon,17000,30000,78.00,1,1,0,1,2100,1700,0,1900,2.6,6.0,1,0
+"Memorial University",Canada,"St. John's",16000,28000,80.00,1,1,0,1,2200,1800,0,2000,2.5,5.5,1,0
+"University of Windsor",Canada,Windsor,19000,34000,77.00,1,1,0,1,2000,1600,0,1800,2.7,6.0,1,0
+"Carleton University",Canada,Ottawa,21000,37000,72.00,1,1,0,1,1900,1500,0,1700,2.8,6.0,1,0
+"University of Victoria",Canada,Victoria,22000,39000,63.00,1,1,0,1,1800,1400,0,1600,2.9,6.5,1,370
+"University of Calgary",Canada,Calgary,23000,41000,60.00,1,1,0,1,1700,1300,0,1500,3.0,6.5,1,235
+"University of Oxford",UK,Oxford,25000,40000,17.50,1,1,0,1,1000,800,0,900,3.7,7.0,1,1
+"University of Cambridge",UK,Cambridge,25000,40000,21.00,1,1,0,1,1000,800,0,900,3.7,7.0,1,2
+"Imperial College London",UK,London,35000,50000,14.30,1,1,0,1,1200,1000,0,1100,3.5,6.5,1,6
+"UCL",UK,London,28000,45000,48.00,1,1,0,1,1400,1100,0,1200,3.3,6.5,1,8
+"University of Edinburgh",UK,Edinburgh,20000,35000,40.00,1,1,0,1,1500,1200,0,1300,3.2,6.5,1,15
+"University of Manchester",UK,Manchester,22000,38000,56.00,1,1,0,1,1800,1400,0,1600,3.0,6.5,1,27
+"King's College London",UK,London,25000,40000,13.00,1,1,0,1,1500,1200,0,1300,3.3,6.5,1,35
+"London School of Economics",UK,London,30000,48000,8.90,1,1,0,1,1200,900,0,1000,3.6,7.0,1,45
+"University of Warwick",UK,Coventry,24000,39000,14.40,1,1,0,1,1600,1200,0,1400,3.4,6.5,1,64
+"University of Bristol",UK,Bristol,23000,38000,62.00,1,1,0,1,1700,1300,0,1500,3.1,6.5,1,55
+"University of Glasgow",UK,Glasgow,20000,34000,75.00,1,1,1,1,1800,1400,3200,1600,2.9,6.0,1,76
+"University of Leeds",UK,Leeds,20000,32000,75.00,1,1,1,1,1800,1500,3500,1700,2.8,6.0,1,86
+"University of Sheffield",UK,Sheffield,18000,30000,78.00,1,1,1,1,1800,1500,3500,1700,2.8,6.0,1,96
+"University of Birmingham",UK,Birmingham,21000,36000,70.00,1,1,1,1,1800,1400,3300,1600,2.9,6.5,1,84
+"University of Southampton",UK,Southampton,22000,37000,64.00,1,1,0,1,1700,1300,0,1500,3.0,6.5,1,78
+"University of Nottingham",UK,Nottingham,20000,35000,72.00,1,1,1,1,1800,1400,3400,1600,2.9,6.0,1,100
+"Durham University",UK,Durham,24000,39000,40.00,1,1,0,1,1600,1200,0,1400,3.2,6.5,1,92
+"Queen Mary University",UK,London,22000,38000,47.00,1,1,0,1,1800,1400,0,1600,3.0,6.5,1,117
+"University of Exeter",UK,Exeter,21000,36000,77.00,1,1,1,1,1900,1500,3600,1700,2.8,6.0,1,163
+"University of York",UK,York,20000,34000,68.00,1,1,0,1,1800,1400,0,1600,2.9,6.5,1,162
+"Lancaster University",UK,Lancaster,21000,35000,78.00,1,1,1,1,1900,1500,3700,1700,2.8,6.0,1,122
+"University of Bath",UK,Bath,23000,38000,67.00,1,1,0,1,1700,1300,0,1500,3.0,6.5,1,148
+"University of Liverpool",UK,Liverpool,19000,33000,77.00,1,1,1,1,1900,1500,3600,1700,2.8,6.0,1,190
+"Newcastle University",UK,Newcastle,20000,35000,73.00,1,1,1,1,1800,1400,3500,1600,2.8,6.0,1,134
+"Cardiff University",UK,Cardiff,19000,32000,78.00,1,1,1,1,1900,1500,3700,1700,2.7,6.0,1,154
+"University of Reading",UK,Reading,18000,31000,80.00,1,1,1,1,2000,1600,3800,1800,2.7,6.0,1,202
+"University of Sussex",UK,Brighton,20000,34000,74.00,1,1,1,1,1900,1500,3600,1700,2.8,6.0,1,218
+"Loughborough University",UK,Loughborough,21000,35000,76.00,1,1,1,1,1900,1500,3700,1700,2.8,6.0,1,256
+"University of Leicester",UK,Leicester,19000,33000,79.00,1,1,1,1,2000,1600,3800,1800,2.7,6.0,1,279
+"University of Surrey",UK,Guildford,20000,35000,75.00,1,1,1,1,1900,1500,3700,1700,2.8,6.0,1,267
+"University of Strathclyde",UK,Glasgow,18000,31000,81.00,1,1,1,1,2000,1600,3900,1800,2.7,5.5,1,325
+"University of East Anglia",UK,Norwich,19000,33000,78.00,1,1,1,1,1900,1500,3800,1700,2.7,6.0,1,307
+"Coventry University",UK,Coventry,15000,25000,85.00,1,1,1,1,2200,1800,4000,2000,2.5,6.0,1,0
+"De Montfort University",UK,Leicester,14000,22000,88.00,1,1,1,1,2500,2000,4500,2200,2.3,5.5,1,0
+"Northumbria University",UK,Newcastle,16000,26000,82.00,1,1,1,1,2200,1800,4000,2000,2.6,6.0,1,0
+"Kingston University",UK,London,15000,24000,85.00,1,1,1,1,2300,1900,4200,2100,2.5,5.5,1,0
+"University of Huddersfield",UK,Huddersfield,14000,22000,87.00,1,1,1,1,2500,2000,4500,2200,2.4,5.5,1,0
+"Anglia Ruskin University",UK,Cambridge,13000,20000,90.00,1,1,1,1,2800,2200,5000,2400,2.2,5.5,1,0
+"Teesside University",UK,Middlesbrough,13000,20000,89.00,1,1,1,1,2700,2100,4800,2300,2.3,5.5,1,0
+"University of West London",UK,London,14000,23000,86.00,1,1,1,1,2600,2100,4500,2200,2.4,5.5,1,0
+"University of Hertfordshire",UK,Hatfield,15000,24000,84.00,1,1,1,1,2400,1900,4300,2100,2.5,6.0,1,0
+"University of Westminster",UK,London,16000,26000,83.00,1,1,1,1,2300,1800,4100,2000,2.6,6.0,1,0
+"Middlesex University",UK,London,15000,25000,85.00,1,1,1,1,2400,1900,4200,2100,2.5,5.5,1,0
+"University of Greenwich",UK,London,15000,24000,86.00,1,1,1,1,2500,2000,4400,2200,2.4,5.5,1,0
+"University of Bedfordshire",UK,Luton,13000,21000,88.00,1,1,1,1,2700,2200,4700,2300,2.3,5.5,1,0
+"University of Sunderland",UK,Sunderland,13000,20000,89.00,1,1,1,1,2800,2200,4900,2400,2.2,5.5,1,0
+"Sheffield Hallam University",UK,Sheffield,15000,24000,85.00,1,1,1,1,2400,1900,4300,2100,2.5,6.0,1,0
+"Manchester Metropolitan University",UK,Manchester,15000,25000,84.00,1,1,1,1,2400,1900,4200,2100,2.5,6.0,1,0
+"Birmingham City University",UK,Birmingham,14000,23000,86.00,1,1,1,1,2500,2000,4400,2200,2.4,5.5,1,0
+"University of Plymouth",UK,Plymouth,15000,24000,85.00,1,1,1,1,2400,1900,4300,2100,2.5,6.0,1,0
+"University of Portsmouth",UK,Portsmouth,16000,26000,82.00,1,1,1,1,2300,1800,4100,2000,2.6,6.0,1,0
+"Bournemouth University",UK,Bournemouth,16000,25000,83.00,1,1,1,1,2300,1800,4100,2000,2.6,6.0,1,0
+"Brunel University",UK,London,18000,30000,80.00,1,1,1,1,2100,1700,3900,1900,2.7,6.0,1,0
+"Oxford Brookes University",UK,Oxford,17000,28000,81.00,1,1,1,1,2200,1800,4000,2000,2.6,6.0,1,0
+"Robert Gordon University",UK,Aberdeen,14000,23000,86.00,1,1,1,1,2500,2000,4400,2200,2.4,5.5,1,0
+"University of Salford",UK,Salford,14000,23000,87.00,1,1,1,1,2500,2000,4500,2200,2.4,5.5,1,0
+"Harvard University",USA,Cambridge,50000,60000,3.40,1,1,0,0,1000,800,0,0,3.9,7.5,1,1
+"Stanford University",USA,Stanford,55000,65000,3.90,1,1,0,0,1000,800,0,0,3.9,7.5,1,3
+"MIT",USA,Cambridge,53000,63000,3.20,1,1,0,0,1000,800,0,0,3.9,7.5,1,2
+"Yale University",USA,"New Haven",57000,67000,4.60,1,1,0,0,1000,800,0,0,3.9,7.5,1,9
+"Columbia University",USA,"New York",60000,70000,3.70,1,1,0,0,1000,800,0,0,3.8,7.0,1,18
+"University of Pennsylvania",USA,Philadelphia,58000,68000,5.90,1,1,0,0,1200,900,0,0,3.8,7.0,1,12
+"Cornell University",USA,Ithaca,55000,65000,8.70,1,1,0,0,1500,1200,0,0,3.7,7.0,1,16
+"University of California Berkeley",USA,Berkeley,45000,55000,14.50,1,1,0,0,1500,1200,0,0,3.7,7.0,1,4
+"UCLA",USA,"Los Angeles",43000,53000,10.80,1,1,0,0,1400,1100,0,0,3.8,7.0,1,20
+"University of Southern California",USA,"Los Angeles",58000,68000,11.00,1,1,0,0,1500,1200,0,0,3.6,7.0,1,27
+"New York University",USA,"New York",55000,65000,12.20,1,1,0,0,1800,1400,0,0,3.5,6.5,1,30
+"Boston University",USA,Boston,55000,65000,18.30,1,1,0,0,2000,1600,0,0,3.3,6.5,1,43
+"Northeastern University",USA,Boston,52000,62000,18.10,1,1,0,0,2000,1600,0,0,3.4,6.5,1,53
+"University of Michigan",USA,"Ann Arbor",48000,58000,20.20,1,1,0,0,1600,1300,0,0,3.5,6.5,1,23
+"Carnegie Mellon University",USA,Pittsburgh,56000,66000,13.00,1,1,0,0,1400,1100,0,0,3.7,7.0,1,28
+"University of Washington",USA,Seattle,38000,48000,48.00,1,1,0,0,1800,1400,0,0,3.2,6.5,1,63
+"University of Illinois Urbana",USA,Urbana,32000,42000,60.00,1,1,0,0,1900,1500,0,0,3.1,6.5,1,67
+"Georgia Institute of Technology",USA,Atlanta,33000,43000,19.00,1,1,0,0,1600,1300,0,0,3.5,6.5,1,44
+"University of Texas Austin",USA,Austin,38000,48000,31.80,1,1,0,0,1700,1300,0,0,3.3,6.5,1,67
+"University of Wisconsin Madison",USA,Madison,36000,46000,53.90,1,1,0,0,1800,1400,0,0,3.2,6.5,1,45
+"Ohio State University",USA,Columbus,32000,42000,68.00,1,1,0,0,1900,1500,0,0,3.0,6.0,1,77
+"Pennsylvania State University",USA,"State College",35000,45000,55.20,1,1,0,0,1800,1400,0,0,3.1,6.5,1,83
+"Purdue University",USA,"West Lafayette",33000,43000,69.00,1,1,0,0,1900,1500,0,0,3.0,6.0,1,116
+"University of Florida",USA,Gainesville,28000,38000,37.00,1,1,0,0,1700,1300,0,0,3.3,6.5,1,28
+"University of Maryland",USA,"College Park",36000,46000,51.00,1,1,0,0,1800,1400,0,0,3.2,6.5,1,51
+"University of Minnesota",USA,Minneapolis,33000,43000,76.00,1,1,0,0,2000,1600,0,0,2.9,6.0,1,53
+"University of North Carolina",USA,"Chapel Hill",34000,44000,19.20,1,1,0,0,1600,1200,0,0,3.5,6.5,1,29
+"University of Virginia",USA,Charlottesville,50000,60000,19.30,1,1,0,0,1600,1200,0,0,3.5,6.5,1,25
+"Arizona State University",USA,Tempe,28000,38000,88.00,1,1,0,0,2200,1800,0,0,2.5,6.0,1,179
+"University of Arizona",USA,Tucson,30000,40000,87.00,1,1,0,0,2200,1700,0,0,2.6,6.0,1,246
+"Indiana University Bloomington",USA,Bloomington,35000,45000,82.00,1,1,0,0,2100,1700,0,0,2.8,6.0,1,68
+"Michigan State University",USA,"East Lansing",38000,48000,88.00,1,1,0,0,2200,1800,0,0,2.7,6.0,1,157
+"University of South Florida",USA,Tampa,17000,27000,49.00,1,1,0,0,1800,1400,0,0,3.1,6.0,1,97
+"University of Central Florida",USA,Orlando,22000,32000,44.00,1,1,0,0,1800,1400,0,0,3.2,6.5,1,160
+"Florida International University",USA,Miami,18000,28000,64.00,1,1,0,0,1900,1500,0,0,3.0,6.0,1,281
+"George Mason University",USA,Fairfax,33000,43000,90.00,1,1,0,0,2300,1900,0,0,2.5,6.0,1,221
+"Drexel University",USA,Philadelphia,52000,62000,80.00,1,1,0,0,2100,1700,0,0,2.8,6.0,1,98
+"Rochester Institute of Technology",USA,Rochester,48000,58000,67.00,1,1,0,0,2000,1600,0,0,3.0,6.5,1,112
+"Syracuse University",USA,Syracuse,54000,64000,52.00,1,1,0,0,1900,1500,0,0,3.2,6.5,1,105
+"University of Sydney",Australia,Sydney,25000,40000,30.30,1,1,0,1,1500,1200,0,1300,3.0,6.5,1,41
+"University of Melbourne",Australia,Melbourne,28000,45000,26.00,1,1,0,1,1500,1200,0,1300,3.2,6.5,1,14
+"Australian National University",Australia,Canberra,30000,48000,35.00,1,1,0,1,1500,1200,0,1300,3.3,6.5,1,30
+"University of Queensland",Australia,Brisbane,26000,42000,45.00,1,1,0,1,1800,1400,0,1600,3.0,6.5,1,50
+"Monash University",Australia,Melbourne,27000,43000,40.00,1,1,0,1,1800,1400,0,1600,3.0,6.5,1,42
+"University of New South Wales",Australia,Sydney,30000,48000,28.00,1,1,0,1,1500,1200,0,1300,3.2,6.5,1,19
+"University of Western Australia",Australia,Perth,26000,42000,70.00,1,1,0,1,1900,1500,0,1700,2.9,6.0,1,72
+"University of Adelaide",Australia,Adelaide,25000,40000,75.00,1,1,0,1,2000,1600,0,1800,2.8,6.0,1,89
+"University of Technology Sydney",Australia,Sydney,28000,44000,58.00,1,1,0,1,1800,1400,0,1600,3.1,6.5,1,90
+"Queensland University of Technology",Australia,Brisbane,24000,38000,65.00,1,1,0,1,1900,1500,0,1700,3.0,6.0,1,189
+"RMIT University",Australia,Melbourne,24000,39000,72.00,1,1,0,1,2000,1600,0,1800,2.9,6.0,1,238
+"Macquarie University",Australia,Sydney,26000,41000,68.00,1,1,0,1,1900,1500,0,1700,3.0,6.5,1,195
+"Curtin University",Australia,Perth,23000,37000,73.00,1,1,0,1,2000,1600,0,1800,2.9,6.0,1,193
+"Deakin University",Australia,Melbourne,24000,38000,70.00,1,1,0,1,2000,1600,0,1800,2.9,6.0,1,266
+"La Trobe University",Australia,Melbourne,23000,36000,74.00,1,1,0,1,2100,1700,0,1900,2.8,6.0,1,316
+"Griffith University",Australia,Brisbane,23000,37000,71.00,1,1,0,1,2000,1600,0,1800,2.9,6.0,1,300
+"University of Wollongong",Australia,Wollongong,24000,38000,69.00,1,1,0,1,2000,1600,0,1800,3.0,6.0,1,185
+"Western Sydney University",Australia,Sydney,20000,32000,75.00,1,1,0,1,2500,2000,0,2200,2.5,6.0,1,0
+"Victoria University",Australia,Melbourne,18000,28000,80.00,1,1,0,1,2800,2200,0,2400,2.3,5.5,1,0
+"Edith Cowan University",Australia,Perth,20000,33000,76.00,1,1,0,1,2400,1900,0,2100,2.6,6.0,1,0
+"University of Canberra",Australia,Canberra,22000,35000,74.00,1,1,0,1,2200,1800,0,2000,2.7,6.0,1,0
+"Federation University Australia",Australia,Ballarat,18000,29000,81.00,1,1,0,1,2600,2100,0,2300,2.4,5.5,1,0
+"Charles Sturt University",Australia,Bathurst,19000,30000,79.00,1,1,0,1,2500,2000,0,2200,2.5,6.0,1,0
+"Southern Cross University",Australia,Lismore,20000,32000,77.00,1,1,0,1,2400,1900,0,2100,2.6,6.0,1,0
+"University of Amsterdam",Netherlands,Amsterdam,10000,18000,25.00,0,1,0,1,0,1200,0,1100,3.0,6.5,1,53
+"Delft University of Technology",Netherlands,Delft,12000,20000,22.00,0,1,0,1,0,1200,0,1100,3.2,6.5,1,47
+"Utrecht University",Netherlands,Utrecht,10000,18000,30.00,0,1,0,1,0,1200,0,1100,3.0,6.5,1,104
+"Leiden University",Netherlands,Leiden,11000,19000,28.00,0,1,0,1,0,1200,0,1100,3.1,6.5,1,109
+"Erasmus University Rotterdam",Netherlands,Rotterdam,11000,19000,35.00,0,1,0,1,0,1300,0,1200,3.0,6.5,1,153
+"University of Groningen",Netherlands,Groningen,10000,17000,50.00,0,1,0,1,0,1400,0,1300,2.9,6.0,1,120
+"Maastricht University",Netherlands,Maastricht,11000,18000,45.00,0,1,0,1,0,1400,0,1300,2.9,6.5,1,234
+"Eindhoven University of Technology",Netherlands,Eindhoven,12000,20000,38.00,0,1,0,1,0,1300,0,1200,3.0,6.5,1,119
+"Vrije Universiteit Amsterdam",Netherlands,Amsterdam,11000,18000,42.00,0,1,0,1,0,1300,0,1200,3.0,6.5,1,207
+"Wageningen University",Netherlands,Wageningen,12000,19000,32.00,0,1,0,1,0,1200,0,1100,3.1,6.5,1,59
+"Trinity College Dublin",Ireland,Dublin,15000,25000,35.00,1,1,0,1,1800,1400,0,1600,3.0,6.5,1,101
+"University College Dublin",Ireland,Dublin,15000,25000,42.00,1,1,0,1,1800,1400,0,1600,3.0,6.5,1,171
+"National University of Ireland Galway",Ireland,Galway,13000,22000,65.00,1,1,0,1,2200,1700,0,1900,2.8,6.0,1,270
+"Dublin City University",Ireland,Dublin,14000,23000,55.00,1,1,0,1,2000,1600,0,1800,2.9,6.0,1,439
+"University of Limerick",Ireland,Limerick,12000,20000,70.00,1,1,0,1,2500,2000,0,2200,2.7,6.0,1,426
+"Cork Institute of Technology",Ireland,Cork,11000,18000,75.00,1,1,0,1,2600,2100,0,2300,2.6,5.5,1,0
+"Maynooth University",Ireland,Maynooth,13000,21000,68.00,1,1,0,1,2400,1900,0,2100,2.8,6.0,1,0
+"Technological University Dublin",Ireland,Dublin,12000,20000,72.00,1,1,0,1,2500,2000,0,2200,2.7,6.0,1,0
+"Griffith College Dublin",Ireland,Dublin,10000,17000,80.00,1,1,0,1,2700,2200,0,2400,2.5,5.5,1,0
+"Dublin Business School",Ireland,Dublin,9000,15000,85.00,1,1,0,1,2900,2400,0,2600,2.3,5.5,1,0
+"University of Auckland",New Zealand,Auckland,24000,38000,45.00,1,1,0,1,1700,1300,0,1500,3.0,6.5,1,68
+"University of Otago",New Zealand,Dunedin,23000,36000,56.00,1,1,0,1,1800,1400,0,1600,2.9,6.0,1,201
+"Victoria University of Wellington",New Zealand,Wellington,22000,35000,63.00,1,1,0,1,1900,1500,0,1700,2.8,6.0,1,236
+"University of Canterbury",New Zealand,Christchurch,21000,34000,65.00,1,1,0,1,2000,1600,0,1800,2.8,6.0,1,284
+"Massey University",New Zealand,Palmerston North,20000,32000,71.00,1,1,0,1,2100,1700,0,1900,2.7,6.0,1,292
+"Auckland University of Technology",New Zealand,Auckland,22000,35000,68.00,1,1,0,1,2000,1600,0,1800,2.8,6.0,1,407
+"University of Waikato",New Zealand,Hamilton,20000,31000,74.00,1,1,0,1,2200,1800,0,2000,2.7,6.0,1,0
+"Lincoln University",New Zealand,Lincoln,19000,30000,76.00,1,1,0,1,2300,1900,0,2100,2.6,5.5,1,0
+"KU Leuven",Belgium,Leuven,8000,14000,23.00,0,1,0,1,0,1100,0,1000,3.2,6.5,1,42
+"Ghent University",Belgium,Ghent,7000,12000,35.00,0,1,0,1,0,1200,0,1100,3.0,6.5,1,135
+"University of Antwerp",Belgium,Antwerp,7000,12000,45.00,0,1,0,1,0,1300,0,1200,2.9,6.0,1,198
+"Vrije Universiteit Brussel",Belgium,Brussels,8000,13000,40.00,0,1,0,1,0,1200,0,1100,3.0,6.5,1,191
+"University of Zurich",Switzerland,Zurich,1500,3000,19.00,0,1,0,1,0,900,0,800,3.5,7.0,1,70
+"ETH Zurich",Switzerland,Zurich,1500,3000,8.00,0,1,0,1,0,800,0,700,3.7,7.0,1,7
+"University of Geneva",Switzerland,Geneva,1000,2500,35.00,0,1,0,1,0,1000,0,900,3.2,6.5,1,49
+"University of Lausanne",Switzerland,Lausanne,1200,2800,30.00,0,1,0,1,0,1000,0,900,3.3,6.5,1,176
+"University of Bern",Switzerland,Bern,1300,2900,28.00,0,1,0,1,0,1000,0,900,3.3,6.5,1,119
+"University of Basel",Switzerland,Basel,1400,3000,32.00,0,1,0,1,0,1000,0,900,3.2,6.5,1,136
+"Technical University of Munich",Germany,Munich,300,1500,8.00,0,1,0,1,0,700,0,600,3.5,6.5,1,37
+"Ludwig Maximilian University",Germany,Munich,300,1500,15.00,0,1,0,1,0,800,0,700,3.3,6.5,1,54
+"Heidelberg University",Germany,Heidelberg,300,1500,12.00,0,1,0,1,0,800,0,700,3.4,6.5,1,57
+"Humboldt University of Berlin",Germany,Berlin,300,1500,18.00,0,1,0,1,0,900,0,800,3.2,6.5,1,117
+"Free University of Berlin",Germany,Berlin,300,1500,20.00,0,1,0,1,0,900,0,800,3.2,6.5,1,118
+"RWTH Aachen University",Germany,Aachen,300,1500,10.00,0,1,0,1,0,800,0,700,3.4,6.5,1,99
+"University of Freiburg",Germany,Freiburg,300,1500,25.00,0,1,0,1,0,1000,0,900,3.1,6.5,1,172
+"University of Göttingen",Germany,Göttingen,300,1500,22.00,0,1,0,1,0,900,0,800,3.2,6.5,1,214
+"University of Bonn",Germany,Bonn,300,1500,17.00,0,1,0,1,0,900,0,800,3.3,6.5,1,200

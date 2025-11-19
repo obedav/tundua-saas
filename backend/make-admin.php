@@ -1,53 +1,56 @@
 <?php
-
-require __DIR__ . '/vendor/autoload.php';
-
+require_once __DIR__ . '/vendor/autoload.php';
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Dotenv\Dotenv;
 
-// Load environment variables
-$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-// Database connection
-$host = $_ENV['DB_HOST'] ?? 'localhost';
-$database = $_ENV['DB_DATABASE'] ?? 'tundua_saas';
-$username = $_ENV['DB_USERNAME'] ?? 'root';
-$password = $_ENV['DB_PASSWORD'] ?? '';
+$capsule = new Capsule;
+$capsule->addConnection([
+    'driver' => 'mysql',
+    'host' => $_ENV['DB_HOST'],
+    'database' => $_ENV['DB_DATABASE'],
+    'username' => $_ENV['DB_USERNAME'],
+    'password' => $_ENV['DB_PASSWORD'],
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
+]);
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$database", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$email = $argv[1] ?? null;
 
-    // Get email from command line or use a default
-    $email = $argv[1] ?? null;
+echo "========================================\n";
+echo "Make User Admin\n";
+echo "========================================\n\n";
 
-    if (!$email) {
-        echo "Usage: php make-admin.php user@example.com\n";
-        exit(1);
+if (!$email) {
+    echo "Current users:\n\n";
+    $users = Capsule::table('users')->select('id', 'email', 'first_name', 'last_name', 'role')->get();
+    
+    foreach ($users as $user) {
+        $roleLabel = $user->role === 'admin' ? '✅ ADMIN' : '👤 User';
+        echo "  {$user->first_name} {$user->last_name} ({$user->email}) - {$roleLabel}\n";
     }
+    
+    echo "\nUsage: php make-admin.php email@example.com\n";
+    exit(0);
+}
 
-    // Update user role to admin
-    $stmt = $pdo->prepare("UPDATE users SET role = 'admin' WHERE email = :email");
-    $stmt->execute(['email' => $email]);
+$user = Capsule::table('users')->where('email', $email)->first();
 
-    if ($stmt->rowCount() > 0) {
-        echo "✅ User $email is now an admin!\n";
-
-        // Fetch and display user info
-        $stmt = $pdo->prepare("SELECT id, first_name, last_name, email, role FROM users WHERE email = :email");
-        $stmt->execute(['email' => $email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        echo "\nUser Details:\n";
-        echo "ID: {$user['id']}\n";
-        echo "Name: {$user['first_name']} {$user['last_name']}\n";
-        echo "Email: {$user['email']}\n";
-        echo "Role: {$user['role']}\n";
-    } else {
-        echo "❌ User with email $email not found!\n";
-    }
-
-} catch (PDOException $e) {
-    echo "❌ Database error: " . $e->getMessage() . "\n";
+if (!$user) {
+    echo "❌ User not found: {$email}\n";
     exit(1);
 }
+
+if ($user->role === 'admin') {
+    echo "✅ Already admin: {$email}\n";
+    exit(0);
+}
+
+Capsule::table('users')->where('email', $email)->update(['role' => 'admin']);
+
+echo "✅ SUCCESS! {$user->first_name} {$user->last_name} is now an admin!\n\n";
+echo "IMPORTANT: Logout and login again to see changes!\n";

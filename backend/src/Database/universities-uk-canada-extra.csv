@@ -1,0 +1,87 @@
+name,country,city,tuition_min,tuition_max,acceptance_rate,available_on_applyboard,available_on_edvoy,available_on_studygroup,available_on_adventus,applyboard_commission,edvoy_commission,studygroup_commission,adventus_commission,min_gpa,min_ielts,popular,ranking
+"University of Essex",UK,Colchester,16000,27000,81.00,1,1,1,1,2200,1800,4000,2000,2.7,6.0,1,465
+"Keele University",UK,Keele,15000,25000,82.00,1,1,1,1,2300,1900,4100,2100,2.6,6.0,1,401
+"University of Hull",UK,Hull,14000,24000,83.00,1,1,1,1,2400,2000,4200,2200,2.6,5.5,1,651
+"Edge Hill University",UK,Ormskirk,13000,22000,84.00,1,1,1,1,2500,2100,4400,2300,2.5,5.5,1,801
+"Liverpool Hope University",UK,Liverpool,13000,21000,85.00,1,1,1,1,2600,2200,4500,2400,2.4,5.5,1,801
+"University of Roehampton",UK,London,15000,25000,82.00,1,1,1,1,2400,2000,4200,2200,2.6,6.0,1,801
+"Canterbury Christ Church University",UK,Canterbury,14000,23000,84.00,1,1,1,1,2500,2100,4400,2300,2.5,5.5,1,801
+"University of Chichester",UK,Chichester,13000,22000,85.00,1,1,1,1,2600,2200,4500,2400,2.4,5.5,1,801
+"University of Winchester",UK,Winchester,14000,23000,83.00,1,1,1,1,2500,2100,4300,2300,2.5,5.5,1,801
+"York St John University",UK,York,13000,22000,84.00,1,1,1,1,2500,2100,4400,2300,2.5,5.5,1,801
+"University of Worcester",UK,Worcester,13000,21000,85.00,1,1,1,1,2600,2200,4500,2400,2.4,5.5,1,801
+"Bishop Grosseteste University",UK,Lincoln,12000,20000,86.00,1,1,1,1,2700,2300,4700,2500,2.3,5.5,1,801
+"Newman University",UK,Birmingham,12000,20000,87.00,1,1,1,1,2800,2400,4800,2600,2.3,5.5,1,801
+"St Mary's University",UK,Twickenham,14000,23000,84.00,1,1,1,1,2500,2100,4400,2300,2.5,5.5,1,801
+"University of Cumbria",UK,Carlisle,13000,21000,85.00,1,1,1,1,2600,2200,4500,2400,2.4,5.5,1,801
+"University of Northampton",UK,Northampton,14000,22000,84.00,1,1,1,1,2500,2100,4400,2300,2.5,5.5,1,801
+"University of Suffolk",UK,Ipswich,13000,21000,86.00,1,1,1,1,2600,2200,4600,2400,2.4,5.5,1,801
+"Wrexham University",UK,Wrexham,12000,20000,87.00,1,1,1,1,2700,2300,4700,2500,2.3,5.5,1,801
+"University of South Wales",UK,Pontypridd,13000,21000,86.00,1,1,1,1,2600,2200,4600,2400,2.4,5.5,1,801
+"Glyndwr University",UK,Wrexham,12000,20000,88.00,1,1,1,1,2800,2400,4900,2600,2.3,5.5,1,801
+"Buckinghamshire New University",UK,"High Wycombe",13000,21000,86.00,1,1,1,1,2600,2200,4600,2400,2.4,5.5,1,801
+"University of East London",UK,London,14000,23000,84.00,1,1,1,1,2500,2100,4400,2300,2.5,5.5,1,801
+"London Metropolitan University",UK,London,13000,22000,85.00,1,1,1,1,2600,2200,4500,2400,2.4,5.5,1,801
+"University of West of Scotland",UK,Paisley,13000,21000,86.00,1,1,1,1,2600,2200,4600,2400,2.4,5.5,1,801
+"Abertay University",UK,Dundee,13000,21000,86.00,1,1,1,1,2600,2200,4600,2400,2.4,5.5,1,801
+"Queen Margaret University",UK,Edinburgh,14000,23000,84.00,1,1,1,1,2500,2100,4400,2300,2.5,5.5,1,801
+"University of the Highlands & Islands",UK,Inverness,12000,20000,87.00,1,1,1,1,2700,2300,4700,2500,2.3,5.5,1,801
+"Aberystwyth University",UK,Aberystwyth,14000,23000,83.00,1,1,1,1,2500,2100,4300,2300,2.5,6.0,1,485
+"University of Wales Trinity Saint David",UK,Swansea,12000,20000,88.00,1,1,1,1,2800,2400,4900,2600,2.3,5.5,1,801
+"Harper Adams University",UK,Newport,15000,24000,82.00,1,1,1,1,2400,2000,4200,2200,2.6,6.0,1,801
+"Writtle University College",UK,Chelmsford,13000,21000,86.00,1,1,1,1,2600,2200,4600,2400,2.4,5.5,1,801
+"Royal Agricultural University",UK,Cirencester,14000,23000,84.00,1,1,1,1,2500,2100,4400,2300,2.5,5.5,1,801
+"Falmouth University",UK,Falmouth,15000,24000,83.00,1,1,1,1,2400,2000,4300,2200,2.6,6.0,1,801
+"Arts University Bournemouth",UK,Poole,16000,25000,81.00,1,1,1,1,2300,1900,4100,2100,2.7,6.0,1,801
+"Norwich University of the Arts",UK,Norwich,15000,24000,82.00,1,1,1,1,2400,2000,4200,2200,2.6,6.0,1,801
+"University of Creative Arts",UK,Farnham,15000,25000,82.00,1,1,1,1,2400,2000,4200,2200,2.6,6.0,1,801
+"University for the Creative Arts",UK,Canterbury,15000,24000,83.00,1,1,1,1,2400,2000,4300,2200,2.6,6.0,1,801
+"Rose Bruford College",UK,Sidcup,16000,26000,80.00,1,1,0,1,2300,1900,0,2100,2.7,6.0,1,801
+"Guildhall School of Music & Drama",UK,London,20000,32000,75.00,1,1,0,1,2000,1600,0,1800,2.9,6.5,1,801
+"Royal Academy of Music",UK,London,22000,35000,72.00,1,1,0,1,1900,1500,0,1700,3.0,6.5,1,801
+"Leeds Arts University",UK,Leeds,15000,24000,83.00,1,1,1,1,2400,2000,4300,2200,2.6,6.0,1,801
+"Ravensbourne University",UK,London,16000,26000,81.00,1,1,1,1,2300,1900,4100,2100,2.7,6.0,1,801
+"University of the Arts London",UK,London,19000,32000,76.00,1,1,0,1,2100,1700,0,1900,2.8,6.0,1,2
+"Courtauld Institute of Art",UK,London,20000,33000,74.00,1,1,0,1,2000,1600,0,1800,2.9,6.5,1,801
+"Goldsmiths University of London",UK,London,17000,29000,79.00,1,1,1,1,2200,1800,4000,2000,2.7,6.0,1,461
+"SOAS University of London",UK,London,18000,31000,77.00,1,1,0,1,2100,1700,0,1900,2.8,6.0,1,403
+"Royal Holloway University of London",UK,Egham,19000,33000,76.00,1,1,1,1,2000,1600,3900,1800,2.8,6.0,1,376
+"Birkbeck University of London",UK,London,16000,28000,80.00,1,1,1,1,2200,1800,4000,2000,2.7,6.0,1,413
+"St George's University of London",UK,London,22000,38000,70.00,1,1,0,1,1900,1500,0,1700,2.9,6.5,1,701
+"London School of Hygiene & Tropical Medicine",UK,London,24000,40000,65.00,1,1,0,1,1800,1400,0,1600,3.0,6.5,1,23
+"Royal Veterinary College",UK,London,25000,42000,60.00,1,1,0,1,1800,1400,0,1600,3.1,6.5,1,241
+"Vancouver Island University",Canada,Nanaimo,16000,28000,79.00,1,1,0,1,2100,1700,0,1900,2.6,6.0,1,801
+"Mount Royal University",Canada,Calgary,17000,29000,78.00,1,1,0,1,2100,1700,0,1900,2.7,6.0,1,801
+"Emily Carr University",Canada,Vancouver,16000,27000,80.00,1,1,0,1,2200,1800,0,2000,2.6,6.0,1,801
+"OCAD University",Canada,Toronto,18000,30000,77.00,1,1,0,1,2100,1700,0,1900,2.7,6.0,1,801
+"MacEwan University",Canada,Edmonton,17000,29000,78.00,1,1,0,1,2100,1700,0,1900,2.7,6.0,1,801
+"Mount Saint Vincent University",Canada,Halifax,16000,27000,80.00,1,1,0,1,2200,1800,0,2000,2.6,5.5,1,801
+"Saint Mary's University",Canada,Halifax,17000,29000,78.00,1,1,0,1,2100,1700,0,1900,2.7,6.0,1,801
+"Acadia University",Canada,Wolfville,19000,32000,75.00,1,1,0,1,2000,1600,0,1800,2.8,6.0,1,801
+"St. Francis Xavier University",Canada,Antigonish,18000,31000,76.00,1,1,0,1,2100,1700,0,1900,2.7,6.0,1,801
+"Bishop's University",Canada,Sherbrooke,19000,32000,75.00,1,1,0,1,2000,1600,0,1800,2.8,6.0,1,801
+"Trent University",Canada,Peterborough,20000,34000,74.00,1,1,0,1,2000,1600,0,1800,2.8,6.0,1,801
+"Laurentian University",Canada,Sudbury,17000,29000,78.00,1,1,0,1,2100,1700,0,1900,2.7,6.0,1,801
+"Nipissing University",Canada,"North Bay",17000,28000,79.00,1,1,0,1,2200,1800,0,2000,2.6,6.0,1,801
+"Brandon University",Canada,Brandon,16000,27000,80.00,1,1,0,1,2200,1800,0,2000,2.6,5.5,1,801
+"University of Lethbridge",Canada,Lethbridge,18000,30000,77.00,1,1,0,1,2100,1700,0,1900,2.7,6.0,1,801
+"Mount Allison University",Canada,Sackville,20000,33000,73.00,1,1,0,1,2000,1600,0,1800,2.8,6.0,1,801
+"St. Thomas University",Canada,Fredericton,18000,30000,76.00,1,1,0,1,2100,1700,0,1900,2.7,6.0,1,801
+"University of Prince Edward Island",Canada,Charlottetown,17000,29000,78.00,1,1,0,1,2100,1700,0,1900,2.7,6.0,1,801
+"University of Northern British Columbia",Canada,"Prince George",18000,30000,76.00,1,1,0,1,2100,1700,0,1900,2.7,6.0,1,801
+"Trinity Western University",Canada,Langley,22000,36000,72.00,1,1,0,1,1900,1500,0,1700,2.9,6.5,1,801
+"Quest University",Canada,Squamish,25000,40000,68.00,1,1,0,1,1900,1500,0,1700,3.0,6.5,1,801
+"Royal Roads University",Canada,Victoria,20000,34000,74.00,1,1,0,1,2000,1600,0,1800,2.8,6.0,1,801
+"Kwantlen Polytechnic University",Canada,Surrey,15000,26000,81.00,1,1,0,1,2300,1900,0,2100,2.6,5.5,1,801
+"Capilano University",Canada,"North Vancouver",16000,27000,80.00,1,1,0,1,2200,1800,0,2000,2.6,6.0,1,801
+"Douglas College",Canada,"New Westminster",13000,22000,84.00,1,1,0,1,2600,2200,0,2400,2.4,5.5,1,801
+"Langara College",Canada,Vancouver,13000,21000,85.00,1,1,0,1,2700,2300,0,2500,2.3,5.5,1,801
+"College of the Rockies",Canada,Cranbrook,12000,20000,86.00,1,1,0,1,2800,2400,0,2600,2.3,5.5,1,801
+"Okanagan College",Canada,Kelowna,13000,21000,85.00,1,1,0,1,2700,2300,0,2500,2.4,5.5,1,801
+"Camosun College",Canada,Victoria,13000,21000,85.00,1,1,0,1,2700,2300,0,2500,2.4,5.5,1,801
+"VIU",Canada,Nanaimo,14000,23000,83.00,1,1,0,1,2500,2100,0,2300,2.5,5.5,1,801
+"Red River College",Canada,Winnipeg,13000,22000,84.00,1,1,0,1,2600,2200,0,2400,2.4,5.5,1,801
+"SAIT",Canada,Calgary,14000,23000,83.00,1,1,0,1,2500,2100,0,2300,2.5,5.5,1,801
+"NAIT",Canada,Edmonton,13000,22000,84.00,1,1,0,1,2600,2200,0,2400,2.4,5.5,1,801
+"Niagara College",Canada,"Welland",13000,21000,85.00,1,1,0,1,2700,2300,0,2500,2.4,5.5,1,801
+"Georgian College",Canada,Barrie,13000,22000,84.00,1,1,0,1,2600,2200,0,2400,2.4,5.5,1,801

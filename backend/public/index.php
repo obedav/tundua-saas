@@ -8,6 +8,11 @@ use Dotenv\Dotenv;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+// Start session for OAuth state management
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Load environment variables
 $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
@@ -80,10 +85,13 @@ use Tundua\Controllers\DashboardController;
 use Tundua\Controllers\AddonOrderController;
 use Tundua\Controllers\ReferralController;
 use Tundua\Controllers\KnowledgeBaseController;
+use Tundua\Controllers\UniversityController;
+use Tundua\Controllers\GoogleOAuthController;
 use Tundua\Middleware\AuthMiddleware;
 use Tundua\Middleware\AdminMiddleware;
 
 $authController = new AuthController();
+$googleOAuthController = new GoogleOAuthController(new \Tundua\Services\AuthService());
 $applicationController = new ApplicationController();
 $serviceController = new ServiceController();
 $paymentController = new PaymentController();
@@ -97,6 +105,7 @@ $dashboardController = new DashboardController();
 $addonOrderController = new AddonOrderController();
 $referralController = new ReferralController();
 $knowledgeBaseController = new KnowledgeBaseController();
+$universityController = new UniversityController();
 
 // ============================================================================
 // API ROOT
@@ -156,6 +165,12 @@ $app->get('/', function (Request $request, Response $response) {
             'services' => [
                 'GET /api/service-tiers' => 'List service tiers',
                 'GET /api/addon-services' => 'List add-on services'
+            ],
+            'universities' => [
+                'GET /api/universities/search' => 'Search universities (country, budget, gpa, sort)',
+                'GET /api/universities/countries' => 'List available countries',
+                'GET /api/universities/{id}' => 'Get university details',
+                'POST /api/universities/recommend' => 'Get smart recommendations (profile-based)'
             ],
             'dashboard' => [
                 'GET /api/dashboard/stats' => 'Get dashboard statistics with trends',
@@ -229,7 +244,7 @@ $app->get('/health', function (Request $request, Response $response) {
 // AUTHENTICATION ROUTES
 // ============================================================================
 
-$app->group('/api/auth', function ($group) use ($authController) {
+$app->group('/api/auth', function ($group) use ($authController, $googleOAuthController) {
     // Public routes (no authentication required)
     $group->post('/register', [$authController, 'register']);
     $group->post('/login', [$authController, 'login']);
@@ -237,6 +252,10 @@ $app->group('/api/auth', function ($group) use ($authController) {
     $group->post('/reset-password', [$authController, 'resetPassword']);
     $group->get('/verify-email/{token}', [$authController, 'verifyEmail']);
     $group->post('/refresh', [$authController, 'refresh']);
+
+    // Google OAuth routes
+    $group->get('/google', [$googleOAuthController, 'redirectToGoogle']);
+    $group->get('/google/callback', [$googleOAuthController, 'handleCallback']);
 
     // Protected routes (authentication required)
     $group->get('/me', [$authController, 'me'])->add(new AuthMiddleware());
@@ -258,6 +277,24 @@ $app->group('/api', function ($group) use ($serviceController) {
     $group->get('/addon-services', [$serviceController, 'getAddonServices']);
     $group->get('/addon-services/by-category', [$serviceController, 'getAddonsByCategory']);
     $group->get('/addon-services/{id}', [$serviceController, 'getAddonServiceById']);
+});
+
+// ============================================================================
+// UNIVERSITY SEARCH & INTELLIGENCE ROUTES (PUBLIC)
+// ============================================================================
+
+$app->group('/api/universities', function ($group) use ($universityController) {
+    // University search and filtering
+    $group->get('/search', [$universityController, 'search']);
+
+    // Get list of available countries
+    $group->get('/countries', [$universityController, 'getCountries']);
+
+    // Get university details by ID
+    $group->get('/{id}', [$universityController, 'getById']);
+
+    // Smart recommendations based on student profile
+    $group->post('/recommend', [$universityController, 'recommend']);
 });
 
 // ============================================================================

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { X, Plus, Globe, Building2, GraduationCap, BookOpen, Calendar } from "lucide-react";
+import { X, Plus, Globe, Building2, GraduationCap, BookOpen, Calendar, Loader2 } from "lucide-react";
 import { ApplicationData } from "@/app/dashboard/applications/new/page";
+import { apiClient } from "@/lib/api-client";
 
 const schema = z.object({
   destination_country: z.string().min(1, "Destination country is required"),
@@ -25,65 +26,39 @@ interface Props {
   onBack: () => void;
 }
 
-const COUNTRIES = [
-  "United States",
-  "United Kingdom",
-  "Canada",
-  "Australia",
-  "Germany",
-  "France",
-  "Netherlands",
-  "Ireland",
-  "New Zealand",
-  "Singapore",
-];
+interface Country {
+  country: string;
+  count: number;
+}
 
-// Sample universities by country
-const UNIVERSITIES: Record<string, string[]> = {
-  "United States": [
-    "Harvard University",
-    "Stanford University",
-    "MIT",
-    "Yale University",
-    "Princeton University",
-    "Columbia University",
-    "UC Berkeley",
-    "UCLA",
-    "University of Michigan",
-    "Northwestern University",
-  ],
-  "United Kingdom": [
-    "University of Oxford",
-    "University of Cambridge",
-    "Imperial College London",
-    "UCL",
-    "London School of Economics",
-    "University of Edinburgh",
-    "King's College London",
-    "University of Manchester",
-  ],
-  Canada: [
-    "University of Toronto",
-    "McGill University",
-    "University of British Columbia",
-    "University of Alberta",
-    "McMaster University",
-    "University of Waterloo",
-  ],
-  Australia: [
-    "University of Melbourne",
-    "Australian National University",
-    "University of Sydney",
-    "University of Queensland",
-    "Monash University",
-  ],
-};
+interface University {
+  id: number;
+  name: string;
+  country: string;
+  city: string;
+  tuition_range: {
+    min: string;
+    max: string;
+    currency: string;
+  };
+  acceptance_rate: string;
+  recommended_platform: string;
+  expected_commission: string;
+  match_score?: number;
+}
 
 export default function Step3Destination({ data, updateData, onNext }: Props) {
   const [selectedUniversities, setSelectedUniversities] = useState<string[]>(
     data.universities || []
   );
   const [customUniversity, setCustomUniversity] = useState("");
+
+  // API State
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [universities, setUniversities] = useState<University[]>([]);
+  const [loadingCountries, setLoadingCountries] = useState(true);
+  const [loadingUniversities, setLoadingUniversities] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
@@ -101,7 +76,57 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
   });
 
   const selectedCountry = watch("destination_country");
-  const availableUniversities = UNIVERSITIES[selectedCountry] || [];
+
+  // Load countries on mount
+  useEffect(() => {
+    loadCountries();
+  }, []);
+
+  // Load universities when country changes
+  useEffect(() => {
+    if (selectedCountry) {
+      loadUniversities(selectedCountry);
+    }
+  }, [selectedCountry]);
+
+  const loadCountries = async () => {
+    setLoadingCountries(true);
+    setError(null);
+    try {
+      const response = await apiClient.getCountries();
+      if (response.data.success) {
+        setCountries(response.data.data);
+      }
+    } catch (err: any) {
+      console.error('Failed to load countries:', err);
+      setError('Failed to load countries. Please refresh the page.');
+    } finally {
+      setLoadingCountries(false);
+    }
+  };
+
+  const loadUniversities = async (country: string) => {
+    setLoadingUniversities(true);
+    setError(null);
+    try {
+      const response = await apiClient.searchUniversities({
+        country,
+        sort: 'smart',
+        per_page: 100
+      });
+      if (response.data.success) {
+        setUniversities(response.data.data);
+      }
+    } catch (err: any) {
+      console.error('Failed to load universities:', err);
+      setError('Failed to load universities for this country.');
+      setUniversities([]);
+    } finally {
+      setLoadingUniversities(false);
+    }
+  };
+
+  const availableUniversities = universities.map(uni => uni.name);
 
   const addUniversity = (university: string) => {
     if (!selectedUniversities.includes(university) && selectedUniversities.length < 8) {
@@ -156,15 +181,23 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
             </div>
             <select
               {...register("destination_country")}
-              className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white"
+              className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white disabled:opacity-50"
+              disabled={loadingCountries}
             >
-              <option value="">Select country</option>
-              {COUNTRIES.map((country) => (
-                <option key={country} value={country}>
-                  {country}
+              <option value="">
+                {loadingCountries ? 'Loading countries...' : 'Select country'}
+              </option>
+              {countries.map((countryData) => (
+                <option key={countryData.country} value={countryData.country}>
+                  {countryData.country} ({countryData.count} universities)
                 </option>
               ))}
             </select>
+            {loadingCountries && (
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <Loader2 className="h-5 w-5 text-primary-500 animate-spin" />
+              </div>
+            )}
           </div>
           {errors.destination_country && (
             <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
@@ -218,26 +251,36 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
                 <div className="border-2 border-gray-200 rounded-xl p-5 bg-gradient-to-br from-gray-50 to-white">
                   <p className="text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">
                     <Building2 className="h-5 w-5 text-gray-500" />
-                    Popular universities in {selectedCountry}:
+                    {loadingUniversities ? 'Loading universities...' : `Popular universities in ${selectedCountry}:`}
                   </p>
-                  <div className="space-y-2">
-                    {availableUniversities.map((uni) => (
-                      <button
-                        key={uni}
-                        type="button"
-                        onClick={() => addUniversity(uni)}
-                        disabled={selectedUniversities.includes(uni)}
-                        className="group w-full text-left px-4 py-3 rounded-xl bg-white border-2 border-gray-200 hover:border-primary-500 hover:bg-primary-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-gray-200 disabled:hover:bg-white transition-all duration-200 flex items-center justify-between"
-                      >
-                        <span className="font-medium text-gray-700 group-hover:text-primary-700">
-                          {uni}
-                        </span>
-                        {!selectedUniversities.includes(uni) && (
-                          <Plus className="h-5 w-5 text-gray-400 group-hover:text-primary-600" />
-                        )}
-                      </button>
-                    ))}
-                  </div>
+                  {loadingUniversities ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="h-8 w-8 text-primary-500 animate-spin" />
+                    </div>
+                  ) : universities.length === 0 ? (
+                    <div className="text-center py-6 text-gray-500">
+                      <p>No universities found for this country.</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2 max-h-96 overflow-y-auto">
+                      {availableUniversities.map((uni) => (
+                        <button
+                          key={uni}
+                          type="button"
+                          onClick={() => addUniversity(uni)}
+                          disabled={selectedUniversities.includes(uni)}
+                          className="group w-full text-left px-4 py-3 rounded-xl bg-white border-2 border-gray-200 hover:border-primary-500 hover:bg-primary-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-gray-200 disabled:hover:bg-white transition-all duration-200 flex items-center justify-between"
+                        >
+                          <span className="font-medium text-gray-700 group-hover:text-primary-700">
+                            {uni}
+                          </span>
+                          {!selectedUniversities.includes(uni) && (
+                            <Plus className="h-5 w-5 text-gray-400 group-hover:text-primary-600" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Custom University */}
