@@ -141,11 +141,13 @@ jobs:
       - name: Run Frontend Tests
         run: |
           echo "Running frontend tests with coverage..."
-          npm test -- --run --coverage || echo "⚠️  Some tests failed - review recommended"
+          npm run test:ci || echo "⚠️  Some tests failed - review recommended"
           echo "✅ Test run completed"
         working-directory: ./frontend
         env:
           CI: true
+          NEXT_PUBLIC_API_URL: http://localhost:8000/api
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
         continue-on-error: true
 
       - name: Upload Frontend Coverage
