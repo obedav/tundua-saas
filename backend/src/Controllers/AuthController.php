@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Tundua\Models\User;
 use Tundua\Services\AuthService;
 use Tundua\Services\EmailService;
+use Tundua\Services\AuditLogger;
 
 class AuthController
 {
@@ -84,6 +85,9 @@ class AuthController
         $uuid = $this->authService->generateUuid();
         $verificationToken = $this->authService->generateEmailVerificationToken();
 
+        // Set verification token expiry (24 hours from now)
+        $verificationExpires = date('Y-m-d H:i:s', strtotime('+24 hours'));
+
         // Create user
         $userId = $this->userModel->create([
             'uuid' => $uuid,
@@ -93,7 +97,8 @@ class AuthController
             'last_name' => $lastName,
             'phone' => $phone,
             'role' => 'user',
-            'email_verification_token' => $verificationToken
+            'email_verification_token' => $verificationToken,
+            'email_verification_expires' => $verificationExpires
         ]);
 
         if (!$userId) {
@@ -110,6 +115,9 @@ class AuthController
 
         // Get created user
         $user = $this->userModel->findById($userId);
+
+        // Log user registration (Audit)
+        AuditLogger::logUserRegister($userId, $email);
 
         // Generate tokens
         $tokens = $this->authService->generateLoginResponse($user);
@@ -147,6 +155,9 @@ class AuthController
         $user = $this->userModel->findByEmail($email);
 
         if (!$user) {
+            // Log failed login attempt (Audit)
+            AuditLogger::logLoginFailed($email, 'user_not_found');
+
             $response->getBody()->write(json_encode([
                 'success' => false,
                 'error' => 'Invalid credentials'
@@ -165,6 +176,9 @@ class AuthController
 
         // Verify password
         if (!$this->authService->verifyPassword($password, $user['password_hash'])) {
+            // Log failed login attempt (Audit)
+            AuditLogger::logLoginFailed($email, 'invalid_password');
+
             // Increment failed login attempts
             $this->userModel->incrementLoginAttempts($user['id']);
 
@@ -192,6 +206,9 @@ class AuthController
         // Reset login attempts and update last login
         $this->userModel->resetLoginAttempts($user['id']);
         $this->userModel->updateLastLogin($user['id']);
+
+        // Log successful login (Audit)
+        AuditLogger::logUserLogin($user['id'], $email);
 
         // Generate tokens
         $tokens = $this->authService->generateLoginResponse($user);
@@ -326,6 +343,9 @@ class AuthController
             ]));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
+
+        // Log email verification (Audit)
+        AuditLogger::logEmailVerified($user['id'], $user['email']);
 
         $response->getBody()->write(json_encode([
             'success' => true,
@@ -509,6 +529,14 @@ class AuthController
     {
         // In a stateless JWT system, logout is typically handled client-side
         // by deleting the tokens. This endpoint exists for consistency.
+
+        // Get user ID from auth middleware
+        $userId = $request->getAttribute('user_id');
+
+        // Log logout (Audit)
+        if ($userId) {
+            AuditLogger::logUserLogout($userId);
+        }
 
         $response->getBody()->write(json_encode([
             'success' => true,

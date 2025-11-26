@@ -42,12 +42,19 @@ $app = AppFactory::create();
 // Add Body Parsing Middleware (MUST be before routing)
 $app->addBodyParsingMiddleware();
 
-// Add Error Middleware
+// Add Error Middleware with custom JSON error handler
 $errorMiddleware = $app->addErrorMiddleware(
     $_ENV['APP_DEBUG'] === 'true',
     true,
     true
 );
+
+// Set custom error handler to return JSON instead of HTML
+$errorHandler = $errorMiddleware->getDefaultErrorHandler();
+$errorHandler->forceContentType('application/json');
+
+// Rate Limiting Middleware (Security Layer)
+$app->add(new RateLimitMiddleware());
 
 // CORS Middleware
 $app->add(function (Request $request, $handler) {
@@ -72,6 +79,7 @@ $app->options('/{routes:.+}', function (Request $request, Response $response) {
 
 // Initialize Controllers
 use Tundua\Controllers\AuthController;
+use Tundua\Controllers\RefreshTokenController;
 use Tundua\Controllers\ApplicationController;
 use Tundua\Controllers\ServiceController;
 use Tundua\Controllers\PaymentController;
@@ -89,8 +97,10 @@ use Tundua\Controllers\UniversityController;
 use Tundua\Controllers\GoogleOAuthController;
 use Tundua\Middleware\AuthMiddleware;
 use Tundua\Middleware\AdminMiddleware;
+use Tundua\Middleware\RateLimitMiddleware;
 
 $authController = new AuthController();
+$refreshTokenController = new RefreshTokenController();
 $googleOAuthController = new GoogleOAuthController(new \Tundua\Services\AuthService());
 $applicationController = new ApplicationController();
 $serviceController = new ServiceController();
@@ -198,6 +208,7 @@ $app->get('/', function (Request $request, Response $response) {
                 'PUT /api/admin/applications/{id}/status' => 'Update application status',
                 'POST /api/admin/applications/{id}/notes' => 'Add admin notes',
                 'GET /api/admin/documents/pending' => 'Documents pending review',
+                'GET /api/admin/documents/{id}/download' => 'Download document (admin)',
                 'PUT /api/admin/documents/{id}/review' => 'Review document',
                 'GET /api/admin/refunds' => 'List refund requests',
                 'PUT /api/admin/refunds/{id}/review' => 'Review refund',
@@ -244,7 +255,7 @@ $app->get('/health', function (Request $request, Response $response) {
 // AUTHENTICATION ROUTES
 // ============================================================================
 
-$app->group('/api/auth', function ($group) use ($authController, $googleOAuthController) {
+$app->group('/api/auth', function ($group) use ($authController, $refreshTokenController, $googleOAuthController) {
     // Public routes (no authentication required)
     $group->post('/register', [$authController, 'register']);
     $group->post('/login', [$authController, 'login']);
@@ -252,6 +263,9 @@ $app->group('/api/auth', function ($group) use ($authController, $googleOAuthCon
     $group->post('/reset-password', [$authController, 'resetPassword']);
     $group->get('/verify-email/{token}', [$authController, 'verifyEmail']);
     $group->post('/refresh', [$authController, 'refresh']);
+
+    // Refresh token management (public, requires refresh token)
+    $group->post('/revoke', [$refreshTokenController, 'revoke']);
 
     // Google OAuth routes
     $group->get('/google', [$googleOAuthController, 'redirectToGoogle']);
@@ -261,6 +275,7 @@ $app->group('/api/auth', function ($group) use ($authController, $googleOAuthCon
     $group->get('/me', [$authController, 'me'])->add(new AuthMiddleware());
     $group->put('/me', [$authController, 'updateProfile'])->add(new AuthMiddleware());
     $group->post('/logout', [$authController, 'logout'])->add(new AuthMiddleware());
+    $group->post('/revoke-all', [$refreshTokenController, 'revokeAll'])->add(new AuthMiddleware());
 });
 
 // ============================================================================
@@ -344,14 +359,14 @@ $app->group('/api/payments', function ($group) use ($paymentController) {
 })->add(new AuthMiddleware());
 
 // ============================================================================
-// DOCUMENT ROUTES (PROTECTED)
+// DOCUMENT ROUTES
 // ============================================================================
 
-$app->group('/api/documents', function ($group) use ($documentController) {
-    // Public endpoint for document types
-    $group->get('/types', [$documentController, 'getDocumentTypes']);
+// Public endpoint for document types (no auth required)
+$app->get('/api/documents/types', [$documentController, 'getDocumentTypes']);
 
-    // Protected routes
+// Protected document routes
+$app->group('/api/documents', function ($group) use ($documentController) {
     $group->post('/upload', [$documentController, 'upload']);
     $group->get('/application/{id}', [$documentController, 'getApplicationDocuments']);
     $group->get('/{id}', [$documentController, 'getDocument']);
@@ -431,14 +446,41 @@ $app->group('/api/knowledge-base', function ($group) use ($knowledgeBaseControll
 $app->group('/api/admin/applications', function ($group) use ($applicationController) {
     $group->get('', [$applicationController, 'getAllApplications']);
     $group->get('/statistics', [$applicationController, 'getAdminStatistics']);
+    $group->get('/{id}', [$applicationController, 'getApplication']);
     $group->put('/{id}/status', [$applicationController, 'updateStatus']);
-})->add(new AuthMiddleware())->add(new AdminMiddleware());
+    $group->post('/{id}/notes', [$applicationController, 'addAdminNotes']);
+})->add(new AdminMiddleware())->add(new AuthMiddleware());
+
+// Test route WITHOUT middleware (for debugging)
+$app->get('/api/test/download/{id}', function ($request, $response, $args) {
+    $documentId = $args['id'] ?? 'none';
+    $response->getBody()->write(json_encode([
+        'success' => true,
+        'message' => 'Test download endpoint reached!',
+        'document_id' => $documentId,
+        'timestamp' => date('Y-m-d H:i:s'),
+        'route_pattern' => '/api/test/download/{id}'
+    ]));
+    return $response->withHeader('Content-Type', 'application/json');
+});
 
 // Admin Document Routes
 $app->group('/api/admin/documents', function ($group) use ($documentController) {
     $group->get('/pending', [$documentController, 'getPendingDocuments']);
+
+    // Test endpoint to verify routing works
+    $group->get('/test', function ($request, $response) {
+        $response->getBody()->write(json_encode([
+            'success' => true,
+            'message' => 'Admin documents test endpoint working!',
+            'timestamp' => date('Y-m-d H:i:s')
+        ]));
+        return $response->withHeader('Content-Type', 'application/json');
+    });
+
+    $group->get('/{id}/download', [$documentController, 'adminDownload']);
     $group->put('/{id}/review', [$documentController, 'reviewDocument']);
-})->add(new AuthMiddleware())->add(new AdminMiddleware());
+})->add(new AdminMiddleware())->add(new AuthMiddleware());
 
 // ============================================================================
 // REFUND ROUTES
@@ -456,13 +498,13 @@ $app->group('/api/refunds', function ($group) use ($refundController) {
 $app->group('/api/admin/refunds', function ($group) use ($refundController) {
     $group->get('', [$refundController, 'getAllRefunds']);
     $group->put('/{id}/review', [$refundController, 'reviewRefund']);
-})->add(new AuthMiddleware())->add(new AdminMiddleware());
+})->add(new AdminMiddleware())->add(new AuthMiddleware());
 
 // Admin Analytics Routes
 $app->group('/api/admin/analytics', function ($group) use ($analyticsController) {
     $group->get('', [$analyticsController, 'getAnalytics']);
     $group->get('/revenue-chart', [$analyticsController, 'getRevenueChart']);
-})->add(new AuthMiddleware())->add(new AdminMiddleware());
+})->add(new AdminMiddleware())->add(new AuthMiddleware());
 
 // Admin User Routes
 $app->group('/api/admin/users', function ($group) use ($userController) {
@@ -471,7 +513,7 @@ $app->group('/api/admin/users', function ($group) use ($userController) {
     $group->get('/{id}', [$userController, 'getUserDetails']);
     $group->put('/{id}', [$userController, 'updateUser']);
     $group->post('/{id}/suspend', [$userController, 'suspendUser']);
-})->add(new AuthMiddleware())->add(new AdminMiddleware());
+})->add(new AdminMiddleware())->add(new AuthMiddleware());
 
 // Admin Service Configuration Routes
 $app->group('/api/admin', function ($group) use ($serviceController) {
@@ -487,18 +529,18 @@ $app->group('/api/admin', function ($group) use ($serviceController) {
 
     // Seed Default Data
     $group->post('/services/seed', [$serviceController, 'seedDefaultData']);
-})->add(new AuthMiddleware())->add(new AdminMiddleware());
+})->add(new AdminMiddleware())->add(new AuthMiddleware());
 
 // Admin Add-On Orders Routes
 $app->group('/api/admin/addons', function ($group) use ($addonOrderController) {
     $group->get('/orders', [$addonOrderController, 'getAllOrders']);
     $group->put('/orders/{id}/status', [$addonOrderController, 'updateOrderStatus']);
-})->add(new AuthMiddleware())->add(new AdminMiddleware());
+})->add(new AdminMiddleware())->add(new AuthMiddleware());
 
 // Admin Activity Routes
 $app->group('/api/admin/activity', function ($group) use ($activityController) {
     $group->get('', [$activityController, 'getRecentActivity']);
-})->add(new AuthMiddleware())->add(new AdminMiddleware());
+})->add(new AdminMiddleware())->add(new AuthMiddleware());
 
 // ============================================================================
 // RUN APPLICATION

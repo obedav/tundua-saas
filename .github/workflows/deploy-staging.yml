@@ -1,0 +1,63 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [ develop, homepage-enhancement ]
+  workflow_dispatch:
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging Server
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.STAGING_SSH_KEY }}" > ~/.ssh/staging_key
+          chmod 600 ~/.ssh/staging_key
+          ssh-keyscan -H ${{ secrets.STAGING_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy Backend
+        run: |
+          ssh -i ~/.ssh/staging_key ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} << 'ENDSSH'
+            cd ${{ secrets.STAGING_PATH }}
+            git pull origin develop
+            cd backend
+            composer install --no-dev --optimize-autoloader
+            vendor/bin/phinx migrate -e production
+            # Create storage directories
+            mkdir -p storage/rate_limits storage/refresh_tokens
+            chmod -R 775 storage
+            # Restart PHP-FPM (adjust based on your server)
+            sudo systemctl restart php8.2-fpm || true
+          ENDSSH
+
+      - name: Deploy Frontend
+        run: |
+          ssh -i ~/.ssh/staging_key ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} << 'ENDSSH'
+            cd ${{ secrets.STAGING_PATH }}/frontend
+            npm ci
+            npm run build
+            # Restart PM2 (if using PM2)
+            pm2 restart tundua-frontend || pm2 start npm --name "tundua-frontend" -- start
+          ENDSSH
+
+      - name: Run Health Check
+        run: |
+          sleep 10
+          curl -f ${{ secrets.STAGING_URL }}/health || exit 1
+          echo "✅ Staging deployment successful!"
+
+      - name: Notify Deployment
+        if: always()
+        run: |
+          if [ ${{ job.status }} == 'success' ]; then
+            echo "✅ Staging deployed successfully!"
+          else
+            echo "❌ Staging deployment failed!"
+          fi

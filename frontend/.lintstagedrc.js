@@ -1,8 +1,3 @@
-HEAD
-module.exports = {
-  "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
-  "*.{json,md,css,html}": ["prettier --write"],
-
 /**
  * Lint-Staged Configuration
  *
@@ -32,6 +27,4 @@ module.exports = {
   '*.{json,css,scss,md}': [
     'prettier --write',
   ],
-  
-
-}};
+};
