@@ -51,7 +51,10 @@ export default function ApplicationsManagement() {
   const fetchApplications = async () => {
     try {
       const response = await apiClient.getAllApplications();
-      setApplications(response.data.applications || []);
+      // Backend returns: { success: true, data: { applications: [...], total: X } }
+      const apps = response.data?.data?.applications || response.data?.applications || [];
+      console.log('Fetched applications:', apps.length, 'applications');
+      setApplications(apps);
     } catch (error: any) {
       console.error("Error fetching applications:", error);
       toast.error("Failed to load applications");
@@ -107,6 +110,7 @@ export default function ApplicationsManagement() {
     const badges: Record<string, { color: string; icon: any; text: string }> = {
       draft: { color: "bg-gray-100 text-gray-700", icon: Clock, text: "Draft" },
       submitted: { color: "bg-blue-100 text-blue-700", icon: Clock, text: "Submitted" },
+      payment_pending: { color: "bg-orange-100 text-orange-700", icon: Clock, text: "Payment Pending" },
       under_review: { color: "bg-yellow-100 text-yellow-700", icon: AlertCircle, text: "Under Review" },
       approved: { color: "bg-green-100 text-green-700", icon: CheckCircle, text: "Approved" },
       rejected: { color: "bg-red-100 text-red-700", icon: XCircle, text: "Rejected" },
@@ -182,6 +186,7 @@ export default function ApplicationsManagement() {
               <option value="all">All Statuses</option>
               <option value="draft">Draft</option>
               <option value="submitted">Submitted</option>
+              <option value="payment_pending">Payment Pending</option>
               <option value="under_review">Under Review</option>
               <option value="approved">Approved</option>
               <option value="rejected">Rejected</option>
@@ -253,9 +258,12 @@ export default function ApplicationsManagement() {
                 {filteredApplications.map((application) => (
                   <tr key={application.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm font-medium text-primary-600">
+                      <Link
+                        href={`/dashboard/admin/applications/${application.id}`}
+                        className="text-sm font-medium text-primary-600 hover:text-primary-700 hover:underline"
+                      >
                         {application.reference_number}
-                      </span>
+                      </Link>
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm">
@@ -271,7 +279,7 @@ export default function ApplicationsManagement() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm font-medium text-gray-900">
-                        ${application.total_amount?.toFixed(2) || "0.00"}
+                        ₦{parseFloat(application.total_amount || "0").toLocaleString('en-NG')}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -290,6 +298,7 @@ export default function ApplicationsManagement() {
                           >
                             <option value="draft">Draft</option>
                             <option value="submitted">Submitted</option>
+                            <option value="payment_pending">Payment Pending</option>
                             <option value="under_review">Under Review</option>
                             <option value="approved">Approved</option>
                             <option value="rejected">Rejected</option>
@@ -311,7 +320,7 @@ export default function ApplicationsManagement() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Link
-                        href={`/dashboard/applications/${application.id}`}
+                        href={`/dashboard/admin/applications/${application.id}`}
                         className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700"
                       >
                         <Eye className="h-4 w-4" />

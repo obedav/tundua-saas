@@ -95,7 +95,7 @@ export default function DashboardStats({
 
       <StatsCard
         title="Total Spent"
-        value={`$${typeof totalSpent === 'number' ? totalSpent.toFixed(2) : totalSpent}`}
+        value={`₦${typeof totalSpent === 'number' ? totalSpent.toLocaleString('en-NG') : totalSpent}`}
         icon={DollarSign}
         iconColor="text-primary-600"
         trend={trends?.spending ? {

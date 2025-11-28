@@ -187,11 +187,11 @@ export default function AnalyticsDashboard() {
             <span className="text-xs text-gray-500">Revenue</span>
           </div>
           <h3 className="text-2xl font-bold text-gray-900">
-            ${(stats?.total_revenue || 0).toFixed(2)}
+            ₦{(stats?.total_revenue || 0).toLocaleString('en-NG')}
           </h3>
           <p className="text-sm text-gray-600 mt-1">Total Revenue</p>
           <div className="mt-3 text-xs text-green-600">
-            ${(stats?.revenue_this_month || 0).toFixed(2)} this month
+            ₦{(stats?.revenue_this_month || 0).toLocaleString('en-NG')} this month
           </div>
         </div>
       </div>
@@ -288,7 +288,7 @@ export default function AnalyticsDashboard() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm font-medium text-gray-900">
-                        ${application.total_amount?.toFixed(2) || "0.00"}
+                        ₦{parseFloat(application.total_amount || "0").toLocaleString('en-NG')}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

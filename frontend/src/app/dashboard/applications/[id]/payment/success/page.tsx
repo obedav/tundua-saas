@@ -165,7 +165,7 @@ export default function PaymentSuccessPage() {
             <div className="flex justify-between">
               <span className="text-gray-600">Amount Paid:</span>
               <span className="font-semibold text-green-600 text-lg">
-                ${parseFloat(paymentDetails.amount).toFixed(2)}
+                ₦{parseFloat(paymentDetails.amount).toLocaleString('en-NG')}
               </span>
             </div>
             <div className="flex justify-between">

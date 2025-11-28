@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes, useId } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, AlertCircle, Info } from "lucide-react";
@@ -79,8 +79,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       ? "success"
       : state || "default";
 
-    // Generate IDs for accessibility
-    const inputId = id || `input-${Math.random().toString(36).substring(7)}`;
+    // Generate stable IDs for accessibility (consistent across server/client)
+    const generatedId = useId();
+    const inputId = id || generatedId;
     const errorId = `${inputId}-error`;
     const helperId = `${inputId}-helper`;
     const descriptionId = error ? errorId : helperText ? helperId : undefined;

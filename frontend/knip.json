@@ -1,0 +1,23 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": [
+    "src/app/**/*.{ts,tsx}",
+    "src/middleware.ts",
+    "src/instrumentation.ts"
+  ],
+  "project": [
+    "src/**/*.{ts,tsx}",
+    "!src/**/*.test.{ts,tsx}",
+    "!src/**/*.spec.{ts,tsx}"
+  ],
+  "ignore": [
+    "**/*.test.{ts,tsx}",
+    "**/*.spec.{ts,tsx}",
+    ".next/**",
+    "node_modules/**"
+  ],
+  "ignoreDependencies": [
+    "@next/bundle-analyzer",
+    "knip"
+  ]
+}

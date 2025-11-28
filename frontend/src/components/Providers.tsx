@@ -2,7 +2,9 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { PusherProvider } from "@/contexts/PusherContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 /**
@@ -10,8 +12,10 @@ import ErrorBoundary from "@/components/ErrorBoundary";
  *
  * Wraps the entire app with necessary providers:
  * - ErrorBoundary: Catches and handles React errors
+ * - ThemeProvider: Dark mode support (2025 standard)
  * - QueryClient: TanStack Query for data fetching
- * - PusherProvider: Real-time notifications
+ * - AuthProvider: Centralized authentication state (MUST be before PusherProvider)
+ * - PusherProvider: Real-time notifications (depends on AuthProvider)
  */
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -33,11 +37,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <PusherProvider>
-          {children}
-        </PusherProvider>
-      </QueryClientProvider>
+      <ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <PusherProvider>
+              {children}
+            </PusherProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

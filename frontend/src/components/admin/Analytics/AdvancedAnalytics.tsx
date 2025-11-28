@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { DollarSign, Target } from "lucide-react";
+import { apiClient } from "@/lib/api-client";
+import { toast } from "sonner";
 
 interface AnalyticsData {
   applications_by_status: { status: string; count: number; color: string }[];
@@ -9,6 +11,16 @@ interface AnalyticsData {
   conversion_funnel: { stage: string; count: number; percentage: number }[];
   top_countries: { country: string; applications: number }[];
 }
+
+const STATUS_COLORS: Record<string, string> = {
+  draft: "bg-gray-500",
+  submitted: "bg-blue-500",
+  payment_pending: "bg-orange-500",
+  under_review: "bg-yellow-500",
+  approved: "bg-green-500",
+  rejected: "bg-red-500",
+  completed: "bg-green-600",
+};
 
 export default function AdvancedAnalytics() {
   const [loading, setLoading] = useState(true);
@@ -25,40 +37,76 @@ export default function AdvancedAnalytics() {
   }, [timeRange]);
 
   const fetchAnalytics = async () => {
+    setLoading(true);
     try {
-      // Mock data
-      const mockData: AnalyticsData = {
-        applications_by_status: [
-          { status: "Draft", count: 15, color: "bg-gray-500" },
-          { status: "Submitted", count: 45, color: "bg-blue-500" },
-          { status: "Under Review", count: 32, color: "bg-yellow-500" },
-          { status: "Approved", count: 67, color: "bg-green-500" },
-          { status: "Rejected", count: 8, color: "bg-red-500" },
-        ],
-        revenue_trend: [
-          { date: "Week 1", revenue: 8500 },
-          { date: "Week 2", revenue: 9200 },
-          { date: "Week 3", revenue: 10500 },
-          { date: "Week 4", revenue: 12450 },
-        ],
-        conversion_funnel: [
-          { stage: "Website Visitors", count: 1250, percentage: 100 },
-          { stage: "Sign Ups", count: 425, percentage: 34 },
-          { stage: "Started Application", count: 275, percentage: 22 },
-          { stage: "Submitted", count: 167, percentage: 13.4 },
-          { stage: "Paid", count: 142, percentage: 11.4 },
-        ],
-        top_countries: [
-          { country: "Kenya", applications: 95 },
-          { country: "Nigeria", applications: 68 },
-          { country: "Ghana", applications: 42 },
-          { country: "South Africa", applications: 28 },
-          { country: "Tanzania", applications: 18 },
-        ],
-      };
-      setData(mockData);
-    } catch (error) {
+      const response = await apiClient.getAnalytics();
+      const analyticsData = response.data.analytics;
+
+      // Transform applications by status
+      const applicationsByStatus = Object.entries(analyticsData.overview?.by_status || {}).map(
+        ([status, count]) => ({
+          status: status.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+          count: count as number,
+          color: STATUS_COLORS[status] || "bg-gray-500",
+        })
+      );
+
+      // Transform revenue trend (use last N days from daily revenue)
+      const revenueTrend = (analyticsData.revenue?.daily || [])
+        .slice(-7) // Show last 7 days
+        .map((day: any) => ({
+          date: new Date(day.date).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+          revenue: parseFloat(day.revenue) || 0,
+        }));
+
+      // Transform conversion funnel
+      const conversion = analyticsData.conversion || {};
+      const totalUsers = conversion.registered_users || 1;
+      const conversionFunnel = [
+        {
+          stage: "Registered Users",
+          count: conversion.registered_users || 0,
+          percentage: 100,
+        },
+        {
+          stage: "Started Applications",
+          count: conversion.started_applications || 0,
+          percentage: totalUsers > 0 ? ((conversion.started_applications || 0) / totalUsers) * 100 : 0,
+        },
+        {
+          stage: "Completed Payments",
+          count: conversion.completed_payments || 0,
+          percentage: totalUsers > 0 ? ((conversion.completed_payments || 0) / totalUsers) * 100 : 0,
+        },
+        {
+          stage: "Approved Applications",
+          count: conversion.approved_applications || 0,
+          percentage: totalUsers > 0 ? ((conversion.approved_applications || 0) / totalUsers) * 100 : 0,
+        },
+      ];
+
+      // Transform top countries
+      const topCountries = (analyticsData.top_destinations || []).map((dest: any) => ({
+        country: dest.country,
+        applications: dest.count,
+      }));
+
+      setData({
+        applications_by_status: applicationsByStatus,
+        revenue_trend: revenueTrend,
+        conversion_funnel: conversionFunnel,
+        top_countries: topCountries,
+      });
+    } catch (error: any) {
       console.error("Error fetching analytics:", error);
+      toast.error("Failed to load analytics data");
+      // Set empty data on error
+      setData({
+        applications_by_status: [],
+        revenue_trend: [],
+        conversion_funnel: [],
+        top_countries: [],
+      });
     } finally {
       setLoading(false);
     }
@@ -154,7 +202,7 @@ export default function AdvancedAnalytics() {
                 <div key={index} className="flex-1 flex flex-col items-center group">
                   <div className="relative w-full flex flex-col items-center">
                     <div className="absolute -top-8 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
-                      ${week.revenue.toLocaleString()}
+                      ₦{week.revenue.toLocaleString('en-NG')}
                     </div>
                     <div
                       className="w-full bg-gradient-to-t from-primary-600 to-primary-400 rounded-t hover:from-primary-700 hover:to-primary-500 transition-all duration-300"

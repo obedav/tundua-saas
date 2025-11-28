@@ -11,6 +11,18 @@ import {
   CheckCircle2, Zap, Heart, MapPin, Calendar,
   Trophy, Rocket
 } from "lucide-react";
+import {
+  FadeIn,
+  Stagger,
+  StaggerItem,
+  ScaleIn,
+  CountUp,
+  ParallaxScroll,
+  MagneticButton,
+  PulseGlow,
+  FloatingElement,
+  CardHover,
+} from "@/components/animations/PageAnimations";
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -78,9 +90,9 @@ export default function HomePage() {
 
   const getRecommendation = () => {
     const numUniversities = quizAnswers[2];
-    if (numUniversities === "1-3") return "Standard";
-    if (numUniversities === "4-6") return "Premium";
-    return "Concierge";
+    if (numUniversities === "1-3") return "Basic";
+    if (numUniversities === "4-6") return "Standard";
+    return "Premium";
   };
 
   const scrollToSection = (id: string) => {
@@ -301,124 +313,164 @@ export default function HomePage() {
 
       {/* Modern Hero with Bento Grid */}
       <section className="pt-32 pb-20 relative overflow-hidden">
-        {/* Gradient Background */}
+        {/* Animated Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 opacity-50"></div>
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"></div>
+        <ParallaxScroll speed={0.3}>
+          <FloatingElement duration={4}>
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl"></div>
+          </FloatingElement>
+        </ParallaxScroll>
+        <ParallaxScroll speed={0.5}>
+          <FloatingElement duration={5}>
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"></div>
+          </FloatingElement>
+        </ParallaxScroll>
 
         <div className="container-custom relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Column - Main Content */}
             <div>
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-200 rounded-full px-4 py-2 mb-6">
-                <Sparkles className="w-4 h-4 text-blue-600" />
-                <span className="text-sm font-semibold text-blue-900">Your Application Success Partner</span>
-              </div>
+              <FadeIn direction="up" delay={0.1}>
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-200 rounded-full px-4 py-2 mb-6">
+                  <Sparkles className="w-4 h-4 text-blue-600" />
+                  <span className="text-sm font-semibold text-blue-900">Your Application Success Partner</span>
+                </div>
+              </FadeIn>
 
-              <h1 className="text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-                Turn Your Study Abroad Dreams Into
-                <span className="block mt-2 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  Acceptance Letters
-                </span>
-              </h1>
+              <FadeIn direction="up" delay={0.2}>
+                <h1 className="text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                  Turn Your Study Abroad Dreams Into
+                  <span className="block mt-2 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    Acceptance Letters
+                  </span>
+                </h1>
+              </FadeIn>
 
-              <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                Professional application management with expert guidance, document review, and submission support.
-                Join students getting accepted to their dream universities.
-              </p>
+              <FadeIn direction="up" delay={0.3}>
+                <p className="text-xl text-slate-600 mb-8 leading-relaxed">
+                  Professional application management with expert guidance, document review, and submission support.
+                  Join students getting accepted to their dream universities.
+                </p>
+              </FadeIn>
 
               {/* Trust Indicators */}
-              <div className="flex flex-wrap gap-6 mb-10">
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg flex items-center justify-center">
-                    <CheckCircle className="w-5 h-5 text-white" />
+              <Stagger className="flex flex-wrap gap-6 mb-10" staggerDelay={0.15}>
+                <StaggerItem>
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <div className="font-bold text-slate-900">Expert Counselors</div>
+                      <div className="text-sm text-slate-600">Experienced guidance</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-bold text-slate-900">Expert Counselors</div>
-                    <div className="text-sm text-slate-600">Experienced guidance</div>
+                </StaggerItem>
+                <StaggerItem>
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-lg flex items-center justify-center">
+                      <Shield className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <div className="font-bold text-slate-900">Secure Platform</div>
+                      <div className="text-sm text-slate-600">Data protected</div>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-lg flex items-center justify-center">
-                    <Shield className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-slate-900">Secure Platform</div>
-                    <div className="text-sm text-slate-600">Data protected</div>
-                  </div>
-                </div>
-              </div>
+                </StaggerItem>
+              </Stagger>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/auth/register"
-                  className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl hover:shadow-purple-500/30 transition-all inline-flex items-center justify-center gap-2"
-                >
-                  Start Free Application
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <button
-                  onClick={() => scrollToSection('quiz')}
-                  className="group bg-white text-slate-900 px-8 py-4 rounded-full text-lg font-semibold border-2 border-slate-200 hover:border-blue-300 hover:shadow-lg transition-all inline-flex items-center justify-center gap-2"
-                >
-                  Find Your Package
-                  <Sparkles className="h-5 w-5 text-purple-600" />
-                </button>
-              </div>
+              <FadeIn direction="up" delay={0.5}>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <MagneticButton strength={0.2}>
+                    <PulseGlow>
+                      <Link
+                        href="/auth/register"
+                        className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl hover:shadow-purple-500/30 transition-all inline-flex items-center justify-center gap-2"
+                      >
+                        Start Free Application
+                        <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </PulseGlow>
+                  </MagneticButton>
+                  <MagneticButton strength={0.2}>
+                    <button
+                      onClick={() => scrollToSection('quiz')}
+                      className="group bg-white text-slate-900 px-8 py-4 rounded-full text-lg font-semibold border-2 border-slate-200 hover:border-blue-300 hover:shadow-lg transition-all inline-flex items-center justify-center gap-2"
+                    >
+                      Find Your Package
+                      <Sparkles className="h-5 w-5 text-purple-600" />
+                    </button>
+                  </MagneticButton>
+                </div>
+              </FadeIn>
             </div>
 
             {/* Right Column - Bento Grid */}
-            <div className="grid grid-cols-2 gap-4">
+            <Stagger className="grid grid-cols-2 gap-4" staggerDelay={0.12}>
               {/* Large Card */}
-              <div className="col-span-2 glass-effect rounded-2xl p-6 hover:shadow-xl transition-shadow">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
-                    <GraduationCap className="w-6 h-6 text-white" />
+              <StaggerItem>
+                <ScaleIn className="col-span-2 glass-effect rounded-2xl p-6 hover:shadow-xl transition-shadow">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+                      <GraduationCap className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="text-right">
+                      <div className="text-3xl font-bold text-slate-900">
+                        <CountUp end={100} suffix="+" />
+                      </div>
+                      <div className="text-sm text-slate-600">Universities</div>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold text-slate-900">100+</div>
-                    <div className="text-sm text-slate-600">Universities</div>
-                  </div>
-                </div>
-                <p className="text-slate-600">Partner universities across US, UK, Canada, and Australia</p>
-              </div>
+                  <p className="text-slate-600">Partner universities across US, UK, Canada, and Australia</p>
+                </ScaleIn>
+              </StaggerItem>
 
               {/* Small Card 1 */}
-              <div className="glass-effect rounded-2xl p-6 hover:shadow-xl transition-shadow">
-                <FileCheck className="w-8 h-8 text-green-600 mb-3" />
-                <div className="text-2xl font-bold text-slate-900">95%</div>
-                <div className="text-sm text-slate-600">Document Accuracy</div>
-              </div>
+              <StaggerItem>
+                <CardHover className="glass-effect rounded-2xl p-6 hover:shadow-xl transition-shadow">
+                  <FileCheck className="w-8 h-8 text-green-600 mb-3" />
+                  <div className="text-2xl font-bold text-slate-900">
+                    <CountUp end={95} suffix="%" />
+                  </div>
+                  <div className="text-sm text-slate-600">Document Accuracy</div>
+                </CardHover>
+              </StaggerItem>
 
               {/* Small Card 2 */}
-              <div className="glass-effect rounded-2xl p-6 hover:shadow-xl transition-shadow">
-                <Clock className="w-8 h-8 text-blue-600 mb-3" />
-                <div className="text-2xl font-bold text-slate-900">7 Days</div>
-                <div className="text-sm text-slate-600">Avg Response</div>
-              </div>
+              <StaggerItem>
+                <CardHover className="glass-effect rounded-2xl p-6 hover:shadow-xl transition-shadow">
+                  <Clock className="w-8 h-8 text-blue-600 mb-3" />
+                  <div className="text-2xl font-bold text-slate-900">
+                    <CountUp end={7} suffix=" Days" />
+                  </div>
+                  <div className="text-sm text-slate-600">Avg Response</div>
+                </CardHover>
+              </StaggerItem>
 
               {/* Wide Card */}
-              <div className="col-span-2 glass-effect rounded-2xl p-6 hover:shadow-xl transition-shadow">
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-300 to-slate-400 border-2 border-white flex items-center justify-center text-white font-bold">
-                        {String.fromCharCode(64 + i)}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-1 mb-1">
-                      {[1, 2, 3, 4, 5].map((i) => (
-                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+              <StaggerItem>
+                <ScaleIn delay={0.2} className="col-span-2 glass-effect rounded-2xl p-6 hover:shadow-xl transition-shadow">
+                  <div className="flex items-center gap-3">
+                    <div className="flex -space-x-2">
+                      {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-300 to-slate-400 border-2 border-white flex items-center justify-center text-white font-bold">
+                          {String.fromCharCode(64 + i)}
+                        </div>
                       ))}
                     </div>
-                    <p className="text-sm text-slate-600">Trusted by students worldwide</p>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-1 mb-1">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        ))}
+                      </div>
+                      <p className="text-sm text-slate-600">Trusted by students worldwide</p>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
+                </ScaleIn>
+              </StaggerItem>
+            </Stagger>
           </div>
         </div>
       </section>
@@ -738,44 +790,44 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
               {
-                name: "Standard",
-                price: "$299",
-                description: "Perfect for getting started",
+                name: "Basic",
+                price: "₦89,000",
+                description: "Perfect starter package",
                 features: [
                   "3 University Applications",
-                  "Document Review",
-                  "Email Support",
+                  "Basic Document Review",
+                  "Email Support (48hr)",
                   "Application Dashboard",
-                  "Progress Tracking"
+                  "University Comparison Tool"
                 ],
                 highlighted: false
               },
               {
-                name: "Premium",
-                price: "$599",
-                description: "Most popular choice",
+                name: "Standard",
+                price: "₦149,000",
+                description: "Most popular - Best value",
                 features: [
                   "5 University Applications",
-                  "Essay Review & Feedback",
+                  "Essay Review & Editing",
                   "Document Verification",
-                  "Priority Email Support",
-                  "Strategy Consultation",
-                  "Interview Tips"
+                  "Priority Email Support (24hr)",
+                  "Counselor Guidance",
+                  "Deadline Reminders"
                 ],
                 highlighted: true
               },
               {
-                name: "Concierge",
-                price: "$999",
-                description: "Complete white-glove service",
+                name: "Premium",
+                price: "₦249,000",
+                description: "Complete application support",
                 features: [
                   "8 University Applications",
-                  "Comprehensive Essay Support",
+                  "Complete Essay Writing (2 rounds)",
+                  "Full Document Preparation",
                   "Visa Application Guidance",
-                  "Interview Coaching",
-                  "Dedicated Counselor",
-                  "Priority Support",
-                  "Post-Acceptance Help"
+                  "Interview Preparation",
+                  "WhatsApp Priority Support",
+                  "Scholarship Search"
                 ],
                 highlighted: false
               }

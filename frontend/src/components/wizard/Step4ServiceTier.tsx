@@ -156,7 +156,7 @@ export default function Step4ServiceTier({ data, updateData, onNext }: Props) {
                 </div>
 
                 <div className="flex items-baseline">
-                  <span className="text-4xl font-bold text-gray-900">${tier.base_price}</span>
+                  <span className="text-4xl font-bold text-gray-900">₦{parseFloat(tier.base_price).toLocaleString('en-NG')}</span>
                   <span className="ml-2 text-gray-600">one-time</span>
                 </div>
 

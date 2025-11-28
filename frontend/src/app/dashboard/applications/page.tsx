@@ -1,9 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { apiClient } from "@/lib/api-client";
-import { toast } from "sonner";
-import { SkeletonList } from "@/components/ui";
+import { getApplications } from "@/lib/actions/applications";
 import AllApplicationsList from "@/components/dashboard/Applications/AllApplicationsList";
 import EmptyApplicationState from "@/components/dashboard/Applications/EmptyApplicationState";
 
@@ -17,39 +12,15 @@ interface Application {
   created_at: string;
 }
 
-export default function ApplicationsPage() {
-  const [applications, setApplications] = useState<Application[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchApplications();
-  }, []);
-
-  const fetchApplications = async () => {
-    try {
-      const response = await apiClient.getApplications();
-      setApplications(response.data.applications || []);
-    } catch (error) {
-      toast.error("Failed to load applications");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="space-y-8">
-        {/* Page Header Skeleton */}
-        <div>
-          <div className="h-9 w-64 bg-gray-200 rounded-lg animate-skeleton mb-2" />
-          <div className="h-6 w-96 bg-gray-100 rounded-lg animate-skeleton" />
-        </div>
-
-        {/* Applications List Skeleton */}
-        <SkeletonList items={5} />
-      </div>
-    );
-  }
+/**
+ * Server Component - Applications List Page
+ *
+ * Fetches all user applications server-side for optimal performance
+ */
+export default async function ApplicationsPage() {
+  // Fetch applications on the server
+  const response = await getApplications();
+  const applications: Application[] = response?.applications || [];
 
   return (
     <div className="space-y-8">

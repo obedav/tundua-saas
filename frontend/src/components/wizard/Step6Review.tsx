@@ -231,7 +231,7 @@ export default function Step6Review({ data, onBack, onSubmit, isSubmitting }: Pr
             <p className="font-semibold text-gray-900 text-lg">{data.service_tier_name}</p>
             <p className="text-sm text-gray-600 mt-1">Selected package</p>
           </div>
-          <p className="text-2xl font-bold text-primary-600">${data.base_price?.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-primary-600">₦{(data.base_price || 0).toLocaleString('en-NG')}</p>
         </div>
       </div>
 
@@ -262,7 +262,7 @@ export default function Step6Review({ data, onBack, onSubmit, isSubmitting }: Pr
                   </span>
                 </div>
                 <span className="font-semibold text-gray-900">
-                  ${(addon.price * addon.quantity).toFixed(2)}
+                  ₦{(addon.price * addon.quantity).toLocaleString('en-NG')}
                 </span>
               </div>
             ))}
@@ -279,18 +279,18 @@ export default function Step6Review({ data, onBack, onSubmit, isSubmitting }: Pr
         <div className="space-y-3 text-sm">
           <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
             <span className="text-gray-700">Service Tier:</span>
-            <span className="font-semibold text-gray-900">${data.base_price?.toFixed(2) || "0.00"}</span>
+            <span className="font-semibold text-gray-900">₦{(data.base_price || 0).toLocaleString('en-NG')}</span>
           </div>
           {data.addon_total !== undefined && data.addon_total > 0 && (
             <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
               <span className="text-gray-700">Add-On Services:</span>
-              <span className="font-semibold text-gray-900">${data.addon_total.toFixed(2)}</span>
+              <span className="font-semibold text-gray-900">₦{(data.addon_total || 0).toLocaleString('en-NG')}</span>
             </div>
           )}
           <div className="border-t-2 border-primary-200 pt-3 mt-2 flex justify-between items-center py-3 px-3 bg-primary-100 rounded-lg">
             <span className="font-bold text-primary-900 text-lg">Total Amount:</span>
             <span className="font-bold text-primary-900 text-2xl">
-              ${data.total_amount?.toFixed(2) || "0.00"}
+              ₦{parseFloat(data.total_amount || "0").toLocaleString('en-NG')}
             </span>
           </div>
         </div>

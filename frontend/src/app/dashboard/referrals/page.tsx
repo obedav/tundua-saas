@@ -62,12 +62,12 @@ export default function ReferralsPage() {
 
   const shareViaEmail = () => {
     const subject = "Join Tundua - Study Abroad Made Easy";
-    const body = `I'm using Tundua for my study abroad application and thought you might be interested!\n\nUse my referral link to get $50 off your first application:\n${referralLink}\n\nTundua makes the entire process super easy with expert support at every step.`;
+    const body = `I'm using Tundua for my study abroad application and thought you might be interested!\n\nUse my referral link to get ₦10,000 off your first application:\n${referralLink}\n\nTundua makes the entire process super easy with expert support at every step.`;
     window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   const shareViaSocial = (platform: string) => {
-    const text = `Join me on Tundua for hassle-free study abroad applications! Get $50 off using my referral link:`;
+    const text = `Join me on Tundua for hassle-free study abroad applications! Get ₦10,000 off using my referral link:`;
     const url = referralLink;
 
     let shareUrl = "";
@@ -143,7 +143,7 @@ export default function ReferralsPage() {
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Refer & Earn</h1>
         <p className="text-gray-600 mt-2">
-          Share Tundua with friends and earn $50 for every successful referral!
+          Share Tundua with friends and earn ₦10,000 for every successful referral!
         </p>
       </div>
 
@@ -170,7 +170,7 @@ export default function ReferralsPage() {
             <DollarSign className="h-6 w-6 text-primary-600" />
             <p className="text-sm font-medium text-gray-600">Total Earned</p>
           </div>
-          <p className="text-3xl font-bold text-gray-900">${stats?.total_rewards_earned.toFixed(2) || "0.00"}</p>
+          <p className="text-3xl font-bold text-gray-900">₦{stats?.total_rewards_earned.toLocaleString('en-NG') || "0"}</p>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
@@ -178,7 +178,7 @@ export default function ReferralsPage() {
             <Gift className="h-6 w-6 text-purple-600" />
             <p className="text-sm font-medium text-gray-600">Pending Rewards</p>
           </div>
-          <p className="text-3xl font-bold text-gray-900">${stats?.total_rewards_pending.toFixed(2) || "0.00"}</p>
+          <p className="text-3xl font-bold text-gray-900">₦{stats?.total_rewards_pending.toLocaleString('en-NG') || "0"}</p>
         </div>
       </div>
 
@@ -287,7 +287,7 @@ export default function ReferralsPage() {
                     <td className="px-6 py-4 text-sm text-gray-900">{referral.referred_email}</td>
                     <td className="px-6 py-4">{getStatusBadge(referral.status)}</td>
                     <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                      ${referral.reward_amount.toFixed(2)}
+                      ₦{referral.reward_amount.toLocaleString('en-NG')}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       {new Date(referral.created_at).toLocaleDateString()}

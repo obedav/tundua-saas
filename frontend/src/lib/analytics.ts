@@ -84,7 +84,7 @@ export const trackPaymentInitiated = (applicationId: number, amount: number, met
   });
 };
 
-export const trackPaymentCompleted = (transactionId: string, amount: number, currency: string = 'USD') => {
+export const trackPaymentCompleted = (transactionId: string, amount: number, currency: string = 'NGN') => {
   trackPurchase(transactionId, amount, currency, [
     {
       item_id: transactionId,

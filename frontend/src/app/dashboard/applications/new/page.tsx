@@ -261,7 +261,6 @@ export default function NewApplicationPage() {
         );
       default:
         return null;
-        return null;
     }
   };
 
