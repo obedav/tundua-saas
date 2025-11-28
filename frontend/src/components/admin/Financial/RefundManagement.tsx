@@ -44,7 +44,8 @@ export default function RefundManagement() {
       if (statusFilter !== "all") params.status = statusFilter;
 
       const response = await apiClient.getAllRefunds(params);
-      const refundData = response.data.refunds || [];
+      const refundData = response.data?.refunds || [];
+      console.log('Fetched refunds:', refundData.length, 'refunds');
       setRefunds(refundData);
 
       // Calculate stats from data
@@ -142,7 +143,7 @@ export default function RefundManagement() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Total Refunded</p>
-              <h3 className="text-2xl font-bold text-gray-900 mt-1">${stats.total_refunded.toFixed(2)}</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mt-1">₦{stats.total_refunded.toLocaleString('en-NG')}</h3>
             </div>
             <DollarSign className="h-8 w-8 text-blue-600" />
           </div>
@@ -201,7 +202,7 @@ export default function RefundManagement() {
                       {refund.user_name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      ${refund.amount.toFixed(2)}
+                      ₦{refund.amount.toLocaleString('en-NG')}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
                       <div className="max-w-xs truncate">{refund.reason}</div>

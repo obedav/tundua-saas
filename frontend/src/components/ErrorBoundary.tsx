@@ -48,8 +48,8 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Log error to console in development
-    if (process.env.NODE_ENV === 'development') {
+    // Log error to console in development and test
+    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
 
@@ -109,7 +109,7 @@ class ErrorBoundary extends Component<Props, State> {
             </p>
 
             {/* Error Details (Development Only) */}
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {(process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') && this.state.error && (
               <div className="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200">
                 <h3 className="text-sm font-semibold text-gray-700 mb-2">
                   Error Details (Development Only)

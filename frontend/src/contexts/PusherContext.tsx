@@ -35,16 +35,23 @@ export function PusherProvider({ children }: PusherProviderProps) {
   useEffect(() => {
     // Only initialize if we have the required env vars
     if (!process.env['NEXT_PUBLIC_PUSHER_KEY']) {
-      console.warn('Pusher is not configured. Set NEXT_PUBLIC_PUSHER_KEY to enable real-time features.');
+      // Only show warning once in development, and make it less prominent
+      if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+        const hasWarned = sessionStorage.getItem('pusher-warning-shown');
+        if (!hasWarned) {
+          console.info('ℹ️ Pusher is not configured. Real-time features are disabled. Set NEXT_PUBLIC_PUSHER_KEY in .env.local to enable.');
+          sessionStorage.setItem('pusher-warning-shown', 'true');
+        }
+      }
       return;
     }
 
     const pusherClient = createPusherClient();
     setPusher(pusherClient);
 
-    // Enable Pusher logging in development
+    // Enable Pusher logging in development (but less verbose)
     if (process.env.NODE_ENV === 'development') {
-      Pusher.logToConsole = true;
+      Pusher.logToConsole = false; // Disable by default to reduce console noise
     }
 
     return () => {

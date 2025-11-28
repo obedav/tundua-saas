@@ -22,7 +22,7 @@ export default function QuickStartChecklist() {
       description: "Add your personal information",
       completed: false,
       action: "Complete Profile",
-      href: "/dashboard/settings/profile",
+      href: "/dashboard/profile",
     },
     {
       id: 2,

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { apiClient } from "@/lib/api-client";
 import {
   FileText,
   CheckCircle,
@@ -11,6 +10,7 @@ import {
   Upload,
   AlertCircle,
 } from "lucide-react";
+import { getUserActivity } from "@/lib/actions/activity";
 
 interface Activity {
   id: number;
@@ -27,6 +27,10 @@ interface DashboardActivityFeedProps {
   maxItems?: number;
 }
 
+/**
+ * Client Component - Dashboard Activity Feed
+ * Uses Server Actions for data fetching
+ */
 export default function DashboardActivityFeed({ maxItems = 10 }: DashboardActivityFeedProps) {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,8 +41,8 @@ export default function DashboardActivityFeed({ maxItems = 10 }: DashboardActivi
 
   const fetchActivities = async () => {
     try {
-      const response = await apiClient.getUserActivity();
-      const activityData = response.data.activities || [];
+      const response = await getUserActivity({ limit: maxItems });
+      const activityData = response?.activities || [];
 
       const mappedActivities: Activity[] = activityData.map((item: any) => {
         const activityConfig = getActivityConfig(item.entity_type, item.action);
@@ -191,7 +195,7 @@ export default function DashboardActivityFeed({ maxItems = 10 }: DashboardActivi
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-900">{activity.title}</p>
                   <p className="text-sm text-gray-600 mt-1">{activity.description}</p>
-                  <p className="text-xs text-gray-500 mt-1">{formatTimestamp(activity?.timestamp)}</p>
+                  <p className="text-xs text-gray-500 mt-1">{formatTimestamp(activity.timestamp)}</p>
                 </div>
               </div>
             );

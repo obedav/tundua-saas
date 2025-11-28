@@ -219,7 +219,6 @@ export default function EditApplicationPage() {
         return <Step6Review {...stepProps} onSubmit={handleSubmit} isSubmitting={isSubmitting} />;
       default:
         return null;
-        return null;
     }
   };
 

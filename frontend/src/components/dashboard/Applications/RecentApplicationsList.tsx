@@ -90,7 +90,7 @@ export default function RecentApplicationsList({
                   {getStatusBadge(app.status)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  ${typeof app.total_amount === 'number' ? app.total_amount.toFixed(2) : parseFloat(app.total_amount || "0").toFixed(2)}
+                  ₦{typeof app.total_amount === 'number' ? app.total_amount.toLocaleString('en-NG') : parseFloat(app.total_amount || "0").toLocaleString('en-NG')}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
                   <Link

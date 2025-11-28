@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, AxiosError } from "axios";
-import Cookies from "js-cookie";
 import { clientEnv } from "@/lib/env";
 
 const API_URL = clientEnv.NEXT_PUBLIC_API_URL;
@@ -16,12 +15,23 @@ class ApiClient {
       withCredentials: true,
     });
 
-    // Request interceptor to add auth token
+    this.setupInterceptors();
+  }
+
+  private setupInterceptors() {
+    // Request interceptor
+    // Note: Auth token is sent automatically via httpOnly cookie (withCredentials: true)
+    // The backend AuthMiddleware will read it from the cookie
     this.client.interceptors.request.use(
       (config) => {
-        const token = Cookies.get("auth_token");
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
+        // For admin routes, application routes, and document routes, route through Next.js API handlers which can access HttpOnly cookies
+        if (
+          config.url?.includes('/api/admin/') ||
+          config.url?.includes('/api/applications') ||
+          config.url?.includes('/api/documents/')
+        ) {
+          // Use relative URL to hit Next.js API routes instead of backend directly
+          config.baseURL = '';
         }
         return config;
       },
@@ -35,8 +45,8 @@ class ApiClient {
       (response) => response,
       async (error: AxiosError) => {
         if (error.response?.status === 401) {
-          // Token expired or invalid
-          Cookies.remove("auth_token");
+          // Token expired or invalid - redirect to login
+          // The server will clear the httpOnly cookie
           window.location.href = "/auth/login";
         }
         return Promise.reject(error);
@@ -218,6 +228,12 @@ class ApiClient {
 
   async getPendingDocuments() {
     return this.client.get("/api/admin/documents/pending");
+  }
+
+  async adminDownloadDocument(id: number) {
+    return this.client.get(`/api/admin/documents/${id}/download`, {
+      responseType: "blob",
+    });
   }
 
   async reviewDocument(id: number, status: string, notes?: string) {

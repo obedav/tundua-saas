@@ -40,7 +40,7 @@ export default function EAgreementModal({
       doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       doc.text(`Application Reference: ${applicationRef}`, 20, 40);
-      doc.text(`Refund Amount: USD $${refundAmount.toFixed(2)}`, 20, 50);
+      doc.text(`Refund Amount: NGN ₦${refundAmount.toLocaleString('en-NG')}`, 20, 50);
       doc.text(`Date: ${format(new Date(), 'MMMM dd, yyyy')}`, 20, 60);
 
       // Agreement text
@@ -167,7 +167,7 @@ By signing below, I acknowledge that I have read, understood, and agree to these
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Refund Amount:</span>
-              <span className="font-semibold text-green-600">USD ${refundAmount.toFixed(2)}</span>
+              <span className="font-semibold text-green-600">NGN ₦{refundAmount.toLocaleString('en-NG')}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Date:</span>

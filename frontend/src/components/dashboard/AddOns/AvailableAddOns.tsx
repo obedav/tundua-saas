@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { ShoppingCart, Check, Star } from "lucide-react";
 import { toast } from "sonner";
-import { apiClient } from "@/lib/api-client";
+import { getAddonServices } from "@/lib/actions/services";
 
 interface AddOnService {
   id: number;
@@ -28,8 +28,8 @@ export default function AvailableAddOns() {
 
   const fetchAddOnServices = async () => {
     try {
-      const response = await apiClient.getAddonServices();
-      const services = response.data.addon_services || [];
+      const response = await getAddonServices();
+      const services = response?.addon_services || [];
 
       // Map backend data to frontend interface
       const mappedServices: AddOnService[] = services.map((item: any) => ({
@@ -95,7 +95,7 @@ export default function AvailableAddOns() {
         {cart.length > 0 && (
           <div className="bg-primary-600 text-white px-6 py-3 rounded-lg">
             <p className="text-sm font-medium">Cart: {cart.length} items</p>
-            <p className="text-xl font-bold">${totalCartValue.toFixed(2)}</p>
+            <p className="text-xl font-bold">₦{totalCartValue.toLocaleString('en-NG')}</p>
           </div>
         )}
       </div>
@@ -138,7 +138,7 @@ export default function AvailableAddOns() {
                       Popular
                     </span>
                   )}
-                  <p className="text-2xl font-bold text-gray-900">${service.price}</p>
+                  <p className="text-2xl font-bold text-gray-900">₦{service.price.toLocaleString('en-NG')}</p>
                   <p className="text-xs text-gray-500 uppercase">{service.category}</p>
                 </div>
               </div>
@@ -193,7 +193,7 @@ export default function AvailableAddOns() {
               return service ? (
                 <div key={id} className="flex items-center justify-between text-sm">
                   <span className="text-gray-700">{service.name}</span>
-                  <span className="font-semibold">${service.price}</span>
+                  <span className="font-semibold">₦{service.price.toLocaleString('en-NG')}</span>
                 </div>
               ) : null;
             })}
@@ -201,7 +201,7 @@ export default function AvailableAddOns() {
           <div className="border-t pt-4 mb-4">
             <div className="flex items-center justify-between">
               <span className="font-bold text-gray-900">Total</span>
-              <span className="text-2xl font-bold text-primary-600">${totalCartValue.toFixed(2)}</span>
+              <span className="text-2xl font-bold text-primary-600">₦{totalCartValue.toLocaleString('en-NG')}</span>
             </div>
           </div>
           <button className="w-full bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors">

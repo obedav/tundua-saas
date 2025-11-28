@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Search, UserCheck, UserX, Eye, Ban, CheckCircle } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
@@ -54,7 +55,10 @@ export default function UserManagement() {
       if (searchTerm) params.search = searchTerm;
 
       const response = await apiClient.getAllUsers(params);
-      setUsers(response.data.data.users || []);
+      // Try multiple possible response structures
+      const users = response.data?.data?.users || response.data?.users || [];
+      console.log('Fetched users:', users.length, 'users');
+      setUsers(users);
     } catch (error: any) {
       console.error("Error fetching users:", error);
       toast.error("Failed to load users");
@@ -66,7 +70,13 @@ export default function UserManagement() {
   const fetchStats = async () => {
     try {
       const response = await apiClient.getUserStatistics();
-      setStats(response.data.statistics);
+      const statistics = response.data?.statistics || {
+        total_users: 0,
+        active_users: 0,
+        suspended_users: 0,
+        new_this_month: 0,
+      };
+      setStats(statistics);
     } catch (error) {
       console.error("Error fetching stats:", error);
     }
@@ -274,13 +284,13 @@ export default function UserManagement() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => window.location.href = `/dashboard/admin/users/${user.id}`}
+                        <Link
+                          href={`/dashboard/admin/users/${user.id}`}
                           className="text-blue-600 hover:text-blue-700"
                           title="View Details"
                         >
                           <Eye className="h-4 w-4" />
-                        </button>
+                        </Link>
                         {user.status === "suspended" ? (
                           <button
                             onClick={() => handleSuspendUser(user.id, "unsuspend")}
