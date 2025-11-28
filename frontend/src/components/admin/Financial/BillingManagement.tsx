@@ -46,7 +46,7 @@ export default function BillingManagement() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Total Revenue</p>
-              <h3 className="text-2xl font-bold text-gray-900 mt-1">$0.00</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mt-1">₦0</h3>
             </div>
             <DollarSign className="h-8 w-8 text-green-600" />
           </div>

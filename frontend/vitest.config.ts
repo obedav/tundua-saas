@@ -15,7 +15,7 @@ export default defineConfig({
     environment: 'jsdom', // Simulates browser environment
 
     // Setup files to run before each test file
-    setupFiles: ['./src/tests/setup.ts'],
+    setupFiles: ['./src/tests/setup.tsx'],
 
     // Global test utilities (automatically available in all tests)
     globals: true,

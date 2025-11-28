@@ -78,7 +78,7 @@ export default function AddOnPurchaseModal({
               </ul>
             </div>
             <div className="text-right">
-              <p className="text-2xl font-bold text-gray-900">${addOn.price.toFixed(2)}</p>
+              <p className="text-2xl font-bold text-gray-900">₦{addOn.price.toLocaleString('en-NG')}</p>
             </div>
           </div>
 
@@ -126,13 +126,13 @@ export default function AddOnPurchaseModal({
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Price</span>
-                <span className="font-medium text-gray-900">${addOn.price.toFixed(2)}</span>
+                <span className="font-medium text-gray-900">₦{addOn.price.toLocaleString('en-NG')}</span>
               </div>
               <div className="border-t border-gray-200 pt-2 mt-2">
                 <div className="flex justify-between">
                   <span className="font-bold text-gray-900">Total</span>
                   <span className="text-2xl font-bold text-primary-600">
-                    ${addOn.price.toFixed(2)}
+                    ₦{addOn.price.toLocaleString('en-NG')}
                   </span>
                 </div>
               </div>
@@ -162,7 +162,7 @@ export default function AddOnPurchaseModal({
             disabled={processing}
             className="flex-1 px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            {processing ? "Processing..." : `Pay $${addOn.price.toFixed(2)}`}
+            {processing ? "Processing..." : `Pay ₦${addOn.price.toLocaleString('en-NG')}`}
           </button>
         </div>
       </div>

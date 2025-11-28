@@ -20,9 +20,83 @@ interface Embassy {
 export default function EmbassyDirectory() {
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Nigerian Embassies (Active)
   const embassies: Embassy[] = [
     {
       id: 1,
+      country: "Canada",
+      flag: "🇨🇦",
+      location: "Abuja, Nigeria",
+      address: "13010G Palm Close, Diplomatic Drive, Central Business District, Abuja",
+      phone: "+234 9 461 2900",
+      email: "abuja@international.gc.ca",
+      website: "www.canada.ca/nigeria",
+      hours: "Mon-Fri: 8:00 AM - 4:30 PM",
+      visaProcessing: "15-30 business days",
+      notes: "Biometrics required - book appointment in advance at VFS Global",
+    },
+    {
+      id: 2,
+      country: "Australia",
+      flag: "🇦🇺",
+      location: "Abuja, Nigeria",
+      address: "48 Aguiyi Ironsi Street, Maitama, Abuja",
+      phone: "+234 9 461 2780",
+      email: "abuja@dfat.gov.au",
+      website: "www.nigeria.embassy.gov.au",
+      hours: "Mon-Fri: 8:00 AM - 4:30 PM",
+      visaProcessing: "20-45 business days",
+      notes: "Applications processed through VFS Global - Lagos office available",
+    },
+    {
+      id: 3,
+      country: "United Kingdom",
+      flag: "🇬🇧",
+      location: "Abuja, Nigeria",
+      address: "19 Torrens Close, Maitama, Abuja",
+      phone: "+234 9 461 3700",
+      email: "britishhc.abuja@fcdo.gov.uk",
+      website: "www.gov.uk/world/nigeria",
+      hours: "Mon-Fri: 8:00 AM - 4:00 PM",
+      visaProcessing: "15 business days (standard)",
+      notes: "Priority and super priority services available for faster processing",
+    },
+    {
+      id: 4,
+      country: "United States",
+      flag: "🇺🇸",
+      location: "Abuja, Nigeria",
+      address: "Plot 1075 Diplomatic Drive, Central District Area, Abuja",
+      phone: "+234 9 461 4000",
+      email: "consularagents@state.gov",
+      website: "ng.usembassy.gov",
+      hours: "Mon-Fri: 7:30 AM - 4:00 PM",
+      visaProcessing: "Varies by visa type",
+      notes: "Interview required - Lagos Consulate also available. Check wait times online",
+    },
+    {
+      id: 5,
+      country: "Germany",
+      flag: "🇩🇪",
+      location: "Abuja, Nigeria",
+      address: "9 Lake Maracaibo Close, Maitama, Abuja",
+      phone: "+234 9 297 5500",
+      email: "info@abuja.diplo.de",
+      website: "www.abuja.diplo.de",
+      hours: "Mon-Fri: 8:00 AM - 3:00 PM",
+      visaProcessing: "10-15 business days",
+      notes: "Submit applications through VFS Global visa application centers",
+    },
+  ];
+
+  /* ==========================================
+   * KENYAN EMBASSIES (Commented for future expansion)
+   * ==========================================
+   * Uncomment when expanding services to Kenya
+   *
+  const kenyaEmbassies: Embassy[] = [
+    {
+      id: 101,
       country: "Canada",
       flag: "🇨🇦",
       location: "Nairobi, Kenya",
@@ -35,7 +109,7 @@ export default function EmbassyDirectory() {
       notes: "Biometrics required - book appointment in advance",
     },
     {
-      id: 2,
+      id: 102,
       country: "Australia",
       flag: "🇦🇺",
       location: "Nairobi, Kenya",
@@ -47,7 +121,7 @@ export default function EmbassyDirectory() {
       visaProcessing: "20-45 business days",
     },
     {
-      id: 3,
+      id: 103,
       country: "United Kingdom",
       flag: "🇬🇧",
       location: "Nairobi, Kenya",
@@ -60,7 +134,7 @@ export default function EmbassyDirectory() {
       notes: "Priority service available for faster processing",
     },
     {
-      id: 4,
+      id: 104,
       country: "United States",
       flag: "🇺🇸",
       location: "Nairobi, Kenya",
@@ -73,7 +147,7 @@ export default function EmbassyDirectory() {
       notes: "Interview required - check wait times online",
     },
     {
-      id: 5,
+      id: 105,
       country: "Germany",
       flag: "🇩🇪",
       location: "Nairobi, Kenya",
@@ -85,6 +159,11 @@ export default function EmbassyDirectory() {
       visaProcessing: "10-15 business days",
     },
   ];
+  *
+  * To enable Kenya embassies:
+  * 1. Uncomment the kenyaEmbassies array above
+  * 2. Merge with embassies array: const embassies = [...nigerianEmbassies, ...kenyaEmbassies];
+  * ========================================== */
 
   const filteredEmbassies = embassies.filter((embassy) =>
     embassy.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -222,7 +301,7 @@ export default function EmbassyDirectory() {
             href="/dashboard/addons"
             className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors"
           >
-            Get Coaching - $79
+            Get Coaching - ₦35,000
             <ExternalLink className="w-4 h-4" />
           </a>
         </div>

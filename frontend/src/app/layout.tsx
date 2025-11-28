@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
+import { PostHogProvider } from "@/providers/PostHogProvider";
 import { Toaster } from "sonner";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { GA_MEASUREMENT_ID } from "@/lib/analytics";
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     default: "Tundua - Study Abroad Application Platform",
     template: "%s | Tundua" // Page titles will be "Page Name | Tundua"
   },
-  description: "Complete study abroad application support from $299. Apply to top universities with expert guidance. Professional counseling, document review, and application management.",
+  description: "Complete study abroad application support from ₦89,000. Apply to top universities with expert guidance. Professional counseling, document review, and application management.",
   keywords: [
     "study abroad",
     "university applications",
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: process.env['NEXT_PUBLIC_APP_URL'],
     title: "Tundua - Study Abroad Application Platform",
-    description: "Complete study abroad application support from $299. Apply to top universities with expert guidance.",
+    description: "Complete study abroad application support from ₦89,000. Apply to top universities with expert guidance.",
     siteName: "Tundua",
     images: [
       {
@@ -61,7 +62,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "Tundua - Study Abroad Application Platform",
-    description: "Complete study abroad application support from $299. Apply to top universities with expert guidance.",
+    description: "Complete study abroad application support from ₦89,000. Apply to top universities with expert guidance.",
     images: ['/twitter-image.png'], // TODO: Create this image (1200x600px)
     creator: '@tundua', // TODO: Replace with your Twitter handle
   },
@@ -90,15 +91,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
         <SkipLinks />
         <GlobalStructuredData />
         <WebVitalsReporter />
-        <Providers>
-          {children}
-          <Toaster position="top-right" richColors />
-        </Providers>
+        <PostHogProvider>
+          <Providers>
+            {children}
+            <Toaster position="top-right" richColors />
+          </Providers>
+        </PostHogProvider>
         {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
       </body>
     </html>

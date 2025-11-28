@@ -114,19 +114,45 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
         sort: 'smart',
         per_page: 100
       });
+
+      console.log('Universities API response:', response.data);
+
       if (response.data.success) {
-        setUniversities(response.data.data);
+        // Ensure we have an array of universities
+        const universitiesData = Array.isArray(response.data.data) ? response.data.data : [];
+        console.log('Universities loaded from API:', universitiesData.length);
+
+        // Count duplicates for debugging
+        const uniqueNames = new Set(universitiesData.map((u: University) => u.name));
+        console.log('Unique university names:', uniqueNames.size);
+        console.log('Duplicates filtered:', universitiesData.length - uniqueNames.size);
+
+        setUniversities(universitiesData);
+      } else {
+        console.error('API returned success=false:', response.data);
+        setError(response.data.error || 'Failed to load universities');
+        setUniversities([]);
       }
     } catch (err: any) {
       console.error('Failed to load universities:', err);
-      setError('Failed to load universities for this country.');
+      console.error('Error details:', err.response?.data || err.message);
+      setError(err.response?.data?.error || 'Failed to load universities for this country.');
       setUniversities([]);
     } finally {
       setLoadingUniversities(false);
     }
   };
 
-  const availableUniversities = universities.map(uni => uni.name);
+  // Remove duplicates by name and keep full university objects for unique IDs
+  const availableUniversities = universities
+    .filter(uni => uni && uni.name) // Filter out null/undefined or universities without names
+    .reduce((acc, uni) => {
+      // Only add if name doesn't already exist in accumulator
+      if (!acc.find(u => u.name === uni.name)) {
+        acc.push(uni);
+      }
+      return acc;
+    }, [] as University[]);
 
   const addUniversity = (university: string) => {
     if (!selectedUniversities.includes(university) && selectedUniversities.length < 8) {
@@ -206,6 +232,16 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
           )}
         </div>
 
+        {/* Error Display */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+            <p className="text-sm text-red-800 flex items-center gap-2">
+              <span className="text-red-500">⚠</span>
+              {error}
+            </p>
+          </div>
+        )}
+
         {/* Universities Selection */}
         {selectedCountry && (
           <div className="space-y-4">
@@ -265,16 +301,16 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
                     <div className="space-y-2 max-h-96 overflow-y-auto">
                       {availableUniversities.map((uni) => (
                         <button
-                          key={uni}
+                          key={uni.id}
                           type="button"
-                          onClick={() => addUniversity(uni)}
-                          disabled={selectedUniversities.includes(uni)}
+                          onClick={() => addUniversity(uni.name)}
+                          disabled={selectedUniversities.includes(uni.name)}
                           className="group w-full text-left px-4 py-3 rounded-xl bg-white border-2 border-gray-200 hover:border-primary-500 hover:bg-primary-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-gray-200 disabled:hover:bg-white transition-all duration-200 flex items-center justify-between"
                         >
                           <span className="font-medium text-gray-700 group-hover:text-primary-700">
-                            {uni}
+                            {uni.name}
                           </span>
-                          {!selectedUniversities.includes(uni) && (
+                          {!selectedUniversities.includes(uni.name) && (
                             <Plus className="h-5 w-5 text-gray-400 group-hover:text-primary-600" />
                           )}
                         </button>

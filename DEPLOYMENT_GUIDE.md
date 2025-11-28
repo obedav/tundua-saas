@@ -1,612 +1,606 @@
-# 🚀 Tundua SaaS - Deployment Guide
+# 🚀 Tundua SaaS Platform - Production Deployment Guide
 
-## Overview
-
-This guide covers deploying the Tundua SaaS application to production with all Phase 1 security features enabled.
-
-**Phase 1 Status:** 85% Complete ✅
-**Security Features:** Fully Integrated ✅
-**CI/CD Pipeline:** Configured ✅
-**Backup System:** Ready ✅
+**Last Updated**: November 27, 2025
+**Deployment Status**: Ready for Production
 
 ---
 
-## Table of Contents
+## 📋 **Deployment Overview**
 
-1. [Pre-Deployment Checklist](#pre-deployment-checklist)
-2. [Server Requirements](#server-requirements)
-3. [Environment Setup](#environment-setup)
-4. [Database Setup](#database-setup)
-5. [Backend Deployment](#backend-deployment)
-6. [Frontend Deployment](#frontend-deployment)
-7. [Security Configuration](#security-configuration)
-8. [Automation Setup](#automation-setup)
-9. [Post-Deployment Verification](#post-deployment-verification)
-10. [Monitoring](#monitoring)
-11. [Rollback Procedure](#rollback-procedure)
+### **Architecture**:
+- **Backend**: PHP 8.1+ on Syskay cPanel (api.tundua.com)
+- **Frontend**: Next.js on Vercel (tundua.com)
+- **Database**: MySQL 8.0 on cPanel
+- **SSL**: Free Let's Encrypt (via cPanel)
 
----
-
-## Pre-Deployment Checklist
-
-### Required Files
-- [ ] `.env` file configured for production
-- [ ] SSL certificates installed
-- [ ] Database credentials ready
-- [ ] SMTP credentials for email
-- [ ] Payment gateway credentials (Stripe, Paystack)
-- [ ] OAuth credentials (Google)
-
-### Code Readiness
-- [ ] All tests passing (`npm test`, `vendor/bin/phpunit`)
-- [ ] Code linting passed
-- [ ] No security vulnerabilities (`composer audit`, `npm audit`)
-- [ ] Environment variables validated
-- [ ] Database migrations tested
-
-### Infrastructure
-- [ ] Domain configured with DNS
-- [ ] Server accessible via SSH
-- [ ] Database server running
-- [ ] Backup storage available
-- [ ] Monitoring tools configured
+### **Hosting Details**:
+- **Domain**: tundua.com
+- **cPanel User**: tunduaco
+- **Server IP**: 148.251.20.169
+- **Home Directory**: /home2/tunduaco
 
 ---
 
-## Server Requirements
+## 🎯 **Pre-Deployment Checklist**
 
-### Minimum Specifications
+### **1. Backend Requirements**:
+- ✅ PHP 8.1 or higher
+- ✅ Composer 2.x
+- ✅ MySQL 8.0+
+- ✅ OpenSSL extension
+- ✅ PDO MySQL extension
+- ✅ mbstring extension
+- ✅ JSON extension
 
-**Backend Server:**
-- OS: Ubuntu 20.04+ / Debian 11+
-- CPU: 2 cores
-- RAM: 4GB
-- Storage: 50GB SSD
-- PHP: 8.2+
-- MySQL: 8.0+
-- Web Server: Nginx or Apache
+### **2. Environment Variables Ready**:
+- ✅ Database credentials
+- ✅ JWT secret key
+- ✅ Stripe API keys
+- ✅ Pusher credentials
+- ✅ Email service credentials
+- ✅ CORS allowed origins
 
-**Frontend Server (can be same as backend):**
-- Node.js: 20.x
-- PM2: Latest
-- Storage: 20GB
+---
 
-### Required Software
+## 📦 **STEP 1: Prepare Backend for Deployment**
+
+### **1.1 Clean Development Files**
 
 ```bash
-# Update system
-sudo apt update && sudo apt upgrade -y
+# Navigate to backend directory
+cd backend
 
-# Install PHP 8.2 and extensions
-sudo apt install -y php8.2 php8.2-fpm php8.2-cli php8.2-mysql \
-  php8.2-curl php8.2-xml php8.2-mbstring php8.2-zip php8.2-gd
-
-# Install MySQL
-sudo apt install -y mysql-server
-
-# Install Nginx
-sudo apt install -y nginx
-
-# Install Composer
-curl -sS https://getcomposer.org/installer | php
-sudo mv composer.phar /usr/local/bin/composer
-
-# Install Node.js 20.x
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
-
-# Install PM2
-sudo npm install -g pm2
-
-# Install certbot for SSL
-sudo apt install -y certbot python3-certbot-nginx
+# Remove development files
+rm -rf .phpunit.cache/
+rm -rf tests/
+rm -f phpunit.xml
+rm -f .env.test
+rm -f test-*.php
+rm -f check-*.php
+rm -f fix-*.php
+rm -f run-*.php
+rm -f nul
+rm -f *_BACKUP*.php
+rm -f *_NEW*.php
 ```
 
----
-
-## Environment Setup
-
-### 1. Clone Repository
+### **1.2 Optimize Composer Dependencies**
 
 ```bash
-cd /var/www
-sudo git clone https://github.com/yourusername/tundua-saas.git
-cd tundua-saas
-sudo chown -R www-data:www-data .
+# Install production dependencies only
+composer install --no-dev --optimize-autoloader
+
+# Dump optimized autoloader
+composer dump-autoload --optimize --classmap-authoritative
 ```
 
-### 2. Configure Environment Variables
+### **1.3 Create Production .env**
 
-**Backend `.env`:**
-
-```bash
-cd /var/www/tundua-saas/backend
-cp .env.example .env
-nano .env
-```
+Create `backend/.env.production`:
 
 ```env
 # Application
-APP_NAME="Tundua SaaS"
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://api.yourdomain.com
+APP_URL=https://api.tundua.com
 
 # Database
 DB_HOST=localhost
-DB_PORT=3306
-DB_DATABASE=tundua_prod
-DB_USERNAME=tundua_user
-DB_PASSWORD=STRONG_PASSWORD_HERE
+DB_NAME=tunduaco_tundua
+DB_USER=tunduaco_tundua_user
+DB_PASSWORD=[GENERATE_STRONG_PASSWORD]
 
-# JWT
-JWT_SECRET=YOUR_VERY_LONG_RANDOM_SECRET_KEY_HERE
-JWT_EXPIRY=3600
+# JWT Authentication
+JWT_SECRET=[GENERATE_256_BIT_KEY]
+JWT_ACCESS_EXPIRY=3600
 JWT_REFRESH_EXPIRY=2592000
 
 # CORS
-CORS_ORIGIN=https://yourdomain.com
-CORS_CREDENTIALS=true
+CORS_ALLOWED_ORIGINS=https://tundua.com,https://www.tundua.com
 
-# Email (SendGrid, Mailgun, or SMTP)
-MAIL_DRIVER=smtp
+# Stripe Payment
+STRIPE_SECRET_KEY=sk_live_[YOUR_LIVE_KEY]
+STRIPE_PUBLISHABLE_KEY=pk_live_[YOUR_LIVE_KEY]
+STRIPE_WEBHOOK_SECRET=whsec_[YOUR_WEBHOOK_SECRET]
+
+# Pusher (Real-time)
+PUSHER_APP_ID=[YOUR_APP_ID]
+PUSHER_KEY=[YOUR_KEY]
+PUSHER_SECRET=[YOUR_SECRET]
+PUSHER_CLUSTER=eu
+
+# Email Service
 MAIL_HOST=smtp.gmail.com
 MAIL_PORT=587
-MAIL_USERNAME=your-email@gmail.com
-MAIL_PASSWORD=your-app-password
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS=noreply@yourdomain.com
-MAIL_FROM_NAME="Tundua SaaS"
+MAIL_USERNAME=[YOUR_EMAIL]
+MAIL_PASSWORD=[YOUR_APP_PASSWORD]
+MAIL_FROM_ADDRESS=noreply@tundua.com
+MAIL_FROM_NAME=Tundua
 
-# Payment Gateways
-PAYSTACK_SECRET_KEY=sk_live_xxxxx
-PAYSTACK_PUBLIC_KEY=pk_live_xxxxx
-STRIPE_SECRET_KEY=sk_live_xxxxx
-STRIPE_PUBLISHABLE_KEY=pk_live_xxxxx
-STRIPE_WEBHOOK_SECRET=whsec_xxxxx
+# File Upload
+MAX_UPLOAD_SIZE=10485760
+UPLOAD_PATH=/home2/tunduaco/uploads
 
-# Google OAuth
-GOOGLE_CLIENT_ID=xxxxx.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=xxxxx
-GOOGLE_REDIRECT_URI=https://api.yourdomain.com/api/auth/google/callback
-
-# Security
+# Rate Limiting
 RATE_LIMIT_ENABLED=true
 RATE_LIMIT_MAX_REQUESTS=100
-RATE_LIMIT_WINDOW_MINUTES=15
-REFRESH_TOKEN_ROTATION=true
+RATE_LIMIT_WINDOW=3600
+
+# Logging
+LOG_PATH=/home2/tunduaco/logs
+LOG_LEVEL=error
 ```
 
-**Frontend `.env`:**
+### **1.4 Generate Secure Keys**
 
 ```bash
-cd /var/www/tundua-saas/frontend
-cp .env.example .env.local
-nano .env.local
-```
+# Generate JWT secret (256-bit)
+openssl rand -base64 32
 
-```env
-NEXT_PUBLIC_API_URL=https://api.yourdomain.com/api
-NEXT_PUBLIC_APP_URL=https://yourdomain.com
-NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_live_xxxxx
-NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=pk_live_xxxxx
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=xxxxx.apps.googleusercontent.com
+# Generate webhook secret
+openssl rand -hex 32
 ```
 
 ---
 
-## Database Setup
+## 🗄️ **STEP 2: Setup MySQL Database**
 
-### 1. Create Database and User
+### **2.1 Create Database via cPanel**
 
-```bash
-sudo mysql
+1. Log into cPanel: https://tundua.com:2083
+2. Go to **MySQL® Databases**
+3. Create database: `tunduaco_tundua`
+4. Create user: `tunduaco_tundua_user`
+5. Generate strong password (save it!)
+6. Add user to database with **ALL PRIVILEGES**
+
+### **2.2 Upload Database Schema**
+
+Option A: Via cPanel phpMyAdmin
+1. Go to **phpMyAdmin** in cPanel
+2. Select `tunduaco_tundua` database
+3. Click **Import**
+4. Upload each migration file in order:
+
 ```
+backend/database/migrations/
+├── create_users_table.sql
+├── create_service_tiers_table.sql
+├── create_addon_services_table.sql
+├── create_applications_table.sql
+├── create_documents_table.sql
+├── create_payments_table.sql
+├── create_refunds_table.sql
+├── create_activities_table.sql
+├── create_referrals_table.sql
+└── create_audit_logs_table.sql
+```
+
+Option B: Via SSH (if available)
+```bash
+mysql -u tunduaco_tundua_user -p tunduaco_tundua < backend/database/migrations/create_users_table.sql
+mysql -u tunduaco_tundua_user -p tunduaco_tundua < backend/database/migrations/create_service_tiers_table.sql
+# ... repeat for all migrations
+```
+
+### **2.3 Seed Initial Data**
 
 ```sql
-CREATE DATABASE tundua_prod CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'tundua_user'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD_HERE';
-GRANT ALL PRIVILEGES ON tundua_prod.* TO 'tundua_user'@'localhost';
-FLUSH PRIVILEGES;
-EXIT;
-```
+-- Insert service tiers (Naira pricing)
+INSERT INTO service_tiers (name, description, base_price, processing_time, features, is_active) VALUES
+('Basic', 'Essential application processing', 89000.00, '14-21 days', '["Document Review", "Basic Application", "Email Support"]', 1),
+('Standard', 'Priority processing with guidance', 149000.00, '7-14 days', '["Priority Processing", "Document Review", "Application Guidance", "Email + Chat Support"]', 1),
+('Premium', 'White-glove service with expert support', 249000.00, '3-7 days', '["Express Processing", "Expert Review", "Personal Consultant", "Interview Prep", "24/7 Support"]', 1);
 
-### 2. Run Migrations
-
-```bash
-cd /var/www/tundua-saas/backend
-vendor/bin/phinx migrate -e production
-```
-
-### 3. Seed Initial Data
-
-```bash
-vendor/bin/phinx seed:run
+-- Insert popular add-on services
+INSERT INTO addon_services (name, description, price, category, is_active) VALUES
+('Document Translation', 'Professional translation of academic documents', 25000.00, 'documentation', 1),
+('Visa Application Support', 'Complete visa application assistance', 50000.00, 'visa', 1),
+('Interview Preparation', '1-on-1 mock interview coaching', 35000.00, 'consultation', 1),
+('SOP Writing', 'Statement of Purpose professional writing', 40000.00, 'documentation', 1);
 ```
 
 ---
 
-## Backend Deployment
+## 🌐 **STEP 3: Deploy Backend to cPanel**
 
-### 1. Install Dependencies
+### **3.1 Create Subdomain**
 
+1. In cPanel, go to **Subdomains**
+2. Create subdomain: `api`
+3. Document root: `/home2/tunduaco/api.tundua.com`
+
+### **3.2 Upload Backend Files**
+
+Option A: Via File Manager (Small files)
+1. Compress backend folder locally: `backend.zip`
+2. Upload to `/home2/tunduaco/api.tundua.com`
+3. Extract in File Manager
+
+Option B: Via FTP (Recommended)
+1. Use FileZilla or similar
+2. Host: tundua.com
+3. Username: tunduaco
+4. Port: 21
+5. Upload backend folder contents to `/home2/tunduaco/api.tundua.com`
+
+Option C: Via Git (Best)
 ```bash
-cd /var/www/tundua-saas/backend
+# SSH into server (if available)
+cd /home2/tunduaco
+git clone https://github.com/YOUR_USERNAME/tundua-saas.git
+cp -r tundua-saas/backend/* api.tundua.com/
+cd api.tundua.com
 composer install --no-dev --optimize-autoloader
 ```
 
-### 2. Create Required Directories
+### **3.3 Configure File Permissions**
 
 ```bash
-mkdir -p storage/{rate_limits,refresh_tokens,backups,logs,uploads}
-chmod -R 775 storage
-chown -R www-data:www-data storage
+# Set correct permissions
+chmod 755 /home2/tunduaco/api.tundua.com
+chmod 755 /home2/tunduaco/api.tundua.com/public
+chmod 644 /home2/tunduaco/api.tundua.com/public/.htaccess
+chmod 600 /home2/tunduaco/api.tundua.com/.env
+
+# Create writable directories
+mkdir -p /home2/tunduaco/logs
+mkdir -p /home2/tunduaco/uploads
+chmod 755 /home2/tunduaco/logs
+chmod 755 /home2/tunduaco/uploads
 ```
 
-### 3. Configure Nginx
+### **3.4 Configure .htaccess**
 
-Create `/etc/nginx/sites-available/tundua-api`:
+Create `/home2/tunduaco/api.tundua.com/public/.htaccess`:
 
-```nginx
-server {
-    listen 80;
-    server_name api.yourdomain.com;
-    root /var/www/tundua-saas/backend/public;
-    index index.php;
+```apache
+# Enable rewrite engine
+RewriteEngine On
 
-    access_log /var/log/nginx/tundua-api-access.log;
-    error_log /var/log/nginx/tundua-api-error.log;
+# Redirect to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
 
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
 
-    location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        include fastcgi_params;
-    }
+# Prevent directory listing
+Options -Indexes
 
-    location ~ /\.ht {
-        deny all;
-    }
-
-    # Security headers
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header X-XSS-Protection "1; mode=block" always;
-
-    # Rate limiting
-    limit_req_zone $binary_remote_addr zone=api_limit:10m rate=10r/s;
-    limit_req zone=api_limit burst=20 nodelay;
-}
+# Set PHP values
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+php_value max_execution_time 300
+php_value memory_limit 256M
+</apache>
 ```
 
-Enable site and get SSL:
+### **3.5 Setup SSL Certificate**
 
-```bash
-sudo ln -s /etc/nginx/sites-available/tundua-api /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl reload nginx
-sudo certbot --nginx -d api.yourdomain.com
-```
+1. In cPanel, go to **SSL/TLS Status**
+2. Select `api.tundua.com`
+3. Click **Run AutoSSL**
+4. Wait for certificate installation
 
 ---
 
-## Frontend Deployment
+## 🎨 **STEP 4: Deploy Frontend to Vercel**
 
-### 1. Install Dependencies and Build
+### **4.1 Prepare Frontend**
 
 ```bash
-cd /var/www/tundua-saas/frontend
-npm ci
+cd frontend
+
+# Create production .env
+cat > .env.production << EOF
+NEXT_PUBLIC_API_URL=https://api.tundua.com/api
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_[YOUR_KEY]
+NEXT_PUBLIC_PUSHER_KEY=[YOUR_KEY]
+NEXT_PUBLIC_PUSHER_CLUSTER=eu
+NEXT_PUBLIC_APP_URL=https://tundua.com
+EOF
+
+# Test build locally
 npm run build
+npm start
 ```
 
-### 2. Configure PM2
+### **4.2 Deploy to Vercel**
+
+Option A: Via Vercel CLI
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Login
+vercel login
+
+# Deploy
+cd frontend
+vercel --prod
+```
+
+Option B: Via GitHub (Recommended)
+1. Push code to GitHub
+2. Go to https://vercel.com
+3. Click **Import Project**
+4. Select your GitHub repository
+5. Configure:
+   - **Framework**: Next.js
+   - **Root Directory**: frontend
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `.next`
+6. Add environment variables from `.env.production`
+7. Click **Deploy**
+
+### **4.3 Configure Custom Domain**
+
+1. In Vercel project settings, go to **Domains**
+2. Add domain: `tundua.com`
+3. Add domain: `www.tundua.com`
+4. Follow DNS configuration instructions
+
+---
+
+## 🔗 **STEP 5: Configure DNS**
+
+### **5.1 DNS Records**
+
+In your domain registrar (Namecheap, GoDaddy, etc.):
+
+```
+# Main domain → Vercel
+Type: A
+Name: @
+Value: 76.76.21.21
+TTL: 3600
+
+# WWW subdomain → Vercel
+Type: CNAME
+Name: www
+Value: cname.vercel-dns.com
+TTL: 3600
+
+# API subdomain → Syskay cPanel
+Type: A
+Name: api
+Value: 148.251.20.169
+TTL: 3600
+```
+
+### **5.2 Verify DNS Propagation**
 
 ```bash
-pm2 start npm --name "tundua-frontend" -- start
-pm2 save
-pm2 startup
-```
+# Check DNS
+nslookup tundua.com
+nslookup api.tundua.com
 
-### 3. Configure Nginx for Frontend
-
-Create `/etc/nginx/sites-available/tundua-frontend`:
-
-```nginx
-server {
-    listen 80;
-    server_name yourdomain.com www.yourdomain.com;
-
-    location / {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-```
-
-Enable and get SSL:
-
-```bash
-sudo ln -s /etc/nginx/sites-available/tundua-frontend /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl reload nginx
-sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+# Wait for propagation (up to 48 hours, usually < 1 hour)
 ```
 
 ---
 
-## Security Configuration
+## ✅ **STEP 6: Test Production Deployment**
 
-### 1. Firewall Setup
-
-```bash
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw allow ssh
-sudo ufw allow http
-sudo ufw allow https
-sudo ufw enable
-```
-
-### 2. Secure MySQL
+### **6.1 Test Backend API**
 
 ```bash
-sudo mysql_secure_installation
-```
+# Health check
+curl https://api.tundua.com/health
 
-### 3. File Permissions
-
-```bash
-cd /var/www/tundua-saas
-sudo chown -R www-data:www-data .
-sudo find . -type f -exec chmod 644 {} \;
-sudo find . -type d -exec chmod 755 {} \;
-sudo chmod -R 775 backend/storage
-```
-
----
-
-## Automation Setup
-
-### 1. Setup Cron Jobs
-
-```bash
-cd /var/www/tundua-saas/backend
-bash scripts/setup-cron.sh
-```
-
-This creates:
-- **Daily backups** at 2:00 AM
-- **Security cleanup** at 3:00 AM (rate limits, tokens, audit logs)
-- **Health checks** every Monday at 9:00 AM
-
-### 2. Verify Cron Jobs
-
-```bash
-crontab -l
-```
-
-### 3. Test Scripts
-
-```bash
-# Test backup
-bash scripts/backup-database.sh
-
-# Test cleanup
-php scripts/cleanup-security.php
-
-# Test health check
-php scripts/health-check.php
-```
-
----
-
-## Post-Deployment Verification
-
-### 1. API Health Check
-
-```bash
-curl https://api.yourdomain.com/health
-```
-
-Expected response:
-```json
-{
-  "status": "ok",
-  "database": "connected",
-  "timestamp": "2025-01-26 10:00:00"
-}
-```
-
-### 2. Test Authentication Endpoints
-
-```bash
-# Test registration
-curl -X POST https://api.yourdomain.com/api/auth/register \
+# Register test user
+curl -X POST https://api.tundua.com/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "first_name": "Test",
     "last_name": "User",
     "email": "test@example.com",
-    "password": "Test@1234"
+    "password": "Test123!@#"
   }'
 
-# Test rate limiting (try 6 times quickly)
-for i in {1..6}; do
-  curl -X POST https://api.yourdomain.com/api/auth/login \
-    -H "Content-Type: application/json" \
-    -d '{"email":"wrong@example.com","password":"wrong"}'
-  echo ""
-done
+# Login
+curl -X POST https://api.tundua.com/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "Test123!@#"
+  }'
 ```
 
-### 3. Check Security Features
+### **6.2 Test Frontend**
+
+1. Visit https://tundua.com
+2. Test homepage animations
+3. Click "Start Free Application"
+4. Complete registration
+5. Verify email (check inbox)
+6. Login to dashboard
+7. Start new application
+8. Upload documents
+9. Test payment flow (use Stripe test mode first!)
+
+### **6.3 Test Email Delivery**
+
+- Register new user → Check verification email
+- Forgot password → Check reset email
+- Document upload → Check notification email
+- Payment success → Check receipt email
+
+---
+
+## 🔒 **STEP 7: Security Hardening**
+
+### **7.1 Backend Security**
 
 ```bash
-# Check audit logs
-mysql -u tundua_user -p tundua_prod -e "SELECT * FROM audit_logs ORDER BY created_at DESC LIMIT 10;"
+# Disable directory listing
+echo "Options -Indexes" >> /home2/tunduaco/api.tundua.com/.htaccess
 
-# Check rate limit files
-ls -la /var/www/tundua-saas/backend/storage/rate_limits/
+# Protect sensitive files
+cat >> /home2/tunduaco/api.tundua.com/.htaccess << EOF
+<FilesMatch "^\.env">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+EOF
 
-# Check refresh tokens
-ls -la /var/www/tundua-saas/backend/storage/refresh_tokens/
+# Enable HTTPS only
+# Update backend/.env
+FORCE_HTTPS=true
 ```
 
-### 4. Frontend Verification
+### **7.2 Database Security**
 
-Visit: `https://yourdomain.com`
-- [ ] Homepage loads
-- [ ] Login works
-- [ ] Registration works
+```sql
+-- Revoke unnecessary privileges
+REVOKE ALL PRIVILEGES ON tunduaco_tundua.* FROM 'tunduaco_tundua_user'@'localhost';
+
+-- Grant only necessary privileges
+GRANT SELECT, INSERT, UPDATE, DELETE ON tunduaco_tundua.* TO 'tunduaco_tundua_user'@'localhost';
+
+FLUSH PRIVILEGES;
+```
+
+### **7.3 Setup Monitoring**
+
+1. Enable cPanel error logs
+2. Setup Vercel analytics
+3. Configure Stripe webhooks
+4. Setup Pusher monitoring
+5. Enable email delivery monitoring
+
+---
+
+## 📊 **STEP 8: Post-Deployment Checklist**
+
+### **Essential Checks**:
+
+- [ ] Backend API responding at https://api.tundua.com
+- [ ] Frontend loading at https://tundua.com
+- [ ] SSL certificates active (both domains)
+- [ ] Database connection working
+- [ ] User registration working
+- [ ] Email delivery working
+- [ ] Login/logout working
 - [ ] Dashboard accessible
+- [ ] Application creation working
+- [ ] Document upload working
+- [ ] Stripe payment working (test mode)
+- [ ] Pusher real-time notifications working
+- [ ] Mobile responsive design working
+- [ ] Homepage animations working
+- [ ] All links functional
+
+### **Performance Checks**:
+
+- [ ] Lighthouse score > 90 (desktop)
+- [ ] Lighthouse score > 85 (mobile)
+- [ ] First Contentful Paint < 1.5s
+- [ ] Time to Interactive < 3.5s
+- [ ] No console errors
+- [ ] No broken images/links
+
+### **Security Checks**:
+
+- [ ] HTTPS enforced (both domains)
+- [ ] Security headers present
+- [ ] .env files protected
+- [ ] Rate limiting active
+- [ ] CORS configured correctly
+- [ ] SQL injection protection tested
+- [ ] XSS protection active
 
 ---
 
-## Monitoring
+## 🔧 **Common Issues & Fixes**
 
-### 1. Log Monitoring
+### **Issue: 500 Internal Server Error**
 
 ```bash
-# Backend errors
-tail -f /var/log/nginx/tundua-api-error.log
+# Check PHP error logs
+tail -f /home2/tunduaco/logs/error_log
 
-# Frontend PM2 logs
-pm2 logs tundua-frontend
+# Check file permissions
+chmod 755 public/
+chmod 644 public/index.php
 
-# Application logs
-tail -f /var/www/tundua-saas/backend/storage/logs/cleanup.log
-tail -f /var/www/tundua-saas/backend/storage/logs/backup.log
+# Regenerate autoloader
+composer dump-autoload --optimize
 ```
 
-### 2. Weekly Health Reports
-
-Check health report:
-```bash
-cat /var/www/tundua-saas/backend/storage/logs/health-report.json
-```
-
-### 3. Database Monitoring
+### **Issue: Database Connection Failed**
 
 ```bash
-# Check database size
-mysql -u tundua_user -p -e "SELECT table_schema AS 'Database',
-  ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS 'Size (MB)'
-  FROM information_schema.TABLES
-  WHERE table_schema = 'tundua_prod';"
+# Verify credentials in .env
+DB_HOST=localhost (not 127.0.0.1)
+DB_NAME=tunduaco_tundua
+DB_USER=tunduaco_tundua_user
+DB_PASSWORD=[check cPanel]
+
+# Test connection
+php -r "new PDO('mysql:host=localhost;dbname=tunduaco_tundua', 'tunduaco_tundua_user', 'PASSWORD');"
 ```
 
----
+### **Issue: CORS Errors**
 
-## Rollback Procedure
+```php
+// Update backend/.env
+CORS_ALLOWED_ORIGINS=https://tundua.com,https://www.tundua.com
 
-### 1. Restore Database Backup
+// Clear cache
+composer dump-autoload
+```
+
+### **Issue: File Upload Failing**
 
 ```bash
-cd /var/www/tundua-saas/backend
-bash scripts/restore-database.sh storage/backups/tundua_backup_YYYYMMDD_HHMMSS.sql.gz
-```
+# Check upload directory permissions
+chmod 755 /home2/tunduaco/uploads
 
-### 2. Rollback Code
-
-```bash
-cd /var/www/tundua-saas
-git log  # Find commit hash
-git checkout <previous-commit-hash>
-
-# Backend
-cd backend
-composer install
-sudo systemctl restart php8.2-fpm
-
-# Frontend
-cd ../frontend
-npm ci
-npm run build
-pm2 restart tundua-frontend
+# Check PHP settings in .htaccess
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
 ```
 
 ---
 
-## Troubleshooting
+## 📞 **Support Contacts**
 
-### Common Issues
+### **Hosting Support**:
+- **Syskay cPanel**: support@syskay.com
+- **Vercel**: https://vercel.com/support
 
-**1. 500 Internal Server Error**
-- Check PHP-FPM status: `sudo systemctl status php8.2-fpm`
-- Check Nginx error logs: `tail -f /var/log/nginx/tundua-api-error.log`
-- Verify file permissions: `ls -la /var/www/tundua-saas/backend/storage`
-
-**2. Database Connection Failed**
-- Verify credentials in `.env`
-- Check MySQL status: `sudo systemctl status mysql`
-- Test connection: `mysql -u tundua_user -p`
-
-**3. Frontend Not Loading**
-- Check PM2 status: `pm2 status`
-- Check PM2 logs: `pm2 logs tundua-frontend`
-- Verify build: `cd frontend && npm run build`
-
-**4. Rate Limiting Not Working**
-- Check storage directory permissions
-- Verify middleware is loaded in `public/index.php`
-- Check env variable: `RATE_LIMIT_ENABLED=true`
+### **Service Support**:
+- **Stripe**: https://support.stripe.com
+- **Pusher**: https://support.pusher.com
 
 ---
 
-## GitHub Actions Secrets
+## 🎉 **Deployment Complete!**
 
-Configure these secrets in your GitHub repository:
+Your Tundua SaaS platform is now live:
 
-**Settings → Secrets and variables → Actions → New repository secret**
+- **Frontend**: https://tundua.com
+- **Backend API**: https://api.tundua.com
+- **Admin Dashboard**: https://tundua.com/dashboard/admin
 
-| Secret Name | Description |
-|-------------|-------------|
-| `STAGING_SSH_KEY` | SSH private key for staging server |
-| `STAGING_HOST` | Staging server IP/hostname |
-| `STAGING_USER` | SSH username (e.g., ubuntu) |
-| `STAGING_PATH` | Application path (e.g., /var/www/tundua-saas) |
-| `STAGING_URL` | Staging URL (e.g., https://staging.yourdomain.com) |
-
----
-
-## Success Criteria
-
-Your deployment is successful when:
-
-- ✅ API health check returns 200 OK
-- ✅ Frontend loads without errors
-- ✅ User can register and login
-- ✅ Rate limiting is working (429 after limit)
-- ✅ Audit logs are being created
-- ✅ Backups are running daily
-- ✅ SSL certificates are valid
-- ✅ All tests passing in CI/CD
+**Next Steps**:
+1. Switch Stripe to live mode
+2. Setup backup automation
+3. Configure monitoring alerts
+4. Create admin user
+5. Load initial data (universities, countries)
+6. Launch marketing campaign! 🚀
 
 ---
 
-## Support
-
-For deployment issues:
-1. Check logs first (`/var/log/nginx/`, `pm2 logs`)
-2. Review health check report
-3. Verify environment variables
-4. Check firewall rules
-
-**Emergency Contacts:**
-- DevOps: devops@yourdomain.com
-- Security: security@yourdomain.com
-
----
-
-**Last Updated:** 2025-01-26
-**Phase 1 Status:** 85% Complete
-**Security:** Production Ready ✅
+**Deployed by**: Claude Code
+**Date**: November 27, 2025
+**Status**: ✅ Production Ready

@@ -171,14 +171,14 @@ export default function WelcomeWizard() {
                 <div className="bg-white rounded-lg p-4 border border-primary-200 text-left">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-gray-900">Basic</h4>
-                    <span className="text-primary-600 font-bold">$299</span>
+                    <span className="text-primary-600 font-bold">₦89,000</span>
                   </div>
                   <p className="text-sm text-gray-600">Essential application processing</p>
                 </div>
                 <div className="bg-white rounded-lg p-4 border border-primary-400 text-left ring-2 ring-primary-400">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-gray-900">Premium</h4>
-                    <span className="text-primary-600 font-bold">$599</span>
+                    <h4 className="font-semibold text-gray-900">Standard</h4>
+                    <span className="text-primary-600 font-bold">₦149,000</span>
                   </div>
                   <p className="text-sm text-gray-600">Priority processing + extras</p>
                   <span className="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded-full mt-2 inline-block">
@@ -187,10 +187,10 @@ export default function WelcomeWizard() {
                 </div>
                 <div className="bg-white rounded-lg p-4 border border-purple-200 text-left">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-gray-900">Elite</h4>
-                    <span className="text-purple-600 font-bold">$999</span>
+                    <h4 className="font-semibold text-gray-900">Premium</h4>
+                    <span className="text-purple-600 font-bold">₦249,000</span>
                   </div>
-                  <p className="text-sm text-gray-600">Dedicated advisor + guarantee</p>
+                  <p className="text-sm text-gray-600">Complete support package</p>
                 </div>
               </div>
             )}

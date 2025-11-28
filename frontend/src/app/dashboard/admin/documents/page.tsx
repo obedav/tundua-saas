@@ -10,6 +10,11 @@ import {
   AlertCircle,
   Clock,
   Eye,
+  X,
+  ZoomIn,
+  ZoomOut,
+  RotateCw,
+  Maximize2,
 } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
@@ -35,15 +40,32 @@ export default function AdminDocumentsPage() {
   const [reviewStatus, setReviewStatus] = useState("");
   const [reviewNotes, setReviewNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [previewingDoc, setPreviewingDoc] = useState<Document | null>(null);
+  const [previewLoading, setPreviewLoading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     fetchDocuments();
   }, []);
 
+  // Handle Escape key to close preview
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && previewingDoc) {
+        closePreview();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [previewingDoc]);
+
   const fetchDocuments = async () => {
     try {
       const response = await apiClient.getPendingDocuments();
-      setDocuments(response.data.documents || []);
+      const docs = response.data?.documents || [];
+      console.log('Fetched documents:', docs.length, 'documents');
+      setDocuments(docs);
     } catch (error: any) {
       console.error("Error fetching documents:", error);
       toast.error("Failed to load documents");
@@ -78,6 +100,47 @@ export default function AdminDocumentsPage() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handlePreview = async (doc: Document) => {
+    setPreviewingDoc(doc);
+    setPreviewLoading(true);
+    try {
+      console.log('Attempting to download document:', doc.id);
+      console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
+      const response = await apiClient.downloadDocument(doc.id);
+      console.log('Download successful, response:', response);
+      const blob = new Blob([response.data], { type: response.headers['content-type'] || 'application/octet-stream' });
+      const url = window.URL.createObjectURL(blob);
+      setPreviewUrl(url);
+    } catch (error: any) {
+      console.error("Preview error details:", error);
+      console.error("Error response:", error.response);
+      console.error("Error status:", error.response?.status);
+      console.error("Error data:", error.response?.data);
+
+      let errorMessage = "Failed to load document preview";
+      if (error.response?.status === 404) {
+        errorMessage = "Document not found or endpoint not available. Please restart the backend server.";
+      } else if (error.response?.status === 403) {
+        errorMessage = "You don't have permission to view this document";
+      } else if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      }
+
+      toast.error(errorMessage);
+      setPreviewingDoc(null);
+    } finally {
+      setPreviewLoading(false);
+    }
+  };
+
+  const closePreview = () => {
+    if (previewUrl) {
+      window.URL.revokeObjectURL(previewUrl);
+    }
+    setPreviewingDoc(null);
+    setPreviewUrl(null);
   };
 
   const handleDownload = async (documentId: number, filename: string) => {
@@ -295,7 +358,13 @@ export default function AdminDocumentsPage() {
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2 mb-1">
-                          <h3 className="font-semibold text-gray-900">{doc.document_name}</h3>
+                          <button
+                            onClick={() => handlePreview(doc)}
+                            className="font-semibold text-gray-900 hover:text-blue-600 text-left transition-colors"
+                            title="Click to preview"
+                          >
+                            {doc.document_name}
+                          </button>
                           {getStatusBadge(doc.status)}
                         </div>
 
@@ -320,6 +389,14 @@ export default function AdminDocumentsPage() {
 
                     <div className="flex items-center gap-2">
                       <button
+                        onClick={() => handlePreview(doc)}
+                        className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        title="Preview Document"
+                      >
+                        <Eye className="h-5 w-5" />
+                      </button>
+
+                      <button
                         onClick={() => handleDownload(doc.id, doc.original_filename)}
                         className="p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
                         title="Download"
@@ -341,6 +418,134 @@ export default function AdminDocumentsPage() {
           </div>
         )}
       </div>
+
+      {/* Document Preview Modal */}
+      {previewingDoc && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closePreview();
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="preview-modal-title"
+        >
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <div className="flex-1 min-w-0">
+                <h2 id="preview-modal-title" className="text-lg font-semibold text-gray-900 truncate">
+                  {previewingDoc.document_name}
+                </h2>
+                <div className="flex items-center gap-3 mt-1 text-sm text-gray-600">
+                  <span>{getDocumentTypeLabel(previewingDoc.document_type)}</span>
+                  <span>•</span>
+                  <span>{formatFileSize(previewingDoc.file_size)}</span>
+                  <span>•</span>
+                  <span>{previewingDoc.user_name}</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 ml-4">
+                <button
+                  onClick={() => handleDownload(previewingDoc.id, previewingDoc.original_filename)}
+                  className="p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+                  title="Download"
+                >
+                  <Download className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={closePreview}
+                  className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                  title="Close"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Content */}
+            <div className="flex-1 overflow-auto bg-gray-100 p-4">
+              {previewLoading ? (
+                <div className="flex items-center justify-center h-full">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Loading document...</p>
+                  </div>
+                </div>
+              ) : previewUrl ? (
+                <div className="flex items-center justify-center min-h-full">
+                  {/* Image Preview */}
+                  {['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(previewingDoc.file_extension.toLowerCase()) && (
+                    <div className="bg-white rounded-lg shadow-lg p-4 max-w-full">
+                      <img
+                        src={previewUrl}
+                        alt={previewingDoc.document_name}
+                        className="max-w-full max-h-[calc(90vh-200px)] object-contain"
+                      />
+                    </div>
+                  )}
+
+                  {/* PDF Preview */}
+                  {previewingDoc.file_extension.toLowerCase() === 'pdf' && (
+                    <div className="w-full h-full bg-white rounded-lg shadow-lg">
+                      <iframe
+                        src={previewUrl}
+                        className="w-full h-[calc(90vh-200px)] rounded-lg"
+                        title={previewingDoc.document_name}
+                      />
+                    </div>
+                  )}
+
+                  {/* Other Document Types */}
+                  {!['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf'].includes(previewingDoc.file_extension.toLowerCase()) && (
+                    <div className="text-center py-12">
+                      <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-600 mb-4">Preview not available for this file type</p>
+                      <button
+                        onClick={() => handleDownload(previewingDoc.id, previewingDoc.original_filename)}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors"
+                      >
+                        <Download className="h-5 w-5" />
+                        Download to View
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : null}
+            </div>
+
+            {/* Modal Footer - Quick Actions */}
+            <div className="p-4 border-t border-gray-200 bg-gray-50">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  {getStatusBadge(previewingDoc.status)}
+                  {previewingDoc.application_reference && (
+                    <Link
+                      href={`/dashboard/applications/${previewingDoc.application_id}`}
+                      className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
+                      onClick={closePreview}
+                    >
+                      <Eye className="h-4 w-4" />
+                      View Application
+                    </Link>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      closePreview();
+                      handleReview(previewingDoc.id);
+                    }}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors"
+                  >
+                    Start Review
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

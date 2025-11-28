@@ -28,8 +28,12 @@ import {
   School,
   ListTodo,
   Globe,
+  Moon,
+  Sun,
+  Monitor,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useTheme } from "@/contexts/ThemeContext";
 import { toast } from "sonner";
 
 interface NavigationSection {
@@ -43,6 +47,7 @@ interface NavigationSection {
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [themeMenuOpen, setThemeMenuOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState<string[]>([
     "Analytics",
     "Applications",
@@ -54,6 +59,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     "Settings"
   ]);
   const { user, logout } = useAuth();
+  const { theme, effectiveTheme, setTheme } = useTheme();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -158,41 +164,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-gray-600 bg-opacity-75 z-40"
-          style={{ display: 'block' }}
+          className="fixed inset-0 bg-gray-900/75 dark:bg-black/75 backdrop-blur-sm z-40"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          height: '100vh',
-          width: '256px',
-          backgroundColor: 'white',
-          borderRight: '1px solid #e5e7eb',
-          zIndex: 50,
-          display: sidebarOpen ? 'block' : 'none',
-        }}
-        className="lg:!block"
+        className={`fixed top-0 left-0 h-screen w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-50 ${
+          sidebarOpen ? 'block' : 'hidden'
+        } lg:!block transition-colors`}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div className="flex flex-col h-full">
           {/* Logo */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            height: '64px',
-            padding: '0 24px',
-            borderBottom: '1px solid #e5e7eb'
-          }}>
+          <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
             <Link
               href="/dashboard/admin"
               className="flex flex-col gap-1 transition-all hover:opacity-80 hover:scale-105 cursor-pointer"
@@ -206,28 +195,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className="h-8 w-auto"
               />
               <div className="flex items-center gap-1.5">
-                <Shield className="h-3.5 w-3.5 text-primary-600" />
-                <span className="text-xs font-semibold text-gray-600">Admin Panel</span>
+                <Shield className="h-3.5 w-3.5 text-primary-600 dark:text-primary-400" />
+                <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">Admin Panel</span>
               </div>
             </Link>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden text-gray-500 hover:text-gray-700"
+              className="lg:hidden text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
             >
               <X className="h-6 w-6" />
             </button>
           </div>
 
           {/* Navigation */}
-          <nav style={{ flex: 1, padding: '24px 16px', overflowY: 'auto' }} className="space-y-1">
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
             {/* Visit Website Link */}
             <Link
               href="/"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors border border-gray-200 mb-4"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-700 mb-4"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Globe className="h-5 w-5" />
+              <Globe className="h-5 w-5 text-gray-500 dark:text-gray-400" />
               Visit Website
             </Link>
 
@@ -238,7 +227,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   {/* Section Header */}
                   <button
                     onClick={() => toggleSection(section.name)}
-                    className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider hover:text-gray-700 transition-colors"
+                    className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
                   >
                     <span>{section.name}</span>
                     {isExpanded ? (
@@ -259,8 +248,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             href={item.href}
                             className={`flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                               isActive
-                                ? "bg-primary-50 text-primary-700"
-                                : "text-gray-700 hover:bg-gray-100"
+                                ? "bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400"
+                                : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                             }`}
                           >
                             <item.icon className="h-4 w-4" />
@@ -276,32 +265,32 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </nav>
 
           {/* User info */}
-          <div style={{ padding: '16px', borderTop: '1px solid #e5e7eb' }}>
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                <span className="text-primary-600 font-semibold">
+              <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                <span className="text-primary-600 dark:text-primary-400 font-semibold">
                   {user?.first_name?.charAt(0).toUpperCase()}
                   {user?.last_name?.charAt(0).toUpperCase()}
                 </span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">
+                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                   {user?.first_name} {user?.last_name}
                 </p>
-                <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">{user?.role}</p>
               </div>
             </div>
 
             <Link
               href="/dashboard"
-              className="block w-full px-4 py-2 text-sm text-center text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors mb-2"
+              className="block w-full px-4 py-2 text-sm text-center text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors mb-2"
             >
               User Dashboard
             </Link>
 
             <button
               onClick={handleLogout}
-              className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
             >
               <LogOut className="h-4 w-4" />
               Logout
@@ -311,26 +300,73 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main content */}
-      <div style={{ marginLeft: 0 }} className="lg:!ml-64">
+      <div className="lg:ml-64">
         {/* Top bar */}
-        <header className="sticky top-0 z-10 flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200">
+        <header className="sticky top-0 z-10 flex items-center justify-between h-16 px-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden text-gray-600 hover:text-gray-900 mr-2"
+              className="lg:hidden text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 mr-2"
             >
               <Menu className="h-6 w-6" />
             </button>
-            <Shield className="h-5 w-5 text-primary-600" />
-            <h1 className="text-lg font-semibold text-gray-900">Admin Panel</h1>
+            <Shield className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Admin Panel</h1>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="hidden sm:inline text-sm text-gray-600">
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle */}
+            <div className="relative">
+              <button
+                onClick={() => setThemeMenuOpen(!themeMenuOpen)}
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                aria-label="Change theme"
+              >
+                {effectiveTheme === 'dark' ? (
+                  <Moon className="h-5 w-5" />
+                ) : (
+                  <Sun className="h-5 w-5" />
+                )}
+              </button>
+
+              {themeMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                  <button
+                    onClick={() => { setTheme('light'); setThemeMenuOpen(false); }}
+                    className={`w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                      theme === 'light' ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                    }`}
+                  >
+                    <Sun className="h-4 w-4" />
+                    Light
+                  </button>
+                  <button
+                    onClick={() => { setTheme('dark'); setThemeMenuOpen(false); }}
+                    className={`w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                      theme === 'dark' ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                    }`}
+                  >
+                    <Moon className="h-4 w-4" />
+                    Dark
+                  </button>
+                  <button
+                    onClick={() => { setTheme('system'); setThemeMenuOpen(false); }}
+                    className={`w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                      theme === 'system' ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                    }`}
+                  >
+                    <Monitor className="h-4 w-4" />
+                    System
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <span className="hidden sm:inline text-sm text-gray-600 dark:text-gray-400">
               {user?.first_name} {user?.last_name}
             </span>
-            <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
-              <span className="text-primary-600 font-semibold text-sm">
+            <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+              <span className="text-primary-600 dark:text-primary-400 font-semibold text-sm">
                 {user?.first_name?.charAt(0).toUpperCase()}
               </span>
             </div>

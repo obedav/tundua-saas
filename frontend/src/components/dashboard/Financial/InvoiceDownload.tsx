@@ -90,7 +90,7 @@ export default function InvoiceDownload({ invoices = [] }: InvoiceDownloadProps)
                     <p className="text-sm text-gray-600 mt-1">{invoice.description}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xl font-bold text-gray-900">${invoice.amount.toFixed(2)}</p>
+                    <p className="text-xl font-bold text-gray-900">₦{invoice.amount.toLocaleString('en-NG')}</p>
                     <span className={`inline-block mt-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(invoice.status)}`}>
                       {invoice.status.toUpperCase()}
                     </span>

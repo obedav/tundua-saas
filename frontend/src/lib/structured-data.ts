@@ -24,7 +24,7 @@ export function getOrganizationSchema(): Organization {
     name: 'Tundua',
     url: APP_URL,
     logo: `${APP_URL}/logo.png`,
-    description: 'Complete study abroad application support from $299. Apply to top universities with expert guidance.',
+    description: 'Complete study abroad application support from ₦89,000. Apply to top universities with expert guidance.',
     email: 'info@tundua.com', // TODO: Update with real email
     address: {
       '@type': 'PostalAddress',
@@ -50,7 +50,7 @@ export function getWebsiteSchema(): WebSite {
     '@id': `${APP_URL}#website`,
     url: APP_URL,
     name: 'Tundua - Study Abroad Application Platform',
-    description: 'Complete study abroad application support from $299. Apply to top universities with expert guidance.',
+    description: 'Complete study abroad application support from ₦89,000. Apply to top universities with expert guidance.',
     publisher: {
       '@id': `${APP_URL}#organization`,
     },
@@ -82,8 +82,8 @@ export function getServiceSchema(): Service {
     description: 'Complete study abroad application support including professional counseling, document review, and application management.',
     offers: {
       '@type': 'Offer',
-      price: '299',
-      priceCurrency: 'USD',
+      price: '89000',
+      priceCurrency: 'NGN',
       availability: 'https://schema.org/InStock',
     },
     areaServed: {

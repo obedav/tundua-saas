@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { DollarSign, TrendingUp, TrendingDown, BarChart3, ArrowUp, ArrowDown } from "lucide-react";
+import { Banknote, TrendingUp, TrendingDown, BarChart3, ArrowUp, ArrowDown } from "lucide-react";
 import { toast } from "sonner";
 
 interface RevenueData {
@@ -30,31 +30,60 @@ export default function RevenueAnalytics() {
   }, [timeRange]);
 
   const fetchRevenueData = async () => {
+    setLoading(true);
     try {
-      // For now, use mock data until API is ready
-      const mockData: RevenueData = {
-        total_revenue: 45750.00,
-        this_month: 12450.00,
-        average_order_value: 549.00,
-        growth_rate: 23.5,
-        revenue_by_tier: [
-          { tier: "Standard Package", amount: 15234.00 },
-          { tier: "Premium Package", amount: 20516.00 },
-          { tier: "Concierge Package", amount: 10000.00 },
-        ],
-        revenue_by_month: [
-          { month: "Jan", amount: 8500 },
-          { month: "Feb", amount: 9200 },
-          { month: "Mar", amount: 10150 },
-          { month: "Apr", amount: 9800 },
-          { month: "May", amount: 12100 },
-          { month: "Jun", amount: 12450 },
-        ],
-      };
-      setData(mockData);
+      const response = await fetch('/api/admin/analytics?period=' + timeRange, {
+        credentials: 'include',
+      });
+
+      if (!response.ok) throw new Error('Failed to fetch revenue data');
+
+      const result = await response.json();
+      const analytics = result.analytics;
+
+      // Calculate total applications for average order value
+      const totalApps = analytics.overview?.total_applications || 1;
+      const totalRevenue = analytics.overview?.total_revenue || 0;
+      const monthlyRevenue = analytics.overview?.revenue_this_month || 0;
+
+      // Transform revenue by tier
+      const revenueByTier = (analytics.service_tiers || []).map((tier: any) => ({
+        tier: tier.name || 'Unknown',
+        amount: parseFloat(tier.revenue) || 0,
+      }));
+
+      // Transform monthly revenue (aggregate daily data into months)
+      const monthlyData: Record<string, number> = {};
+      (analytics.revenue?.daily || []).forEach((day: any) => {
+        const monthKey = new Date(day.date).toLocaleDateString('en-US', { month: 'short' });
+        monthlyData[monthKey] = (monthlyData[monthKey] || 0) + parseFloat(day.revenue);
+      });
+
+      const revenueByMonth = Object.entries(monthlyData).map(([month, amount]) => ({
+        month,
+        amount,
+      })).slice(-6); // Last 6 months
+
+      setData({
+        total_revenue: totalRevenue,
+        this_month: monthlyRevenue,
+        average_order_value: totalApps > 0 ? totalRevenue / totalApps : 0,
+        growth_rate: analytics.revenue?.growth_percentage || 0,
+        revenue_by_tier: revenueByTier,
+        revenue_by_month: revenueByMonth,
+      });
     } catch (error) {
       console.error("Error fetching revenue data:", error);
       toast.error("Failed to load revenue analytics");
+      // Set zeros on error
+      setData({
+        total_revenue: 0,
+        this_month: 0,
+        average_order_value: 0,
+        revenue_by_tier: [],
+        revenue_by_month: [],
+        growth_rate: 0,
+      });
     } finally {
       setLoading(false);
     }
@@ -91,10 +120,10 @@ export default function RevenueAnalytics() {
             <div>
               <p className="text-sm text-gray-600">Total Revenue</p>
               <h3 className="text-2xl font-bold text-gray-900 mt-1">
-                ${data.total_revenue.toFixed(2)}
+                ₦{data.total_revenue.toLocaleString('en-NG')}
               </h3>
             </div>
-            <DollarSign className="h-8 w-8 text-green-600" />
+            <Banknote className="h-8 w-8 text-green-600" />
           </div>
         </div>
 
@@ -103,7 +132,7 @@ export default function RevenueAnalytics() {
             <div>
               <p className="text-sm text-gray-600">This Month</p>
               <h3 className="text-2xl font-bold text-gray-900 mt-1">
-                ${data.this_month.toFixed(2)}
+                ₦{data.this_month.toLocaleString('en-NG')}
               </h3>
             </div>
             <TrendingUp className="h-8 w-8 text-blue-600" />
@@ -115,7 +144,7 @@ export default function RevenueAnalytics() {
             <div>
               <p className="text-sm text-gray-600">Average Order Value</p>
               <h3 className="text-2xl font-bold text-gray-900 mt-1">
-                ${data.average_order_value.toFixed(2)}
+                ₦{data.average_order_value.toLocaleString('en-NG')}
               </h3>
             </div>
             <BarChart3 className="h-8 w-8 text-purple-600" />
@@ -154,7 +183,7 @@ export default function RevenueAnalytics() {
               <div key={index}>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-gray-700">{tier.tier}</span>
-                  <span className="text-sm font-bold text-gray-900">${tier.amount.toFixed(2)}</span>
+                  <span className="text-sm font-bold text-gray-900">₦{tier.amount.toLocaleString('en-NG')}</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3">
                   <div
@@ -180,7 +209,7 @@ export default function RevenueAnalytics() {
               <div key={index} className="flex-1 flex flex-col items-center group">
                 <div className="relative w-full flex flex-col items-center">
                   <div className="absolute -top-8 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs rounded px-2 py-1">
-                    ${month.amount.toLocaleString()}
+                    ₦{month.amount.toLocaleString('en-NG')}
                   </div>
                   <div
                     className="w-full bg-primary-600 rounded-t hover:bg-primary-700 transition-all duration-300"

@@ -13,7 +13,7 @@ interface UrgencyTimerProps {
 export function UrgencyTimer({
   variant = "inline",
   offerText = "Special offer ends in",
-  discount = "$100",
+  discount = "₦15,000",
   endDate
 }: UrgencyTimerProps) {
   const [timeLeft, setTimeLeft] = useState({

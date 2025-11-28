@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { DollarSign, Edit, Save } from "lucide-react";
+import { Banknote, Edit, Save } from "lucide-react";
 
 export default function PricingManagement() {
   const [editing, setEditing] = useState(false);
 
   const serviceTiers = [
-    { id: 1, name: "Standard Package", price: 299, description: "3 university applications" },
-    { id: 2, name: "Premium Package", price: 599, description: "5 university applications" },
-    { id: 3, name: "Concierge Package", price: 999, description: "8 university applications" },
+    { id: 1, name: "Basic Package", price: 89000, description: "3 university applications" },
+    { id: 2, name: "Standard Package", price: 149000, description: "5 university applications" },
+    { id: 3, name: "Premium Package", price: 249000, description: "8 university applications" },
   ];
 
   return (
@@ -37,7 +37,7 @@ export default function PricingManagement() {
               <h3 className="font-semibold text-gray-900 mb-2">{tier.name}</h3>
               <p className="text-sm text-gray-600 mb-3">{tier.description}</p>
               <div className="flex items-center gap-2">
-                <DollarSign className="h-5 w-5 text-gray-500" />
+                <Banknote className="h-5 w-5 text-gray-500" />
                 {editing ? (
                   <input
                     type="number"
@@ -45,7 +45,7 @@ export default function PricingManagement() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                   />
                 ) : (
-                  <span className="text-2xl font-bold text-gray-900">${tier.price}</span>
+                  <span className="text-2xl font-bold text-gray-900">₦{tier.price.toLocaleString('en-NG')}</span>
                 )}
               </div>
             </div>
@@ -63,15 +63,15 @@ export default function PricingManagement() {
               <p className="text-sm text-gray-600">Professional statement of purpose</p>
             </div>
             <div className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4 text-gray-500" />
+              <Banknote className="h-4 w-4 text-gray-500" />
               {editing ? (
                 <input
                   type="number"
-                  defaultValue={150}
+                  defaultValue={25000}
                   className="w-24 px-3 py-1 border border-gray-300 rounded"
                 />
               ) : (
-                <span className="font-semibold text-gray-900">$150</span>
+                <span className="font-semibold text-gray-900">₦25,000</span>
               )}
             </div>
           </div>

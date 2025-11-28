@@ -40,38 +40,41 @@ export default function UserDetailsPage({ params }: { params: Promise<{ id: stri
 
   const fetchUserDetails = async () => {
     try {
-      // Mock data for now
-      const mockUser: UserDetails = {
-        id: parseInt(resolvedParams.id),
-        first_name: "John",
-        last_name: "Doe",
-        email: "john.doe@example.com",
-        phone: "+254712345678",
-        country: "Kenya",
-        status: "active",
-        role: "user",
-        created_at: "2024-01-15T10:30:00Z",
-        applications: [
-          {
-            id: 1,
-            reference_number: "APP-2024-001",
-            destination_country: "United States",
-            status: "submitted",
-            created_at: "2024-02-01T10:00:00Z",
-          },
-          {
-            id: 2,
-            reference_number: "APP-2024-045",
-            destination_country: "United Kingdom",
-            status: "approved",
-            created_at: "2024-03-15T14:30:00Z",
-          },
-        ],
-      };
-      setUser(mockUser);
-    } catch (error) {
+      const response = await apiClient.getUserDetails(parseInt(resolvedParams.id));
+
+      // Check for data at the correct nested level
+      if (response.data?.data?.user) {
+        const userData = response.data.data.user;
+        const applications = response.data.data.applications || [];
+
+        // Map backend data to frontend structure
+        // Determine status based on locked_until and is_active
+        let status = 'inactive';
+        if (userData.locked_until && new Date(userData.locked_until) > new Date()) {
+          status = 'suspended';
+        } else if (userData.is_active === 1) {
+          status = 'active';
+        }
+
+        const userDetails: UserDetails = {
+          id: userData.id,
+          first_name: userData.first_name || '',
+          last_name: userData.last_name || '',
+          email: userData.email,
+          phone: userData.phone || '',
+          country: userData.country || 'N/A',
+          status: status,
+          role: userData.role,
+          created_at: userData.created_at,
+          applications: applications,
+        };
+        setUser(userDetails);
+      } else {
+        toast.error("User not found");
+      }
+    } catch (error: any) {
       console.error("Error fetching user details:", error);
-      toast.error("Failed to load user details");
+      toast.error(error.response?.data?.error || "Failed to load user details");
     } finally {
       setLoading(false);
     }

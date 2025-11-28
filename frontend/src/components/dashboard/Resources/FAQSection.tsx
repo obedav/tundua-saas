@@ -55,7 +55,7 @@ export default function FAQSection() {
     {
       id: 6,
       question: "What are add-on services and do I need them?",
-      answer: "Add-on services are optional premium services like essay review, interview preparation, and visa coaching. While not required, they significantly improve your chances of success. Our most popular add-ons are Essay Review ($49) and Interview Preparation ($99).",
+      answer: "Add-on services are optional premium services like essay review, interview preparation, and visa coaching. While not required, they significantly improve your chances of success. Our most popular add-ons are Essay Review (₦12,000) and Interview Preparation (₦35,000).",
       category: "Services",
       helpful: 87,
     },
@@ -83,7 +83,7 @@ export default function FAQSection() {
     {
       id: 10,
       question: "What's the difference between service tiers?",
-      answer: "Basic ($299) covers essential application processing. Premium ($599) adds priority processing, document review, and interview prep. Elite ($999) includes everything plus dedicated advisor, guaranteed placement support, and post-admission assistance.",
+      answer: "Basic (₦89,000) covers essential application processing. Standard (₦149,000) adds priority processing, document review, and interview prep. Premium (₦249,000) includes everything plus dedicated advisor, comprehensive support, and post-admission assistance.",
       category: "Services",
       helpful: 93,
     },

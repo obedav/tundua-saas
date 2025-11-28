@@ -290,7 +290,7 @@ export default function PaymentPage() {
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Service Fee:</span>
                   <span className="font-medium text-gray-900">
-                    ${parseFloat(application.base_price).toFixed(2)}
+                    ₦{parseFloat(application.base_price).toLocaleString('en-NG')}
                   </span>
                 </div>
 
@@ -298,7 +298,7 @@ export default function PaymentPage() {
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Add-On Services:</span>
                     <span className="font-medium text-gray-900">
-                      ${parseFloat(application.addon_total).toFixed(2)}
+                      ₦{parseFloat(application.addon_total).toLocaleString('en-NG')}
                     </span>
                   </div>
                 )}
@@ -306,7 +306,7 @@ export default function PaymentPage() {
                 <div className="border-t border-gray-200 pt-2 flex justify-between">
                   <span className="font-semibold text-gray-900">Total Amount:</span>
                   <span className="text-xl font-bold text-primary-600">
-                    ${parseFloat(application.total_amount).toFixed(2)}
+                    ₦{parseFloat(application.total_amount).toLocaleString('en-NG')}
                   </span>
                 </div>
               </div>

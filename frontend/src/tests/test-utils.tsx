@@ -24,8 +24,6 @@ export function renderWithProviders(
       queries: {
         retry: false, // Don't retry failed queries in tests
         gcTime: 0, // Don't cache in tests (renamed from cacheTime in React Query v5)
-        gcTime: 0, // Don't cache in tests
-        // recover-design3
       },
     },
   });

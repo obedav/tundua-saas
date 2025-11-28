@@ -164,13 +164,13 @@ export default function Step5AddOns({ data, updateData, onNext }: Props) {
                   {addon.name} {addon.quantity > 1 && `(×${addon.quantity})`}
                 </span>
                 <span className="font-semibold text-primary-900">
-                  ${(addon.price * addon.quantity).toFixed(2)}
+                  ₦{(addon.price * addon.quantity).toLocaleString('en-NG')}
                 </span>
               </div>
             ))}
             <div className="border-t border-primary-200 pt-2 mt-2 flex justify-between items-center font-bold">
               <span className="text-primary-900">Add-Ons Total:</span>
-              <span className="text-primary-900">${calculateAddonTotal().toFixed(2)}</span>
+              <span className="text-primary-900">₦{calculateAddonTotal().toLocaleString('en-NG')}</span>
             </div>
           </div>
         </div>
@@ -219,9 +219,8 @@ export default function Step5AddOns({ data, updateData, onNext }: Props) {
                         <p className="text-sm text-gray-600">{addon.description}</p>
                       </div>
                       <div className="text-right">
-                        <div className="flex items-center gap-1 text-lg font-bold text-gray-900">
-                          <DollarSign className="h-4 w-4" />
-                          {addon.price}
+                        <div className="text-lg font-bold text-gray-900">
+                          ₦{parseFloat(addon.price).toLocaleString('en-NG')}
                         </div>
                         <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
                           <Clock className="h-3 w-3" />
@@ -264,7 +263,7 @@ export default function Step5AddOns({ data, updateData, onNext }: Props) {
 
                       {isSelected && (
                         <span className="text-sm font-semibold text-primary-600">
-                          ${(parseFloat(addon.price) * quantity).toFixed(2)}
+                          ₦{(parseFloat(addon.price) * quantity).toLocaleString('en-NG')}
                         </span>
                       )}
                     </div>
@@ -285,16 +284,16 @@ export default function Step5AddOns({ data, updateData, onNext }: Props) {
         <div className="space-y-3 text-sm">
           <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
             <span className="text-gray-700">Service Tier ({data.service_tier_name}):</span>
-            <span className="font-semibold text-gray-900">${data.base_price?.toFixed(2) || "0.00"}</span>
+            <span className="font-semibold text-gray-900">₦{(data.base_price || 0).toLocaleString('en-NG')}</span>
           </div>
           <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
             <span className="text-gray-700">Add-On Services:</span>
-            <span className="font-semibold text-gray-900">${calculateAddonTotal().toFixed(2)}</span>
+            <span className="font-semibold text-gray-900">₦{calculateAddonTotal().toLocaleString('en-NG')}</span>
           </div>
           <div className="border-t-2 border-gray-200 pt-3 mt-2 flex justify-between items-center py-3 px-3 bg-primary-50 rounded-lg">
             <span className="font-bold text-gray-900">Total Amount:</span>
             <span className="font-bold text-primary-600 text-xl">
-              ${((data.base_price || 0) + calculateAddonTotal()).toFixed(2)}
+              ₦{((data.base_price || 0) + calculateAddonTotal()).toLocaleString('en-NG')}
             </span>
           </div>
         </div>

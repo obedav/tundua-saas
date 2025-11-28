@@ -89,7 +89,7 @@ export function BreadcrumbStructuredData({
  *   faqs={[
  *     {
  *       question: 'How much does it cost?',
- *       answer: 'Our services start at $299.',
+ *       answer: 'Our services start at ₦89,000.',
  *     },
  *   ]}
  * />

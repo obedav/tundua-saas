@@ -1,11 +1,8 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { apiClient } from "@/lib/api-client";
-import { toast } from "sonner";
-import { useAuth } from "@/hooks/useAuth";
-import { SkeletonDashboardStats, SkeletonCard, SkeletonList } from "@/components/ui";
+import { Suspense } from "react";
+import { getCurrentUser } from "@/lib/actions/auth";
+import { getApplications } from "@/lib/actions/applications";
+import { redirect } from "next/navigation";
 
 // Import modular dashboard components
 import DashboardStats from "@/components/dashboard/Core/DashboardStats";
@@ -19,14 +16,6 @@ import DocumentUploadAlert from "@/components/dashboard/Applications/DocumentUpl
 import DashboardConversionWrapper from "@/components/dashboard/DashboardConversionWrapper";
 import QuickStartChecklist from "@/components/dashboard/Onboarding/QuickStartChecklist";
 
-interface DashboardStats {
-  total_applications: number;
-  pending_applications: number;
-  approved_applications: number;
-  rejected_applications: number;
-  total_spent: number;
-}
-
 interface Application {
   id: number;
   reference_number: string;
@@ -38,82 +27,41 @@ interface Application {
   updated_at: string;
 }
 
-export default function DashboardPage() {
-  const { user } = useAuth();
-  const [stats, setStats] = useState<DashboardStats>({
-    total_applications: 0,
-    pending_applications: 0,
-    approved_applications: 0,
-    rejected_applications: 0,
-    total_spent: 0,
-  });
-  const [recentApplications, setRecentApplications] = useState<Application[]>([]);
-  const [loading, setLoading] = useState(true);
+/**
+ * Server Component - Dashboard Overview
+ *
+ * Benefits of Server Component approach:
+ * - Data fetching happens on the server
+ * - No client-side API calls or loading states
+ * - Automatic streaming with Suspense
+ * - Reduced JavaScript bundle size
+ * - Better SEO and initial page load
+ */
+export default async function DashboardPage() {
+  // Fetch user data on the server
+  const user = await getCurrentUser();
 
-  // Get the most recent application for progress tracking
-  const latestApplication = recentApplications.length > 0 ? recentApplications[0] : null;
+  if (!user) {
+    redirect('/auth/login');
+  }
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
+  // Fetch applications data on the server
+  const applicationsResponse = await getApplications();
+  const applications: Application[] = applicationsResponse?.applications || [];
 
-  const fetchDashboardData = async () => {
-    try {
-      const response = await apiClient.getApplications();
-      const applications = response.data.applications || [];
-
-      // Calculate stats
-      const calculatedStats: DashboardStats = {
-        total_applications: applications.length,
-        pending_applications: applications.filter(
-          (app: Application) => app.status === "draft" || app.status === "submitted" || app.status === "under_review"
-        ).length,
-        approved_applications: applications.filter((app: Application) => app.status === "approved").length,
-        rejected_applications: applications.filter((app: Application) => app.status === "rejected").length,
-        total_spent: applications.reduce((sum: number, app: Application) => sum + parseFloat(app.total_amount || "0"), 0),
-      };
-
-      setStats(calculatedStats);
-      setRecentApplications(applications.slice(0, 5));
-    } catch (error: any) {
-      console.error("Error fetching dashboard data:", error);
-      toast.error("Failed to load dashboard data");
-    } finally {
-      setLoading(false);
-    }
+  // Calculate stats on the server
+  const stats = {
+    total_applications: applications.length,
+    pending_applications: applications.filter(
+      (app) => app.status === "draft" || app.status === "submitted" || app.status === "under_review"
+    ).length,
+    approved_applications: applications.filter((app) => app.status === "approved").length,
+    rejected_applications: applications.filter((app) => app.status === "rejected").length,
+    total_spent: applications.reduce((sum, app) => sum + parseFloat(app.total_amount || "0"), 0),
   };
 
-  if (loading) {
-    return (
-      <DashboardConversionWrapper>
-        <div className="space-y-8">
-          {/* Welcome Section Skeleton */}
-          <div>
-            <div className="h-9 w-64 bg-gray-200 rounded-lg animate-skeleton mb-2" />
-            <div className="h-6 w-80 bg-gray-100 rounded-lg animate-skeleton" />
-          </div>
-
-          {/* Stats Cards Skeleton */}
-          <SkeletonDashboardStats />
-
-          {/* Two-Column Layout Skeleton */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Column */}
-            <div className="lg:col-span-2 space-y-8">
-              <SkeletonCard />
-              <SkeletonList items={3} />
-            </div>
-
-            {/* Right Column */}
-            <div className="space-y-8">
-              <SkeletonCard />
-              <SkeletonCard />
-            </div>
-          </div>
-        </div>
-      </DashboardConversionWrapper>
-    );
-  }
+  const recentApplications = applications.slice(0, 5);
+  const latestApplication = recentApplications.length > 0 ? recentApplications[0] : null;
 
   return (
     <DashboardConversionWrapper>
@@ -121,7 +69,7 @@ export default function DashboardPage() {
         {/* Welcome Section */}
         <div>
           <h1 className="text-3xl font-bold text-gray-900">
-            Welcome back, {user?.first_name}!
+            Welcome back, {user.first_name}!
           </h1>
           <p className="text-gray-600 mt-2">
             Here's an overview of your study abroad journey
@@ -132,14 +80,6 @@ export default function DashboardPage() {
         <DocumentUploadAlert
           missingDocuments={[
             // TODO: Replace with actual missing documents from API
-            // Example data structure:
-            // {
-            //   id: 1,
-            //   name: "Passport Copy",
-            //   application_reference: "TUND-2025-0001",
-            //   deadline: "2025-02-15",
-            //   urgent: true
-            // }
           ]}
         />
 
@@ -166,10 +106,12 @@ export default function DashboardPage() {
 
             {/* Progress Tracker - Show only if user has active applications */}
             {latestApplication && (
-              <SmartProgressTracker
-                applicationId={latestApplication.id}
-                applicationStatus={latestApplication.status}
-              />
+              <Suspense fallback={<div className="animate-pulse bg-gray-100 h-64 rounded-lg" />}>
+                <SmartProgressTracker
+                  applicationId={latestApplication.id}
+                  applicationStatus={latestApplication.status}
+                />
+              </Suspense>
             )}
 
             {/* Recent Applications */}
@@ -200,10 +142,14 @@ export default function DashboardPage() {
             {recentApplications.length === 0 && <QuickStartChecklist />}
 
             {/* Notifications */}
-            <DashboardNotifications />
+            <Suspense fallback={<div className="animate-pulse bg-gray-100 h-48 rounded-lg" />}>
+              <DashboardNotifications />
+            </Suspense>
 
             {/* Activity Feed */}
-            <DashboardActivityFeed maxItems={5} />
+            <Suspense fallback={<div className="animate-pulse bg-gray-100 h-64 rounded-lg" />}>
+              <DashboardActivityFeed maxItems={5} />
+            </Suspense>
 
             {/* Help Card */}
             <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-6 text-white">
@@ -239,7 +185,7 @@ export default function DashboardPage() {
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h3 className="font-bold text-gray-900 mb-2">Refer & Earn</h3>
               <p className="text-sm text-gray-600 mb-4">
-                Get $50 off your next application for every friend you refer!
+                Get ₦10,000 off your next application for every friend you refer!
               </p>
               <Link
                 href="/dashboard/referrals"

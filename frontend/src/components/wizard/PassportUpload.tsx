@@ -27,28 +27,47 @@ export default function PassportUpload({ onDataExtracted }: PassportUploadProps)
     // Process passport
     setIsProcessing(true);
     try {
+      console.log("🔍 Starting passport OCR process...");
       const data = await processPassportImage(file);
 
       // Accept data if:
       // 1. MRZ is valid (100% reliable), OR
-      // 2. Fallback extraction succeeded with confidence >= 50%
-      if (data && (data.mrzValid || data.confidence >= 50)) {
+      // 2. Fallback extraction succeeded with confidence >= 40% (relaxed from 50%)
+      if (data && (data.mrzValid || data.confidence >= 40)) {
         setExtractedData(data);
         onDataExtracted(data);
 
         if (data.mrzValid) {
-          toast.success(`Passport scanned via MRZ! Confidence: ${data.confidence}%`);
+          toast.success(`✅ Passport scanned via MRZ! Confidence: ${data.confidence}%`);
+        } else if (data.confidence >= 60) {
+          toast.success(`✅ Passport data extracted! Confidence: ${data.confidence}%`);
         } else {
-          toast.success(`Passport data extracted! Confidence: ${data.confidence}% - Please verify details`);
+          toast.warning(`⚠️ Partial data extracted (${data.confidence}%). Please verify and fill missing fields.`);
         }
       } else if (data) {
-        toast.error(`Low confidence (${data.confidence}%). Please enter details manually.`);
+        // Still extract partial data but warn user
+        setExtractedData(data);
+        onDataExtracted(data);
+        toast.warning(`⚠️ Low confidence (${data.confidence}%). Please verify all fields carefully.`);
       } else {
-        toast.error('Could not read passport. Please enter details manually.');
+        console.error("❌ Passport OCR failed - check browser console for details");
+        toast.error('❌ Could not read passport. Please check the console for details and enter data manually.');
       }
     } catch (error) {
-      toast.error('Failed to process passport image');
-      console.error(error);
+      console.error("💥 Passport processing exception:", error);
+
+      // Check for specific error types
+      if (error instanceof Error) {
+        if (error.message.includes("internet connection")) {
+          toast.error('🌐 Internet required for OCR. Please connect or enter details manually below.');
+        } else if (error.message.includes("Canvas")) {
+          toast.error('⚠️ Image processing failed. Try a different image or enter manually.');
+        } else {
+          toast.error('OCR failed - please enter passport details manually below');
+        }
+      } else {
+        toast.error('OCR failed - please enter passport details manually below');
+      }
     } finally {
       setIsProcessing(false);
     }
@@ -158,12 +177,14 @@ export default function PassportUpload({ onDataExtracted }: PassportUploadProps)
       {/* Help Text */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-800">
         <AlertCircle className="h-4 w-4 inline mr-2" />
-        <strong>Tips for best results:</strong>
+        <strong>Passport OCR Scanner:</strong>
         <ul className="mt-2 ml-6 list-disc space-y-1 text-xs">
-          <li>Take photo in good lighting</li>
-          <li>Ensure all text is readable</li>
-          <li>Include the Machine Readable Zone (MRZ) at the bottom</li>
-          <li>Avoid glare or shadows</li>
+          <li><strong className="text-blue-900">Internet connection required</strong> (downloads 3MB OCR model on first use)</li>
+          <li>Take photo in good lighting with all text visible</li>
+          <li>Include the Machine Readable Zone (MRZ) - 2 lines at the bottom</li>
+          <li>Avoid glare, shadows, or reflections</li>
+          <li>Processing takes 15-30 seconds - please be patient</li>
+          <li className="text-blue-900"><strong>No internet? Enter details manually below instead</strong></li>
         </ul>
       </div>
     </div>

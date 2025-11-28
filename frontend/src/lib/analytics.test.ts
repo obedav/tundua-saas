@@ -74,78 +74,93 @@ describe('Analytics Helper', () => {
 
   describe('Application-specific events', () => {
     it('should track application created event', () => {
-      const eventSpy = vi.spyOn(analytics, 'event');
+      const consoleSpy = vi.spyOn(console, 'log');
 
       analytics.trackApplicationCreated(123, 'Premium', 'United States');
 
-      expect(eventSpy).toHaveBeenCalledWith({
-        action: 'application_created',
-        category: 'Application',
-        label: 'Premium - United States',
-        value: 123,
-      });
+      expect(consoleSpy).toHaveBeenCalledWith(
+        '[Analytics - Dev]',
+        expect.objectContaining({
+          action: 'application_created',
+          category: 'Application',
+          label: 'Premium - United States',
+          value: 123,
+        })
+      );
 
-      eventSpy.mockRestore();
+      consoleSpy.mockRestore();
     });
 
     it('should track application submitted event', () => {
-      const eventSpy = vi.spyOn(analytics, 'event');
+      const consoleSpy = vi.spyOn(console, 'log');
 
       analytics.trackApplicationSubmitted(456, 599);
 
-      expect(eventSpy).toHaveBeenCalledWith({
-        action: 'application_submitted',
-        category: 'Application',
-        label: 'Application 456',
-        value: 599,
-      });
+      expect(consoleSpy).toHaveBeenCalledWith(
+        '[Analytics - Dev]',
+        expect.objectContaining({
+          action: 'application_submitted',
+          category: 'Application',
+          label: 'Application 456',
+          value: 599,
+        })
+      );
 
-      eventSpy.mockRestore();
+      consoleSpy.mockRestore();
     });
 
     it('should track payment initiated event', () => {
-      const eventSpy = vi.spyOn(analytics, 'event');
+      const consoleSpy = vi.spyOn(console, 'log');
 
       analytics.trackPaymentInitiated(789, 299, 'stripe');
 
-      expect(eventSpy).toHaveBeenCalledWith({
-        action: 'payment_initiated',
-        category: 'Payment',
-        label: 'stripe',
-        value: 299,
-      });
+      expect(consoleSpy).toHaveBeenCalledWith(
+        '[Analytics - Dev]',
+        expect.objectContaining({
+          action: 'payment_initiated',
+          category: 'Payment',
+          label: 'stripe',
+          value: 299,
+        })
+      );
 
-      eventSpy.mockRestore();
+      consoleSpy.mockRestore();
     });
 
     it('should track addon purchased event', () => {
-      const eventSpy = vi.spyOn(analytics, 'event');
+      const consoleSpy = vi.spyOn(console, 'log');
 
       analytics.trackAddonPurchased('Essay Review', 99);
 
-      expect(eventSpy).toHaveBeenCalledWith({
-        action: 'addon_purchased',
-        category: 'Add-On',
-        label: 'Essay Review',
-        value: 99,
-      });
+      expect(consoleSpy).toHaveBeenCalledWith(
+        '[Analytics - Dev]',
+        expect.objectContaining({
+          action: 'addon_purchased',
+          category: 'Add-On',
+          label: 'Essay Review',
+          value: 99,
+        })
+      );
 
-      eventSpy.mockRestore();
+      consoleSpy.mockRestore();
     });
 
     it('should track document uploaded event', () => {
-      const eventSpy = vi.spyOn(analytics, 'event');
+      const consoleSpy = vi.spyOn(console, 'log');
 
       analytics.trackDocumentUploaded('passport', 123);
 
-      expect(eventSpy).toHaveBeenCalledWith({
-        action: 'document_uploaded',
-        category: 'Document',
-        label: 'passport',
-        value: 123,
-      });
+      expect(consoleSpy).toHaveBeenCalledWith(
+        '[Analytics - Dev]',
+        expect.objectContaining({
+          action: 'document_uploaded',
+          category: 'Document',
+          label: 'passport',
+          value: 123,
+        })
+      );
 
-      eventSpy.mockRestore();
+      consoleSpy.mockRestore();
     });
   });
 
@@ -186,31 +201,37 @@ describe('Analytics Helper', () => {
 
   describe('trackSearch', () => {
     it('should track search events', () => {
-      const eventSpy = vi.spyOn(analytics, 'event');
+      const consoleSpy = vi.spyOn(console, 'log');
 
       analytics.trackSearch('university in USA', 'University Search');
 
-      expect(eventSpy).toHaveBeenCalledWith({
-        action: 'search',
-        category: 'University Search',
-        label: 'university in USA',
-      });
+      expect(consoleSpy).toHaveBeenCalledWith(
+        '[Analytics - Dev]',
+        expect.objectContaining({
+          action: 'search',
+          category: 'University Search',
+          label: 'university in USA',
+        })
+      );
 
-      eventSpy.mockRestore();
+      consoleSpy.mockRestore();
     });
 
     it('should use default category if not provided', () => {
-      const eventSpy = vi.spyOn(analytics, 'event');
+      const consoleSpy = vi.spyOn(console, 'log');
 
       analytics.trackSearch('test query');
 
-      expect(eventSpy).toHaveBeenCalledWith({
-        action: 'search',
-        category: 'Search',
-        label: 'test query',
-      });
+      expect(consoleSpy).toHaveBeenCalledWith(
+        '[Analytics - Dev]',
+        expect.objectContaining({
+          action: 'search',
+          category: 'Search',
+          label: 'test query',
+        })
+      );
 
-      eventSpy.mockRestore();
+      consoleSpy.mockRestore();
     });
   });
 

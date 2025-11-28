@@ -1,0 +1,1417 @@
+
+> tundua-saas-frontend@1.0.0 test
+> vitest --run --coverage
+
+
+[1m[46m RUN [49m[22m [36mv4.0.14 [39m[90mC:/Users/obeda/Desktop/tundua-saas/frontend[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32m✓[39m src/components/ErrorBoundary.test.tsx[2m > [22mErrorBoundary[2m > [22mshould render children when there is no error[32m 84[2mms[22m[39m
+ [32m✓[39m src/components/ErrorBoundary.test.tsx[2m > [22mErrorBoundary[2m > [22mshould catch errors and display fallback UI[32m 70[2mms[22m[39m
+ [32m✓[39m src/components/ErrorBoundary.test.tsx[2m > [22mErrorBoundary[2m > [22mshould display error details in development mode[32m 43[2mms[22m[39m
+ [32m✓[39m src/components/ErrorBoundary.test.tsx[2m > [22mErrorBoundary[2m > [22mshould hide error details in production mode[32m 39[2mms[22m[39m
+ [32m✓[39m src/app/auth/login/page.test.tsx[2m > [22mLogin Page - Authentication Flow[2m > [22mForm Validation[2m > [22mshould render login form with all fields[33m 543[2mms[22m[39m
+ [32m✓[39m src/components/ErrorBoundary.test.tsx[2m > [22mErrorBoundary[2m > [22mshould render custom fallback if provided[32m 6[2mms[22m[39m
+ [32m✓[39m src/components/ErrorBoundary.test.tsx[2m > [22mErrorBoundary[2m > [22mshould call onError callback when error occurs[32m 46[2mms[22m[39m
+ [32m✓[39m src/app/auth/login/page.test.tsx[2m > [22mLogin Page - Authentication Flow[2m > [22mForm Validation[2m > [22mshould require email and password[32m 125[2mms[22m[39m
+ [32m✓[39m src/components/ErrorBoundary.test.tsx[2m > [22mErrorBoundary[2m > [22mshould display "Try Again" button[33m 615[2mms[22m[39m
+ [32m✓[39m src/components/dashboard/Financial/BillingHistory.test.tsx[2m > [22mBillingHistory Component[2m > [22mrenders loading state initially[32m 102[2mms[22m[39m
+ [32m✓[39m src/components/ErrorBoundary.test.tsx[2m > [22mErrorBoundary[2m > [22mshould display "Go Home" button[32m 151[2mms[22m[39m
+ [32m✓[39m src/components/ErrorBoundary.test.tsx[2m > [22mErrorBoundary[2m > [22mshould display support link[32m 34[2mms[22m[39m
+ [32m✓[39m src/app/auth/login/page.test.tsx[2m > [22mLogin Page - Authentication Flow[2m > [22mForm Validation[2m > [22mshould validate email format[33m 425[2mms[22m[39m
+ [32m✓[39m src/components/ErrorBoundary.test.tsx[2m > [22mErrorBoundary[2m > [22mshould recover from error when reset is clicked[32m 165[2mms[22m[39m
+ [31m×[39m src/components/dashboard/Financial/BillingHistory.test.tsx[2m > [22mBillingHistory Component[2m > [22mfetches and displays payment history[33m 1039[2mms[22m[39m
+[31m   → Unable to find an element with the text: REF-001. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"space-y-6"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"grid grid-cols-1 md:grid-cols-3 gap-4"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg p-6 text-white"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-dollar-sign h-6 w-6"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"24"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"2"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"24"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<line[31m
+                [33mx1[31m=[32m"12"[31m
+                [33mx2[31m=[32m"12"[31m
+                [33my1[31m=[32m"2"[31m
+                [33my2[31m=[32m"22"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-sm font-medium opacity-90"[31m
+            [36m>[31m
+              [0mTotal Spent[0m
+            [36m</p>[31m
+          [36m</div>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-3xl font-bold"[31m
+          [36m>[31m
+            [0m₦[0m
+            [0m0[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200 p-6"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-circle-check-big h-6 w-6 text-green-600"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"24"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"2"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"24"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M21.801 10A10 10 0 1 1 17 3.335"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"m9 11 3 3L22 4"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-sm font-medium text-gray-600"[31m
+            [36m>[31m
+              [0mSuccessful[0m
+            [36m</p>[31m
+          [36m</div>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-3xl font-bold text-gray-900"[31m
+          [36m>[31m
+            [0m0[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200 p-6"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-clock h-6 w-6 text-yellow-600"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"24"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"2"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"24"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M12 6v6l4 2"[31m
+              [36m/>[31m
+              [36m<circle[31m
+                [33mcx[31m=[32m"12"[31m
+                [33mcy[31m=[32m"12"[31m
+                [33mr[31m=[32m"10"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-sm font-medium text-gray-600"[31m
+            [36m>[31m
+              [0mPending[0m
+            [36m</p>[31m
+          [36m</div>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-3xl font-bold text-gray-900"[31m
+          [36m>[31m
+            [0m0[0m
+          [36m</p>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"p-6 border-b border-gray-200"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex items-center justify-between mb-4"[31m
+          [36m>[31m
+            [36m<h2[31m
+              [33mclass[31m=[32m"text-xl font-bold text-gray-900"[31m
+            [36m>[31m
+              [0mPayment History[0m
+            [36m</h2>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"text-sm text-primary-600 hover:text-primary-700 font-medium inline-flex items-center gap-2"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-download h-4 w-4"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M12 15V3"[31m
+                [36m/>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"[31m
+                [36m/>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"m7 10 5 5 5-5"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [0mExport All[0m
+            [36m</button>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-primary-600 text-white"[31m
+            [36m>[31m
+              [0mAll[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+            [36m>[31m
+              [0mCompleted[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+            [36m>[31m
+              [0mPending[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+            [36m>[31m
+              [0mFailed[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"divide-y divide-gray-200"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"p-12 text-center"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-credit-card h-12 w-12 text-gray-300 mx-auto mb-4"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"24"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"2"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"24"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<rect[31m
+                [33mheight[31m=[32m"14"[31m
+                [33mrx[31m=[32m"2"[31m
+                [33mwidth[31m=[32m"20"[31m
+                [33mx[31m=[32m"2"[31m
+                [33my[31m=[32m"5"[31m
+              [36m/>[31m
+              [36m<line[31m
+                [33mx1[31m=[32m"2"[31m
+                [33mx2[31m=[32m"22"[31m
+                [33my1[31m=[32m"10"[31m
+                [33my2[31m=[32m"10"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-gray-600"[31m
+            [36m>[31m
+              [0mNo payments found[0m
+            [36m</p>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m
+
+Ignored nodes: comments, script, style
+[36m<html>[31m
+  [36m<head />[31m
+  [36m<body>[31m
+    [36m<div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"space-y-6"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"grid grid-cols-1 md:grid-cols-3 gap-4"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg p-6 text-white"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-dollar-sign h-6 w-6"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<line[31m
+                  [33mx1[31m=[32m"12"[31m
+                  [33mx2[31m=[32m"12"[31m
+                  [33my1[31m=[32m"2"[31m
+                  [33my2[31m=[32m"22"[31m
+                [36m/>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm font-medium opacity-90"[31m
+              [36m>[31m
+                [0mTotal Spent[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-3xl font-bold"[31m
+            [36m>[31m
+              [0m₦[0m
+              [0m0[0m
+            [36m</p>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200 p-6"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-circle-check-big h-6 w-6 text-green-600"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M21.801 10A10 10 0 1 1 17 3.335"[31m
+                [36m/>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"m9 11 3 3L22 4"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm font-medium text-gray-600"[31m
+              [36m>[31m
+                [0mSuccessful[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-3xl font-bold text-gray-900"[31m
+            [36m>[31m
+              [0m0[0m
+            [36m</p>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200 p-6"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-clock h-6 w-6 text-yellow-600"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M12 6v6l4 2"[31m
+                [36m/>[31m
+                [36m<circle[31m
+                  [33mcx[31m=[32m"12"[31m
+                  [33mcy[31m=[32m"12"[31m
+                  [33mr[31m=[32m"10"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm font-medium text-gray-600"[31m
+              [36m>[31m
+                [0mPending[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-3xl font-bold text-gray-900"[31m
+            [36m>[31m
+              [0m0[0m
+            [36m</p>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"p-6 border-b border-gray-200"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between mb-4"[31m
+            [36m>[31m
+              [36m<h2[31m
+                [33mclass[31m=[32m"text-xl font-bold text-gray-900"[31m
+              [36m>[31m
+                [0mPayment History[0m
+              [36m</h2>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"text-sm text-primary-600 hover:text-primary-700 font-medium inline-flex items-center gap-2"[31m
+              [36m>[31m
+                [36m<svg[31m
+                  [33maria-hidden[31m=[32m"true"[31m
+                  [33mclass[31m=[32m"lucide lucide-download h-4 w-4"[31m
+                  [33mfill[31m=[32m"none"[31m
+                  [33mheight[31m=[32m"24"[31m
+                  [33mstroke[31m=[32m"currentColor"[31m
+                  [33mstroke-linecap[31m=[32m"round"[31m
+                  [33mstroke-linejoin[31m=[32m"round"[31m
+                  [33mstroke-width[31m=[32m"2"[31m
+                  [33mviewBox[31m=[32m"0 0 24 24"[31m
+                  [33mwidth[31m=[32m"24"[31m
+                  [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+                [36m>[31m
+                  [36m<path[31m
+                    [33md[31m=[32m"M12 15V3"[31m
+                  [36m/>[31m
+                  [36m<path[31m
+                    [33md[31m=[32m"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"[31m
+                  [36m/>[31m
+                  [36m<path[31m
+                    [33md[31m=[32m"m7 10 5 5 5-5"[31m
+                  [36m/>[31m
+                [36m</svg>[31m
+                [0mExport All[0m
+              [36m</button>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex gap-2"[31m
+            [36m>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-primary-600 text-white"[31m
+              [36m>[31m
+                [0mAll[0m
+              [36m</button>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+              [36m>[31m
+                [0mCompleted[0m
+              [36m</button>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+              [36m>[31m
+                [0mPending[0m
+              [36m</button>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+              [36m>[31m
+                [0mFailed[0m
+              [36m</button>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"divide-y divide-gray-200"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"p-12 text-center"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-credit-card h-12 w-12 text-gray-300 mx-auto mb-4"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<rect[31m
+                  [33mheight[31m=[32m"14"[31m
+                  [33mrx[31m=[32m"2"[31m
+                  [33mwidth[31m=[32m"20"[31m
+                  [33mx[31m=[32m"2"[31m
+                  [33my[31m=[32m"5"[31m
+                [36m/>[31m
+                [36m<line[31m
+                  [33mx1[31m=[32m"2"[31m
+                  [33mx2[31m=[32m"22"[31m
+                  [33my1[31m=[32m"10"[31m
+                  [33my2[31m=[32m"10"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-gray-600"[31m
+              [36m>[31m
+                [0mNo payments found[0m
+              [36m</p>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</body>[31m
+[36m</html>[31m[39m
+ [32m✓[39m src/app/auth/login/page.test.tsx[2m > [22mLogin Page - Authentication Flow[2m > [22mSuccessful Login[2m > [22mshould login successfully with valid credentials[33m 983[2mms[22m[39m
+ [31m×[39m src/components/dashboard/Financial/BillingHistory.test.tsx[2m > [22mBillingHistory Component[2m > [22mfilters payments by status[33m 1047[2mms[22m[39m
+[31m   → Unable to find an element with the text: REF-001. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"space-y-6"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"grid grid-cols-1 md:grid-cols-3 gap-4"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg p-6 text-white"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-dollar-sign h-6 w-6"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"24"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"2"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"24"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<line[31m
+                [33mx1[31m=[32m"12"[31m
+                [33mx2[31m=[32m"12"[31m
+                [33my1[31m=[32m"2"[31m
+                [33my2[31m=[32m"22"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-sm font-medium opacity-90"[31m
+            [36m>[31m
+              [0mTotal Spent[0m
+            [36m</p>[31m
+          [36m</div>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-3xl font-bold"[31m
+          [36m>[31m
+            [0m₦[0m
+            [0m0[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200 p-6"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-circle-check-big h-6 w-6 text-green-600"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"24"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"2"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"24"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M21.801 10A10 10 0 1 1 17 3.335"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"m9 11 3 3L22 4"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-sm font-medium text-gray-600"[31m
+            [36m>[31m
+              [0mSuccessful[0m
+            [36m</p>[31m
+          [36m</div>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-3xl font-bold text-gray-900"[31m
+          [36m>[31m
+            [0m0[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200 p-6"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-clock h-6 w-6 text-yellow-600"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"24"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"2"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"24"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M12 6v6l4 2"[31m
+              [36m/>[31m
+              [36m<circle[31m
+                [33mcx[31m=[32m"12"[31m
+                [33mcy[31m=[32m"12"[31m
+                [33mr[31m=[32m"10"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-sm font-medium text-gray-600"[31m
+            [36m>[31m
+              [0mPending[0m
+            [36m</p>[31m
+          [36m</div>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-3xl font-bold text-gray-900"[31m
+          [36m>[31m
+            [0m0[0m
+          [36m</p>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"p-6 border-b border-gray-200"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex items-center justify-between mb-4"[31m
+          [36m>[31m
+            [36m<h2[31m
+              [33mclass[31m=[32m"text-xl font-bold text-gray-900"[31m
+            [36m>[31m
+              [0mPayment History[0m
+            [36m</h2>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"text-sm text-primary-600 hover:text-primary-700 font-medium inline-flex items-center gap-2"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-download h-4 w-4"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M12 15V3"[31m
+                [36m/>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"[31m
+                [36m/>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"m7 10 5 5 5-5"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [0mExport All[0m
+            [36m</button>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-primary-600 text-white"[31m
+            [36m>[31m
+              [0mAll[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+            [36m>[31m
+              [0mCompleted[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+            [36m>[31m
+              [0mPending[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+            [36m>[31m
+              [0mFailed[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"divide-y divide-gray-200"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"p-12 text-center"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-credit-card h-12 w-12 text-gray-300 mx-auto mb-4"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"24"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"2"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"24"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<rect[31m
+                [33mheight[31m=[32m"14"[31m
+                [33mrx[31m=[32m"2"[31m
+                [33mwidth[31m=[32m"20"[31m
+                [33mx[31m=[32m"2"[31m
+                [33my[31m=[32m"5"[31m
+              [36m/>[31m
+              [36m<line[31m
+                [33mx1[31m=[32m"2"[31m
+                [33mx2[31m=[32m"22"[31m
+                [33my1[31m=[32m"10"[31m
+                [33my2[31m=[32m"10"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-gray-600"[31m
+            [36m>[31m
+              [0mNo payments found[0m
+            [36m</p>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m
+
+Ignored nodes: comments, script, style
+[36m<html>[31m
+  [36m<head />[31m
+  [36m<body>[31m
+    [36m<div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"space-y-6"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"grid grid-cols-1 md:grid-cols-3 gap-4"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg p-6 text-white"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-dollar-sign h-6 w-6"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<line[31m
+                  [33mx1[31m=[32m"12"[31m
+                  [33mx2[31m=[32m"12"[31m
+                  [33my1[31m=[32m"2"[31m
+                  [33my2[31m=[32m"22"[31m
+                [36m/>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm font-medium opacity-90"[31m
+              [36m>[31m
+                [0mTotal Spent[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-3xl font-bold"[31m
+            [36m>[31m
+              [0m₦[0m
+              [0m0[0m
+            [36m</p>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200 p-6"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-circle-check-big h-6 w-6 text-green-600"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M21.801 10A10 10 0 1 1 17 3.335"[31m
+                [36m/>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"m9 11 3 3L22 4"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm font-medium text-gray-600"[31m
+              [36m>[31m
+                [0mSuccessful[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-3xl font-bold text-gray-900"[31m
+            [36m>[31m
+              [0m0[0m
+            [36m</p>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200 p-6"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-clock h-6 w-6 text-yellow-600"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M12 6v6l4 2"[31m
+                [36m/>[31m
+                [36m<circle[31m
+                  [33mcx[31m=[32m"12"[31m
+                  [33mcy[31m=[32m"12"[31m
+                  [33mr[31m=[32m"10"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm font-medium text-gray-600"[31m
+              [36m>[31m
+                [0mPending[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-3xl font-bold text-gray-900"[31m
+            [36m>[31m
+              [0m0[0m
+            [36m</p>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"p-6 border-b border-gray-200"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between mb-4"[31m
+            [36m>[31m
+              [36m<h2[31m
+                [33mclass[31m=[32m"text-xl font-bold text-gray-900"[31m
+              [36m>[31m
+                [0mPayment History[0m
+              [36m</h2>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"text-sm text-primary-600 hover:text-primary-700 font-medium inline-flex items-center gap-2"[31m
+              [36m>[31m
+                [36m<svg[31m
+                  [33maria-hidden[31m=[32m"true"[31m
+                  [33mclass[31m=[32m"lucide lucide-download h-4 w-4"[31m
+                  [33mfill[31m=[32m"none"[31m
+                  [33mheight[31m=[32m"24"[31m
+                  [33mstroke[31m=[32m"currentColor"[31m
+                  [33mstroke-linecap[31m=[32m"round"[31m
+                  [33mstroke-linejoin[31m=[32m"round"[31m
+                  [33mstroke-width[31m=[32m"2"[31m
+                  [33mviewBox[31m=[32m"0 0 24 24"[31m
+                  [33mwidth[31m=[32m"24"[31m
+                  [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+                [36m>[31m
+                  [36m<path[31m
+                    [33md[31m=[32m"M12 15V3"[31m
+                  [36m/>[31m
+                  [36m<path[31m
+                    [33md[31m=[32m"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"[31m
+                  [36m/>[31m
+                  [36m<path[31m
+                    [33md[31m=[32m"m7 10 5 5 5-5"[31m
+                  [36m/>[31m
+                [36m</svg>[31m
+                [0mExport All[0m
+              [36m</button>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex gap-2"[31m
+            [36m>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-primary-600 text-white"[31m
+              [36m>[31m
+                [0mAll[0m
+              [36m</button>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+              [36m>[31m
+                [0mCompleted[0m
+              [36m</button>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+              [36m>[31m
+                [0mPending[0m
+              [36m</button>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+              [36m>[31m
+                [0mFailed[0m
+              [36m</button>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"divide-y divide-gray-200"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"p-12 text-center"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-credit-card h-12 w-12 text-gray-300 mx-auto mb-4"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<rect[31m
+                  [33mheight[31m=[32m"14"[31m
+                  [33mrx[31m=[32m"2"[31m
+                  [33mwidth[31m=[32m"20"[31m
+                  [33mx[31m=[32m"2"[31m
+                  [33my[31m=[32m"5"[31m
+                [36m/>[31m
+                [36m<line[31m
+                  [33mx1[31m=[32m"2"[31m
+                  [33mx2[31m=[32m"22"[31m
+                  [33my1[31m=[32m"10"[31m
+                  [33my2[31m=[32m"10"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-gray-600"[31m
+              [36m>[31m
+                [0mNo payments found[0m
+              [36m</p>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</body>[31m
+[36m</html>[31m[39m
+ [32m✓[39m src/components/dashboard/Financial/BillingHistory.test.tsx[2m > [22mBillingHistory Component[2m > [22mhandles empty payment history[32m 81[2mms[22m[39m
+ [32m✓[39m src/components/dashboard/Financial/BillingHistory.test.tsx[2m > [22mBillingHistory Component[2m > [22mhandles API errors gracefully[32m 49[2mms[22m[39m
+ [32m✓[39m src/components/dashboard/Financial/BillingHistory.test.tsx[2m > [22mBillingHistory Component[2m > [22mdisplays correct status badges[32m 60[2mms[22m[39m
+ [32m✓[39m src/app/auth/login/page.test.tsx[2m > [22mLogin Page - Authentication Flow[2m > [22mSuccessful Login[2m > [22mshould show loading state during login[33m 912[2mms[22m[39m
+ [32m✓[39m src/app/auth/login/page.test.tsx[2m > [22mLogin Page - Authentication Flow[2m > [22mFailed Login[2m > [22mshould show error on invalid credentials[33m 754[2mms[22m[39m
+ [31m×[39m src/components/dashboard/Financial/BillingHistory.test.tsx[2m > [22mBillingHistory Component[2m > [22mcalculates total spending correctly[33m 1052[2mms[22m[39m
+[31m   → expected 'Total Spent₦0' to contain '$299.00'
+
+Ignored nodes: comments, script, style
+[36m<html>[31m
+  [36m<head />[31m
+  [36m<body>[31m
+    [36m<div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"space-y-6"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"grid grid-cols-1 md:grid-cols-3 gap-4"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg p-6 text-white"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-dollar-sign h-6 w-6"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<line[31m
+                  [33mx1[31m=[32m"12"[31m
+                  [33mx2[31m=[32m"12"[31m
+                  [33my1[31m=[32m"2"[31m
+                  [33my2[31m=[32m"22"[31m
+                [36m/>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm font-medium opacity-90"[31m
+              [36m>[31m
+                [0mTotal Spent[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-3xl font-bold"[31m
+            [36m>[31m
+              [0m₦[0m
+              [0m0[0m
+            [36m</p>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200 p-6"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-circle-check-big h-6 w-6 text-green-600"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M21.801 10A10 10 0 1 1 17 3.335"[31m
+                [36m/>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"m9 11 3 3L22 4"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm font-medium text-gray-600"[31m
+              [36m>[31m
+                [0mSuccessful[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-3xl font-bold text-gray-900"[31m
+            [36m>[31m
+              [0m0[0m
+            [36m</p>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200 p-6"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center gap-3 mb-2"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-clock h-6 w-6 text-yellow-600"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M12 6v6l4 2"[31m
+                [36m/>[31m
+                [36m<circle[31m
+                  [33mcx[31m=[32m"12"[31m
+                  [33mcy[31m=[32m"12"[31m
+                  [33mr[31m=[32m"10"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm font-medium text-gray-600"[31m
+              [36m>[31m
+                [0mPending[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-3xl font-bold text-gray-900"[31m
+            [36m>[31m
+              [0m0[0m
+            [36m</p>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white rounded-lg border border-gray-200"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"p-6 border-b border-gray-200"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between mb-4"[31m
+            [36m>[31m
+              [36m<h2[31m
+                [33mclass[31m=[32m"text-xl font-bold text-gray-900"[31m
+              [36m>[31m
+                [0mPayment History[0m
+              [36m</h2>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"text-sm text-primary-600 hover:text-primary-700 font-medium inline-flex items-center gap-2"[31m
+              [36m>[31m
+                [36m<svg[31m
+                  [33maria-hidden[31m=[32m"true"[31m
+                  [33mclass[31m=[32m"lucide lucide-download h-4 w-4"[31m
+                  [33mfill[31m=[32m"none"[31m
+                  [33mheight[31m=[32m"24"[31m
+                  [33mstroke[31m=[32m"currentColor"[31m
+                  [33mstroke-linecap[31m=[32m"round"[31m
+                  [33mstroke-linejoin[31m=[32m"round"[31m
+                  [33mstroke-width[31m=[32m"2"[31m
+                  [33mviewBox[31m=[32m"0 0 24 24"[31m
+                  [33mwidth[31m=[32m"24"[31m
+                  [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+                [36m>[31m
+                  [36m<path[31m
+                    [33md[31m=[32m"M12 15V3"[31m
+                  [36m/>[31m
+                  [36m<path[31m
+                    [33md[31m=[32m"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"[31m
+                  [36m/>[31m
+                  [36m<path[31m
+                    [33md[31m=[32m"m7 10 5 5 5-5"[31m
+                  [36m/>[31m
+                [36m</svg>[31m
+                [0mExport All[0m
+              [36m</button>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex gap-2"[31m
+            [36m>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-primary-600 text-white"[31m
+              [36m>[31m
+                [0mAll[0m
+              [36m</button>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+              [36m>[31m
+                [0mCompleted[0m
+              [36m</button>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+              [36m>[31m
+                [0mPending[0m
+              [36m</button>[31m
+              [36m<button[31m
+                [33mclass[31m=[32m"px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"[31m
+              [36m>[31m
+                [0mFailed[0m
+              [36m</button>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"divide-y divide-gray-200"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"p-12 text-center"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-credit-card h-12 w-12 text-gray-300 mx-auto mb-4"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"24"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"24"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<rect[31m
+                  [33mheight[31m=[32m"14"[31m
+                  [33mrx[31m=[32m"2"[31m
+                  [33mwidth[31m=[32m"20"[31m
+                  [33mx[31m=[32m"2"[31m
+                  [33my[31m=[32m"5"[31m
+                [36m/>[31m
+                [36m<line[31m
+                  [33mx1[31m=[32m"2"[31m
+                  [33mx2[31m=[32m"22"[31m
+                  [33my1[31m=[32m"10"[31m
+                  [33my2[31m=[32m"10"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-gray-600"[31m
+              [36m>[31m
+                [0mNo payments found[0m
+              [36m</p>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</body>[31m
+[36m</html>[31m[39m
+ [32m✓[39m src/app/auth/login/page.test.tsx[2m > [22mLogin Page - Authentication Flow[2m > [22mFailed Login[2m > [22mshould handle network errors gracefully[33m 890[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockUser[2m > [22mshould create a valid user object with defaults[32m 6[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockUser[2m > [22mshould accept override properties[32m 1[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockUser[2m > [22mshould maintain default values for non-overridden properties[32m 0[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockApplication[2m > [22mshould create a valid application object[32m 1[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockApplication[2m > [22mshould accept override properties[32m 0[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockNotification[2m > [22mshould create a valid notification object[32m 1[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockNotification[2m > [22mshould accept override properties[32m 1[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockApiResponse[2m > [22mshould create a successful API response[32m 1[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockApiResponse[2m > [22mshould create an error API response[32m 0[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockApiResponse[2m > [22mshould include correct status text[32m 0[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockApiError[2m > [22mshould create an API error object[32m 1[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockApiError[2m > [22mshould accept custom status code[32m 0[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mcreateMockApiError[2m > [22mshould default to 500 status code[32m 0[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mdelay[2m > [22mshould wait for specified milliseconds[32m 111[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mdelay[2m > [22mshould resolve without value[32m 15[2mms[22m[39m
+ [32m✓[39m src/tests/test-utils.test.tsx[2m > [22mTest Utilities[2m > [22mType Safety[2m > [22mshould maintain type safety for mock objects[32m 1[2mms[22m[39m
+ [32m✓[39m src/app/auth/login/page.test.tsx[2m > [22mLogin Page - Authentication Flow[2m > [22mFailed Login[2m > [22mshould handle account locked error[33m 1138[2mms[22m[39m
+ [32m✓[39m src/app/auth/login/page.test.tsx[2m > [22mLogin Page - Authentication Flow[2m > [22mSecurity Features[2m > [22mshould not expose password in the DOM[32m 12[2mms[22m[39m
+ [32m✓[39m src/app/auth/login/page.test.tsx[2m > [22mLogin Page - Authentication Flow[2m > [22mSecurity Features[2m > [22mshould trim email input[33m 964[2mms[22m[39m
+ [32m✓[39m src/app/auth/login/page.test.tsx[2m > [22mLogin Page - Authentication Flow[2m > [22mOAuth Integration[2m > [22mshould have Google OAuth button[32m 4[2mms[22m[39m
+[90mstdout[2m | src/lib/analytics.test.ts[2m > [22m[2mAnalytics Helper[2m > [22m[2mevent[2m > [22m[2mshould not throw when GA is not loaded
+[22m[39m[Analytics - Dev] {
+  action: [32m'click'[39m,
+  category: [32m'button'[39m,
+  label: [32m'test'[39m,
+  value: [90mundefined[39m,
+  userId: [90mundefined[39m
+}
+
+[90mstdout[2m | src/lib/analytics.test.ts[2m > [22m[2mAnalytics Helper[2m > [22m[2mevent[2m > [22m[2mshould log to console in development when GA not loaded
+[22m[39m[Analytics - Dev] {
+  action: [32m'test_action'[39m,
+  category: [32m'test_category'[39m,
+  label: [32m'test_label'[39m,
+  value: [33m100[39m,
+  userId: [90mundefined[39m
+}
+
+[90mstdout[2m | src/lib/analytics.test.ts[2m > [22m[2mAnalytics Helper[2m > [22m[2mApplication-specific events[2m > [22m[2mshould track application created event
+[22m[39m[Analytics - Dev] {
+  action: [32m'application_created'[39m,
+  category: [32m'Application'[39m,
+  label: [32m'Premium - United States'[39m,
+  value: [33m123[39m,
+  userId: [90mundefined[39m
+}
+
+[90mstdout[2m | src/lib/analytics.test.ts[2m > [22m[2mAnalytics Helper[2m > [22m[2mApplication-specific events[2m > [22m[2mshould track application submitted event
+[22m[39m[Analytics - Dev] {
+  action: [32m'application_submitted'[39m,
+  category: [32m'Application'[39m,
+  label: [32m'Application 456'[39m,
+  value: [33m599[39m,
+  userId: [90mundefined[39m
+}
+
+[90mstdout[2m | src/lib/analytics.test.ts[2m > [22m[2mAnalytics Helper[2m > [22m[2mApplication-specific events[2m > [22m[2mshould track payment initiated event
+[22m[39m[Analytics - Dev] {
+  action: [32m'payment_initiated'[39m,
+  category: [32m'Payment'[39m,
+  label: [32m'stripe'[39m,
+  value: [33m299[39m,
+  userId: [90mundefined[39m
+}
+
+[90mstdout[2m | src/lib/analytics.test.ts[2m > [22m[2mAnalytics Helper[2m > [22m[2mApplication-specific events[2m > [22m[2mshould track addon purchased event
+[22m[39m[Analytics - Dev] {
+  action: [32m'addon_purchased'[39m,
+  category: [32m'Add-On'[39m,
+  label: [32m'Essay Review'[39m,
+  value: [33m99[39m,
+  userId: [90mundefined[39m
+}
+
+[90mstdout[2m | src/lib/analytics.test.ts[2m > [22m[2mAnalytics Helper[2m > [22m[2mApplication-specific events[2m > [22m[2mshould track document uploaded event
+[22m[39m[Analytics - Dev] {
+  action: [32m'document_uploaded'[39m,
+  category: [32m'Document'[39m,
+  label: [32m'passport'[39m,
+  value: [33m123[39m,
+  userId: [90mundefined[39m
+}
+
+[90mstdout[2m | src/lib/analytics.test.ts[2m > [22m[2mAnalytics Helper[2m > [22m[2mtrackSearch[2m > [22m[2mshould track search events
+[22m[39m[Analytics - Dev] {
+  action: [32m'search'[39m,
+  category: [32m'University Search'[39m,
+  label: [32m'university in USA'[39m,
+  value: [90mundefined[39m,
+  userId: [90mundefined[39m
+}
+
+[90mstdout[2m | src/lib/analytics.test.ts[2m > [22m[2mAnalytics Helper[2m > [22m[2mtrackSearch[2m > [22m[2mshould use default category if not provided
+[22m[39m[Analytics - Dev] {
+  action: [32m'search'[39m,
+  category: [32m'Search'[39m,
+  label: [32m'test query'[39m,
+  value: [90mundefined[39m,
+  userId: [90mundefined[39m
+}
+
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22misGALoaded[2m > [22mshould return false when gtag is not loaded[32m 3[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22misGALoaded[2m > [22mshould return true when gtag is loaded and measurement ID exists[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mpageview[2m > [22mshould not throw when GA is not loaded[32m 3[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mpageview[2m > [22mshould call gtag with correct parameters when loaded[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mevent[2m > [22mshould not throw when GA is not loaded[32m 7[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mevent[2m > [22mshould log to console in development when GA not loaded[32m 3[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mApplication-specific events[2m > [22mshould track application created event[32m 6[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mApplication-specific events[2m > [22mshould track application submitted event[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mApplication-specific events[2m > [22mshould track payment initiated event[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mApplication-specific events[2m > [22mshould track addon purchased event[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mApplication-specific events[2m > [22mshould track document uploaded event[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mtrackPurchase[2m > [22mshould track purchase with correct format[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mtrackError[2m > [22mshould track errors without throwing[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mtrackError[2m > [22mshould log error to console in development[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mtrackSearch[2m > [22mshould track search events[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mtrackSearch[2m > [22mshould use default category if not provided[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mUser authentication events[2m > [22mshould track signup event[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/analytics.test.ts[2m > [22mAnalytics Helper[2m > [22mUser authentication events[2m > [22mshould track login event[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Initialization[2m > [22mshould initialize Stripe payment successfully[32m 5[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Initialization[2m > [22mshould initialize M-Pesa payment successfully[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Initialization[2m > [22mshould handle payment initialization failure[32m 5[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Initialization[2m > [22mshould validate payment amount[32m 2[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Verification[2m > [22mshould verify successful Stripe payment[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Verification[2m > [22mshould handle failed payment verification[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Verification[2m > [22mshould handle payment timeout[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Verification[2m > [22mshould verify Paystack/M-Pesa payment[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mRefund Processing - CRITICAL[2m > [22mshould process full refund successfully[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mRefund Processing - CRITICAL[2m > [22mshould process partial refund[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mRefund Processing - CRITICAL[2m > [22mshould reject refund after 90 days[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mRefund Processing - CRITICAL[2m > [22mshould not refund more than original amount[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Error Scenarios[2m > [22mshould handle insufficient funds[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Error Scenarios[2m > [22mshould handle card declined[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Error Scenarios[2m > [22mshould handle network timeout during payment[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Error Scenarios[2m > [22mshould handle webhook delivery failure[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Security[2m > [22mshould not expose sensitive card data[32m 2[2mms[22m[39m
+ [32m✓[39m src/lib/payment.test.ts[2m > [22mPayment Flow Tests - CRITICAL[2m > [22mPayment Security[2m > [22mshould use HTTPS for all payment requests in production[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/ai-assistant.test.ts[2m > [22mAI Assistant[2m > [22manalyzeDocument[2m > [22mshould analyze document and return structured data[32m 4[2mms[22m[39m
+ [32m✓[39m src/lib/ai-assistant.test.ts[2m > [22mAI Assistant[2m > [22mgetFormSuggestions[2m > [22mshould provide smart form field suggestions[32m 4[2mms[22m[39m
+ [32m✓[39m src/lib/ai-assistant.test.ts[2m > [22mAI Assistant[2m > [22mcheckDocumentRequirements[2m > [22mshould identify missing and complete documents[32m 2[2mms[22m[39m
+ [32m✓[39m src/lib/ai-assistant.test.ts[2m > [22mAI Assistant[2m > [22mgenerateApplicationTips[2m > [22mshould generate personalized tips[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/ai-assistant.test.ts[2m > [22mAI Assistant[2m > [22manswerVisaQuestion[2m > [22mshould provide helpful answers to visa questions[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/ai-assistant.test.ts[2m > [22mAI Assistant[2m > [22mshould throw error when API key is not configured[32m 3[2mms[22m[39m
+ [32m✓[39m src/lib/env.test.ts[2m > [22mEnvironment Validation[2m > [22mClient Environment Variables[2m > [22mshould have required API URL configured[32m 4[2mms[22m[39m
+ [32m✓[39m src/lib/env.test.ts[2m > [22mEnvironment Validation[2m > [22mClient Environment Variables[2m > [22mshould have required APP URL configured[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/env.test.ts[2m > [22mEnvironment Validation[2m > [22mClient Environment Variables[2m > [22mshould have valid URL formats[32m 3[2mms[22m[39m
+ [32m✓[39m src/lib/env.test.ts[2m > [22mEnvironment Validation[2m > [22mClient Environment Variables[2m > [22mshould handle optional Pusher configuration[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/env.test.ts[2m > [22mEnvironment Validation[2m > [22mClient Environment Variables[2m > [22mshould handle optional Google Analytics ID[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/env.test.ts[2m > [22mEnvironment Validation[2m > [22mHelper Functions[2m > [22mshould correctly identify production environment[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/env.test.ts[2m > [22mEnvironment Validation[2m > [22mHelper Functions[2m > [22mshould correctly identify development environment[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/env.test.ts[2m > [22mEnvironment Validation[2m > [22mHelper Functions[2m > [22mshould correctly identify test environment[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/env.test.ts[2m > [22mEnvironment Validation[2m > [22mType Safety[2m > [22mshould export typed client environment variables[32m 0[2mms[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m7 passed[39m[22m[90m (8)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m92 passed[39m[22m[90m (95)[39m
+[2m   Start at [22m 11:58:47
+[2m   Duration [22m 22.10s[2m (transform 1.49s, setup 5.57s, import 3.47s, tests 11.69s, environment 16.27s)[22m
+

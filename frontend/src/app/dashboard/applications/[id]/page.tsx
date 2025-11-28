@@ -1,8 +1,5 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import {
   ArrowLeft,
   Calendar,
@@ -18,8 +15,8 @@ import {
   Edit,
   Trash2,
 } from "lucide-react";
-import { apiClient } from "@/lib/api-client";
-import { toast } from "sonner";
+import { getApplication } from "@/lib/actions/applications";
+import DeleteApplicationButton from "./DeleteApplicationButton";
 
 interface Application {
   id: number;
@@ -63,44 +60,21 @@ interface Application {
   submitted_at?: string;
 }
 
-export default function ApplicationDetailPage() {
-  const params = useParams();
-  const router = useRouter();
-  const [application, setApplication] = useState<Application | null>(null);
-  const [loading, setLoading] = useState(true);
+export default async function ApplicationDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
 
-  useEffect(() => {
-    if (params['id']) {
-      fetchApplication();
-    }
-  }, [params['id']]);
+  // Fetch application data on the server
+  const data = await getApplication(Number(id));
 
-  const fetchApplication = async () => {
-    try {
-      const response = await apiClient.getApplication(Number(params['id']));
-      setApplication(response.data.application);
-    } catch (error: any) {
-      console.error("Error fetching application:", error);
-      toast.error("Failed to load application");
-      router.push("/dashboard/applications");
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!data || !data.application) {
+    redirect("/dashboard/applications");
+  }
 
-  const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this application? This action cannot be undone.")) {
-      return;
-    }
-
-    try {
-      await apiClient.deleteApplication(Number(params['id']));
-      toast.success("Application deleted successfully");
-      router.push("/dashboard/applications");
-    } catch (error: any) {
-      toast.error("Failed to delete application");
-    }
-  };
+  const application: Application = data.application;
 
   const getStatusBadge = (status: string) => {
     const badges: Record<string, { color: string; icon: any; text: string }> = {
@@ -124,18 +98,6 @@ export default function ApplicationDetailPage() {
       </span>
     );
   };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-      </div>
-    );
-  }
-
-  if (!application) {
-    return null;
-  }
 
   return (
     <div className="space-y-6">
@@ -183,13 +145,7 @@ export default function ApplicationDetailPage() {
                   <Edit className="h-4 w-4" />
                   Edit
                 </Link>
-                <button
-                  onClick={handleDelete}
-                  className="inline-flex items-center gap-2 px-4 py-2 border border-red-300 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
-                >
-                  <Trash2 className="h-4 w-4" />
-                  Delete
-                </button>
+                <DeleteApplicationButton applicationId={application.id} />
               </>
             )}
           </div>
@@ -319,7 +275,7 @@ export default function ApplicationDetailPage() {
                       </span>
                     </div>
                     <span className="font-medium text-gray-900">
-                      ${(addon.price * addon.quantity).toFixed(2)}
+                      ₦{(addon.price * addon.quantity).toLocaleString('en-NG')}
                     </span>
                   </div>
                 ))}
@@ -340,7 +296,7 @@ export default function ApplicationDetailPage() {
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Service Tier:</span>
-                <span className="font-medium text-gray-900">${parseFloat(application.base_price).toFixed(2)}</span>
+                <span className="font-medium text-gray-900">₦{parseFloat(application.base_price).toLocaleString('en-NG')}</span>
               </div>
               <div className="text-xs text-gray-500 pl-4">
                 {application.service_tier_name}
@@ -349,14 +305,14 @@ export default function ApplicationDetailPage() {
               {application.addon_total && parseFloat(application.addon_total) > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Add-On Services:</span>
-                  <span className="font-medium text-gray-900">${parseFloat(application.addon_total).toFixed(2)}</span>
+                  <span className="font-medium text-gray-900">₦{parseFloat(application.addon_total).toLocaleString('en-NG')}</span>
                 </div>
               )}
 
               <div className="border-t border-gray-200 pt-3 flex justify-between">
                 <span className="font-semibold text-gray-900">Total Amount:</span>
                 <span className="text-xl font-bold text-primary-600">
-                  ${parseFloat(application.total_amount).toFixed(2)}
+                  ₦{parseFloat(application.total_amount).toLocaleString('en-NG')}
                 </span>
               </div>
             </div>

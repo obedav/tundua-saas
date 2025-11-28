@@ -148,7 +148,7 @@ export default function RefundCenter() {
                 <option value="">Choose an application...</option>
                 {eligibleApplications.map((app) => (
                   <option key={app.reference} value={app.reference}>
-                    {app.reference} - ${app.amount.toFixed(2)} ({app.days_remaining} days remaining)
+                    {app.reference} - ₦{app.amount.toLocaleString('en-NG')} ({app.days_remaining} days remaining)
                   </option>
                 ))}
               </select>
@@ -224,7 +224,7 @@ export default function RefundCenter() {
                           <h4 className="font-semibold text-gray-900">{request.application_reference}</h4>
                           <p className="text-sm text-gray-600 mt-1">{request.reason}</p>
                         </div>
-                        <p className="text-xl font-bold text-gray-900">${request.amount.toFixed(2)}</p>
+                        <p className="text-xl font-bold text-gray-900">₦{request.amount.toLocaleString('en-NG')}</p>
                       </div>
 
                       <div className="flex flex-wrap items-center gap-3 mt-3">

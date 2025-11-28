@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
 import { CreditCard, Download, Calendar, CheckCircle, XCircle, Clock, DollarSign } from "lucide-react";
+import { getUserPayments } from "@/lib/actions/payments";
 
 interface Payment {
   id: number;
@@ -28,13 +28,13 @@ export default function BillingHistory() {
 
   const fetchPayments = async () => {
     try {
-      const response = await apiClient.getUserPayments();
-      const paymentData = response.data.payments || [];
+      const response = await getUserPayments();
+      const paymentData = response?.payments || [];
 
       const mappedPayments: Payment[] = paymentData.map((item: any) => ({
         id: item.id,
         amount: parseFloat(item.amount),
-        currency: item.currency || "USD",
+        currency: item.currency || "NGN",
         status: item.status,
         method: item.payment_method || "card",
         description: item.description || `Payment for ${item.payable_type}`,
@@ -104,7 +104,7 @@ export default function BillingHistory() {
             <DollarSign className="h-6 w-6" />
             <p className="text-sm font-medium opacity-90">Total Spent</p>
           </div>
-          <p className="text-3xl font-bold">${totalSpent.toFixed(2)}</p>
+          <p className="text-3xl font-bold">₦{totalSpent.toLocaleString('en-NG')}</p>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
@@ -189,9 +189,9 @@ export default function BillingHistory() {
                         </div>
                         <div className="text-right">
                           <p className="text-xl font-bold text-gray-900">
-                            ${payment.amount.toFixed(2)}
+                            ₦{payment.amount.toLocaleString('en-NG')}
                           </p>
-                          <p className="text-sm text-gray-600">{payment.currency}</p>
+                          <p className="text-sm text-gray-600">NGN</p>
                         </div>
                       </div>
 

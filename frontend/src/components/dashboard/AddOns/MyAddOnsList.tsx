@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Download, CheckCircle, Clock, Calendar, FileText } from "lucide-react";
-import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
+import { getUserAddOns } from "@/lib/actions/addons";
 
 interface PurchasedAddOn {
   id: number;
@@ -31,8 +31,8 @@ export default function MyAddOnsList() {
 
   const fetchPurchasedAddOns = async () => {
     try {
-      const response = await apiClient.getUserAddOns();
-      const orders = response.data.addons || [];
+      const response = await getUserAddOns();
+      const orders = response?.addons || [];
 
       // Map backend data to frontend interface
       const mappedAddOns: PurchasedAddOn[] = orders.map((item: any) => ({
@@ -112,7 +112,7 @@ export default function MyAddOnsList() {
         </div>
         <div className="bg-primary-50 border border-primary-200 rounded-lg px-6 py-3">
           <p className="text-sm text-primary-600 font-medium">Total Spent</p>
-          <p className="text-2xl font-bold text-primary-700">${totalSpent.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-primary-700">₦{totalSpent.toLocaleString('en-NG')}</p>
         </div>
       </div>
 
@@ -192,7 +192,7 @@ export default function MyAddOnsList() {
                       <Calendar className="h-4 w-4" />
                       Purchased {new Date(addon.purchased_at).toLocaleDateString()}
                     </span>
-                    <span className="font-semibold text-gray-900">${addon.price.toFixed(2)}</span>
+                    <span className="font-semibold text-gray-900">₦{addon.price.toLocaleString('en-NG')}</span>
                   </div>
 
                   {/* Notes */}

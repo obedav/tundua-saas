@@ -1,9 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { apiClient } from "@/lib/api-client";
+import { useState, useEffect, useTransition } from "react";
 import { toast } from "sonner";
 import { Bell, X, Check, AlertCircle, Info, CheckCircle } from "lucide-react";
+import {
+  getUserNotifications,
+  markNotificationReadAction,
+  markAllNotificationsReadAction,
+  deleteNotificationAction,
+} from "@/lib/actions/notifications";
 
 interface Notification {
   id: number;
@@ -15,10 +20,15 @@ interface Notification {
   actionUrl?: string;
 }
 
+/**
+ * Client Component - Dashboard Notifications
+ * Uses Server Actions for mutations with optimistic updates
+ */
 export default function DashboardNotifications() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [showAll, setShowAll] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     fetchNotifications();
@@ -26,8 +36,8 @@ export default function DashboardNotifications() {
 
   const fetchNotifications = async () => {
     try {
-      const response = await apiClient.getUserNotifications();
-      const notificationData = response.data.notifications || [];
+      const response = await getUserNotifications();
+      const notificationData = response?.notifications || [];
 
       const mappedNotifications: Notification[] = notificationData.map(
         (item: any) => ({
@@ -51,42 +61,84 @@ export default function DashboardNotifications() {
   };
 
   const markAsRead = async (id: number) => {
-    try {
-      await apiClient.markNotificationRead(id);
-      setNotifications((prev) =>
-        prev.map((notif) =>
-          notif.id === id ? { ...notif, read: true } : notif,
-        ),
-      );
-    } catch (error) {
-      console.error("Error marking notification as read:", error);
-      toast.error("Failed to mark notification as read");
-    }
+    // Optimistic update
+    setNotifications((prev) =>
+      prev.map((notif) =>
+        notif.id === id ? { ...notif, read: true } : notif,
+      ),
+    );
+
+    startTransition(async () => {
+      try {
+        const result = await markNotificationReadAction(id);
+        if (!result.success) {
+          // Revert on error
+          setNotifications((prev) =>
+            prev.map((notif) =>
+              notif.id === id ? { ...notif, read: false } : notif,
+            ),
+          );
+          toast.error(result.error || "Failed to mark notification as read");
+        }
+      } catch (error) {
+        console.error("Error marking notification as read:", error);
+        toast.error("Failed to mark notification as read");
+        // Revert
+        setNotifications((prev) =>
+          prev.map((notif) =>
+            notif.id === id ? { ...notif, read: false } : notif,
+          ),
+        );
+      }
+    });
   };
 
   const markAllAsRead = async () => {
-    try {
-      await apiClient.markAllNotificationsRead();
-      setNotifications((prev) =>
-        prev.map((notif) => ({ ...notif, read: true })),
-      );
-      setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })));
-      toast.success("All notifications marked as read");
-    } catch (error) {
-      console.error("Error marking all as read:", error);
-      toast.error("Failed to mark all as read");
-    }
+    // Optimistic update
+    const previousNotifications = [...notifications];
+    setNotifications((prev) =>
+      prev.map((notif) => ({ ...notif, read: true })),
+    );
+
+    startTransition(async () => {
+      try {
+        const result = await markAllNotificationsReadAction();
+        if (result.success) {
+          toast.success("All notifications marked as read");
+        } else {
+          // Revert on error
+          setNotifications(previousNotifications);
+          toast.error(result.error || "Failed to mark all as read");
+        }
+      } catch (error) {
+        console.error("Error marking all as read:", error);
+        setNotifications(previousNotifications);
+        toast.error("Failed to mark all as read");
+      }
+    });
   };
 
   const deleteNotification = async (id: number) => {
-    try {
-      await apiClient.deleteNotification(id);
-      setNotifications((prev) => prev.filter((notif) => notif.id !== id));
-      toast.success("Notification deleted");
-    } catch (error) {
-      console.error("Error deleting notification:", error);
-      toast.error("Failed to delete notification");
-    }
+    // Optimistic update
+    const previousNotifications = [...notifications];
+    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
+
+    startTransition(async () => {
+      try {
+        const result = await deleteNotificationAction(id);
+        if (result.success) {
+          toast.success("Notification deleted");
+        } else {
+          // Revert on error
+          setNotifications(previousNotifications);
+          toast.error(result.error || "Failed to delete notification");
+        }
+      } catch (error) {
+        console.error("Error deleting notification:", error);
+        setNotifications(previousNotifications);
+        toast.error("Failed to delete notification");
+      }
+    });
   };
 
   const getNotificationIcon = (type: Notification["type"]) => {
@@ -144,7 +196,8 @@ export default function DashboardNotifications() {
         {unreadCount > 0 && (
           <button
             onClick={markAllAsRead}
-            className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+            disabled={isPending}
+            className="text-sm text-primary-600 hover:text-primary-700 font-medium disabled:opacity-50"
           >
             Mark all as read
           </button>
@@ -159,7 +212,7 @@ export default function DashboardNotifications() {
       ) : (
         <div className="space-y-3">
           {displayNotifications.map((notification) => {
-            const { Icon, color, bg } = getNotificationIcon(notification?.type);
+            const { Icon, color, bg } = getNotificationIcon(notification.type);
             return (
               <div
                 key={notification.id}
@@ -174,18 +227,15 @@ export default function DashboardNotifications() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-
                     <h3 className="font-semibold text-gray-900 text-sm">
                       {notification.title}
                     </h3>
-
-                    <h3 className="font-semibold text-gray-900 text-sm">{notification?.title}</h3>
-
                     <div className="flex gap-1">
                       {!notification.read && (
                         <button
                           onClick={() => markAsRead(notification.id)}
-                          className="text-gray-400 hover:text-green-600"
+                          disabled={isPending}
+                          className="text-gray-400 hover:text-green-600 disabled:opacity-50"
                           title="Mark as read"
                         >
                           <Check className="h-4 w-4" />
@@ -193,20 +243,17 @@ export default function DashboardNotifications() {
                       )}
                       <button
                         onClick={() => deleteNotification(notification.id)}
-                        className="text-gray-400 hover:text-red-600"
+                        disabled={isPending}
+                        className="text-gray-400 hover:text-red-600 disabled:opacity-50"
                         title="Delete"
                       >
                         <X className="h-4 w-4" />
                       </button>
                     </div>
                   </div>
-
                   <p className="text-sm text-gray-600 mt-1">
                     {notification.message}
                   </p>
-
-                  <p className="text-sm text-gray-600 mt-1">{notification?.message}</p>
-
                   <p className="text-xs text-gray-500 mt-1">
                     {new Date(notification.timestamp).toLocaleString()}
                   </p>

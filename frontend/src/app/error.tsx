@@ -22,10 +22,19 @@ export default function Error({
     // Log the error to an error reporting service
     console.error('App Error:', error);
 
-    // TODO: Send to error tracking service
-    // if (typeof window !== 'undefined') {
-    //   Sentry.captureException(error);
-    // }
+    // Send to Sentry error tracking
+    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_SENTRY_DSN) {
+      import('@sentry/nextjs').then((Sentry) => {
+        Sentry.captureException(error, {
+          tags: {
+            errorBoundary: 'global',
+          },
+          extra: {
+            digest: error.digest,
+          },
+        });
+      });
+    }
   }, [error]);
 
   return (
