@@ -37,7 +37,7 @@ export async function GET(
 
     if (!response.ok) {
       const contentType = response.headers.get('content-type');
-      let errorText = await response.text();
+      const errorText = await response.text();
 
       console.error('[User Details API] Backend error response:', errorText.substring(0, 500));
 
