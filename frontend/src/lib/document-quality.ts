@@ -57,7 +57,7 @@ export async function checkImageQuality(file: File): Promise<QualityCheckResult>
 
           // Calculate brightness and contrast
           let totalBrightness = 0;
-          let brightnessValues: number[] = [];
+          const brightnessValues: number[] = [];
 
           for (let i = 0; i < data.length; i += 4) {
             const brightness = ((data[i] || 0) + (data[i + 1] || 0) + (data[i + 2] || 0)) / 3;
