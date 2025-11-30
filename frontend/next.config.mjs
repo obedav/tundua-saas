@@ -19,8 +19,11 @@ eslint: {
   },
   // Turbopack configuration for monorepo
   turbopack: {
-    root: __dirname, // Set workspace root to frontend directory (absolute path)
+    root: path.join(__dirname, '..'), // Set workspace root to parent directory
   },
+
+  // Output file tracing for monorepo - must match turbopack.root
+  outputFileTracingRoot: path.join(__dirname, '..'),
 
   // Enable experimental features for Next.js 15
   experimental: {
