@@ -14,6 +14,7 @@ interface PaymentMethod {
 }
 
 export default function PaymentMethods() {
+  const [_showAddModal, _setShowAddModal] = useState(false);
   const [methods, setMethods] = useState<PaymentMethod[]>([
     {
       id: 1,
@@ -53,7 +54,7 @@ export default function PaymentMethods() {
             <p className="text-sm text-gray-600 mt-1">Manage your payment methods for faster checkout</p>
           </div>
           <button
-            onClick={() => setShowAddModal(true)}
+            onClick={() => _setShowAddModal(true)}
             className="inline-flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
           >
             <Plus className="h-4 w-4" />
@@ -133,7 +134,7 @@ export default function PaymentMethods() {
             <CreditCard className="h-12 w-12 text-gray-300 mx-auto mb-4" />
             <p className="text-gray-600 mb-4">No payment methods added</p>
             <button
-              onClick={() => setShowAddModal(true)}
+              onClick={() => _setShowAddModal(true)}
               className="inline-flex items-center gap-2 bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
             >
               <Plus className="h-5 w-5" />

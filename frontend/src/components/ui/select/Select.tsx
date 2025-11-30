@@ -77,7 +77,6 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
       disabled,
       value,
       onValueChange,
-      ...props
     },
     ref
   ) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { DollarSign, Target } from "lucide-react";
+import { Target } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
 

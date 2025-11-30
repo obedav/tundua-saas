@@ -7,7 +7,6 @@ import {
   Trash2,
   Eye,
   Search,
-  Filter,
   CheckCircle,
   Clock,
   XCircle,
@@ -414,9 +413,9 @@ export default function AllDocumentsManager() {
 
     const badge = badges[status] || badges["pending"];
     return (
-      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${badge.color}`}>
+      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${badge?.color}`}>
         {getStatusIcon(status, isVerified)}
-        {badge.text}
+        {badge?.text}
       </span>
     );
   };
@@ -979,7 +978,7 @@ export default function AllDocumentsManager() {
             <p className="font-medium mb-1">Document Management & Security</p>
             <p className="mb-2">
               This page shows all documents across all your applications. To upload new documents, visit the
-              specific application's document page. You can click on the application reference to navigate
+              specific application&apos;s document page. You can click on the application reference to navigate
               there directly.
             </p>
             <ul className="list-disc list-inside space-y-1 text-xs">
@@ -1013,7 +1012,7 @@ export default function AllDocumentsManager() {
                   Delete Document?
                 </h2>
                 <p id="delete-modal-description" className="text-sm text-gray-600">
-                  Are you sure you want to delete "<strong>{showDeleteModal.document_name}</strong>"?
+                  Are you sure you want to delete &quot;<strong>{showDeleteModal.document_name}</strong>&quot;?
                   This action cannot be undone.
                 </p>
               </div>

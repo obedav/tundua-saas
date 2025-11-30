@@ -96,55 +96,63 @@ export function createDynamicComponent<T extends ComponentType<any>>(
 
 /**
  * Lazy load chart components (recharts is heavy)
+ * NOTE: Component '@/components/charts/Chart' does not exist.
+ * TODO: Create the Chart component or remove this import if not needed.
  */
-export const LazyChart = createDynamicComponent(
-  () => import('@/components/charts/Chart').catch(() => ({
-    default: () => <div>Chart component not found</div>
-  })),
-  {
-    loading: (() => <div>Loading...</div>) as any,
-    ssr: false, // Charts often don't need SSR
-  }
-);
+// export const LazyChart = createDynamicComponent(
+//   () => import('@/components/charts/Chart').catch(() => ({
+//     default: () => <div>Chart component not found</div>
+//   })),
+//   {
+//     loading: (() => <div>Loading...</div>) as any,
+//     ssr: false, // Charts often don't need SSR
+//   }
+// );
 
 /**
  * Lazy load PDF viewer
+ * NOTE: Component '@/components/PDFViewer' does not exist.
+ * TODO: Create the PDFViewer component or remove this import if not needed.
  */
-export const LazyPDFViewer = createDynamicComponent(
-  () => import('@/components/PDFViewer').catch(() => ({
-    default: () => <div>PDF viewer not found</div>
-  })),
-  {
-    loading: (() => <div>Loading...</div>) as any,
-    ssr: false,
-  }
-);
+// export const LazyPDFViewer = createDynamicComponent(
+//   () => import('@/components/PDFViewer').catch(() => ({
+//     default: () => <div>PDF viewer not found</div>
+//   })),
+//   {
+//     loading: (() => <div>Loading...</div>) as any,
+//     ssr: false,
+//   }
+// );
 
 /**
  * Lazy load rich text editor (heavy dependency)
+ * NOTE: Component '@/components/RichTextEditor' does not exist.
+ * TODO: Create the RichTextEditor component or remove this import if not needed.
  */
-export const LazyRichTextEditor = createDynamicComponent(
-  () => import('@/components/RichTextEditor').catch(() => ({
-    default: () => <div>Editor not found</div>
-  })),
-  {
-    loading: (() => <div>Loading...</div>) as any,
-    ssr: false, // Editors usually don't work with SSR
-  }
-);
+// export const LazyRichTextEditor = createDynamicComponent(
+//   () => import('@/components/RichTextEditor').catch(() => ({
+//     default: () => <div>Editor not found</div>
+//   })),
+//   {
+//     loading: (() => <div>Loading...</div>) as any,
+//     ssr: false, // Editors usually don't work with SSR
+//   }
+// );
 
 /**
  * Lazy load image editor/cropper
+ * NOTE: Component '@/components/ImageEditor' does not exist.
+ * TODO: Create the ImageEditor component or remove this import if not needed.
  */
-export const LazyImageEditor = createDynamicComponent(
-  () => import('@/components/ImageEditor').catch(() => ({
-    default: () => <div>Image editor not found</div>
-  })),
-  {
-    loading: (() => <div>Loading...</div>) as any,
-    ssr: false,
-  }
-);
+// export const LazyImageEditor = createDynamicComponent(
+//   () => import('@/components/ImageEditor').catch(() => ({
+//     default: () => <div>Image editor not found</div>
+//   })),
+//   {
+//     loading: (() => <div>Loading...</div>) as any,
+//     ssr: false,
+//   }
+// );
 
 /**
  * Lazy load modal dialogs (if not critical)

@@ -51,13 +51,17 @@ export default function WelcomeWizard() {
   const handleNext = () => {
     if (currentStep < wizardSteps.length - 1) {
       const updatedSteps = [...wizardSteps];
-      updatedSteps[currentStep].completed = true;
+      if (updatedSteps[currentStep]) {
+        updatedSteps[currentStep].completed = true;
+      }
       setWizardSteps(updatedSteps);
       setCurrentStep(currentStep + 1);
     } else {
       // Complete wizard
       const updatedSteps = [...wizardSteps];
-      updatedSteps[currentStep].completed = true;
+      if (updatedSteps[currentStep]) {
+        updatedSteps[currentStep].completed = true;
+      }
       setWizardSteps(updatedSteps);
       setTimeout(() => setShowWizard(false), 1000);
     }
@@ -72,7 +76,10 @@ export default function WelcomeWizard() {
   }
 
   const currentStepData = wizardSteps[currentStep];
-  const StepIcon = currentStepData.icon;
+
+  if (!currentStepData) return null;
+
+  const StepIcon = currentStepData?.icon;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -81,7 +88,7 @@ export default function WelcomeWizard() {
         <div className="bg-gradient-to-r from-primary-600 to-purple-600 p-6 text-white">
           <h2 className="text-2xl font-bold mb-2">Welcome to Tundua! 👋</h2>
           <p className="text-primary-100">
-            Let's get you set up in just a few steps
+            Let&apos;s get you set up in just a few steps
           </p>
         </div>
 
@@ -133,7 +140,7 @@ export default function WelcomeWizard() {
         <div className="px-6 pb-6">
           <div className="bg-gray-50 rounded-lg p-8 mb-6 min-h-[300px] flex flex-col items-center justify-center text-center">
             <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mb-4">
-              <StepIcon className="w-10 h-10 text-primary-600" />
+              {StepIcon && <StepIcon className="w-10 h-10 text-primary-600" />}
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-3">{currentStepData?.title}</h3>
             <p className="text-gray-600 mb-6 max-w-md">{currentStepData?.description}</p>
@@ -198,7 +205,7 @@ export default function WelcomeWizard() {
             {currentStep === 3 && (
               <div className="space-y-3 w-full max-w-sm">
                 <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4 border border-green-200 text-left">
-                  <h4 className="font-semibold text-gray-900 mb-2">You're all set! 🎉</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">You&apos;re all set! 🎉</h4>
                   <p className="text-sm text-gray-600 mb-3">
                     Ready to start your study abroad journey? Create your first application now!
                   </p>

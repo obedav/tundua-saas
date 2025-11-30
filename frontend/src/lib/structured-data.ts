@@ -29,7 +29,7 @@ export function getOrganizationSchema(): Organization {
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'US', // TODO: Update with real address
-    },
+    } as any,
     sameAs: [
       // TODO: Add your social media profiles
       // 'https://www.facebook.com/tundua',
@@ -37,7 +37,7 @@ export function getOrganizationSchema(): Organization {
       // 'https://www.linkedin.com/company/tundua',
       // 'https://www.instagram.com/tundua',
     ],
-  };
+  } as Organization;
 }
 
 /**
@@ -60,8 +60,8 @@ export function getWebsiteSchema(): WebSite {
         '@type': 'EntryPoint',
         urlTemplate: `${APP_URL}/search?q={search_term_string}`,
       },
-      queryInput: 'required name=search_term_string',
-    },
+      'query-input': 'required name=search_term_string',
+    } as any,
   };
 }
 
@@ -144,7 +144,7 @@ export function generateJsonLd(data: object): string {
  * Combine multiple schemas into one JSON-LD graph
  * More efficient than multiple script tags
  */
-export function combineSchemas(...schemas: object[]): string {
+export function combineSchemas(...schemas: Array<Record<string, any>>): string {
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': schemas,

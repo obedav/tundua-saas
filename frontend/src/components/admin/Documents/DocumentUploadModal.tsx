@@ -6,13 +6,11 @@ import { Upload, X } from "lucide-react";
 interface DocumentUploadModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUpload?: (file: File) => void;
 }
 
 export default function DocumentUploadModal({
   isOpen,
   onClose,
-  onUpload
 }: DocumentUploadModalProps) {
   const [_selectedFile, _setSelectedFile] = useState<File | null>(null);
 

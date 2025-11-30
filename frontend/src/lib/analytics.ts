@@ -75,7 +75,7 @@ export const trackApplicationSubmitted = (applicationId: number, amount: number)
   });
 };
 
-export const trackPaymentInitiated = (applicationId: number, amount: number, method: string) => {
+export const trackPaymentInitiated = (_applicationId: number, amount: number, method: string) => {
   event({
     action: 'payment_initiated',
     category: 'Payment',

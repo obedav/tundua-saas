@@ -44,7 +44,7 @@ const MockLoginPage = () => {
 
     try {
       // Trim email before sending (matching real implementation)
-      const response = await apiClient.login(email.trim(), password);
+      await apiClient.login(email.trim(), password);
       toast.success("Login successful!");
       router.push("/dashboard");
     } catch (error: any) {
@@ -138,6 +138,10 @@ describe("Login Page - Authentication Flow", () => {
             name: "Test User",
           },
         },
+        status: 200,
+        statusText: "OK",
+        headers: {},
+        config: {} as any,
       };
 
       vi.mocked(apiClient.login).mockResolvedValue(mockResponse);
