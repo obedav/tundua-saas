@@ -95,7 +95,7 @@ export async function getUserDetails(id: number) {
  */
 export async function updateUserAction(
   id: number,
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse> {
   try {
@@ -146,7 +146,7 @@ export async function updateUserAction(
  */
 export async function suspendUserAction(
   id: number,
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse> {
   try {

@@ -15,7 +15,7 @@ export default function VerifyPendingPage() {
     setResending(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/resend-verification`,
+        `${process.env['NEXT_PUBLIC_API_URL']}/api/auth/resend-verification`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -30,7 +30,7 @@ export default function VerifyPendingPage() {
       } else {
         toast.error(data.message || data.error || "Failed to resend email.");
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error("An error occurred. Please try again.");
     } finally {
       setResending(false);
@@ -50,7 +50,7 @@ export default function VerifyPendingPage() {
               Check Your Email
             </h1>
             <p className="text-gray-600">
-              We've sent a verification link to:
+              We&apos;ve sent a verification link to:
             </p>
             <p className="text-lg font-semibold text-primary-600 mt-2 break-all">
               {email}
@@ -80,7 +80,7 @@ export default function VerifyPendingPage() {
                 <span className="inline-flex items-center justify-center w-5 h-5 bg-blue-600 text-white rounded-full text-xs flex-shrink-0 mt-0.5">
                   3
                 </span>
-                <span>You'll be redirected to login once verified</span>
+                <span>You&apos;ll be redirected to login once verified</span>
               </li>
             </ol>
           </div>
@@ -88,7 +88,7 @@ export default function VerifyPendingPage() {
           {/* Tips */}
           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
             <p className="text-sm text-yellow-800 font-medium mb-2">
-              📬 Didn't receive the email?
+              📬 Didn&apos;t receive the email?
             </p>
             <ul className="text-xs text-yellow-700 space-y-1">
               <li>• Check your spam or junk folder</li>

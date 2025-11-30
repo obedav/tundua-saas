@@ -14,24 +14,8 @@ interface Payment {
 }
 
 export default function BillingManagement() {
-  const [payments, setPayments] = useState<Payment[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const getPaymentStatusBadge = (status: string) => {
-    const badges: Record<string, { color: string; text: string }> = {
-      pending: { color: "bg-yellow-100 text-yellow-700", text: "Pending" },
-      completed: { color: "bg-green-100 text-green-700", text: "Completed" },
-      failed: { color: "bg-red-100 text-red-700", text: "Failed" },
-      refunded: { color: "bg-gray-100 text-gray-700", text: "Refunded" },
-    };
-
-    const badge = badges[status] || badges['pending'];
-    return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>
-        {badge.text}
-      </span>
-    );
-  };
+  const [_payments, _setPayments] = useState<Payment[]>([]);
+  const [_loading, _setLoading] = useState(true);
 
   return (
     <div className="space-y-6">
@@ -90,7 +74,7 @@ export default function BillingManagement() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {loading ? (
+              {_loading ? (
                 <tr>
                   <td colSpan={5} className="text-center py-12">
                     <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>

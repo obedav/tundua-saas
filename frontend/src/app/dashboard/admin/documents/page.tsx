@@ -11,10 +11,6 @@ import {
   Clock,
   Eye,
   X,
-  ZoomIn,
-  ZoomOut,
-  RotateCw,
-  Maximize2,
 } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
@@ -107,7 +103,7 @@ export default function AdminDocumentsPage() {
     setPreviewLoading(true);
     try {
       console.log('Attempting to download document:', doc.id);
-      console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
+      console.log('API URL:', process.env['NEXT_PUBLIC_API_URL']);
       const response = await apiClient.downloadDocument(doc.id);
       console.log('Download successful, response:', response);
       const blob = new Blob([response.data], { type: response.headers['content-type'] || 'application/octet-stream' });

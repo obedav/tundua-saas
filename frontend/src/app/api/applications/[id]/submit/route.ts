@@ -6,7 +6,7 @@ const API_URL = clientEnv.NEXT_PUBLIC_API_URL
 
 // POST /api/applications/[id]/submit - Submit application
 export async function POST(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {

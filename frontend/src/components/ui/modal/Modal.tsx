@@ -92,7 +92,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
       children,
       ...props
     },
-    ref
+    _ref
   ) => {
     const contentRef = useRef<HTMLDivElement>(null);
     const previousActiveElement = useRef<HTMLElement | null>(null);

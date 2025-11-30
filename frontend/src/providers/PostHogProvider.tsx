@@ -30,11 +30,11 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
     // Initialize PostHog
     if (
       typeof window !== "undefined" &&
-      process.env.NEXT_PUBLIC_POSTHOG_KEY &&
+      process.env['NEXT_PUBLIC_POSTHOG_KEY'] &&
       !posthog.__loaded
     ) {
-      posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-        api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://app.posthog.com",
+      posthog.init(process.env['NEXT_PUBLIC_POSTHOG_KEY'], {
+        api_host: process.env['NEXT_PUBLIC_POSTHOG_HOST'] || "https://app.posthog.com",
         capture_pageview: false, // We'll capture manually
         capture_pageleave: true,
         loaded: (posthog) => {
@@ -44,7 +44,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
         },
         autocapture: {
           dom_event_allowlist: ["click", "submit"], // Only capture clicks and form submissions
-          element_allowlist: ["button", "a", "form", "input[type=submit]"],
+          element_allowlist: ["button", "a", "form"],
         },
         session_recording: {
           maskAllInputs: true, // Privacy: mask all input fields
@@ -54,7 +54,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) {
+  if (!process.env['NEXT_PUBLIC_POSTHOG_KEY']) {
     return <>{children}</>;
   }
 

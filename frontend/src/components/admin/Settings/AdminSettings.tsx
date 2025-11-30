@@ -1,6 +1,6 @@
 "use client";
 
-import { Settings, Save } from "lucide-react";
+import { Save } from "lucide-react";
 
 export default function AdminSettings() {
   return (

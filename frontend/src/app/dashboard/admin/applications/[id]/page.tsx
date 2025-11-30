@@ -6,7 +6,6 @@ import {
   MapPin,
   GraduationCap,
   DollarSign,
-  FileText,
   Check,
   Clock,
   CheckCircle,
@@ -115,12 +114,12 @@ export default async function AdminApplicationDetailPage({
     };
 
     const badge = badges[status] || badges['draft'];
-    const Icon = badge.icon;
+    const Icon = badge?.icon;
 
     return (
-      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${badge.color}`}>
-        <Icon className="h-4 w-4" />
-        {badge.text}
+      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${badge?.color}`}>
+        {Icon && <Icon className="h-4 w-4" />}
+        {badge?.text}
       </span>
     );
   };
@@ -135,8 +134,8 @@ export default async function AdminApplicationDetailPage({
 
     const badge = badges[status] || badges['pending'];
     return (
-      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${badge.color}`}>
-        {badge.text}
+      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${badge?.color}`}>
+        {badge?.text}
       </span>
     );
   };

@@ -5,7 +5,6 @@ import {
   useRef,
   useEffect,
   ReactNode,
-  HTMLAttributes,
   cloneElement,
   isValidElement,
 } from "react";
@@ -89,7 +88,7 @@ const Tooltip = ({
   const timeoutRef = useRef<NodeJS.Timeout>();
   const tooltipId = useRef(`tooltip-${Math.random().toString(36).substr(2, 9)}`);
 
-  const calculatePosition = () => {
+  const calculatePosition = (): void => {
     if (!triggerRef.current || !tooltipRef.current) return;
 
     const triggerRect = triggerRef.current.getBoundingClientRect();
@@ -193,6 +192,7 @@ const Tooltip = ({
         window.removeEventListener("resize", handleUpdate);
       };
     }
+    return undefined;
   }, [isVisible]);
 
   // Clone child element to add event handlers

@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
  * API Route - Mark Notification as Read
  */
 export async function POST(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {

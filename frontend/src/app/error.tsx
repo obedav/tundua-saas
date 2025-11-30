@@ -23,7 +23,7 @@ export default function Error({
     console.error('App Error:', error);
 
     // Send to Sentry error tracking
-    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_SENTRY_DSN) {
+    if (typeof window !== 'undefined' && process.env['NEXT_PUBLIC_SENTRY_DSN']) {
       import('@sentry/nextjs').then((Sentry) => {
         Sentry.captureException(error, {
           tags: {

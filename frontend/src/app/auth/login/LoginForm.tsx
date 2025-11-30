@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,12 +25,12 @@ type LoginFormData = z.infer<typeof loginSchema>;
  * Uses Server Actions for secure authentication with HttpOnly cookies
  */
 export default function LoginForm() {
-  const router = useRouter();
+  // Router not needed - using checkAuth callback
   const { checkAuth } = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
-  const emailInputRef = useRef<HTMLInputElement>(null);
+
 
   const {
     register,
@@ -46,13 +45,10 @@ export default function LoginForm() {
   const emailValue = watch("email");
   const passwordValue = watch("password");
 
-  // Auto-focus email field on mount
-  useEffect(() => {
-    emailInputRef.current?.focus();
-  }, []);
 
-  const handleSocialLogin = async (provider: 'google') => {
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google?user_type=student`;
+
+  const handleSocialLogin = async (_provider: 'google') => {
+    window.location.href = `${process.env['NEXT_PUBLIC_API_URL']}/api/auth/google?user_type=student`;
   };
 
   const onSubmit = async (data: LoginFormData) => {
@@ -108,15 +104,9 @@ export default function LoginForm() {
       <AnimatePresence>
         {loginSuccess && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
             className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-sm"
           >
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
               className="bg-white rounded-3xl p-8 shadow-2xl flex flex-col items-center"
             >
               <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
@@ -131,9 +121,6 @@ export default function LoginForm() {
 
       {/* Form Card */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
         className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 lg:p-10"
       >
         <div className="mb-8">
@@ -194,10 +181,6 @@ export default function LoginForm() {
           <div>
             <Input
               {...register("email")}
-              ref={(e: HTMLInputElement | null) => {
-                register("email").ref(e);
-                emailInputRef.current = e;
-              }}
               type="email"
               label="Email address"
               placeholder="your@email.com"
@@ -301,7 +284,7 @@ export default function LoginForm() {
         {/* Sign Up Link */}
         <div className="mt-8 pt-6 border-t border-gray-100 text-center">
           <p className="text-gray-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               href="/auth/register"
               className="font-semibold text-primary-600 hover:text-primary-700 transition-colors focus:outline-none focus:underline"

@@ -65,7 +65,6 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
     handleSubmit,
     watch,
     setValue,
-    control,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -322,7 +321,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
                 {/* Custom University */}
                 <div className="group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Can't find your university? Add a custom one
+                    Can&apos;t find your university? Add a custom one
                   </label>
                   <div className="flex gap-2">
                     <div className="flex-1 relative">
@@ -385,8 +384,8 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
               className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white"
             >
               <option value="">Select program type</option>
-              <option value="undergraduate">Undergraduate (Bachelor's)</option>
-              <option value="graduate">Graduate (Master's)</option>
+              <option value="undergraduate">Undergraduate (Bachelor&apos;s)</option>
+              <option value="graduate">Graduate (Master&apos;s)</option>
               <option value="phd">Doctorate (PhD)</option>
               <option value="certificate">Certificate/Diploma</option>
             </select>

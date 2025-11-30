@@ -288,7 +288,7 @@ export default function AnalyticsDashboard() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm font-medium text-gray-900">
-                        ₦{parseFloat(application.total_amount || "0").toLocaleString('en-NG')}
+                        ₦{(application.total_amount || 0).toLocaleString('en-NG')}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

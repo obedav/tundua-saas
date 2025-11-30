@@ -9,11 +9,11 @@ import Anthropic from "@anthropic-ai/sdk";
 
 // Initialize Claude client (server-side only)
 const getAnthropicClient = () => {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!process.env['ANTHROPIC_API_KEY']) {
     throw new Error("ANTHROPIC_API_KEY is not configured");
   }
   return new Anthropic({
-    apiKey: process.env.ANTHROPIC_API_KEY,
+    apiKey: process.env['ANTHROPIC_API_KEY'],
   });
 };
 

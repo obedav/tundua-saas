@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  dsn: process.env['NEXT_PUBLIC_SENTRY_DSN'],
 
   // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
   // We recommend adjusting this value in production.
@@ -24,10 +24,10 @@ Sentry.init({
   ],
 
   // Environment
-  environment: process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.NODE_ENV,
+  environment: process.env['NEXT_PUBLIC_VERCEL_ENV'] || process.env.NODE_ENV,
 
   // Release tracking
-  release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
+  release: process.env['NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA'],
 
   // Ignore specific errors
   ignoreErrors: [

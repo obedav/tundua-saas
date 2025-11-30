@@ -58,7 +58,7 @@ export async function getUserAddOns(status?: string) {
  * Purchase an add-on service
  */
 export async function purchaseAddOnAction(
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse<{ order: any }>> {
   try {

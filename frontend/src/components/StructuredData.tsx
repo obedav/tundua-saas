@@ -21,10 +21,10 @@ import {
  */
 export function GlobalStructuredData() {
   const schemas = combineSchemas(
-    getOrganizationSchema(),
-    getWebsiteSchema(),
-    getServiceSchema()
-  );
+    getOrganizationSchema() as Record<string, any>,
+    getWebsiteSchema() as Record<string, any>,
+    getServiceSchema() as Record<string, any>
+  ) as string;
 
   return (
     <Script

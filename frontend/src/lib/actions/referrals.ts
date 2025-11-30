@@ -55,7 +55,7 @@ export async function getUserReferrals() {
  * Create a new referral
  */
 export async function createReferralAction(
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse<{ referral: any }>> {
   try {

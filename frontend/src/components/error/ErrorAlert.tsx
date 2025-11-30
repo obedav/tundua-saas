@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Alert } from "@/components/ui";
-import { AlertTriangle, X } from "lucide-react";
 
 interface ErrorAlertProps {
   /** Error message to display */

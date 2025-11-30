@@ -13,7 +13,6 @@ import {
   XCircle,
   AlertCircle,
   Edit,
-  Trash2,
 } from "lucide-react";
 import { getApplication } from "@/lib/actions/applications";
 import DeleteApplicationButton from "./DeleteApplicationButton";

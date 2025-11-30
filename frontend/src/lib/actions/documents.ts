@@ -30,7 +30,7 @@ async function getAuthToken(): Promise<string | undefined> {
  * Note: FormData is automatically handled by server actions
  */
 export async function uploadDocumentAction(
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse<{ document: any }>> {
   try {

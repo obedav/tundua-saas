@@ -5,7 +5,7 @@ import { clientEnv } from '@/lib/env';
 const API_URL = clientEnv.NEXT_PUBLIC_API_URL;
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -49,7 +49,7 @@ export async function GET(
 }
 
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {

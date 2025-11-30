@@ -42,6 +42,8 @@ export function LiveActivityCounter() {
 
   const activity = sampleActivities[currentActivity];
 
+  if (!activity) return null;
+
   return (
     <AnimatePresence mode="wait">
       {isVisible && (

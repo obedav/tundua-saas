@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const { action, ...params } = body;
 
     // Verify AI is configured
-    if (!process.env.ANTHROPIC_API_KEY) {
+    if (!process.env['ANTHROPIC_API_KEY']) {
       return NextResponse.json(
         { error: "AI features are not configured" },
         { status: 503 }

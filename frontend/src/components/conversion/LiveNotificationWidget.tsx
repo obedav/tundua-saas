@@ -56,6 +56,9 @@ export function LiveNotificationWidget() {
   }, []);
 
   const notification = sampleNotifications[currentNotification];
+  
+  if (!notification) return null;
+  
   const Icon = notification.icon;
 
   const colors = {
@@ -77,7 +80,7 @@ export function LiveNotificationWidget() {
             className="bg-white rounded-2xl shadow-2xl p-4 max-w-sm border-2 border-gray-100"
           >
             <div className="flex items-start gap-3">
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${colors[notification?.type]} flex items-center justify-center flex-shrink-0`}>
+              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${colors[notification.type]} flex items-center justify-center flex-shrink-0`}>
                 <Icon className="w-5 h-5 text-white" />
               </div>
 

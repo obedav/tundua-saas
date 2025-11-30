@@ -95,7 +95,7 @@ export default function RefundManagement() {
     return (
       <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>
         <Icon className="h-3 w-3" />
-        {badge.text}
+        {badge?.text}
       </span>
     );
   };

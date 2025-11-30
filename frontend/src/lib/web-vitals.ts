@@ -85,40 +85,42 @@ function sendToGoogleAnalytics(metric: Metric) {
 /**
  * Send metric to custom analytics endpoint
  * Use this if you want to store metrics in your own database
+ *
+ * This function is currently unused but kept for future use
  */
-function sendToCustomAnalytics(metric: Metric) {
-  const rating = getRating(metric);
+// function sendToCustomAnalytics(metric: Metric): void {
+//   const rating = getRating(metric);
 
-  // Send to your custom API endpoint
-  const body = JSON.stringify({
-    name: metric.name,
-    value: metric.value,
-    rating,
-    id: metric.id,
-    delta: metric.delta,
-    navigationType: metric.navigationType,
-    timestamp: Date.now(),
-    url: window.location.href,
-    userAgent: navigator.userAgent,
-  });
+//   // Send to your custom API endpoint
+//   const body = JSON.stringify({
+//     name: metric.name,
+//     value: metric.value,
+//     rating,
+//     id: metric.id,
+//     delta: metric.delta,
+//     navigationType: metric.navigationType,
+//     timestamp: Date.now(),
+//     url: window.location.href,
+//     userAgent: navigator.userAgent,
+//   });
 
-  // Use sendBeacon if available (non-blocking)
-  if (navigator.sendBeacon) {
-    navigator.sendBeacon('/api/analytics/web-vitals', body);
-  } else {
-    // Fallback to fetch
-    fetch('/api/analytics/web-vitals', {
-      method: 'POST',
-      body,
-      headers: { 'Content-Type': 'application/json' },
-      keepalive: true,
-    }).catch((error) => {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Failed to send web vitals:', error);
-      }
-    });
-  }
-}
+//   // Use sendBeacon if available (non-blocking)
+//   if (navigator.sendBeacon) {
+//     navigator.sendBeacon('/api/analytics/web-vitals', body);
+//   } else {
+//     // Fallback to fetch
+//     fetch('/api/analytics/web-vitals', {
+//       method: 'POST',
+//       body,
+//       headers: { 'Content-Type': 'application/json' },
+//       keepalive: true,
+//     }).catch((error) => {
+//       if (process.env.NODE_ENV === 'development') {
+//         console.error('Failed to send web vitals:', error);
+//       }
+//     });
+//   }
+// }
 
 /**
  * Main reporting function
@@ -156,8 +158,8 @@ export const performance = {
   /**
    * Measure time between two marks
    */
-  measure: (name: string, startMark: string, endMark: string) => {
-    if (typeof window === 'undefined' || !window.performance) return;
+  measure: (name: string, startMark: string, endMark: string): PerformanceMeasure | undefined => {
+    if (typeof window === 'undefined' || !window.performance) return undefined;
 
     try {
       performance.mark(endMark);
@@ -173,6 +175,7 @@ export const performance = {
       if (process.env.NODE_ENV === 'development') {
         console.error('Performance measurement failed:', error);
       }
+      return undefined;
     }
   },
 

@@ -3,12 +3,10 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import {
   Upload,
-  X,
   FileText,
   CheckCircle,
   Download,
   Trash2,
-  Eye,
   AlertCircle,
   Clock,
   XCircle,
@@ -16,9 +14,6 @@ import {
   FileCheck,
   Loader2,
   RefreshCw,
-  Camera,
-  Crop,
-  ZoomIn,
   Shield,
   FileWarning,
 } from "lucide-react";
@@ -67,7 +62,7 @@ export default function EnhancedDocumentManager({
   const [loading, setLoading] = useState(true);
   const [uploadingFiles, setUploadingFiles] = useState<Map<string, UploadingFile>>(new Map());
   const [dragActive, setDragActive] = useState(false);
-  const [previewDocument, setPreviewDocument] = useState<Document | null>(null);
+  const [_previewDocument, _setPreviewDocument] = useState<Document | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState<Document | null>(null);
   const [liveRegionMessage, setLiveRegionMessage] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -227,12 +222,6 @@ export default function EnhancedDocumentManager({
         const bytes = new Uint8Array(buffer);
 
         // Check magic bytes
-        const signatures = {
-          jpeg: [0xFF, 0xD8, 0xFF],
-          png: [0x89, 0x50, 0x4E, 0x47],
-          webp: [0x52, 0x49, 0x46, 0x46], // "RIFF"
-        };
-
         let validSignature = false;
         if (file.type === 'image/jpeg' && bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF) {
           validSignature = true;
@@ -563,9 +552,9 @@ export default function EnhancedDocumentManager({
 
     const badge = badges[status] || badges['pending'];
     return (
-      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${badge.color}`}>
+      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${badge?.color}`}>
         {getStatusIcon(status, isVerified)}
-        {badge.text}
+        {badge?.text}
       </span>
     );
   };
@@ -938,7 +927,7 @@ export default function EnhancedDocumentManager({
                   Delete Document?
                 </h2>
                 <p id="delete-modal-description" className="text-sm text-gray-600">
-                  Are you sure you want to delete "<strong>{showDeleteModal.document_name}</strong>"?
+                  Are you sure you want to delete &quot;<strong>{showDeleteModal.document_name}</strong>&quot;?
                   This action cannot be undone.
                 </p>
               </div>

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { Banknote, TrendingUp, TrendingDown, BarChart3, ArrowUp, ArrowDown, Info } from "lucide-react";
+import { Banknote, TrendingUp, TrendingDown, BarChart3, ArrowUp } from "lucide-react";
 import { getCurrentUser } from "@/lib/actions/auth";
 import { getAdminDashboardStats, getComprehensiveAnalytics, getRevenueChartData } from "@/lib/actions/admin";
 

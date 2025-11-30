@@ -29,7 +29,7 @@ interface ActionResponse<T = unknown> {
  * Login action - Replaces apiClient.login()
  */
 export async function loginAction(
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse<{ user: any; token: string }>> {
   try {
@@ -115,7 +115,7 @@ export async function loginAction(
  * Register action - Replaces apiClient.register()
  */
 export async function registerAction(
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse<{ user: any }>> {
   try {
@@ -248,7 +248,7 @@ export async function getCurrentUser() {
  * Update profile action
  */
 export async function updateProfileAction(
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse> {
   try {

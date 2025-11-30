@@ -164,7 +164,7 @@ export default function TourGuide({ onComplete, onSkip }: TourGuideProps) {
     const tooltipHeight = 250;
     const offset = 20;
 
-    switch (currentTourStep.position) {
+    switch (currentTourStep?.position) {
       case "bottom":
         return {
           top: targetPosition.top + targetPosition.height + offset,
@@ -192,6 +192,8 @@ export default function TourGuide({ onComplete, onSkip }: TourGuideProps) {
         };
     }
   };
+
+  if (!currentTourStep) return null;
 
   const tooltipPosition = getTooltipPosition();
 
@@ -235,7 +237,7 @@ export default function TourGuide({ onComplete, onSkip }: TourGuideProps) {
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
             <div className="flex items-start justify-between mb-3">
               <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
-                {currentTourStep.icon}
+                {currentTourStep?.icon}
               </div>
               <button
                 onClick={onSkip}
@@ -245,9 +247,9 @@ export default function TourGuide({ onComplete, onSkip }: TourGuideProps) {
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <h3 className="text-xl font-bold mb-2">{currentTourStep.title}</h3>
+            <h3 className="text-xl font-bold mb-2">{currentTourStep?.title}</h3>
             <p className="text-blue-100 text-sm leading-relaxed">
-              {currentTourStep.description}
+              {currentTourStep?.description}
             </p>
           </div>
 

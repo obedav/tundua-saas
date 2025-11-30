@@ -67,7 +67,7 @@ export async function getAllAddOnOrders(params?: {
  */
 export async function updateAddOnOrderStatusAction(
   id: number,
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse> {
   try {
@@ -85,8 +85,8 @@ export async function updateAddOnOrderStatusAction(
     }
 
     const data: Record<string, any> = { status }
-    if (fulfillmentNotes) data.fulfillment_notes = fulfillmentNotes
-    if (trackingNumber) data.tracking_number = trackingNumber
+    if (fulfillmentNotes) data['fulfillment_notes'] = fulfillmentNotes
+    if (trackingNumber) data['tracking_number'] = trackingNumber
 
     const response = await fetch(`${API_URL}/api/admin/addons/orders/${id}/status`, {
       method: 'PUT',

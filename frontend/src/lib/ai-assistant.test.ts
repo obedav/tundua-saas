@@ -27,7 +27,7 @@ describe("AI Assistant", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockCreate.mockClear();
-    process.env.ANTHROPIC_API_KEY = "test-api-key";
+    process.env['ANTHROPIC_API_KEY'] = "test-api-key";
   });
 
   describe("analyzeDocument", () => {
@@ -55,7 +55,7 @@ describe("AI Assistant", () => {
       const result = await analyzeDocument("base64string", "passport");
 
       expect(result.document_type).toBe("passport");
-      expect(result.extracted_data.name).toBe("John Doe");
+      expect(result.extracted_data['name']).toBe("John Doe");
       expect(result.confidence).toBe(0.95);
     });
   });
@@ -84,8 +84,8 @@ describe("AI Assistant", () => {
       });
 
       expect(result).toHaveLength(1);
-      expect(result[0].field).toBe("destination_country");
-      expect(result[0].suggestion).toBe("United States");
+      expect(result[0]?.field).toBe("destination_country");
+      expect(result[0]?.suggestion).toBe("United States");
     });
   });
 
@@ -170,7 +170,7 @@ describe("AI Assistant", () => {
   });
 
   it("should throw error when API key is not configured", async () => {
-    delete process.env.ANTHROPIC_API_KEY;
+    delete process.env['ANTHROPIC_API_KEY'];
 
     await expect(
       analyzeDocument("base64string", "passport")

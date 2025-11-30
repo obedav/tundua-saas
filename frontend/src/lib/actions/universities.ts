@@ -33,7 +33,7 @@ export async function getCountries() {
 
     const headers: HeadersInit = {}
     if (token) {
-      headers.Authorization = `Bearer ${token}`
+      headers['Authorization'] = `Bearer ${token}`
     }
 
     const response = await fetch(`${API_URL}/api/universities/countries`, {
@@ -81,7 +81,7 @@ export async function searchUniversities(params: {
 
     const headers: HeadersInit = {}
     if (token) {
-      headers.Authorization = `Bearer ${token}`
+      headers['Authorization'] = `Bearer ${token}`
     }
 
     const response = await fetch(url.toString(), {
@@ -106,7 +106,7 @@ export async function searchUniversities(params: {
  * Get university recommendations based on user profile
  */
 export async function getUniversityRecommendationsAction(
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse<{ recommendations: any[] }>> {
   try {
@@ -124,7 +124,7 @@ export async function getUniversityRecommendationsAction(
       'Content-Type': 'application/json',
     }
     if (token) {
-      headers.Authorization = `Bearer ${token}`
+      headers['Authorization'] = `Bearer ${token}`
     }
 
     const response = await fetch(`${API_URL}/api/universities/recommend`, {
@@ -155,7 +155,7 @@ export async function getUniversityById(id: number) {
 
     const headers: HeadersInit = {}
     if (token) {
-      headers.Authorization = `Bearer ${token}`
+      headers['Authorization'] = `Bearer ${token}`
     }
 
     const response = await fetch(`${API_URL}/api/universities/${id}`, {

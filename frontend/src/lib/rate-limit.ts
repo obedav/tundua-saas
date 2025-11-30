@@ -41,15 +41,17 @@ class InMemoryRateLimiter {
 // Create rate limiters
 const createRateLimiter = (requests: number, window: string) => {
   // Use Upstash in production, in-memory in development
-  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+  if (process.env['UPSTASH_REDIS_REST_URL'] && process.env['UPSTASH_REDIS_REST_TOKEN']) {
     const redis = new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+      url: process.env['UPSTASH_REDIS_REST_URL'],
+      token: process.env['UPSTASH_REDIS_REST_TOKEN'],
     });
+
+    const windowMs = parseWindow(window);
 
     return new Ratelimit({
       redis,
-      limiter: Ratelimit.slidingWindow(requests, window),
+      limiter: Ratelimit.slidingWindow(requests, `${windowMs} ms`),
       analytics: true,
       prefix: "tundua:ratelimit",
     });
@@ -68,7 +70,7 @@ const createRateLimiter = (requests: number, window: string) => {
 
 function parseWindow(window: string): number {
   const match = window.match(/^(\d+)\s*([smhd])$/);
-  if (!match) throw new Error(`Invalid window format: ${window}`);
+  if (!match || !match[1] || !match[2]) throw new Error(`Invalid window format: ${window}`);
 
   const value = parseInt(match[1], 10);
   const unit = match[2];
@@ -80,7 +82,12 @@ function parseWindow(window: string): number {
     d: 24 * 60 * 60 * 1000,
   };
 
-  return value * multipliers[unit];
+  const multiplier = multipliers[unit];
+  if (multiplier === undefined) {
+    throw new Error(`Invalid time unit: ${unit}`);
+  }
+
+  return value * multiplier;
 }
 
 // Different rate limits for different endpoints

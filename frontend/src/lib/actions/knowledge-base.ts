@@ -43,7 +43,7 @@ export async function getKnowledgeBaseArticles(params?: {
 
     const headers: HeadersInit = {}
     if (token) {
-      headers.Authorization = `Bearer ${token}`
+      headers['Authorization'] = `Bearer ${token}`
     }
 
     const response = await fetch(url.toString(), {
@@ -73,7 +73,7 @@ export async function getKnowledgeBaseArticle(id: number | string) {
 
     const headers: HeadersInit = {}
     if (token) {
-      headers.Authorization = `Bearer ${token}`
+      headers['Authorization'] = `Bearer ${token}`
     }
 
     const response = await fetch(`${API_URL}/api/knowledge-base/${id}`, {
@@ -106,7 +106,7 @@ export async function getPopularArticles(params?: { limit?: number }) {
 
     const headers: HeadersInit = {}
     if (token) {
-      headers.Authorization = `Bearer ${token}`
+      headers['Authorization'] = `Bearer ${token}`
     }
 
     const response = await fetch(url.toString(), {
@@ -139,7 +139,7 @@ export async function getFeaturedArticles(params?: { limit?: number }) {
 
     const headers: HeadersInit = {}
     if (token) {
-      headers.Authorization = `Bearer ${token}`
+      headers['Authorization'] = `Bearer ${token}`
     }
 
     const response = await fetch(url.toString(), {
@@ -169,7 +169,7 @@ export async function getKnowledgeBaseCategories() {
 
     const headers: HeadersInit = {}
     if (token) {
-      headers.Authorization = `Bearer ${token}`
+      headers['Authorization'] = `Bearer ${token}`
     }
 
     const response = await fetch(`${API_URL}/api/knowledge-base/categories`, {

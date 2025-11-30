@@ -5,7 +5,7 @@ import { clientEnv } from '@/lib/env';
 const API_URL = clientEnv.NEXT_PUBLIC_API_URL;
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -46,7 +46,7 @@ export async function GET(
         try {
           const errorJson = JSON.parse(errorText);
           return NextResponse.json(errorJson, { status: response.status });
-        } catch (e) {
+        } catch (_e) {
           // Not valid JSON
         }
       }
@@ -70,7 +70,7 @@ export async function GET(
 }
 
 export async function PUT(
-  request: NextRequest,
+  _request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -84,7 +84,7 @@ export async function PUT(
       );
     }
 
-    const body = await request.json();
+    const body = await _request.json();
     const url = `${API_URL}/api/admin/users/${id}`;
 
     const response = await fetch(url, {

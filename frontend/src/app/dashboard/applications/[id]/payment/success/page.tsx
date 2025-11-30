@@ -11,7 +11,7 @@ type VerificationStatus = "verifying" | "success" | "failed";
 export default function PaymentSuccessPage() {
   const params = useParams();
   const searchParams = useSearchParams();
-  
+
   const [status, setStatus] = useState<VerificationStatus>("verifying");
   const [paymentDetails, setPaymentDetails] = useState<any>(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -25,13 +25,8 @@ export default function PaymentSuccessPage() {
       // Check if it's a Paystack payment (has reference parameter)
       const paystackReference = searchParams.get("reference");
 
-      // Check if it's a Stripe payment (has session_id parameter)
-      const stripeSessionId = searchParams.get("session_id");
-
       if (paystackReference) {
         await verifyPaystackPayment(paystackReference);
-      } else if (stripeSessionId) {
-        await verifyStripePayment(stripeSessionId);
       } else {
         setStatus("failed");
         setErrorMessage("No payment reference found");
@@ -60,32 +55,6 @@ export default function PaymentSuccessPage() {
     }
   };
 
-  const verifyStripePayment = async (sessionId: string) => {
-    // For Stripe, the webhook handles the verification
-    // We just need to wait a moment and check the application status
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    try {
-      const response = await apiClient.getApplication(Number(params['id']));
-      const application = response.data.application;
-
-      if (application.payment_status === "paid") {
-        setPaymentDetails({
-          payment_id: application.payment_id,
-          application_id: application.id,
-          amount: application.total_amount,
-          status: "completed",
-        });
-        setStatus("success");
-      } else {
-        // Payment might still be processing
-        setErrorMessage("Payment is being processed. Please check your application status in a few moments.");
-        setStatus("failed");
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
 
   if (status === "verifying") {
     return (

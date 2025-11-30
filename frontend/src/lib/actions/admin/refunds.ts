@@ -67,7 +67,7 @@ export async function getAllRefunds(params?: {
  */
 export async function reviewRefundAction(
   id: number,
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse> {
   try {

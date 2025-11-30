@@ -60,12 +60,12 @@ export async function checkImageQuality(file: File): Promise<QualityCheckResult>
           let brightnessValues: number[] = [];
 
           for (let i = 0; i < data.length; i += 4) {
-            const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            const brightness = ((data[i] || 0) + (data[i + 1] || 0) + (data[i + 2] || 0)) / 3;
             totalBrightness += brightness;
             brightnessValues.push(brightness);
           }
 
-          const avgBrightness = totalBrightness / (data.length / 4);
+          const avgBrightness = brightnessValues.length > 0 ? totalBrightness / brightnessValues.length : 0;
 
           // Calculate contrast (standard deviation of brightness)
           let variance = 0;
@@ -79,17 +79,17 @@ export async function checkImageQuality(file: File): Promise<QualityCheckResult>
           for (let y = 1; y < sampleSize - 1; y++) {
             for (let x = 1; x < sampleSize - 1; x++) {
               const idx = (y * sampleSize + x) * 4;
-              const center = data[idx];
-              const top = data[((y - 1) * sampleSize + x) * 4];
-              const bottom = data[((y + 1) * sampleSize + x) * 4];
-              const left = data[(y * sampleSize + (x - 1)) * 4];
-              const right = data[(y * sampleSize + (x + 1)) * 4];
+              const center = data[idx] || 0;
+              const top = data[((y - 1) * sampleSize + x) * 4] || 0;
+              const bottom = data[((y + 1) * sampleSize + x) * 4] || 0;
+              const left = data[(y * sampleSize + (x - 1)) * 4] || 0;
+              const right = data[(y * sampleSize + (x + 1)) * 4] || 0;
 
               const laplacian = Math.abs(4 * center - top - bottom - left - right);
               sharpness += laplacian;
             }
           }
-          sharpness = sharpness / ((sampleSize - 2) * (sampleSize - 2));
+          sharpness = (sampleSize - 2) * (sampleSize - 2) > 0 ? sharpness / ((sampleSize - 2) * (sampleSize - 2)) : 0;
 
           // Quality scoring
           const warnings: string[] = [];

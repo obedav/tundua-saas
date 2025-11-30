@@ -108,7 +108,7 @@ export default function UserManagement() {
     const badge = badges[status] || badges['active'];
     return (
       <span className={`px-2 py-1 rounded-full text-xs font-medium ${badge!.color}`}>
-        {badge.text}
+        {badge?.text}
       </span>
     );
   };

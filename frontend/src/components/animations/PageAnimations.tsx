@@ -118,12 +118,12 @@ export function FadeIn({ children, delay = 0, direction = "up", className = "" }
       opacity: 1,
       x: 0,
       y: 0,
-      transition: {
-        duration: shouldReduceMotion ? 0 : 0.6,
-        delay: shouldReduceMotion ? 0 : delay,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
     },
+  };
+
+  const transition = {
+    duration: shouldReduceMotion ? 0 : 0.6,
+    delay: shouldReduceMotion ? 0 : delay,
   };
 
   return (
@@ -132,6 +132,7 @@ export function FadeIn({ children, delay = 0, direction = "up", className = "" }
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={shouldReduceMotion ? {} : variants}
+      transition={shouldReduceMotion ? {} : transition}
       className={className}
     >
       {children}
@@ -189,15 +190,19 @@ export function StaggerItem({ children, className = "" }: { children: ReactNode;
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: shouldReduceMotion ? 0 : 0.5,
-        ease: "easeOut",
-      },
     },
   };
 
+  const itemTransition = {
+    duration: shouldReduceMotion ? 0 : 0.5,
+  };
+
   return (
-    <motion.div variants={shouldReduceMotion ? {} : itemVariants} className={className}>
+    <motion.div
+      variants={shouldReduceMotion ? {} : itemVariants}
+      transition={shouldReduceMotion ? {} : itemTransition}
+      className={className}
+    >
       {children}
     </motion.div>
   );
@@ -216,12 +221,12 @@ export function ScaleIn({ children, delay = 0, className = "" }: FadeInProps) {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: {
-        duration: shouldReduceMotion ? 0 : 0.5,
-        delay: shouldReduceMotion ? 0 : delay,
-        ease: [0.34, 1.56, 0.64, 1], // Bouncy easing
-      },
     },
+  };
+
+  const transition = {
+    duration: shouldReduceMotion ? 0 : 0.5,
+    delay: shouldReduceMotion ? 0 : delay,
   };
 
   return (
@@ -230,6 +235,7 @@ export function ScaleIn({ children, delay = 0, className = "" }: FadeInProps) {
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={shouldReduceMotion ? {} : variants}
+      transition={shouldReduceMotion ? {} : transition}
       className={className}
     >
       {children}
@@ -284,12 +290,12 @@ export function CountUp({ end, start = 0, duration = 2, suffix = "", prefix = ""
             end
           ) : (
             <motion.span
-              initial={{ textContent: start.toString() }}
-              animate={{ textContent: end.toString() }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration, ease: "easeOut" }}
               onUpdate={(latest: any) => {
-                if (ref.current && typeof latest.textContent === "string") {
-                  const value = Math.round(parseFloat(latest.textContent));
+                if (ref.current) {
+                  const value = Math.round(start + (end - start) * (latest.opacity || 0));
                   (ref.current as HTMLElement).textContent = `${prefix}${value}${suffix}`;
                 }
               }}
@@ -464,12 +470,13 @@ export function RevealText({ text, delay = 0, className = "" }: { text: string; 
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 100,
-      },
     },
+  };
+
+  const childTransition = {
+    type: "spring" as const,
+    damping: 12,
+    stiffness: 100,
   };
 
   if (shouldReduceMotion) {
@@ -479,7 +486,12 @@ export function RevealText({ text, delay = 0, className = "" }: { text: string; 
   return (
     <motion.span ref={ref} initial="hidden" animate={isInView ? "visible" : "hidden"} variants={containerVariants} className={className}>
       {characters.map((char, index) => (
-        <motion.span key={index} variants={childVariants} style={{ display: "inline-block" }}>
+        <motion.span
+          key={index}
+          variants={childVariants}
+          transition={childTransition}
+          style={{ display: "inline-block" }}
+        >
           {char === " " ? "\u00A0" : char}
         </motion.span>
       ))}
