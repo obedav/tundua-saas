@@ -1337,12 +1337,6 @@ This software is proprietary and confidential. Unauthorized copying, distributio
 - Backend API: `GET /health`
 - Database Status: `GET /health` includes database connectivity
 
-### Issue Reporting
-
-- GitHub Issues: [Report bugs or request features](https://github.com/obedav/tundua-saas/issues)
-- Email: support@tundua.com
-- Website: https://tundua.com
-
 ### Getting Help
 
 1. Check the documentation files
@@ -1412,3 +1406,5 @@ This software is proprietary and confidential. Unauthorized copying, distributio
 
 **Ready to transform students' futures? Let's build something amazing! 🎓✨**
 ```
+#   U p d a t e d  
+ 
