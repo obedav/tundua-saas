@@ -133,7 +133,9 @@ const destinations: Destination[] = [
 ];
 
 export function DestinationExplorer() {
-  const [selectedDestination, setSelectedDestination] = useState<Destination>(destinations[0]);
+  const [selectedDestination, setSelectedDestination] = useState<Destination>(destinations[0] || destinations[0]!);
+
+  if (!selectedDestination) return null;
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -225,7 +227,7 @@ export function DestinationExplorer() {
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                   <Users className="w-6 h-6 mb-2" />
                   <div className="text-2xl font-bold">{selectedDestination.students}</div>
-                  <div className="text-sm text-white/80">Int'l Students</div>
+                  <div className="text-sm text-white/80">Int&apos;l Students</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                   <Clock className="w-6 h-6 mb-2" />

@@ -248,7 +248,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     <div className="px-3 py-1 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                       {group.title}
                     </div>
-                    {group.items.map((item, itemIndex) => {
+                    {group.items.map((item, _itemIndex) => {
                       const globalIndex = allItems.findIndex(i => i.href === item.href);
                       const isSelected = selectedIndex === globalIndex;
                       return (

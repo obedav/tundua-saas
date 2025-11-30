@@ -110,6 +110,8 @@ export function UniversityShowcase() {
 
   const currentUniversity = universities[currentIndex];
 
+  if (!currentUniversity) return null;
+
   return (
     <div
       className="relative"
@@ -131,9 +133,9 @@ export function UniversityShowcase() {
               <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]"></div>
               <div className="relative">
                 <div className="w-48 h-48 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mb-6 border-2 border-white/30">
-                  <span className="text-6xl font-bold text-white">{currentUniversity?.image}</span>
+                  <span className="text-6xl font-bold text-white">{currentUniversity?.image || ''}</span>
                 </div>
-                {currentUniversity.featured && (
+                {currentUniversity?.featured && (
                   <div className="absolute -top-4 -right-4 bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full text-sm font-bold shadow-lg rotate-12">
                     ⭐ Featured
                   </div>
@@ -163,7 +165,7 @@ export function UniversityShowcase() {
                     <Star className="w-4 h-4 text-blue-600" />
                     <span className="text-xs text-blue-600 font-semibold uppercase">Ranking</span>
                   </div>
-                  <div className="text-lg font-bold text-gray-900">{currentUniversity?.ranking}</div>
+                  <div className="text-lg font-bold text-gray-900">{currentUniversity?.ranking || ''}</div>
                 </div>
 
                 <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200">
@@ -171,7 +173,7 @@ export function UniversityShowcase() {
                     <Users className="w-4 h-4 text-green-600" />
                     <span className="text-xs text-green-600 font-semibold uppercase">Students</span>
                   </div>
-                  <div className="text-lg font-bold text-gray-900">{currentUniversity.students}</div>
+                  <div className="text-lg font-bold text-gray-900">{currentUniversity?.students || ''}</div>
                 </div>
 
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-4 rounded-xl border border-purple-200">
@@ -179,7 +181,7 @@ export function UniversityShowcase() {
                     <GraduationCap className="w-4 h-4 text-purple-600" />
                     <span className="text-xs text-purple-600 font-semibold uppercase">Success</span>
                   </div>
-                  <div className="text-lg font-bold text-gray-900">{currentUniversity?.acceptance}</div>
+                  <div className="text-lg font-bold text-gray-900">{currentUniversity?.acceptance || ''}</div>
                 </div>
               </div>
 

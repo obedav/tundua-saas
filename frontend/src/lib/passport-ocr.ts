@@ -1,4 +1,4 @@
-import Tesseract, { createWorker } from "tesseract.js";
+import { createWorker } from "tesseract.js";
 import { parse } from "mrz";
 
 export interface PassportData {
@@ -44,15 +44,21 @@ async function preprocessImage(imageFile: File): Promise<Blob> {
 
         // Apply image enhancements
         for (let i = 0; i < data.length; i += 4) {
-          // Convert to grayscale
-          const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
-          
+          // Convert to grayscale with null checks
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+
+          if (r === undefined || g === undefined || b === undefined) continue;
+
+          const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+
           // Increase contrast (1.5x)
           const contrasted = ((gray - 128) * 1.5) + 128;
-          
+
           // Apply sharpening threshold
           const sharpened = contrasted < 128 ? Math.max(0, contrasted - 20) : Math.min(255, contrasted + 20);
-          
+
           data[i] = sharpened;     // R
           data[i + 1] = sharpened; // G
           data[i + 2] = sharpened; // B
@@ -120,7 +126,7 @@ export async function extractPassportText(imageFile: File): Promise<string> {
 
       for (const config of configs) {
         await worker.setParameters({
-          tessedit_pageseg_mode: config.psm.toString(),
+          tessedit_pageseg_mode: config.psm as any,
         });
 
         const { data } = await worker.recognize(processedImage);
@@ -209,7 +215,7 @@ function extractPassportNumber(text: string): string {
 
   for (const pattern of patterns) {
     const match = text.match(pattern);
-    if (match) {
+    if (match && match[1]) {
       console.log("✓ Found passport number:", match[1]);
       return match[1].toUpperCase();
     }
@@ -254,16 +260,21 @@ function extractFromReadableText(text: string, mrzLines?: string[]): PassportDat
     // Try to parse corrupted MRZ lines with OCR corrections if available
     if (mrzLines && mrzLines.length >= 2) {
       console.log("🔧 Applying OCR corrections to MRZ lines...");
-      const correctedLine1 = correctOCRErrors(mrzLines[0]);
-      const correctedLine2 = correctOCRErrors(mrzLines[1]);
-      console.log(`  - Original Line 1: ${mrzLines[0]}`);
+      const line1 = mrzLines[0];
+      const line2 = mrzLines[1];
+      if (!line1 || !line2) return null;
+
+      const correctedLine1 = correctOCRErrors(line1);
+      const correctedLine2 = correctOCRErrors(line2);
+
+      console.log(`  - Original Line 1: ${line1}`);
       console.log(`  - Corrected Line 1: ${correctedLine1}`);
-      console.log(`  - Original Line 2: ${mrzLines[1]}`);
+      console.log(`  - Original Line 2: ${line2}`);
       console.log(`  - Corrected Line 2: ${correctedLine2}`);
 
       // Extract name from corrected line 1: P<NGA{LASTNAME}<<{FIRSTNAME}<<...
       const nameMatch = correctedLine1.match(/P<NGA([A-Z]+)<<([A-Z]+)/);
-      if (nameMatch) {
+      if (nameMatch && nameMatch[1] && nameMatch[2]) {
         data.lastName = nameMatch[1].trim();
         data.firstName = nameMatch[2].replace(/<+/g, ' ').trim();
         console.log(`✓ Found name from corrected MRZ: ${data.firstName} ${data.lastName}`);
@@ -272,12 +283,13 @@ function extractFromReadableText(text: string, mrzLines?: string[]): PassportDat
       // Extract dates and gender from corrected line 2
       // Format: {PASSPORT}{NATIONALITY}{BIRTHDATE}{SEX}{EXPIRYDATE}...
       const line2Match = correctedLine2.match(/([A-Z]\d{8})([A-Z]{3})(\d{6})(\d)[A-Z]([MF])(\d{6})/);
-      if (line2Match) {
+      if (line2Match && line2Match.length > 6) {
         // Birth date
         if (!data.dateOfBirth && line2Match[3]) {
-          const yy = parseInt(line2Match[3].substring(0, 2));
-          const mm = line2Match[3].substring(2, 4);
-          const dd = line2Match[3].substring(4, 6);
+          const birthDateStr = line2Match[3];
+          const yy = parseInt(birthDateStr.substring(0, 2));
+          const mm = birthDateStr.substring(2, 4);
+          const dd = birthDateStr.substring(4, 6);
           const yyyy = yy <= 30 ? 2000 + yy : 1900 + yy;
           data.dateOfBirth = `${yyyy}-${mm}-${dd}`;
           console.log(`✓ Found birth date from corrected MRZ: ${data.dateOfBirth}`);
@@ -291,9 +303,10 @@ function extractFromReadableText(text: string, mrzLines?: string[]): PassportDat
 
         // Expiry date
         if (!data.expiryDate && line2Match[6]) {
-          const yy = parseInt(line2Match[6].substring(0, 2));
-          const mm = line2Match[6].substring(2, 4);
-          const dd = line2Match[6].substring(4, 6);
+          const expiryDateStr = line2Match[6];
+          const yy = parseInt(expiryDateStr.substring(0, 2));
+          const mm = expiryDateStr.substring(2, 4);
+          const dd = expiryDateStr.substring(4, 6);
           const yyyy = yy <= 30 ? 2000 + yy : 1900 + yy;
           data.expiryDate = `${yyyy}-${mm}-${dd}`;
           console.log(`✓ Found expiry date from corrected MRZ: ${data.expiryDate}`);
@@ -311,10 +324,13 @@ function extractFromReadableText(text: string, mrzLines?: string[]): PassportDat
 
     // Extract passport number (try MRZ first if available)
     if (!data.passportNumber && mrzLines && mrzLines.length >= 2) {
-      const passportMatch = mrzLines[1].match(/^([AB]\d{8,9})/);
-      if (passportMatch) {
-        data.passportNumber = passportMatch[1].substring(0, 9); // Trim to 9 chars
-        console.log("✓ Found passport number from MRZ:", data.passportNumber);
+      const line2 = mrzLines[1];
+      if (line2) {
+        const passportMatch = line2.match(/^([AB]\d{8,9})/);
+        if (passportMatch && passportMatch[1]) {
+          data.passportNumber = passportMatch[1].substring(0, 9); // Trim to 9 chars
+          console.log("✓ Found passport number from MRZ:", data.passportNumber);
+        }
       }
     }
     if (!data.passportNumber) {
@@ -323,7 +339,7 @@ function extractFromReadableText(text: string, mrzLines?: string[]): PassportDat
 
     // Try to extract dates from MRZ line first (most reliable)
     const mrzDateMatch = text.match(/([AB]\d{8,9})NGA(\d{6})/i);
-    if (mrzDateMatch && !data.dateOfBirth) {
+    if (mrzDateMatch && !data.dateOfBirth && mrzDateMatch[2]) {
       const dateStr = mrzDateMatch[2];
       // MRZ format: YYMMDD
       const yy = parseInt(dateStr.substring(0, 2));
@@ -345,9 +361,9 @@ function extractFromReadableText(text: string, mrzLines?: string[]): PassportDat
 
       for (const pattern of datePatterns) {
         const match = text.match(pattern);
-        if (match) {
+        if (match && match[1] && match[2]) {
           const day = match[1].padStart(2, "0");
-          const monthStr = match[2]?.substring(0, 3).toUpperCase();
+          const monthStr = match[2].substring(0, 3).toUpperCase();
           const year = match[3] || match[2];
 
           if (monthStr && year) {
@@ -373,7 +389,7 @@ function extractFromReadableText(text: string, mrzLines?: string[]): PassportDat
 
     // Try to extract expiry date and gender from MRZ line
     const mrzDetailsMatch = text.match(/([AB]\d{8,9})NGA(\d{6})([IMF])(\d{2})([FMX]?)(\d{6})/i);
-    if (mrzDetailsMatch) {
+    if (mrzDetailsMatch && mrzDetailsMatch.length > 6) {
       // Extract expiry date from MRZ (position varies but typically after gender)
       const expiryStr = mrzDetailsMatch[6];
       if (expiryStr && expiryStr.match(/^\d{6}$/)) {
@@ -401,10 +417,10 @@ function extractFromReadableText(text: string, mrzLines?: string[]): PassportDat
     // Fallback: Extract expiry date from readable text
     if (!data.expiryDate) {
       const expiryMatch = text.match(/(?:EXPIRY|EXP)[\s\S]{0,50}?(\d{1,2})\s*([A-Z]{3,4})[\/\s]*(\d{2,4})/i);
-      if (expiryMatch) {
+      if (expiryMatch && expiryMatch[1] && expiryMatch[2]) {
         const day = expiryMatch[1].padStart(2, "0");
-        const monthStr = expiryMatch[2]?.substring(0, 3).toUpperCase();
-        const year = expiryMatch[3];
+        const monthStr = expiryMatch[2].substring(0, 3).toUpperCase();
+        const year = expiryMatch[3] || '2000';
 
         if (monthStr && year) {
           const monthMap: Record<string, string> = {
@@ -424,7 +440,7 @@ function extractFromReadableText(text: string, mrzLines?: string[]): PassportDat
     // Try to extract name from MRZ fragments
     // Pattern: P<NGAOLADE J I <<TOSINST
     const mrzNameMatch = text.match(/P<NGA([A-Z]+)\s*([A-Z\s]+)<</);
-    if (mrzNameMatch) {
+    if (mrzNameMatch && mrzNameMatch[1] && mrzNameMatch[2]) {
       data.lastName = mrzNameMatch[1].trim();
       const givenNames = mrzNameMatch[2].replace(/</g, " ").trim().split(/\s+/);
       data.firstName = givenNames.join(" ");
@@ -547,7 +563,8 @@ export function parseMRZ(
         }
 
         // If firstName is missing, try to manually parse from MRZ line 1
-        if (!firstName) {
+        if (!firstName && mrzLine1) {
+
           console.log("🔍 Manually parsing first name from MRZ line 1:", mrzLine1);
 
           // Apply comprehensive OCR corrections for names
@@ -580,39 +597,46 @@ export function parseMRZ(
           if (nameMatch) {
             // Extract and correct last name
             if (!lastName || lastName === 'IABADE') {  // Fix known bad lastName
-              lastName = correctNameOCR(nameMatch[1]).trim();
-              console.log(`  - Extracted & corrected lastName: ${nameMatch[1]} → ${lastName}`);
+              const rawLastName = nameMatch[1];
+              if (rawLastName) {
+                lastName = correctNameOCR(rawLastName).trim();
+                console.log(`  - Extracted & corrected lastName: ${rawLastName} → ${lastName}`);
+              }
             }
 
             // Extract and correct first name
-            const rawFirstName = nameMatch[2]
-              .split('<<')[0]  // Take only up to next separator
-              .replace(/</g, ' ');  // Replace < with space
+            const rawFirstNameParts = nameMatch[2];
+            if (rawFirstNameParts) {
+              const firstPart = rawFirstNameParts.split('<<')[0];
+              if (firstPart) {
+                const rawFirstName = firstPart.replace(/</g, ' ');  // Replace < with space
 
-            firstName = correctNameOCR(rawFirstName)
-              .trim()
-              .split(/\s+/)
-              .filter(part => {
-                // Remove junk: repetitive chars, single chars, or parts with only I/K
-                if (part.length <= 1) return false;
-                if (/^[IK]+$/.test(part)) return false;  // Only I's or K's
-                if (/(.)\1{3,}/.test(part)) return false;  // 4+ repeated chars
-                return true;
-              })
-              .join(' ');
-            console.log(`  - Extracted & corrected firstName: ${rawFirstName} → ${firstName}`);
+                  firstName = correctNameOCR(rawFirstName)
+                  .trim()
+                  .split(/\s+/)
+                  .filter(part => {
+                    // Remove junk: repetitive chars, single chars, or parts with only I/K
+                    if (part.length <= 1) return false;
+                    if (/^[IK]+$/.test(part)) return false;  // Only I's or K's
+                    if (/(.)\1{3,}/.test(part)) return false;  // 4+ repeated chars
+                    return true;
+                  })
+                  .join(' ');
+                console.log(`  - Extracted & corrected firstName: ${rawFirstName} → ${firstName}`);
+              }
+            }
           }
         }
 
         const nationality = fields.nationality || fields.issuingState || "";
 
         console.log("🗓️ Formatting dates:");
-        console.log("  - Raw birthDate:", JSON.stringify(fields.birthDate));
-        const birthDate = formatDate(fields.birthDate ?? undefined) || "";
+        console.log("  - Raw birthDate:", JSON.stringify(fields?.birthDate));
+        const birthDate = formatDate(fields?.birthDate as string | undefined) || "";
         console.log("  - Formatted birthDate:", JSON.stringify(birthDate));
 
-        console.log("  - Raw expirationDate:", JSON.stringify(fields.expirationDate));
-        const expiryDate = formatDate(fields.expirationDate ?? undefined) || "";
+        console.log("  - Raw expirationDate:", JSON.stringify(fields?.expirationDate));
+        const expiryDate = formatDate(fields?.expirationDate as string | undefined) || "";
         console.log("  - Formatted expiryDate:", JSON.stringify(expiryDate));
 
         // Handle gender more robustly
@@ -672,14 +696,14 @@ export function parseMRZ(
     console.log("  - Fields extracted:", Object.keys(fields).filter(k => fields[k as keyof typeof fields]));
 
     return {
-      firstName: fields.firstName || "",
-      lastName: fields.lastName || "",
-      passportNumber: fields.documentNumber || "",
-      nationality: fields.nationality || "",
-      dateOfBirth: formatDate(fields.birthDate ?? undefined) || "",
-      gender: fields.sex === "M" ? "male" : fields.sex === "F" ? "female" : "other",
-      expiryDate: formatDate(fields.expirationDate ?? undefined) || "",
-      mrzValid: result.valid,
+      firstName: fields?.firstName || "",
+      lastName: fields?.lastName || "",
+      passportNumber: fields?.documentNumber || "",
+      nationality: fields?.nationality || "",
+      dateOfBirth: formatDate(fields?.birthDate as string | undefined) || "",
+      gender: fields?.sex === "M" ? "male" : fields?.sex === "F" ? "female" : "other",
+      expiryDate: formatDate(fields?.expirationDate as string | undefined) || "",
+      mrzValid: result?.valid,
       confidence: calculateConfidence(result),
     };
   } catch (error) {
@@ -733,19 +757,19 @@ function formatDate(dateStr: string | null | undefined): string {
  * Calculate confidence score
  */
 function calculateConfidence(result: any): number {
-  if (!result.valid) return 0;
+  if (!result?.valid) return 0;
 
-  const { fields } = result;
+  const { fields } = result || {};
   let filledFields = 0;
   const totalFields = 7;
 
-  if (fields.firstName) filledFields++;
-  if (fields.lastName) filledFields++;
-  if (fields.documentNumber) filledFields++;
-  if (fields.nationality) filledFields++;
-  if (fields.birthDate) filledFields++;
-  if (fields.sex) filledFields++;
-  if (fields.expiryDate || fields.expirationDate) filledFields++;
+  if (fields?.firstName) filledFields++;
+  if (fields?.lastName) filledFields++;
+  if (fields?.documentNumber) filledFields++;
+  if (fields?.nationality) filledFields++;
+  if (fields?.birthDate) filledFields++;
+  if (fields?.sex) filledFields++;
+  if (fields?.expiryDate || fields?.expirationDate) filledFields++;
 
   return Math.round((filledFields / totalFields) * 100);
 }
@@ -757,13 +781,13 @@ function calculatePartialConfidence(fields: any): number {
   let filledFields = 0;
   const totalFields = 7;
 
-  if (fields.firstName) filledFields++;
-  if (fields.lastName) filledFields++;
-  if (fields.documentNumber) filledFields++;
-  if (fields.nationality) filledFields++;
-  if (fields.birthDate) filledFields++;
-  if (fields.sex) filledFields++;
-  if (fields.expiryDate || fields.expirationDate) filledFields++;
+  if (fields?.firstName) filledFields++;
+  if (fields?.lastName) filledFields++;
+  if (fields?.documentNumber) filledFields++;
+  if (fields?.nationality) filledFields++;
+  if (fields?.birthDate) filledFields++;
+  if (fields?.sex) filledFields++;
+  if (fields?.expiryDate || fields?.expirationDate) filledFields++;
 
   // Reduce confidence by 20% since validation failed (checksum errors)
   const baseConfidence = Math.round((filledFields / totalFields) * 100);
@@ -796,7 +820,13 @@ export async function processPassportImage(
 
     if (mrzLines.length >= 2) {
       console.log("✓ Found MRZ lines, attempting parse...");
-      const passportData = parseMRZ(mrzLines[0], mrzLines[1]);
+      const line1 = mrzLines[0];
+      const line2 = mrzLines[1];
+      if (!line1 || !line2) {
+        console.log("⚠️ Missing MRZ lines");
+        return null;
+      }
+      const passportData = parseMRZ(line1, line2);
 
       if (passportData) {
         // Accept MRZ data with lower confidence threshold

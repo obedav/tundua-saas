@@ -29,7 +29,7 @@ async function getAuthToken(): Promise<string | undefined> {
  * Create a new application
  */
 export async function createApplicationAction(
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse<{ application: any }>> {
   try {
@@ -134,7 +134,7 @@ export async function getApplication(id: number) {
  */
 export async function updateApplicationAction(
   id: number,
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse> {
   try {
@@ -165,7 +165,7 @@ export async function updateApplicationAction(
     // Handle numeric fields
     const budget = formData.get('budget')
     if (budget !== null) {
-      data.budget = Number(budget)
+      data['budget'] = Number(budget)
     }
 
     const response = await fetch(`${API_URL}/api/applications/${id}`, {
@@ -273,7 +273,7 @@ export async function deleteApplicationAction(
  */
 export async function calculatePricingAction(
   id: number,
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse<{ pricing: any }>> {
   try {

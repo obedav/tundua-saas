@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import {
-  FileText,
   Clock,
   CheckCircle,
   XCircle,
@@ -13,7 +12,6 @@ import {
   Eye,
   Edit,
   Trash2,
-  MoreVertical,
 } from "lucide-react";
 import { useState } from "react";
 import { format } from "date-fns";
@@ -54,7 +52,7 @@ export default function ApplicationCard({
   onDelete,
   variant = "default",
 }: ApplicationCardProps) {
-  const [showMenu, setShowMenu] = useState(false);
+  const [_showMenu, _setShowMenu] = useState(false);
 
   const getStatusConfig = (status: Application["status"]) => {
     const configs = {

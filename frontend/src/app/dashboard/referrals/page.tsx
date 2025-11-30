@@ -29,7 +29,7 @@ interface Referral {
 
 export default function ReferralsPage() {
   const [loading, setLoading] = useState(true);
-  const [referralCode, setReferralCode] = useState("");
+  const [_referralCode, _setReferralCode] = useState("");
   const [referralLink, setReferralLink] = useState("");
   const [stats, setStats] = useState<ReferralStats | null>(null);
   const [referrals, setReferrals] = useState<Referral[]>([]);
@@ -43,7 +43,7 @@ export default function ReferralsPage() {
   const fetchReferrals = async () => {
     try {
       const response = await apiClient.getUserReferrals();
-      setReferralCode(response.data.referral_code);
+      _setReferralCode(response.data.referral_code);
       setReferralLink(response.data.referral_link);
       setStats(response.data.stats);
       setReferrals(response.data.referrals);
@@ -109,7 +109,7 @@ export default function ReferralsPage() {
       await apiClient.claimReferralReward(referralId);
       toast.success("Reward claimed successfully!");
       fetchReferrals();
-    } catch (error: any) {
+    } catch (_error: any) {
       toast.error("Failed to claim reward");
     }
   };

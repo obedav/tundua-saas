@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, Check, Save, Clock, AlertCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, Check, Save, Clock } from "lucide-react";
 
 import { toast } from "sonner";
 import Step1Personal from "@/components/wizard/Step1Personal";
@@ -210,7 +210,9 @@ export default function NewApplicationPage() {
         const response = await apiClient.createApplication(cleanData as any);
         finalApplicationId = response.data.application.id;
         setApplicationId(finalApplicationId);
-        finalApplicationId && await apiClient.submitApplication(finalApplicationId);
+        if (finalApplicationId) {
+          await apiClient.submitApplication(finalApplicationId);
+        }
       } else {
         await apiClient.updateApplication(applicationId, cleanData as any);
         await apiClient.submitApplication(applicationId);

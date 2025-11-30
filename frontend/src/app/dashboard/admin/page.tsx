@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
 import {
   FileText,
   CheckCircle,
@@ -18,18 +17,6 @@ import {
   getAdminApplications,
   getAdminActivity,
 } from "@/lib/actions/admin";
-
-interface Stats {
-  total_applications: number;
-  pending_applications: number;
-  approved_applications: number;
-  rejected_applications: number;
-  total_revenue: number;
-  pending_documents: number;
-  total_users: number;
-  applications_this_month: number;
-  revenue_this_month: number;
-}
 
 /**
  * Modern Admin Dashboard (2025-2026 Best Practices)
@@ -52,7 +39,7 @@ export default async function AdminDashboardPage() {
   }
 
   // Fetch real data from server
-  const [stats, applicationsData, activities] = await Promise.all([
+  const [stats, applicationsData, _activities] = await Promise.all([
     getAdminDashboardStats(),
     getAdminApplications({ limit: 5, order: 'desc' }),
     getAdminActivity(5),
@@ -76,8 +63,8 @@ export default async function AdminDashboardPage() {
 
     const badge = badges[status] || badges['draft'];
     return (
-      <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${badge.color}`}>
-        {badge.text}
+      <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${badge?.color}`}>
+        {badge?.text}
       </span>
     );
   };

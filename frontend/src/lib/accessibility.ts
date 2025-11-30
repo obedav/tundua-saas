@@ -214,12 +214,12 @@ export function handleArrowNavigation(
  * Calculate relative luminance
  * Used for WCAG contrast calculations
  */
-function getLuminance(r: number, g: number, b: number): number {
+export function getLuminance(r: number, g: number, b: number): number {
   const [rs, gs, bs] = [r, g, b].map((c) => {
     const val = c / 255;
     return val <= 0.03928 ? val / 12.92 : Math.pow((val + 0.055) / 1.055, 2.4);
   });
-  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+  return 0.2126 * (rs || 0) + 0.7152 * (gs || 0) + 0.0722 * (bs || 0);
 }
 
 /**
@@ -231,8 +231,8 @@ function getLuminance(r: number, g: number, b: number): number {
  * - Level AAA: 7:1 for normal text, 4.5:1 for large text
  */
 export function getContrastRatio(
-  color1: string,
-  color2: string
+  _color1: string,
+  _color2: string
 ): number | null {
   // This is a simplified version
   // For production, use a library like 'color' or 'tinycolor2'

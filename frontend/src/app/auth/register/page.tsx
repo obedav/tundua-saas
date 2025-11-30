@@ -11,7 +11,7 @@ import { apiClient } from "@/lib/api-client";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  User,
+
   Mail,
   Lock,
   Phone,
@@ -29,7 +29,7 @@ import {
   Target,
   Info
 } from "lucide-react";
-import { Input, Button, Badge, Tooltip, Alert } from "@/components/ui";
+import { Input, Button, Badge, Tooltip } from "@/components/ui";
 
 const registerSchema = z.object({
   first_name: z.string().min(2, "First name must be at least 2 characters"),
@@ -88,7 +88,6 @@ export default function RegisterPage() {
         email: data.email,
         phone: data.phone,
         password: data.password,
-        user_type: data.user_type,
       });
 
       if (response.data.success) {
@@ -110,16 +109,6 @@ export default function RegisterPage() {
   };
 
   const handleNextStep = async () => {
-    const step1Fields = ["first_name", "last_name", "email", "phone", "password", "confirm_password"] as const;
-    const isValid = await Promise.all(
-      step1Fields.map(field =>
-        new Promise((resolve) => {
-          const value = watch(field as any);
-          resolve(value !== undefined && value !== "");
-        })
-      )
-    );
-
     const firstName = watch("first_name");
     const lastName = watch("last_name");
     const email = watch("email");
@@ -131,6 +120,7 @@ export default function RegisterPage() {
       return;
     }
 
+    const step1Fields = ["first_name", "last_name", "email", "password", "confirm_password"];
     if (Object.keys(errors).some(key => step1Fields.includes(key as any))) {
       toast.error("Please fix the errors before continuing");
       return;
@@ -152,7 +142,7 @@ export default function RegisterPage() {
 
   const handleSocialSignup = async (provider: 'google' | 'microsoft' | 'apple') => {
     if (provider === 'google') {
-      window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google?user_type=student`;
+      window.location.href = `${process.env['NEXT_PUBLIC_API_URL']}/api/auth/google?user_type=student`;
     } else {
       toast.info(`${provider.charAt(0).toUpperCase() + provider.slice(1)} signup coming soon!`);
     }
@@ -257,7 +247,7 @@ export default function RegisterPage() {
             >
               <Sparkles className="w-5 h-5 text-primary-500 mb-3" />
               <p className="text-gray-700 italic mb-4">
-                "Creating an account was seamless, and the application process was incredibly smooth!"
+                &quot;Creating an account was seamless, and the application process was incredibly smooth!&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-semibold shadow-md">
@@ -423,7 +413,6 @@ export default function RegisterPage() {
                         {...register("phone")}
                         type="tel"
                         label="Phone"
-                        helper="Optional"
                         placeholder="+1 (555) 123-4567"
                         leftIcon={<Phone className="h-5 w-5" />}
                         disabled={isLoading}
@@ -664,7 +653,7 @@ export default function RegisterPage() {
                                 Agency Partner
                               </h3>
                               <p className="text-sm text-gray-600 leading-relaxed">
-                                I'm an education agency or recruitment partner
+                                I&apos;m an education agency or recruitment partner
                               </p>
                             </div>
                             {selectedUserType === "partner" && (

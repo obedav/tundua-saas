@@ -5,7 +5,7 @@ import { clientEnv } from '@/lib/env';
 const API_URL = clientEnv.NEXT_PUBLIC_API_URL;
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -41,7 +41,7 @@ export async function GET(
       try {
         const errorJson = JSON.parse(errorText);
         return NextResponse.json(errorJson, { status: response.status });
-      } catch (e) {
+      } catch (_e) {
         return NextResponse.json(
           { success: false, error: errorText },
           { status: response.status }

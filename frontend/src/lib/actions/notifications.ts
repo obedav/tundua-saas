@@ -7,7 +7,7 @@
  */
 
 import { cookies } from 'next/headers'
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidateTag } from 'next/cache'
 import { clientEnv } from '@/lib/env'
 
 const API_URL = clientEnv.NEXT_PUBLIC_API_URL

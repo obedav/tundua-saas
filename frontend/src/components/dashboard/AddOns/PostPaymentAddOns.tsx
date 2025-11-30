@@ -84,7 +84,7 @@ export default function PostPaymentAddOns({
     try {
       // Purchase all selected add-ons
       const promises = selectedAddOns.map((addonId) =>
-        apiClient.purchaseAddon(applicationId, addonId)
+        apiClient.purchaseAddOn(applicationId, addonId)
       );
 
       await Promise.all(promises);

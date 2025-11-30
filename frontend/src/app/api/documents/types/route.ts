@@ -4,7 +4,7 @@ import { clientEnv } from '@/lib/env';
 const API_URL = clientEnv.NEXT_PUBLIC_API_URL;
 
 // This endpoint is public - no authentication required
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const url = `${API_URL}/api/documents/types`;
 

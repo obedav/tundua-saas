@@ -6,7 +6,7 @@ const API_URL = clientEnv.NEXT_PUBLIC_API_URL
 
 // GET /api/applications/[id] - Get application by ID
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -42,7 +42,7 @@ export async function GET(
 
 // PUT /api/applications/[id] - Update application
 export async function PUT(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -57,7 +57,7 @@ export async function PUT(
     }
 
     const { id } = await params
-    const body = await request.json()
+    const body = await _request.json()
 
     const response = await fetch(`${API_URL}/api/applications/${id}`, {
       method: 'PUT',
@@ -81,7 +81,7 @@ export async function PUT(
 
 // DELETE /api/applications/[id] - Delete application
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {

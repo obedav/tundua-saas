@@ -56,7 +56,7 @@ export async function getPendingDocuments() {
  */
 export async function reviewDocumentAction(
   id: number,
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse> {
   try {

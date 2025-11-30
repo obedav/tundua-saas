@@ -9,7 +9,6 @@
 
 import { cookies } from 'next/headers'
 import { revalidatePath, revalidateTag } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { clientEnv } from '@/lib/env'
 
 const API_URL = clientEnv.NEXT_PUBLIC_API_URL
@@ -141,7 +140,7 @@ export async function createStripeCheckoutAction(
  * Initiate M-Pesa payment
  */
 export async function initiateMpesaPaymentAction(
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse<{ checkoutRequestId: string }>> {
   try {
@@ -245,7 +244,7 @@ export async function getUserPayments(status?: string) {
  * Request a refund
  */
 export async function requestRefundAction(
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse<{ refund: any }>> {
   try {
@@ -348,7 +347,7 @@ export async function getRefund(id: number) {
  */
 export async function signRefundAgreementAction(
   id: number,
-  prevState: any,
+  _prevState: any,
   formData: FormData
 ): Promise<ActionResponse> {
   try {

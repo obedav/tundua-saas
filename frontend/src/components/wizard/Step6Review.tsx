@@ -290,7 +290,7 @@ export default function Step6Review({ data, onBack, onSubmit, isSubmitting }: Pr
           <div className="border-t-2 border-primary-200 pt-3 mt-2 flex justify-between items-center py-3 px-3 bg-primary-100 rounded-lg">
             <span className="font-bold text-primary-900 text-lg">Total Amount:</span>
             <span className="font-bold text-primary-900 text-2xl">
-              ₦{parseFloat(data.total_amount || "0").toLocaleString('en-NG')}
+              ₦{(data.total_amount || 0).toLocaleString('en-NG')}
             </span>
           </div>
         </div>
@@ -337,7 +337,7 @@ export default function Step6Review({ data, onBack, onSubmit, isSubmitting }: Pr
       </div>
 
       <p className="text-sm text-center text-gray-600 bg-gray-50 rounded-lg p-3">
-        🎉 After submission, you'll be redirected to complete the payment to finalize your application.
+        🎉 After submission, you&apos;ll be redirected to complete the payment to finalize your application.
       </p>
     </div>
   );
