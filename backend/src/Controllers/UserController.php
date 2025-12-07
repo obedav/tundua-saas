@@ -14,8 +14,19 @@ class UserController
 
     public function __construct()
     {
-        $this->db = Database::getConnection();
+        $this->db = null; // Lazy loading
         $this->userModel = new User();
+    }
+
+    /**
+     * Get database connection (lazy loading)
+     */
+    private function getDb()
+    {
+        if ($this->db === null) {
+            $this->db = Database::getConnection();
+        }
+        return $this->db;
     }
 
     /**
@@ -62,7 +73,7 @@ class UserController
 
             // Get total count
             $countSql = "SELECT COUNT(*) as total FROM users WHERE $whereClause";
-            $stmt = $this->db->prepare($countSql);
+            $stmt = $this->getDb()->prepare($countSql);
             $stmt->execute($params);
             $total = $stmt->fetch(\PDO::FETCH_ASSOC)['total'];
 
@@ -96,7 +107,7 @@ class UserController
                 LIMIT :limit OFFSET :offset
             ";
 
-            $stmt = $this->db->prepare($sql);
+            $stmt = $this->getDb()->prepare($sql);
             foreach ($params as $key => $value) {
                 $stmt->bindValue(":$key", $value);
             }
@@ -161,7 +172,7 @@ class UserController
 
             // Get user's applications
             try {
-                $stmt = $this->db->prepare("
+                $stmt = $this->getDb()->prepare("
                     SELECT
                         id,
                         reference_number,
@@ -185,7 +196,7 @@ class UserController
 
             // Get user's payments - Fixed query to handle LEFT JOIN properly
             try {
-                $stmt = $this->db->prepare("
+                $stmt = $this->getDb()->prepare("
                     SELECT
                         p.id,
                         p.reference,
@@ -364,22 +375,22 @@ class UserController
     {
         try {
             // Total users
-            $stmt = $this->db->query("SELECT COUNT(*) as total FROM users");
+            $stmt = $this->getDb()->query("SELECT COUNT(*) as total FROM users");
             $totalUsers = $stmt->fetch(\PDO::FETCH_ASSOC)['total'];
 
             // Active users
-            $stmt = $this->db->query("SELECT COUNT(*) as total FROM users WHERE is_active = 1");
+            $stmt = $this->getDb()->query("SELECT COUNT(*) as total FROM users WHERE is_active = 1");
             $activeUsers = $stmt->fetch(\PDO::FETCH_ASSOC)['total'];
 
             // Suspended users
-            $stmt = $this->db->query("
+            $stmt = $this->getDb()->query("
                 SELECT COUNT(*) as total FROM users
                 WHERE locked_until IS NOT NULL AND locked_until > NOW()
             ");
             $suspendedUsers = $stmt->fetch(\PDO::FETCH_ASSOC)['total'];
 
             // New users this month
-            $stmt = $this->db->query("
+            $stmt = $this->getDb()->query("
                 SELECT COUNT(*) as total FROM users
                 WHERE MONTH(created_at) = MONTH(CURRENT_DATE())
                 AND YEAR(created_at) = YEAR(CURRENT_DATE())
@@ -387,7 +398,7 @@ class UserController
             $newThisMonth = $stmt->fetch(\PDO::FETCH_ASSOC)['total'];
 
             // Users by role
-            $stmt = $this->db->query("
+            $stmt = $this->getDb()->query("
                 SELECT role, COUNT(*) as count
                 FROM users
                 GROUP BY role
@@ -395,7 +406,7 @@ class UserController
             $byRole = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
             // Users with applications
-            $stmt = $this->db->query("
+            $stmt = $this->getDb()->query("
                 SELECT COUNT(DISTINCT user_id) as total FROM applications
             ");
             $usersWithApplications = $stmt->fetch(\PDO::FETCH_ASSOC)['total'];

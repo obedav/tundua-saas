@@ -92,6 +92,7 @@ use Tundua\Controllers\ReferralController;
 use Tundua\Controllers\KnowledgeBaseController;
 use Tundua\Controllers\UniversityController;
 use Tundua\Controllers\GoogleOAuthController;
+use Tundua\Controllers\AIUsageController;
 use Tundua\Middleware\AuthMiddleware;
 use Tundua\Middleware\AdminMiddleware;
 use Tundua\Middleware\RateLimitMiddleware;
@@ -116,6 +117,7 @@ $addonOrderController = new AddonOrderController();
 $referralController = new ReferralController();
 $knowledgeBaseController = new KnowledgeBaseController();
 $universityController = new UniversityController();
+$aiUsageController = new AIUsageController();
 
 // ============================================================================
 // API ROOT
@@ -540,6 +542,25 @@ $app->group('/api/admin/addons', function ($group) use ($addonOrderController) {
 // Admin Activity Routes
 $app->group('/api/admin/activity', function ($group) use ($activityController) {
     $group->get('', [$activityController, 'getRecentActivity']);
+})->add(new AdminMiddleware())->add(new AuthMiddleware());
+
+// ============================================================================
+// AI USAGE TRACKING ROUTES
+// ============================================================================
+
+// Public AI usage tracking endpoint (called from frontend)
+$app->post('/api/ai/usage', [$aiUsageController, 'trackUsage']);
+
+// Protected AI usage routes (user)
+$app->group('/api/ai/usage', function ($group) use ($aiUsageController) {
+    $group->get('/stats', [$aiUsageController, 'getStats']);
+    $group->get('/quota', [$aiUsageController, 'getQuota']);
+})->add(new AuthMiddleware());
+
+// Admin AI usage routes
+$app->group('/api/admin/ai', function ($group) use ($aiUsageController) {
+    $group->get('/usage', [$aiUsageController, 'getRecentUsage']);
+    $group->get('/analytics', [$aiUsageController, 'getAnalytics']);
 })->add(new AdminMiddleware())->add(new AuthMiddleware());
 
 // ============================================================================

@@ -8,7 +8,7 @@ import {
   Home, FileText, Plus, User, LogOut, Menu, X, Settings, Shield,
   FolderOpen, ShoppingBag, CreditCard, Gift, BookOpen, HelpCircle,
   Compass, Globe, ChevronLeft, ChevronRight, Search, ChevronDown,
-  Moon, Sun, Monitor
+  Moon, Sun, Monitor, FileEdit, GraduationCap, Briefcase
 } from "lucide-react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/hooks/useAuth";
@@ -25,6 +25,15 @@ const navigationGroups = [
       { name: "Dashboard", href: "/dashboard", icon: Home, badgeKey: null, description: "Overview and statistics" },
       { name: "Applications", href: "/dashboard/applications", icon: FileText, badgeKey: "applications", description: "Manage your applications" },
       { name: "Documents", href: "/dashboard/documents", icon: FolderOpen, badgeKey: "documents", description: "Upload and manage documents" },
+    ]
+  },
+  {
+    id: "ai-services",
+    title: "AI Services",
+    items: [
+      { name: "SOP Generator", href: "/dashboard/addons/ai-sop-generator", icon: FileEdit, badgeKey: null, description: "AI-powered SOP generation" },
+      { name: "University Report", href: "/dashboard/addons/ai-university-report", icon: GraduationCap, badgeKey: null, description: "Personalized recommendations" },
+      { name: "Resume Optimizer", href: "/dashboard/addons/ai-resume-optimizer", icon: Briefcase, badgeKey: null, description: "AI resume optimization" },
     ]
   },
   {

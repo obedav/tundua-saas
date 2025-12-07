@@ -106,6 +106,12 @@ export const rateLimiters = {
 
   // File uploads
   upload: createRateLimiter(20, "1 h"), // 20 uploads per hour
+
+  // AI endpoints (cost-sensitive)
+  // Free users: 5 requests per hour (allows proper testing + value demonstration)
+  // Resets every hour - users can generate ~40 per day if spread out
+  // Premium users: Unlimited (bypasses this limit)
+  ai: createRateLimiter(5, "1 h"), // 5 AI requests per hour
 };
 
 /**

@@ -12,7 +12,18 @@ class AnalyticsController
 
     public function __construct()
     {
-        $this->db = Database::getConnection();
+        $this->db = null; // Lazy loading
+    }
+
+    /**
+     * Get database connection (lazy loading)
+     */
+    private function getDb()
+    {
+        if ($this->db === null) {
+            $this->db = Database::getConnection();
+        }
+        return $this->db;
     }
 
     /**
@@ -59,11 +70,11 @@ class AnalyticsController
         $stats = [];
 
         // Total applications
-        $stmt = $this->db->query("SELECT COUNT(*) as total FROM applications");
+        $stmt = $this->getDb()->query("SELECT COUNT(*) as total FROM applications");
         $stats['total_applications'] = $stmt->fetch(\PDO::FETCH_ASSOC)['total'];
 
         // Applications by status
-        $stmt = $this->db->query("
+        $stmt = $this->getDb()->query("
             SELECT status, COUNT(*) as count
             FROM applications
             GROUP BY status
@@ -72,11 +83,11 @@ class AnalyticsController
         $stats['by_status'] = array_column($statusCounts, 'count', 'status');
 
         // Total users
-        $stmt = $this->db->query("SELECT COUNT(*) as total FROM users");
+        $stmt = $this->getDb()->query("SELECT COUNT(*) as total FROM users");
         $stats['total_users'] = $stmt->fetch(\PDO::FETCH_ASSOC)['total'];
 
         // Total revenue
-        $stmt = $this->db->query("
+        $stmt = $this->getDb()->query("
             SELECT SUM(amount) as total
             FROM payments
             WHERE status = 'completed'
@@ -84,7 +95,7 @@ class AnalyticsController
         $stats['total_revenue'] = (float)($stmt->fetch(\PDO::FETCH_ASSOC)['total'] ?? 0);
 
         // This month applications
-        $stmt = $this->db->query("
+        $stmt = $this->getDb()->query("
             SELECT COUNT(*) as count
             FROM applications
             WHERE MONTH(created_at) = MONTH(CURRENT_DATE())
@@ -93,7 +104,7 @@ class AnalyticsController
         $stats['applications_this_month'] = $stmt->fetch(\PDO::FETCH_ASSOC)['count'];
 
         // This month revenue
-        $stmt = $this->db->query("
+        $stmt = $this->getDb()->query("
             SELECT SUM(amount) as total
             FROM payments
             WHERE status = 'completed'
@@ -103,7 +114,7 @@ class AnalyticsController
         $stats['revenue_this_month'] = (float)($stmt->fetch(\PDO::FETCH_ASSOC)['total'] ?? 0);
 
         // Pending documents
-        $stmt = $this->db->query("
+        $stmt = $this->getDb()->query("
             SELECT COUNT(*) as count
             FROM documents
             WHERE status = 'pending' OR status = 'under_review'
@@ -119,7 +130,7 @@ class AnalyticsController
     private function getRevenueStats(int $days = 30): array
     {
         // Daily revenue for the period
-        $stmt = $this->db->prepare("
+        $stmt = $this->getDb()->prepare("
             SELECT
                 DATE(created_at) as date,
                 SUM(amount) as revenue,
@@ -136,7 +147,7 @@ class AnalyticsController
         // Calculate growth
         $currentPeriod = array_sum(array_column($dailyRevenue, 'revenue'));
 
-        $stmt = $this->db->prepare("
+        $stmt = $this->getDb()->prepare("
             SELECT SUM(amount) as revenue
             FROM payments
             WHERE status = 'completed'
@@ -165,17 +176,17 @@ class AnalyticsController
     {
         // Total visitors (you'd track this separately)
         // For now, use registered users
-        $stmt = $this->db->query("SELECT COUNT(*) as count FROM users");
+        $stmt = $this->getDb()->query("SELECT COUNT(*) as count FROM users");
         $totalUsers = $stmt->fetch(\PDO::FETCH_ASSOC)['count'];
 
         // Started applications
-        $stmt = $this->db->query("
+        $stmt = $this->getDb()->query("
             SELECT COUNT(DISTINCT user_id) as count FROM applications
         ");
         $startedApps = $stmt->fetch(\PDO::FETCH_ASSOC)['count'];
 
         // Completed applications (paid)
-        $stmt = $this->db->query("
+        $stmt = $this->getDb()->query("
             SELECT COUNT(DISTINCT a.user_id) as count
             FROM applications a
             JOIN payments p ON a.id = p.application_id
@@ -184,7 +195,7 @@ class AnalyticsController
         $completedApps = $stmt->fetch(\PDO::FETCH_ASSOC)['count'];
 
         // Approved applications
-        $stmt = $this->db->query("
+        $stmt = $this->getDb()->query("
             SELECT COUNT(DISTINCT user_id) as count
             FROM applications
             WHERE status = 'approved' OR status = 'completed'
@@ -206,7 +217,7 @@ class AnalyticsController
      */
     private function getServiceTierDistribution(): array
     {
-        $stmt = $this->db->query("
+        $stmt = $this->getDb()->query("
             SELECT
                 service_tier_name as name,
                 COUNT(*) as count,
@@ -225,7 +236,7 @@ class AnalyticsController
      */
     private function getTopDestinations(int $limit = 10): array
     {
-        $stmt = $this->db->prepare("
+        $stmt = $this->getDb()->prepare("
             SELECT
                 destination_country as country,
                 COUNT(*) as count,
@@ -248,7 +259,7 @@ class AnalyticsController
     {
         // Assuming universities are stored as JSON array
         // This is a simplified version
-        $stmt = $this->db->prepare("
+        $stmt = $this->getDb()->prepare("
             SELECT
                 universities,
                 destination_country,
@@ -269,7 +280,7 @@ class AnalyticsController
      */
     private function getRefundStats(): array
     {
-        $stmt = $this->db->query("
+        $stmt = $this->getDb()->query("
             SELECT
                 status,
                 COUNT(*) as count,
@@ -279,7 +290,7 @@ class AnalyticsController
         ");
         $byStatus = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        $stmt = $this->db->query("
+        $stmt = $this->getDb()->query("
             SELECT
                 COUNT(*) as total,
                 SUM(refund_amount) as total_amount,
@@ -302,7 +313,7 @@ class AnalyticsController
      */
     private function getPaymentMethodStats(): array
     {
-        $stmt = $this->db->query("
+        $stmt = $this->getDb()->query("
             SELECT
                 payment_method,
                 COUNT(*) as count,
@@ -321,7 +332,7 @@ class AnalyticsController
      */
     private function getRecentActivity(int $limit = 20): array
     {
-        $stmt = $this->db->prepare("
+        $stmt = $this->getDb()->prepare("
             SELECT
                 action,
                 description,
@@ -351,7 +362,7 @@ class AnalyticsController
             $data = [];
 
             if ($period === 'daily') {
-                $stmt = $this->db->prepare("
+                $stmt = $this->getDb()->prepare("
                     SELECT
                         DATE_FORMAT(created_at, '%Y-%m-%d') as date,
                         SUM(amount) as revenue,

@@ -11,12 +11,10 @@ use Tundua\Models\User;
 class AuthMiddleware
 {
     private AuthService $authService;
-    private User $userModel;
 
     public function __construct()
     {
         $this->authService = new AuthService();
-        $this->userModel = new User();
     }
 
     /**
@@ -71,7 +69,7 @@ class AuthMiddleware
         }
 
         // Get user from database
-        $user = $this->userModel->findById($decoded->sub);
+        $user = User::findById($decoded->sub);
 
         if (!$user) {
             $response = new \Slim\Psr7\Response();
@@ -94,10 +92,10 @@ class AuthMiddleware
 
         // Attach user data to request
         $request = $request
-            ->withAttribute('user_id', $user['id'])
-            ->withAttribute('user_uuid', $user['uuid'])
-            ->withAttribute('user_email', $user['email'])
-            ->withAttribute('user_role', $user['role'])
+            ->withAttribute('user_id', $user->id)
+            ->withAttribute('user_uuid', $user->uuid)
+            ->withAttribute('user_email', $user->email)
+            ->withAttribute('user_role', $user->role)
             ->withAttribute('user', $user);
 
         // Continue to next middleware/route

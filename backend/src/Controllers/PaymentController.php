@@ -16,7 +16,19 @@ class PaymentController
 
     public function __construct()
     {
-        $this->db = Database::getConnection();
+        // Don't connect to database in constructor - use lazy loading
+        $this->db = null;
+    }
+
+    /**
+     * Get database connection (lazy loading)
+     */
+    private function getDb()
+    {
+        if ($this->db === null) {
+            $this->db = Database::getConnection();
+        }
+        return $this->db;
     }
 
     /**
@@ -38,7 +50,7 @@ class PaymentController
 
         try {
             // Get application details
-            $stmt = $this->db->prepare("
+            $stmt = $this->getDb()->prepare("
                 SELECT a.*, u.email
                 FROM applications a
                 JOIN users u ON a.user_id = u.id
@@ -60,7 +72,7 @@ class PaymentController
 
             // Create payment record
             $transactionId = 'PAY-' . strtoupper(uniqid());
-            $stmt = $this->db->prepare("
+            $stmt = $this->getDb()->prepare("
                 INSERT INTO payments (
                     transaction_id, application_id, user_id, amount, currency,
                     payment_method, status, created_at
@@ -75,7 +87,7 @@ class PaymentController
                 'paystack',
                 'pending'
             ]);
-            $paymentId = $this->db->lastInsertId();
+            $paymentId = $this->getDb()->lastInsertId();
 
             // Initialize Paystack
             $paystack = new Paystack($_ENV['PAYSTACK_SECRET_KEY']);
@@ -107,7 +119,7 @@ class PaymentController
 
             if ($result->status) {
                 // Update payment with Paystack reference
-                $stmt = $this->db->prepare("
+                $stmt = $this->getDb()->prepare("
                     UPDATE payments
                     SET provider_transaction_id = ?,
                         provider_metadata = ?
@@ -163,7 +175,7 @@ class PaymentController
 
             if ($result->status && $result->data->status === 'success') {
                 // Get payment record
-                $stmt = $this->db->prepare("
+                $stmt = $this->getDb()->prepare("
                     SELECT * FROM payments WHERE provider_transaction_id = ?
                 ");
                 $stmt->execute([$reference]);
@@ -171,7 +183,7 @@ class PaymentController
 
                 if ($payment) {
                     // Update payment status
-                    $stmt = $this->db->prepare("
+                    $stmt = $this->getDb()->prepare("
                         UPDATE payments
                         SET status = 'completed',
                             paid_at = NOW(),
@@ -184,7 +196,7 @@ class PaymentController
                     ]);
 
                     // Update application
-                    $stmt = $this->db->prepare("
+                    $stmt = $this->getDb()->prepare("
                         UPDATE applications
                         SET payment_status = 'paid',
                             payment_id = ?,
@@ -246,7 +258,7 @@ class PaymentController
                 $reference = $event->data->reference;
 
                 // Update payment status
-                $stmt = $this->db->prepare("
+                $stmt = $this->getDb()->prepare("
                     UPDATE payments
                     SET status = 'completed', paid_at = NOW()
                     WHERE provider_transaction_id = ?
@@ -254,14 +266,14 @@ class PaymentController
                 $stmt->execute([$reference]);
 
                 // Update application
-                $stmt = $this->db->prepare("
+                $stmt = $this->getDb()->prepare("
                     SELECT application_id FROM payments WHERE provider_transaction_id = ?
                 ");
                 $stmt->execute([$reference]);
                 $payment = $stmt->fetch(\PDO::FETCH_ASSOC);
 
                 if ($payment) {
-                    $stmt = $this->db->prepare("
+                    $stmt = $this->getDb()->prepare("
                         UPDATE applications
                         SET payment_status = 'paid', status = 'submitted', submitted_at = NOW()
                         WHERE id = ?
@@ -302,7 +314,7 @@ class PaymentController
 
         try {
             // Get application details
-            $stmt = $this->db->prepare("
+            $stmt = $this->getDb()->prepare("
                 SELECT * FROM applications WHERE id = ?
             ");
             $stmt->execute([$applicationId]);
@@ -318,7 +330,7 @@ class PaymentController
 
             // Create payment record
             $transactionId = 'STRIPE-' . strtoupper(uniqid());
-            $stmt = $this->db->prepare("
+            $stmt = $this->getDb()->prepare("
                 INSERT INTO payments (
                     transaction_id, application_id, user_id, amount, currency,
                     payment_method, status, created_at
@@ -333,7 +345,7 @@ class PaymentController
                 'stripe',
                 'pending'
             ]);
-            $paymentId = $this->db->lastInsertId();
+            $paymentId = $this->getDb()->lastInsertId();
 
             // Initialize Stripe
             Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
@@ -362,7 +374,7 @@ class PaymentController
             ]);
 
             // Update payment with Stripe session info
-            $stmt = $this->db->prepare("
+            $stmt = $this->getDb()->prepare("
                 UPDATE payments
                 SET stripe_session_id = ?,
                     provider_transaction_id = ?,
@@ -416,7 +428,7 @@ class PaymentController
                 $session = $event->data->object;
 
                 // Update payment status
-                $stmt = $this->db->prepare("
+                $stmt = $this->getDb()->prepare("
                     UPDATE payments
                     SET status = 'completed',
                         paid_at = NOW(),
@@ -429,14 +441,14 @@ class PaymentController
                 ]);
 
                 // Update application
-                $stmt = $this->db->prepare("
+                $stmt = $this->getDb()->prepare("
                     SELECT application_id FROM payments WHERE stripe_session_id = ?
                 ");
                 $stmt->execute([$session->id]);
                 $payment = $stmt->fetch(\PDO::FETCH_ASSOC);
 
                 if ($payment) {
-                    $stmt = $this->db->prepare("
+                    $stmt = $this->getDb()->prepare("
                         UPDATE applications
                         SET payment_status = 'paid', status = 'submitted', submitted_at = NOW()
                         WHERE id = ?
@@ -465,7 +477,7 @@ class PaymentController
         $paymentId = $args['id'] ?? null;
 
         try {
-            $stmt = $this->db->prepare("
+            $stmt = $this->getDb()->prepare("
                 SELECT p.*, a.reference_number, a.total_amount as application_amount
                 FROM payments p
                 LEFT JOIN applications a ON p.application_id = a.id
@@ -536,7 +548,7 @@ class PaymentController
 
             $query .= " ORDER BY p.created_at DESC LIMIT 100";
 
-            $stmt = $this->db->prepare($query);
+            $stmt = $this->getDb()->prepare($query);
             $stmt->execute($params);
             $payments = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 

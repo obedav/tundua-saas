@@ -17,13 +17,24 @@ class DocumentController
 
     public function __construct()
     {
-        $this->db = Database::getConnection();
+        $this->db = null; // Lazy loading
         $this->storagePath = __DIR__ . '/../../' . ($_ENV['DOCUMENTS_STORAGE_PATH'] ?? 'storage/documents');
 
         // Create storage directory if it doesn't exist
         if (!is_dir($this->storagePath)) {
             mkdir($this->storagePath, 0755, true);
         }
+    }
+
+    /**
+     * Get database connection (lazy loading)
+     */
+    private function getDb()
+    {
+        if ($this->db === null) {
+            $this->db = Database::getConnection();
+        }
+        return $this->db;
     }
 
     /**
