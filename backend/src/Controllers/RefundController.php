@@ -12,7 +12,18 @@ class RefundController
 
     public function __construct()
     {
-        $this->db = Database::getConnection();
+        $this->db = null; // Lazy loading
+    }
+
+    /**
+     * Get database connection (lazy loading)
+     */
+    private function getDb()
+    {
+        if ($this->db === null) {
+            $this->db = Database::getConnection();
+        }
+        return $this->db;
     }
 
     /**
@@ -78,7 +89,7 @@ class RefundController
             $ipAddress = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 
             // Get application amount
-            $app = $this->db->prepare("SELECT total_amount FROM applications WHERE id = ? AND user_id = ?");
+            $app = $this->getDb()->prepare("SELECT total_amount FROM applications WHERE id = ? AND user_id = ?");
             $app->execute([$data['application_id'], $userId]);
             $application = $app->fetch(\PDO::FETCH_ASSOC);
 
@@ -91,7 +102,7 @@ class RefundController
             }
 
             // Create refund request
-            $stmt = $this->db->prepare("
+            $stmt = $this->getDb()->prepare("
                 INSERT INTO refunds (
                     application_id, user_id, refund_amount, reason, status,
                     signature_data, signed_ip_address, signed_at,
@@ -109,7 +120,7 @@ class RefundController
                 $data['agreement_pdf_url']
             ]);
 
-            $refundId = $this->db->lastInsertId();
+            $refundId = $this->getDb()->lastInsertId();
 
             $response->getBody()->write(json_encode([
                 'success' => true,
@@ -135,7 +146,7 @@ class RefundController
         $userId = $request->getAttribute('user_id');
 
         try {
-            $stmt = $this->db->prepare("
+            $stmt = $this->getDb()->prepare("
                 SELECT r.*, a.reference_number as application_reference
                 FROM refunds r
                 LEFT JOIN applications a ON r.application_id = a.id
@@ -169,7 +180,7 @@ class RefundController
         $userId = $request->getAttribute('user_id');
 
         try {
-            $stmt = $this->db->prepare("
+            $stmt = $this->getDb()->prepare("
                 SELECT r.*, a.reference_number as application_reference
                 FROM refunds r
                 LEFT JOIN applications a ON r.application_id = a.id
@@ -217,14 +228,14 @@ class RefundController
             $params = $status ? [$status] : [];
 
             // Get total count
-            $countStmt = $this->db->prepare("
+            $countStmt = $this->getDb()->prepare("
                 SELECT COUNT(*) as total FROM refunds r $whereClause
             ");
             $countStmt->execute($params);
             $total = $countStmt->fetch(\PDO::FETCH_ASSOC)['total'];
 
             // Get refunds
-            $stmt = $this->db->prepare("
+            $stmt = $this->getDb()->prepare("
                 SELECT r.*,
                        a.reference_number as application_reference,
                        CONCAT(u.first_name, ' ', u.last_name) as user_name,
@@ -311,7 +322,7 @@ class RefundController
                 $updateFields .= ", approved_at = NOW(), business_days_remaining = 90";
             }
 
-            $stmt = $this->db->prepare("
+            $stmt = $this->getDb()->prepare("
                 UPDATE refunds
                 SET $updateFields
                 WHERE id = ?
