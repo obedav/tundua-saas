@@ -2,10 +2,14 @@
 /vendor/
 composer.lock
 
-# Environment
+# Environment - NEVER commit these files
 .env
+.env.*
 .env.local
 .env.production
+.env.production.backup
+*.env
+*.env.*
 
 # Storage
 storage/documents/*
