@@ -86,7 +86,16 @@ export default function LoginForm() {
           }
         }, 300);
       } else {
-        toast.error(result.error || "Login failed. Please check your credentials.");
+        // Check if email verification is required
+        if (result.error?.includes('verify your email') || (result as any).email_not_verified) {
+          toast.error(result.error || "Please verify your email address first.");
+          // Redirect to verify-pending page after a short delay
+          setTimeout(() => {
+            window.location.href = `/auth/verify-pending?email=${encodeURIComponent(data.email)}`;
+          }, 2000);
+        } else {
+          toast.error(result.error || "Login failed. Please check your credentials.");
+        }
       }
     } catch (error: any) {
       console.error("Login error:", error);

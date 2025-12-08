@@ -189,6 +189,16 @@ class AuthController
             return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
         }
 
+        // Check if email is verified
+        if (!$user['email_verified_at']) {
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error' => 'Please verify your email address before logging in. Check your inbox for the verification link.',
+                'email_not_verified' => true
+            ]));
+            return $response->withStatus(403)->withHeader('Content-Type', 'application/json');
+        }
+
         // Check if account is active
         if (!$this->authService->isAccountActive($user)) {
             $response->getBody()->write(json_encode([
