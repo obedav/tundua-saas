@@ -30,7 +30,7 @@ export function middleware(_request: NextRequest) {
       style-src 'self' 'unsafe-inline';
       img-src 'self' blob: data: https:;
       font-src 'self' data:;
-      connect-src 'self' http://localhost:8000 https://www.google-analytics.com https://pusher.com wss://*.pusher.com;
+      connect-src 'self' http://localhost:8000 https://api.tundua.com https://www.google-analytics.com https://pusher.com wss://*.pusher.com;
       object-src 'none';
       base-uri 'self';
       form-action 'self';

@@ -37,8 +37,7 @@ eslint: {
     // Uncomment when React 19 compiler is stable
     // reactCompiler: true,
 
-    // ✅ Enable instrumentation for Sentry
-    instrumentationHook: true,
+    // ✅ Instrumentation enabled by default in Next.js 15 (no longer needs explicit config)
 
     // ✅ Server Actions enabled by default in Next.js 15
     serverActions: {
