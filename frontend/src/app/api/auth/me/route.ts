@@ -46,9 +46,18 @@ export async function GET() {
     console.log('📡 Backend response status:', response.status);
 
     if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
       console.log('❌ Backend returned error:', response.status);
+      console.error('❌ Backend error details:', errorData);
       return NextResponse.json(
-        { error: 'Failed to fetch user' },
+        {
+          error: 'Failed to fetch user',
+          debug: {
+            backendStatus: response.status,
+            backendError: errorData,
+            tokenPreview: token.substring(0, 30) + '...'
+          }
+        },
         { status: response.status }
       );
     }
