@@ -32,11 +32,11 @@ class RateLimitMiddleware
 
         // Custom limits per endpoint
         $this->endpointLimits = [
-            '/api/auth/login' => ['max' => 5, 'window' => 15],
-            '/api/auth/register' => ['max' => 3, 'window' => 60],
-            '/api/auth/forgot-password' => ['max' => 3, 'window' => 60],
-            '/api/auth/reset-password' => ['max' => 5, 'window' => 60],
-            '/api/auth/verify-email' => ['max' => 10, 'window' => 15],
+            '/api/auth/login' => ['max' => 10, 'window' => 15],
+            '/api/auth/register' => ['max' => 10, 'window' => 15],
+            '/api/auth/forgot-password' => ['max' => 5, 'window' => 15],
+            '/api/auth/reset-password' => ['max' => 10, 'window' => 15],
+            '/api/auth/verify-email' => ['max' => 20, 'window' => 15],
         ];
 
         // Ensure storage directory exists
