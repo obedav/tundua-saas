@@ -13,15 +13,24 @@ const API_URL = clientEnv.NEXT_PUBLIC_API_URL;
 export async function GET() {
   try {
     const cookieStore = await cookies();
+    const allCookies = cookieStore.getAll();
     const token = cookieStore.get('auth_token')?.value;
 
     console.log('🔍 /api/auth/me called');
+    console.log('🍪 All cookies:', allCookies.map(c => c.name));
     console.log('🍪 Token from cookie:', token ? 'EXISTS (' + token.substring(0, 20) + '...)' : 'NOT FOUND');
 
     if (!token) {
       console.log('❌ No token, returning 401');
+      console.error('❌ DEBUG: No auth_token cookie found. Available cookies:', allCookies.map(c => c.name).join(', '));
       return NextResponse.json(
-        { error: 'Not authenticated' },
+        {
+          error: 'Not authenticated',
+          debug: {
+            message: 'No auth_token cookie found',
+            availableCookies: allCookies.map(c => c.name)
+          }
+        },
         { status: 401 }
       );
     }
