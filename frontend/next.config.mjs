@@ -18,12 +18,14 @@ eslint: {
     ignoreDuringBuilds: true,
   },
   // Turbopack configuration for monorepo
-  turbopack: {
-    root: path.join(__dirname, '..'), // Set workspace root to parent directory
-  },
+  // Note: When deploying to Vercel with rootDirectory set in vercel.json,
+  // these paths should not reference parent directory
+  // turbopack: {
+  //   root: path.join(__dirname, '..'),
+  // },
 
-  // Output file tracing for monorepo - must match turbopack.root
-  outputFileTracingRoot: path.join(__dirname, '..'),
+  // Output file tracing - disabled for Vercel deployment
+  // outputFileTracingRoot: path.join(__dirname, '..'),
 
   // Enable experimental features for Next.js 15
   experimental: {
@@ -34,6 +36,9 @@ eslint: {
     // ⏸️  DISABLED: React Compiler - Only available in Next.js canary
     // Uncomment when React 19 compiler is stable
     // reactCompiler: true,
+
+    // ✅ Enable instrumentation for Sentry
+    instrumentationHook: true,
 
     // ✅ Server Actions enabled by default in Next.js 15
     serverActions: {
@@ -89,6 +94,8 @@ eslint: {
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+    // Suppress Sentry warnings during build
+    SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING: '1',
   },
 
   /**
