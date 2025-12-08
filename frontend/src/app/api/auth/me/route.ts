@@ -35,10 +35,15 @@ export async function GET() {
       );
     }
 
-    console.log('📡 Calling backend /api/auth/me with token');
-    const response = await fetch(`${API_URL}/api/auth/me`, {
+    const backendUrl = `${API_URL}/api/auth/me`;
+    console.log('📡 Calling backend:', backendUrl);
+    console.log('📡 Authorization header:', `Bearer ${token.substring(0, 30)}...`);
+
+    const response = await fetch(backendUrl, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       cache: 'no-store', // Don't cache user data
     });
@@ -55,7 +60,9 @@ export async function GET() {
           debug: {
             backendStatus: response.status,
             backendError: errorData,
-            tokenPreview: token.substring(0, 30) + '...'
+            tokenPreview: token.substring(0, 30) + '...',
+            backendUrl: backendUrl,
+            apiUrlEnv: API_URL
           }
         },
         { status: response.status }
