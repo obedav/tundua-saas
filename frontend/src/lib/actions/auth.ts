@@ -88,9 +88,11 @@ export async function loginAction(
       sameSite: 'lax', // Changed from strict to lax for better compatibility
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: '/',
+      priority: 'high', // Ensure cookie is sent with requests
     })
 
     console.log('🍪 Cookie set successfully');
+    console.log('🍪 Cookie value preview:', token.substring(0, 30) + '...');
 
     // Revalidate cached pages
     revalidatePath('/', 'layout')

@@ -68,23 +68,24 @@ export default function LoginForm() {
         setLoginSuccess(true);
         toast.success("Login successful! Redirecting...");
 
-        // Wait for cookie to be fully set
-        await new Promise(resolve => setTimeout(resolve, 800));
+        // Wait for cookie to be fully set and propagated
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
         // Refresh auth context
         console.log('🔄 Refreshing auth context after login...');
         await checkAuth();
-        console.log('✅ Auth context refreshed');
+        console.log('✅ Auth context refreshed, isAuthenticated should be true');
+
+        // Wait a bit more to ensure auth context is fully updated
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         // Redirect based on role with full page reload
-        setTimeout(() => {
-          console.log('🚀 Redirecting to dashboard...');
-          if (result.data?.user?.role === "admin" || result.data?.user?.role === "super_admin") {
-            window.location.href = "/dashboard/admin";
-          } else {
-            window.location.href = "/dashboard";
-          }
-        }, 300);
+        console.log('🚀 Redirecting to dashboard...');
+        if (result.data?.user?.role === "admin" || result.data?.user?.role === "super_admin") {
+          window.location.href = "/dashboard/admin";
+        } else {
+          window.location.href = "/dashboard";
+        }
       } else {
         // Check if email verification is required
         if (result.error?.includes('verify your email') || (result as any).email_not_verified) {

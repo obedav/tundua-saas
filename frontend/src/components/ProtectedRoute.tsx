@@ -15,7 +15,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
   const router = useRouter();
 
   useEffect(() => {
-    // Add a small delay to prevent premature redirects
+    // Add a delay to prevent premature redirects and allow cookie to be available
     const timer = setTimeout(() => {
       if (!loading) {
         console.log('🛡️ ProtectedRoute check:', { isAuthenticated, loading, user: user?.email });
@@ -30,7 +30,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
           console.log('✅ Access granted');
         }
       }
-    }, 300); // Wait 300ms before checking
+    }, 800); // Wait 800ms before checking to allow cookie propagation
 
     return () => clearTimeout(timer);
   }, [loading, isAuthenticated, user, requireAdmin, router]);
