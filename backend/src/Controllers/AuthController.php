@@ -351,6 +351,65 @@ class AuthController
     }
 
     /**
+     * Resend verification email
+     * POST /api/auth/resend-verification
+     */
+    public function resendVerification(Request $request, Response $response): Response
+    {
+        $data = $request->getParsedBody();
+        $email = strtolower(trim($data['email'] ?? ''));
+
+        if (empty($email)) {
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error' => 'Email is required'
+            ]));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+
+        // Find user by email
+        $user = User::where('email', $email)->first();
+
+        if (!$user) {
+            // Return success even if user not found (security best practice - don't reveal if email exists)
+            $response->getBody()->write(json_encode([
+                'success' => true,
+                'message' => 'If an account exists with this email, a verification link has been sent.'
+            ]));
+            return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+        }
+
+        // Check if already verified
+        if ($user->email_verified_at) {
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error' => 'Email is already verified'
+            ]));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+
+        // Generate new verification token
+        $verificationToken = $this->authService->generateEmailVerificationToken();
+        $verificationExpires = date('Y-m-d H:i:s', strtotime('+24 hours'));
+
+        // Update user with new token
+        $user->email_verification_token = $verificationToken;
+        $user->email_verification_expires = $verificationExpires;
+        $user->save();
+
+        // Send verification email
+        $verificationUrl = $this->authService->generateVerificationUrl($verificationToken);
+        $this->emailService->sendVerificationEmail($email, $user->first_name, $verificationUrl);
+
+        $response->getBody()->write(json_encode([
+            'success' => true,
+            'message' => 'Verification email sent successfully'
+        ]));
+
+        return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+    }
+
+    /**
      * Request password reset
      * POST /api/auth/forgot-password
      */
