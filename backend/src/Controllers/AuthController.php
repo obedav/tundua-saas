@@ -190,7 +190,7 @@ class AuthController
         }
 
         // Check if email is verified
-        if (!$user['email_verified_at']) {
+        if (!$user['email_verified']) {
             $response->getBody()->write(json_encode([
                 'success' => false,
                 'error' => 'Please verify your email address before logging in. Check your inbox for the verification link.',
@@ -390,7 +390,7 @@ class AuthController
         }
 
         // Check if already verified
-        if ($user->email_verified_at) {
+        if ($user->email_verified) {
             $response->getBody()->write(json_encode([
                 'success' => false,
                 'error' => 'Email is already verified'
