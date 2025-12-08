@@ -264,6 +264,7 @@ $app->group('/api/auth', function ($group) use ($authController, $refreshTokenCo
     $group->post('/forgot-password', [$authController, 'forgotPassword']);
     $group->post('/reset-password', [$authController, 'resetPassword']);
     $group->get('/verify-email/{token}', [$authController, 'verifyEmail']);
+    $group->post('/resend-verification', [$authController, 'resendVerification']);
     $group->post('/refresh', [$authController, 'refresh']);
 
     // Refresh token management (public, requires refresh token)
