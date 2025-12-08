@@ -57,8 +57,9 @@ export async function loginAction(
       const error = await response.json()
       return {
         success: false,
-        error: error.message || 'Login failed',
-      }
+        error: error.error || error.message || 'Login failed',
+        email_not_verified: error.email_not_verified || false,
+      } as any
     }
 
     const data = await response.json()
@@ -149,7 +150,7 @@ export async function registerAction(
       const error = await response.json()
       return {
         success: false,
-        error: error.message || 'Registration failed',
+        error: error.error || error.message || 'Registration failed',
       }
     }
 
@@ -282,7 +283,7 @@ export async function updateProfileAction(
       const error = await response.json()
       return {
         success: false,
-        error: error.message || 'Update failed',
+        error: error.error || error.message || 'Update failed',
       }
     }
 
