@@ -1094,10 +1094,10 @@ export default function HomePage() {
             ].map((plan, index) => (
               <div
                 key={index}
-                className={`relative rounded-3xl p-8 transition-all hover:scale-105 ${
+                className={`relative rounded-3xl p-8 transition-all hover:scale-105 z-10 ${
                   plan.highlighted
                     ? 'bg-gradient-to-br from-blue-600 to-teal-600 text-white shadow-2xl shadow-teal-500/30'
-                    : 'gradient-border bg-white'
+                    : 'bg-white border-2 border-gray-200 hover:border-blue-400 shadow-lg'
                 }`}
               >
                 {plan.highlighted && (
