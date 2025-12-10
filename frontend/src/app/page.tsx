@@ -277,7 +277,7 @@ export default function HomePage() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            className="md:hidden p-3 hover:bg-slate-100 rounded-lg transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
             aria-expanded={mobileMenuOpen}
@@ -293,35 +293,35 @@ export default function HomePage() {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden bg-white/95 backdrop-blur-lg border-t border-slate-200">
-            <nav className="container-custom py-4 flex flex-col gap-4">
+            <nav className="container-custom py-4 flex flex-col gap-2">
               <button
                 onClick={() => scrollToSection('services')}
-                className="text-slate-600 hover:text-slate-900 font-medium text-left"
+                className="text-slate-600 hover:text-slate-900 font-medium text-left py-3 px-2 hover:bg-slate-50 rounded-lg transition-colors"
               >
                 Services
               </button>
               <button
                 onClick={() => scrollToSection('quiz')}
-                className="text-slate-600 hover:text-slate-900 font-medium text-left"
+                className="text-slate-600 hover:text-slate-900 font-medium text-left py-3 px-2 hover:bg-slate-50 rounded-lg transition-colors"
               >
                 Find Your Plan
               </button>
               <button
                 onClick={() => scrollToSection('pricing')}
-                className="text-slate-600 hover:text-slate-900 font-medium text-left"
+                className="text-slate-600 hover:text-slate-900 font-medium text-left py-3 px-2 hover:bg-slate-50 rounded-lg transition-colors"
               >
                 Pricing
               </button>
               <Link
                 href="/auth/login"
-                className="text-slate-600 hover:text-slate-900 font-medium"
+                className="text-slate-600 hover:text-slate-900 font-medium py-3 px-2 hover:bg-slate-50 rounded-lg transition-colors block"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Login
               </Link>
               <Link
                 href="/auth/register"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-full hover:shadow-lg transition-all font-semibold text-center"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3.5 rounded-full hover:shadow-lg transition-all font-semibold text-center mt-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Get Started
@@ -384,7 +384,7 @@ export default function HomePage() {
               </FadeIn>
 
               <FadeIn direction="up" delay={0.2}>
-                <h1 className="text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
                   Turn Your Study Abroad Dreams Into
                   <span className="block mt-2 bg-gradient-to-r from-blue-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
                     Acceptance Letters
@@ -393,7 +393,7 @@ export default function HomePage() {
               </FadeIn>
 
               <FadeIn direction="up" delay={0.3}>
-                <p className="text-xl text-slate-600 mb-8 leading-relaxed">
+                <p className="text-base sm:text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
                   Professional application management with expert guidance, document review, and submission support.
                   Join students getting accepted to their dream universities.
                 </p>
@@ -533,10 +533,10 @@ export default function HomePage() {
               <Sparkles className="w-5 h-5 text-blue-600" aria-hidden="true" />
               <span className="text-sm font-bold text-blue-900">NEW: AI-Powered Instant Services</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
               Quick Start: Get Documents Ready Today
             </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
               Need something specific fast? Our AI services deliver professional documents instantly.
               <span className="block mt-2 text-base text-slate-500">
                 Perfect for getting started or complementing your application package
@@ -727,10 +727,10 @@ export default function HomePage() {
                 <Sparkles className="w-4 h-4" />
                 Find Your Perfect Package
               </div>
-              <h2 className="text-4xl font-bold text-slate-900 mb-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
                 Not Sure Which Package to Choose?
               </h2>
-              <p className="text-xl text-slate-600">Answer 3 quick questions to get a personalized recommendation</p>
+              <p className="text-lg md:text-xl text-slate-600">Answer 3 quick questions to get a personalized recommendation</p>
             </div>
 
             <div className="glass-effect rounded-3xl p-8 md:p-12">
@@ -805,10 +805,10 @@ export default function HomePage() {
       <section id="services" className="py-20 bg-gradient-to-b from-slate-50 to-white fade-in-section scroll-mt-20">
         <div className="container-custom">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
               Everything You Need to Succeed
             </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto">
               Comprehensive support from application to acceptance
             </p>
           </div>
@@ -902,10 +902,10 @@ export default function HomePage() {
       <section className="py-20 bg-white fade-in-section">
         <div className="container-custom">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
               Simple 4-Step Process
             </h2>
-            <p className="text-xl text-slate-600">From registration to acceptance</p>
+            <p className="text-lg md:text-xl text-slate-600">From registration to acceptance</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
@@ -960,10 +960,10 @@ export default function HomePage() {
       <section className="py-20 bg-gradient-to-b from-slate-50 to-white fade-in-section">
         <div className="container-custom">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
               Trusted by Students Worldwide
             </h2>
-            <p className="text-xl text-slate-600">Real stories from real students</p>
+            <p className="text-lg md:text-xl text-slate-600">Real stories from real students</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -1023,11 +1023,11 @@ export default function HomePage() {
       {/* Modern Pricing Section */}
       <section id="pricing" className="py-20 bg-white fade-in-section scroll-mt-20">
         <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
               Simple, Transparent Pricing
             </h2>
-            <p className="text-xl text-slate-600 mb-4">Choose the package that fits your needs</p>
+            <p className="text-lg md:text-xl text-slate-600 mb-4">Choose the package that fits your needs</p>
 
             {/* Strategic Note Connecting AI Services to Full Packages */}
             <div className="max-w-3xl mx-auto mt-6">
@@ -1047,7 +1047,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
             {[
               {
                 name: "Basic",
@@ -1105,16 +1105,16 @@ export default function HomePage() {
                     Most Popular
                   </div>
                 )}
-                <div className="mb-6">
-                  <h3 className={`text-2xl font-bold mb-2 ${plan.highlighted ? 'text-white' : 'text-slate-900'}`}>
+                <div className="mb-4 md:mb-6">
+                  <h3 className={`text-xl md:text-2xl font-bold mb-2 ${plan.highlighted ? 'text-white' : 'text-slate-900'}`}>
                     {plan.name}
                   </h3>
-                  <p className={plan.highlighted ? 'text-blue-100' : 'text-slate-600'}>
+                  <p className={`text-sm md:text-base ${plan.highlighted ? 'text-blue-100' : 'text-slate-600'}`}>
                     {plan.description}
                   </p>
                 </div>
-                <div className="mb-6">
-                  <div className={`text-5xl font-bold ${plan.highlighted ? 'text-white' : 'text-slate-900'}`}>
+                <div className="mb-4 md:mb-6">
+                  <div className={`text-4xl md:text-5xl font-bold ${plan.highlighted ? 'text-white' : 'text-slate-900'}`}>
                     {plan.price}
                   </div>
                   <p className={plan.highlighted ? 'text-blue-100 mt-1' : 'text-slate-500 mt-1'}>
@@ -1154,10 +1154,10 @@ export default function HomePage() {
         <div className="container-custom">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-slate-900 mb-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
                 Frequently Asked Questions
               </h2>
-              <p className="text-xl text-slate-600">Everything you need to know</p>
+              <p className="text-lg md:text-xl text-slate-600">Everything you need to know</p>
             </div>
 
             <div className="space-y-4">
@@ -1214,10 +1214,10 @@ export default function HomePage() {
 
         <div className="container-custom text-center relative z-10">
           <Heart className="w-16 h-16 mx-auto mb-6 text-pink-200" />
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
             Ready to Begin Your Journey?
           </h2>
-          <p className="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl mb-10 opacity-90 max-w-2xl mx-auto">
             Join students who are turning their study abroad dreams into reality with expert guidance every step of the way.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
