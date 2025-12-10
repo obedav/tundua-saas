@@ -41,7 +41,7 @@ export default function LoginPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h1 className="text-4xl xl:text-5xl font-bold text-gray-900 leading-tight mb-4">
+                  <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight mb-4">
                     Welcome back to your
                     <span className="block mt-2 bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
                       study abroad journey
@@ -57,7 +57,7 @@ export default function LoginPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="grid grid-cols-3 gap-6 mt-12"
+                  className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 mt-12"
                 >
                   <div className="text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-primary-100/50 shadow-sm hover:shadow-md transition-shadow">
                     <Globe className="w-8 h-8 text-primary-600 mx-auto mb-3" aria-hidden="true" />
@@ -108,7 +108,7 @@ export default function LoginPage() {
             >
               <Sparkles className="w-5 h-5 text-primary-500 mb-3" aria-hidden="true" />
               <p className="text-gray-700 italic mb-4">
-                "Tundua made my study abroad journey seamless. The platform is intuitive and the support is exceptional."
+                &ldquo;Tundua made my study abroad journey seamless. The platform is intuitive and the support is exceptional.&rdquo;
               </p>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-semibold shadow-md" aria-hidden="true">

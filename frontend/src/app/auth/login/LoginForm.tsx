@@ -131,10 +131,10 @@ export default function LoginForm() {
 
       {/* Form Card */}
       <motion.div
-        className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 lg:p-10"
+        className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10"
       >
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             Welcome back
           </h2>
           <p className="text-gray-600">
@@ -220,7 +220,7 @@ export default function LoginForm() {
                 autoComplete="current-password"
                 aria-invalid={errors.password ? "true" : "false"}
                 aria-describedby={errors.password ? "password-error" : undefined}
-                className={`w-full pl-12 pr-12 py-3.5 border-2 rounded-xl transition-all text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:bg-gray-50 disabled:cursor-not-allowed ${
+                className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl transition-all text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:bg-gray-50 disabled:cursor-not-allowed ${
                   errors.password
                     ? "border-red-300 focus:border-red-500"
                     : touchedFields.password && passwordValue
@@ -257,7 +257,7 @@ export default function LoginForm() {
               <input
                 {...register("rememberMe")}
                 type="checkbox"
-                className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-2 focus:ring-primary-500 focus:ring-offset-0 cursor-pointer transition-colors"
+                className="w-5 h-5 rounded border-gray-300 text-primary-600 focus:ring-2 focus:ring-primary-500 focus:ring-offset-0 cursor-pointer transition-colors"
                 disabled={isLoading}
               />
               <span className="text-sm text-gray-700 select-none group-hover:text-gray-900 transition-colors">
