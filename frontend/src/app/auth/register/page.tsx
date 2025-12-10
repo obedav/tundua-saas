@@ -180,7 +180,7 @@ export default function RegisterPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h1 className="text-4xl xl:text-5xl font-bold text-gray-900 leading-tight mb-4">
+                  <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight mb-4">
                     Begin your journey to
                     <span className="block mt-2 bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
                       world-class education
@@ -196,7 +196,7 @@ export default function RegisterPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="grid grid-cols-3 gap-6 mt-12"
+                  className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 mt-12"
                 >
                   <div className="text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-primary-100/50 shadow-sm">
                     <Globe className="w-8 h-8 text-primary-600 mx-auto mb-3" />
@@ -322,7 +322,7 @@ export default function RegisterPage() {
             {/* Form Card */}
             <motion.div
               layout
-              className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 lg:p-10"
+              className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10"
             >
               <AnimatePresence mode="wait">
                 {currentStep === 1 ? (
@@ -334,7 +334,7 @@ export default function RegisterPage() {
                     transition={{ duration: 0.3 }}
                   >
                     <div className="mb-8">
-                      <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                         Create account
                       </h2>
                       <p className="text-gray-600">
@@ -437,7 +437,7 @@ export default function RegisterPage() {
                             {...register("password")}
                             type={showPassword ? "text" : "password"}
                             id="password"
-                            className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:ring-2 focus:ring-primary-500 transition-all text-gray-900 placeholder:text-gray-400 ${
+                            className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl focus:ring-2 focus:ring-primary-500 transition-all text-gray-900 placeholder:text-gray-400 ${
                               errors.password ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-primary-500'
                             }`}
                             placeholder="••••••••"
@@ -504,7 +504,7 @@ export default function RegisterPage() {
                             {...register("confirm_password")}
                             type={showConfirmPassword ? "text" : "password"}
                             id="confirm_password"
-                            className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:ring-2 focus:ring-primary-500 transition-all text-gray-900 placeholder:text-gray-400 ${
+                            className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl focus:ring-2 focus:ring-primary-500 transition-all text-gray-900 placeholder:text-gray-400 ${
                               errors.confirm_password ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-primary-500'
                             }`}
                             placeholder="••••••••"
@@ -559,7 +559,7 @@ export default function RegisterPage() {
                     transition={{ duration: 0.3 }}
                   >
                     <div className="mb-8">
-                      <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                         Choose your path
                       </h2>
                       <p className="text-gray-600">
@@ -576,7 +576,7 @@ export default function RegisterPage() {
                           onClick={() => handleSelectUserType("student")}
                           whileHover={{ scale: 1.01 }}
                           whileTap={{ scale: 0.99 }}
-                          className={`relative w-full p-6 rounded-2xl border-2 transition-all text-left ${
+                          className={`relative w-full p-5 sm:p-6 rounded-2xl border-2 transition-all text-left ${
                             selectedUserType === "student"
                               ? "border-primary-600 bg-gradient-to-br from-primary-50 to-white shadow-lg shadow-primary-100"
                               : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
@@ -599,7 +599,7 @@ export default function RegisterPage() {
                               />
                             </div>
                             <div className="flex-1">
-                              <h3 className="text-xl font-bold text-gray-900 mb-1.5">
+                              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1.5">
                                 Student
                               </h3>
                               <p className="text-sm text-gray-600 leading-relaxed">
@@ -626,7 +626,7 @@ export default function RegisterPage() {
                           onClick={() => handleSelectUserType("partner")}
                           whileHover={{ scale: 1.01 }}
                           whileTap={{ scale: 0.99 }}
-                          className={`relative w-full p-6 rounded-2xl border-2 transition-all text-left ${
+                          className={`relative w-full p-5 sm:p-6 rounded-2xl border-2 transition-all text-left ${
                             selectedUserType === "partner"
                               ? "border-primary-600 bg-gradient-to-br from-primary-50 to-white shadow-lg shadow-primary-100"
                               : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
@@ -649,7 +649,7 @@ export default function RegisterPage() {
                               />
                             </div>
                             <div className="flex-1">
-                              <h3 className="text-xl font-bold text-gray-900 mb-1.5">
+                              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1.5">
                                 Agency Partner
                               </h3>
                               <p className="text-sm text-gray-600 leading-relaxed">
@@ -678,7 +678,7 @@ export default function RegisterPage() {
                       )}
 
                       {/* Action Buttons */}
-                      <div className="flex gap-3 mt-8">
+                      <div className="flex flex-col sm:flex-row gap-3 mt-8">
                         <Button
                           type="button"
                           onClick={() => setCurrentStep(1)}
