@@ -68,11 +68,11 @@ export default async function DashboardPage() {
       <div className="space-y-8">
         {/* Welcome Section */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Welcome back, {user.first_name}!
           </h1>
           <p className="text-gray-600 mt-2">
-            Here's an overview of your study abroad journey
+            Here&apos;s an overview of your study abroad journey
           </p>
         </div>
 
@@ -117,7 +117,7 @@ export default async function DashboardPage() {
             {/* Recent Applications */}
             <div>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Recent Applications</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900">Recent Applications</h2>
                 {recentApplications.length > 0 && (
                   <Link
                     href="/dashboard/applications"
@@ -159,7 +159,7 @@ export default async function DashboardPage() {
               </p>
               <Link
                 href="/dashboard/support"
-                className="inline-block bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-blue-50 transition-colors"
+                className="inline-block bg-white text-blue-600 px-4 py-3 rounded-lg font-semibold text-sm hover:bg-blue-50 transition-colors"
               >
                 Contact Support
               </Link>
@@ -174,7 +174,7 @@ export default async function DashboardPage() {
                 </p>
                 <Link
                   href="/dashboard/addons"
-                  className="inline-block bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-purple-50 transition-colors"
+                  className="inline-block bg-white text-purple-600 px-4 py-3 rounded-lg font-semibold text-sm hover:bg-purple-50 transition-colors"
                 >
                   Browse Add-Ons →
                 </Link>
