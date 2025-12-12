@@ -25,7 +25,7 @@ export default async function ApplicationsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">My Applications</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">My Applications</h1>
         <p className="text-gray-600 mt-2">View and manage all your study abroad applications</p>
       </div>
 
