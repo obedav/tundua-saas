@@ -22,17 +22,19 @@ export default function OAuthCallbackPage() {
     }
 
     if (accessToken && refreshToken) {
-      // Store tokens
+      // Store tokens - IMPORTANT: path: '/' ensures cookies are available site-wide
       Cookies.set("auth_token", accessToken, {
         expires: 7, // 7 days
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
+        path: "/", // Required for cookie to be available on all routes
       });
 
       Cookies.set("refresh_token", refreshToken, {
         expires: 30, // 30 days
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
+        path: "/", // Required for cookie to be available on all routes
       });
 
       toast.success("Successfully logged in with Google!");
