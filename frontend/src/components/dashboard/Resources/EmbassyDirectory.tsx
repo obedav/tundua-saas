@@ -171,24 +171,24 @@ export default function EmbassyDirectory() {
   );
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <Building2 className="w-5 h-5 text-primary-600" />
-          <h2 className="text-lg font-semibold text-gray-900">Embassy Directory</h2>
+          <Building2 className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Embassy Directory</h2>
         </div>
-        <span className="text-sm text-gray-500">{embassies.length} embassies</span>
+        <span className="text-sm text-gray-500 dark:text-gray-400">{embassies.length} embassies</span>
       </div>
 
       {/* Search */}
       <div className="relative mb-6">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
         <input
           type="text"
           placeholder="Search by country or location..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+          className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
         />
       </div>
 
@@ -197,16 +197,16 @@ export default function EmbassyDirectory() {
         {filteredEmbassies.map((embassy) => (
           <div
             key={embassy.id}
-            className="border border-gray-200 rounded-lg p-4 hover:border-primary-300 hover:shadow-md transition-all"
+            className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-primary-300 hover:shadow-md transition-all"
           >
             {/* Header */}
             <div className="flex items-start gap-3 mb-4">
               <div className="text-3xl">{embassy.flag}</div>
               <div className="flex-1">
-                <h3 className="text-base font-semibold text-gray-900 mb-1">
+                <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
                   {embassy.country} Embassy
                 </h3>
-                <p className="text-sm text-gray-600 flex items-center gap-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5" />
                   {embassy.location}
                 </p>
@@ -224,23 +224,23 @@ export default function EmbassyDirectory() {
             {/* Contact Info */}
             <div className="space-y-2 mb-4">
               <div className="flex items-start gap-2 text-sm">
-                <MapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-700">{embassy.address}</span>
+                <MapPin className="w-4 h-4 text-gray-400 dark:text-gray-500 mt-0.5 flex-shrink-0" />
+                <span className="text-gray-700 dark:text-gray-300">{embassy.address}</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                <a href={`tel:${embassy.phone}`} className="text-gray-700 hover:text-primary-600">
+                <Phone className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+                <a href={`tel:${embassy.phone}`} className="text-gray-700 dark:text-gray-300 hover:text-primary-600">
                   {embassy.phone}
                 </a>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                <a href={`mailto:${embassy.email}`} className="text-gray-700 hover:text-primary-600">
+                <Mail className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+                <a href={`mailto:${embassy.email}`} className="text-gray-700 dark:text-gray-300 hover:text-primary-600">
                   {embassy.email}
                 </a>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <Globe className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                <Globe className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
                 <a
                   href={`https://${embassy.website}`}
                   target="_blank"
@@ -253,27 +253,27 @@ export default function EmbassyDirectory() {
             </div>
 
             {/* Hours & Processing */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-gray-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-gray-100 dark:border-gray-700">
               <div className="flex items-start gap-2">
-                <Clock className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                <Clock className="w-4 h-4 text-gray-400 dark:text-gray-500 mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-xs text-gray-500 mb-0.5">Office Hours</p>
-                  <p className="text-sm font-medium text-gray-900">{embassy.hours}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Office Hours</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">{embassy.hours}</p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
-                <Building2 className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                <Building2 className="w-4 h-4 text-gray-400 dark:text-gray-500 mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-xs text-gray-500 mb-0.5">Visa Processing</p>
-                  <p className="text-sm font-medium text-gray-900">{embassy.visaProcessing}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Visa Processing</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">{embassy.visaProcessing}</p>
                 </div>
               </div>
             </div>
 
             {/* Notes */}
             {embassy.notes && (
-              <div className="mt-3 p-3 bg-blue-50 rounded-lg">
-                <p className="text-sm text-blue-800">
+              <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <p className="text-sm text-blue-800 dark:text-blue-300">
                   <span className="font-medium">Note:</span> {embassy.notes}
                 </p>
               </div>
@@ -286,15 +286,15 @@ export default function EmbassyDirectory() {
       {filteredEmbassies.length === 0 && (
         <div className="text-center py-8">
           <Building2 className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <p className="text-gray-500">No embassies found matching your search</p>
+          <p className="text-gray-500 dark:text-gray-400">No embassies found matching your search</p>
         </div>
       )}
 
       {/* Help CTA */}
-      <div className="mt-6 pt-6 border-t border-gray-200">
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-1">Need Visa Interview Preparation?</h3>
-          <p className="text-sm text-gray-600 mb-3">
+      <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg p-4">
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Need Visa Interview Preparation?</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
             Our Visa Interview Coaching service prepares you for embassy interviews
           </p>
           <a

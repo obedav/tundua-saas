@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { Lock, Eye, EyeOff, ArrowLeft, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
+import { Lock, Eye, EyeOff, ArrowLeft, CheckCircle2, XCircle, AlertCircle, Mail } from "lucide-react";
 import { Button } from "@/components/ui";
 import { clientEnv } from "@/lib/env";
 
@@ -31,6 +31,7 @@ type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+  const email = searchParams.get("email");
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -110,17 +111,17 @@ function ResetPasswordForm() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10 text-center"
+        className="bg-white dark:bg-gray-800/95 rounded-3xl shadow-2xl shadow-gray-200/50 dark:shadow-gray-950/50 border border-gray-100 dark:border-gray-700/50 p-6 sm:p-8 lg:p-10 text-center backdrop-blur-sm"
       >
-        <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-6">
-          <XCircle className="w-10 h-10 text-red-600" />
+        <div className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/20 flex items-center justify-center mx-auto mb-6">
+          <XCircle className="w-10 h-10 text-red-600 dark:text-red-400" />
         </div>
 
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
           Invalid Reset Link
         </h2>
 
-        <p className="text-gray-600 mb-8">
+        <p className="text-gray-600 dark:text-gray-400 mb-8">
           {tokenError}
         </p>
 
@@ -139,17 +140,17 @@ function ResetPasswordForm() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10 text-center"
+        className="bg-white dark:bg-gray-800/95 rounded-3xl shadow-2xl shadow-gray-200/50 dark:shadow-gray-950/50 border border-gray-100 dark:border-gray-700/50 p-6 sm:p-8 lg:p-10 text-center backdrop-blur-sm"
       >
-        <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-          <CheckCircle2 className="w-10 h-10 text-green-600" />
+        <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center mx-auto mb-6">
+          <CheckCircle2 className="w-10 h-10 text-green-600 dark:text-green-400" />
         </div>
 
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
           Password Reset!
         </h2>
 
-        <p className="text-gray-600 mb-8">
+        <p className="text-gray-600 dark:text-gray-400 mb-8">
           Your password has been successfully reset. You can now sign in with your new password.
         </p>
 
@@ -167,21 +168,36 @@ function ResetPasswordForm() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10"
+      className="bg-white dark:bg-gray-800/95 rounded-3xl shadow-2xl shadow-gray-200/50 dark:shadow-gray-950/50 border border-gray-100 dark:border-gray-700/50 p-6 sm:p-8 lg:p-10 backdrop-blur-sm"
     >
       <div className="mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
           Create new password
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           Enter your new password below
         </p>
+
+        {/* Display email being reset */}
+        {email && (
+          <div className="mt-4 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-700/50 rounded-xl">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-800/50 flex items-center justify-center flex-shrink-0">
+                <Mail className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+              </div>
+              <div>
+                <p className="text-xs text-primary-600 dark:text-primary-400 font-medium">Resetting password for</p>
+                <p className="text-sm font-semibold text-gray-900 dark:text-white break-all">{decodeURIComponent(email)}</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
         {/* New Password */}
         <div>
-          <label htmlFor="password" className="block text-sm font-semibold text-gray-900 mb-2">
+          <label htmlFor="password" className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
             New Password
           </label>
           <div className="relative">
@@ -191,10 +207,10 @@ function ResetPasswordForm() {
               type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="new-password"
-              className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl transition-all text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+              className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl transition-all text-gray-900 dark:text-white dark:bg-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${
                 errors.password
                   ? "border-red-300 focus:border-red-500"
-                  : "border-gray-200 focus:border-primary-500 hover:border-gray-300"
+                  : "border-gray-200 dark:border-gray-600 focus:border-primary-500 hover:border-gray-300"
               }`}
               placeholder="••••••••"
               disabled={isLoading}
@@ -209,7 +225,7 @@ function ResetPasswordForm() {
             </button>
           </div>
           {errors.password && (
-            <p className="mt-2 text-sm text-red-600">{errors.password.message}</p>
+            <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.password.message}</p>
           )}
 
           {/* Password Strength Indicators */}
@@ -220,7 +236,7 @@ function ResetPasswordForm() {
                   <div
                     key={key}
                     className={`flex items-center gap-1 text-xs px-2 py-1 rounded-full ${
-                      passed ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
+                      passed ? "bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400" : "bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
                     }`}
                   >
                     {passed ? (
@@ -243,7 +259,7 @@ function ResetPasswordForm() {
 
         {/* Confirm Password */}
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-900 mb-2">
+          <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
             Confirm Password
           </label>
           <div className="relative">
@@ -253,10 +269,10 @@ function ResetPasswordForm() {
               type={showConfirmPassword ? "text" : "password"}
               id="confirmPassword"
               autoComplete="new-password"
-              className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl transition-all text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+              className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl transition-all text-gray-900 dark:text-white dark:bg-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${
                 errors.confirmPassword
                   ? "border-red-300 focus:border-red-500"
-                  : "border-gray-200 focus:border-primary-500 hover:border-gray-300"
+                  : "border-gray-200 dark:border-gray-600 focus:border-primary-500 hover:border-gray-300"
               }`}
               placeholder="••••••••"
               disabled={isLoading}
@@ -271,7 +287,7 @@ function ResetPasswordForm() {
             </button>
           </div>
           {errors.confirmPassword && (
-            <p className="mt-2 text-sm text-red-600">{errors.confirmPassword.message}</p>
+            <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.confirmPassword.message}</p>
           )}
         </div>
 
@@ -289,10 +305,10 @@ function ResetPasswordForm() {
       </form>
 
       {/* Back Link */}
-      <div className="mt-8 pt-6 border-t border-gray-100 text-center">
+      <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 text-center">
         <Link
           href="/auth/login"
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+          className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to sign in
@@ -304,12 +320,13 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       <div className="flex min-h-screen">
         {/* Left Side - Brand */}
-        <div className="hidden lg:flex lg:w-1/2 xl:w-[45%] bg-gradient-to-br from-primary-50/50 via-white to-blue-50/50 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-primary-200/40 to-blue-200/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-primary-100/30 to-purple-100/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
+        <div className="hidden lg:flex lg:w-1/2 xl:w-[45%] bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 dark:from-primary-800 dark:via-primary-900 dark:to-gray-950 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent" />
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-primary-400/30 to-blue-500/20 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-purple-500/20 to-primary-400/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
 
           <div className="relative z-10 flex flex-col justify-between p-12 xl:p-16 w-full">
             {/* Logo */}
@@ -333,13 +350,13 @@ export default function ResetPasswordPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight mb-4">
+                <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-white leading-tight mb-4">
                   Almost there!
-                  <span className="block mt-2 bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
+                  <span className="block mt-2 bg-gradient-to-r from-white to-primary-200 bg-clip-text text-transparent">
                     Set your new password
                   </span>
                 </h1>
-                <p className="text-lg text-gray-600 mt-6 leading-relaxed">
+                <p className="text-lg text-primary-100 mt-6 leading-relaxed">
                   Create a strong password to keep your account secure.
                 </p>
               </motion.div>
@@ -349,24 +366,24 @@ export default function ResetPasswordPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-primary-100/50 shadow-sm"
+                className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20"
               >
-                <h3 className="font-semibold text-gray-900 mb-3">Password tips:</h3>
-                <ul className="space-y-2 text-gray-600 text-sm">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary-600 mt-0.5 flex-shrink-0" />
+                <h3 className="font-semibold text-white mb-3">Password tips:</h3>
+                <ul className="space-y-2.5 text-primary-100 text-sm">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="w-4 h-4 text-white mt-0.5 flex-shrink-0" />
                     <span>Use at least 8 characters</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary-600 mt-0.5 flex-shrink-0" />
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="w-4 h-4 text-white mt-0.5 flex-shrink-0" />
                     <span>Mix uppercase and lowercase letters</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary-600 mt-0.5 flex-shrink-0" />
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="w-4 h-4 text-white mt-0.5 flex-shrink-0" />
                     <span>Include at least one number</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary-600 mt-0.5 flex-shrink-0" />
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="w-4 h-4 text-white mt-0.5 flex-shrink-0" />
                     <span>Avoid using personal information</span>
                   </li>
                 </ul>
@@ -395,10 +412,10 @@ export default function ResetPasswordPage() {
             </div>
 
             <Suspense fallback={
-              <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10 text-center">
+              <div className="bg-white dark:bg-gray-800/95 rounded-3xl shadow-2xl shadow-gray-200/50 dark:shadow-gray-950/50 border border-gray-100 dark:border-gray-700/50 p-6 sm:p-8 lg:p-10 text-center backdrop-blur-sm">
                 <div className="animate-pulse">
-                  <div className="h-8 bg-gray-200 rounded w-3/4 mx-auto mb-4"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+                  <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto mb-4"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto"></div>
                 </div>
               </div>
             }>
@@ -407,21 +424,21 @@ export default function ResetPasswordPage() {
 
             {/* Footer Links */}
             <div className="mt-8 text-center">
-              <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
-                <Link href="/privacy" className="hover:text-gray-900 transition-colors">
+              <div className="flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   Privacy
                 </Link>
                 <span>•</span>
-                <Link href="/terms" className="hover:text-gray-900 transition-colors">
+                <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   Terms
                 </Link>
                 <span>•</span>
-                <Link href="/support" className="hover:text-gray-900 transition-colors">
+                <Link href="/support" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   Support
                 </Link>
               </div>
-              <p className="text-xs text-gray-500 mt-3">
-                © 2025 Tundua Edu Consults. All rights reserved.
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                © 2026 Tundua Edu Consults. All rights reserved.
               </p>
             </div>
           </div>

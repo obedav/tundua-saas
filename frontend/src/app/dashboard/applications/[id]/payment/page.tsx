@@ -24,6 +24,7 @@ interface Application {
   addon_total: string;
   total_amount: string;
   payment_status: string;
+  currency: 'NGN' | 'USD';
 }
 
 type PaymentMethod = "paystack" | "stripe";
@@ -55,6 +56,11 @@ export default function PaymentPage() {
       }
 
       setApplication(app);
+
+      // Auto-select payment method based on currency
+      // NGN = Paystack, USD = Stripe
+      const currency = app.currency || 'NGN';
+      setSelectedMethod(currency === 'NGN' ? 'paystack' : 'stripe');
     } catch (error: any) {
       console.error("Error fetching application:", error);
       toast.error("Failed to load application");
@@ -62,6 +68,19 @@ export default function PaymentPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Helper function to format price with correct currency symbol
+  const formatPrice = (amount: string | number) => {
+    const num = typeof amount === 'string' ? parseFloat(amount) : amount;
+    const currency = application?.currency || 'NGN';
+    const symbol = currency === 'NGN' ? '₦' : '$';
+    const decimals = currency === 'NGN' ? 0 : 2;
+    const formatted = new Intl.NumberFormat(currency === 'NGN' ? 'en-NG' : 'en-US', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    }).format(num);
+    return `${symbol}${formatted}`;
   };
 
   const handlePaystackPayment = async () => {
@@ -140,14 +159,14 @@ export default function PaymentPage() {
       <div>
         <Link
           href={`/dashboard/applications/${params['id']}`}
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
+          className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Application
         </Link>
 
-        <h1 className="text-3xl font-bold text-gray-900">Complete Payment</h1>
-        <p className="text-gray-600 mt-1">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Complete Payment</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-1">
           Application: {application.reference_number}
         </p>
       </div>
@@ -155,8 +174,8 @@ export default function PaymentPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Payment Methods */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Select Payment Method
             </h2>
 
@@ -166,8 +185,8 @@ export default function PaymentPage() {
                 onClick={() => !processing && setSelectedMethod("paystack")}
                 className={`relative border-2 rounded-lg p-4 cursor-pointer transition-all ${
                   selectedMethod === "paystack"
-                    ? "border-primary-600 bg-primary-50"
-                    : "border-gray-200 hover:border-gray-300"
+                    ? "border-primary-600 bg-primary-50 dark:bg-primary-900/20"
+                    : "border-gray-200 dark:border-gray-700 hover:border-gray-300"
                 } ${processing ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 <div className="flex items-start gap-4">
@@ -176,7 +195,7 @@ export default function PaymentPage() {
                       className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                         selectedMethod === "paystack"
                           ? "border-primary-600 bg-primary-600"
-                          : "border-gray-300"
+                          : "border-gray-300 dark:border-gray-600"
                       }`}
                     >
                       {selectedMethod === "paystack" && (
@@ -186,13 +205,13 @@ export default function PaymentPage() {
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <CreditCard className="h-5 w-5 text-gray-700" />
-                      <h3 className="font-semibold text-gray-900">Paystack</h3>
+                      <CreditCard className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                      <h3 className="font-semibold text-gray-900 dark:text-white">Paystack</h3>
                       <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">
                         Recommended for Africa
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                       Pay with card, bank transfer, or mobile money. Supports NGN, GHS, ZAR, KES.
                     </p>
                     <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
@@ -208,8 +227,8 @@ export default function PaymentPage() {
                 onClick={() => !processing && setSelectedMethod("stripe")}
                 className={`relative border-2 rounded-lg p-4 cursor-pointer transition-all ${
                   selectedMethod === "stripe"
-                    ? "border-primary-600 bg-primary-50"
-                    : "border-gray-200 hover:border-gray-300"
+                    ? "border-primary-600 bg-primary-50 dark:bg-primary-900/20"
+                    : "border-gray-200 dark:border-gray-700 hover:border-gray-300"
                 } ${processing ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 <div className="flex items-start gap-4">
@@ -218,7 +237,7 @@ export default function PaymentPage() {
                       className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                         selectedMethod === "stripe"
                           ? "border-primary-600 bg-primary-600"
-                          : "border-gray-300"
+                          : "border-gray-300 dark:border-gray-600"
                       }`}
                     >
                       {selectedMethod === "stripe" && (
@@ -228,13 +247,13 @@ export default function PaymentPage() {
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <CreditCard className="h-5 w-5 text-gray-700" />
-                      <h3 className="font-semibold text-gray-900">Stripe</h3>
+                      <CreditCard className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                      <h3 className="font-semibold text-gray-900 dark:text-white">Stripe</h3>
                       <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">
                         Global
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                       Pay securely with credit/debit card. Accepted worldwide.
                     </p>
                     <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
@@ -248,10 +267,10 @@ export default function PaymentPage() {
           </div>
 
           {/* Security Notice */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
             <div className="flex gap-3">
-              <AlertCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-blue-800">
+              <AlertCircle className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-blue-800 dark:text-blue-300">
                 <p className="font-medium mb-1">Secure Payment</p>
                 <p>
                   All payments are processed securely through our trusted payment partners.
@@ -264,49 +283,49 @@ export default function PaymentPage() {
 
         {/* Payment Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 sticky top-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <DollarSign className="h-5 w-5" />
               Payment Summary
             </h2>
 
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Application</p>
-                <p className="font-medium text-gray-900">{application.reference_number}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Application</p>
+                <p className="font-medium text-gray-900 dark:text-white">{application.reference_number}</p>
               </div>
 
               <div>
-                <p className="text-sm text-gray-600 mb-1">Service</p>
-                <p className="font-medium text-gray-900">{application.service_tier_name}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Service</p>
+                <p className="font-medium text-gray-900 dark:text-white">{application.service_tier_name}</p>
               </div>
 
               <div>
-                <p className="text-sm text-gray-600 mb-1">Destination</p>
-                <p className="font-medium text-gray-900">{application.destination_country}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Destination</p>
+                <p className="font-medium text-gray-900 dark:text-white">{application.destination_country}</p>
               </div>
 
-              <div className="border-t border-gray-200 pt-4 space-y-2">
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Service Fee:</span>
                   <span className="font-medium text-gray-900">
-                    ₦{parseFloat(application.base_price).toLocaleString('en-NG')}
+                    {formatPrice(application.base_price)}
                   </span>
                 </div>
 
                 {application.addon_total && parseFloat(application.addon_total) > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Add-On Services:</span>
-                    <span className="font-medium text-gray-900">
-                      ₦{parseFloat(application.addon_total).toLocaleString('en-NG')}
+                    <span className="text-gray-600 dark:text-gray-400">Add-On Services:</span>
+                    <span className="font-medium text-gray-900 dark:text-white">
+                      {formatPrice(application.addon_total)}
                     </span>
                   </div>
                 )}
 
-                <div className="border-t border-gray-200 pt-2 flex justify-between">
-                  <span className="font-semibold text-gray-900">Total Amount:</span>
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-2 flex justify-between">
+                  <span className="font-semibold text-gray-900 dark:text-white">Total Amount:</span>
                   <span className="text-xl font-bold text-primary-600">
-                    ₦{parseFloat(application.total_amount).toLocaleString('en-NG')}
+                    {formatPrice(application.total_amount)}
                   </span>
                 </div>
               </div>

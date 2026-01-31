@@ -12,18 +12,29 @@ use Exception;
 
 class GoogleOAuthController
 {
-    private Google $provider;
+    private ?Google $provider = null;
     private AuthService $authService;
+    private bool $isConfigured = false;
 
     public function __construct(AuthService $authService)
     {
         $this->authService = $authService;
 
-        $this->provider = new Google([
-            'clientId'     => $_ENV['GOOGLE_CLIENT_ID'],
-            'clientSecret' => $_ENV['GOOGLE_CLIENT_SECRET'],
-            'redirectUri'  => $_ENV['GOOGLE_REDIRECT_URI'],
-        ]);
+        // Check if Google OAuth is configured
+        $clientId = $_ENV['GOOGLE_CLIENT_ID'] ?? null;
+        $clientSecret = $_ENV['GOOGLE_CLIENT_SECRET'] ?? null;
+        $redirectUri = $_ENV['GOOGLE_REDIRECT_URI'] ?? null;
+
+        if ($clientId && $clientSecret && $redirectUri) {
+            $this->provider = new Google([
+                'clientId'     => $clientId,
+                'clientSecret' => $clientSecret,
+                'redirectUri'  => $redirectUri,
+            ]);
+            $this->isConfigured = true;
+        } else {
+            error_log('Google OAuth not configured: Missing GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, or GOOGLE_REDIRECT_URI');
+        }
     }
 
     /**
@@ -31,6 +42,13 @@ class GoogleOAuthController
      */
     public function redirectToGoogle(Request $request, Response $response): Response
     {
+        // Check if Google OAuth is configured
+        if (!$this->isConfigured || !$this->provider) {
+            $frontendUrl = $_ENV['APP_URL'] ?? 'https://tundua.com';
+            $redirectUrl = $frontendUrl . '/auth/login?error=' . urlencode('Google login is not configured. Please contact support.');
+            return $response->withHeader('Location', $redirectUrl)->withStatus(302);
+        }
+
         // Get the authorization URL
         $authorizationUrl = $this->provider->getAuthorizationUrl([
             'scope' => ['email', 'profile']
@@ -44,6 +62,8 @@ class GoogleOAuthController
         $userType = $queryParams['user_type'] ?? 'student';
         $_SESSION['oauth_user_type'] = $userType;
 
+        error_log('Google OAuth: Starting flow, state=' . $_SESSION['oauth2state'] . ', session_id=' . session_id());
+
         // Redirect to Google OAuth authorization page
         return $response
             ->withHeader('Location', $authorizationUrl)
@@ -55,20 +75,41 @@ class GoogleOAuthController
      */
     public function handleCallback(Request $request, Response $response): Response
     {
+        $frontendUrl = $_ENV['APP_URL'] ?? 'https://tundua.com';
+
         try {
+            // Check if Google OAuth is configured
+            if (!$this->isConfigured || !$this->provider) {
+                error_log('Google OAuth Callback: Not configured');
+                $redirectUrl = $frontendUrl . '/auth/login?error=' . urlencode('Google login is not configured.');
+                return $response->withHeader('Location', $redirectUrl)->withStatus(302);
+            }
+
             $queryParams = $request->getQueryParams();
 
-            // Check for errors
+            error_log('Google OAuth Callback: session_id=' . session_id() . ', has_state=' . (isset($queryParams['state']) ? 'yes' : 'no') . ', session_state=' . ($_SESSION['oauth2state'] ?? 'NOT SET'));
+
+            // Check for errors from Google
             if (isset($queryParams['error'])) {
-                throw new Exception('OAuth error: ' . $queryParams['error']);
+                error_log('Google OAuth Error from Google: ' . $queryParams['error']);
+                throw new Exception('Google returned an error: ' . $queryParams['error']);
             }
 
             // Verify state (CSRF protection)
-            if (!isset($queryParams['state']) ||
-                !isset($_SESSION['oauth2state']) ||
-                $queryParams['state'] !== $_SESSION['oauth2state']) {
+            if (!isset($queryParams['state'])) {
+                error_log('Google OAuth: Missing state parameter in callback');
+                throw new Exception('Missing state parameter');
+            }
+
+            if (!isset($_SESSION['oauth2state'])) {
+                error_log('Google OAuth: Session state is missing. Session may have expired or cookies are blocked.');
+                throw new Exception('Session expired. Please try again.');
+            }
+
+            if ($queryParams['state'] !== $_SESSION['oauth2state']) {
+                error_log('Google OAuth: State mismatch. Expected: ' . $_SESSION['oauth2state'] . ', Got: ' . $queryParams['state']);
                 unset($_SESSION['oauth2state']);
-                throw new Exception('Invalid state parameter');
+                throw new Exception('Invalid state - possible CSRF attack or session issue');
             }
 
             // Get access token
@@ -138,26 +179,25 @@ class GoogleOAuthController
                 ->withStatus(302);
 
         } catch (IdentityProviderException $e) {
-            // OAuth provider error
-            error_log('Google OAuth Error: ' . $e->getMessage());
-
-            $frontendUrl = $_ENV['APP_URL'];
-            $redirectUrl = $frontendUrl . '/auth/login?error=' . urlencode('Google login failed. Please try again.');
-
-            return $response
-                ->withHeader('Location', $redirectUrl)
-                ->withStatus(302);
+            // OAuth provider error (token exchange failed)
+            error_log('Google OAuth IdentityProviderException: ' . $e->getMessage());
+            $redirectUrl = $frontendUrl . '/auth/login?error=' . urlencode('Google login failed: ' . $e->getMessage());
+            return $response->withHeader('Location', $redirectUrl)->withStatus(302);
 
         } catch (Exception $e) {
-            // General error
-            error_log('OAuth Callback Error: ' . $e->getMessage());
+            // General error - pass the actual message for debugging
+            error_log('Google OAuth Exception: ' . $e->getMessage() . ' | Trace: ' . $e->getTraceAsString());
+            $errorMessage = $e->getMessage();
 
-            $frontendUrl = $_ENV['APP_URL'];
-            $redirectUrl = $frontendUrl . '/auth/login?error=' . urlencode('Authentication failed. Please try again.');
+            // Make error message user-friendly but informative
+            if (strpos($errorMessage, 'Session expired') !== false) {
+                $errorMessage = 'Session expired. Please try again.';
+            } elseif (strpos($errorMessage, 'state') !== false) {
+                $errorMessage = 'Security validation failed. Please try again.';
+            }
 
-            return $response
-                ->withHeader('Location', $redirectUrl)
-                ->withStatus(302);
+            $redirectUrl = $frontendUrl . '/auth/login?error=' . urlencode($errorMessage);
+            return $response->withHeader('Location', $redirectUrl)->withStatus(302);
         }
     }
 }

@@ -21,7 +21,7 @@ function Skeleton({
   style,
   ...props
 }: SkeletonProps) {
-  const baseClasses = "animate-skeleton bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%]";
+  const baseClasses = "animate-skeleton bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 bg-[length:200%_100%]";
 
   const variantClasses = {
     text: "rounded h-4",
@@ -67,7 +67,7 @@ Skeleton.displayName = "Skeleton";
 
 // Compound Components for common patterns
 const SkeletonCard = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("space-y-4 p-6 border border-gray-100 rounded-2xl bg-white", className)} {...props}>
+  <div className={cn("space-y-4 p-6 border border-gray-100 dark:border-gray-700 rounded-2xl bg-white dark:bg-gray-800", className)} {...props}>
     <Skeleton variant="text" width="60%" height={24} />
     <Skeleton variant="text" lines={3} />
     <div className="flex gap-2 mt-4">
@@ -123,7 +123,7 @@ const SkeletonTable = ({ rows = 5, columns = 4, className, ...props }: { rows?: 
 const SkeletonDashboardStats = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6", className)} {...props}>
     {Array.from({ length: 4 }).map((_, index) => (
-      <div key={index} className="p-6 border border-gray-100 rounded-2xl bg-white space-y-3">
+      <div key={index} className="p-6 border border-gray-100 dark:border-gray-700 rounded-2xl bg-white dark:bg-gray-800 space-y-3">
         <Skeleton variant="text" width="50%" height={16} />
         <Skeleton variant="text" width="70%" height={32} />
         <Skeleton variant="text" width="40%" height={14} />

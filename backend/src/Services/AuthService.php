@@ -15,7 +15,11 @@ class AuthService
 
     public function __construct()
     {
-        $this->jwtSecret = $_ENV['JWT_SECRET'] ?? 'your-secret-key-change-in-production';
+        // JWT_SECRET is required - never use a default fallback in production
+        if (empty($_ENV['JWT_SECRET'])) {
+            throw new \RuntimeException('JWT_SECRET environment variable is required. Please set it in your .env file.');
+        }
+        $this->jwtSecret = $_ENV['JWT_SECRET'];
         $this->jwtAlgorithm = $_ENV['JWT_ALGORITHM'] ?? 'HS256';
         $this->jwtExpiry = (int)($_ENV['JWT_EXPIRY'] ?? 3600); // 1 hour
         $this->jwtRefreshExpiry = (int)($_ENV['JWT_REFRESH_EXPIRY'] ?? 2592000); // 30 days
@@ -262,10 +266,14 @@ class AuthService
     /**
      * Generate password reset URL
      */
-    public function generatePasswordResetUrl(string $token): string
+    public function generatePasswordResetUrl(string $token, string $email = ''): string
     {
         $appUrl = $_ENV['APP_URL'] ?? 'http://localhost:3000';
-        return "{$appUrl}/auth/reset-password?token={$token}";
+        $url = "{$appUrl}/auth/reset-password?token={$token}";
+        if ($email) {
+            $url .= "&email=" . urlencode($email);
+        }
+        return $url;
     }
 
     /**

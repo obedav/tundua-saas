@@ -123,7 +123,7 @@ export default function NotificationCenter() {
                   No notifications yet
                 </p>
                 <p className="text-sm text-gray-400 dark:text-gray-500 text-center mt-1">
-                  We'll notify you when something important happens
+                  We&apos;ll notify you when something important happens
                 </p>
               </div>
             ) : (

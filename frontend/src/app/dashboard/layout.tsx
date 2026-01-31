@@ -6,7 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   Home, FileText, Plus, User, LogOut, Menu, X, Settings, Shield,
-  FolderOpen, ShoppingBag, CreditCard, Gift, BookOpen, HelpCircle,
+  FolderOpen, CreditCard, Gift, BookOpen, HelpCircle,
   Compass, Globe, ChevronLeft, ChevronRight, Search, ChevronDown,
   Moon, Sun, Monitor, FileEdit, GraduationCap, Briefcase
 } from "lucide-react";
@@ -34,13 +34,13 @@ const navigationGroups = [
       { name: "SOP Generator", href: "/dashboard/addons/ai-sop-generator", icon: FileEdit, badgeKey: null, description: "AI-powered SOP generation" },
       { name: "University Report", href: "/dashboard/addons/ai-university-report", icon: GraduationCap, badgeKey: null, description: "Personalized recommendations" },
       { name: "Resume Optimizer", href: "/dashboard/addons/ai-resume-optimizer", icon: Briefcase, badgeKey: null, description: "AI resume optimization" },
+      { name: "View All Services", href: "/dashboard/addons", icon: Compass, badgeKey: null, description: "Browse all AI services" },
     ]
   },
   {
     id: "services",
     title: "Services & Billing",
     items: [
-      { name: "Add-Ons", href: "/dashboard/addons", icon: ShoppingBag, badgeKey: null, description: "Enhance your application" },
       { name: "Billing", href: "/dashboard/billing", icon: CreditCard, badgeKey: null, description: "Payments and invoices" },
       { name: "Referrals", href: "/dashboard/referrals", icon: Gift, badgeKey: null, description: "Earn rewards" },
     ]

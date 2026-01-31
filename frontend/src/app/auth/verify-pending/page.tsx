@@ -38,18 +38,18 @@ export default function VerifyPendingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white dark:bg-gray-800/95 rounded-3xl shadow-2xl shadow-gray-200/50 dark:shadow-gray-950/50 border border-gray-100 dark:border-gray-700/50 p-8 backdrop-blur-sm">
           {/* Icon */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full mb-4">
               <Mail className="h-10 w-10 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               Check Your Email
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               We&apos;ve sent a verification link to:
             </p>
             <p className="text-lg font-semibold text-primary-600 mt-2 break-all">
@@ -58,12 +58,12 @@ export default function VerifyPendingPage() {
           </div>
 
           {/* Instructions */}
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
-            <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-              <CheckCircle className="h-5 w-5 text-blue-600" />
+          <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700/50 rounded-xl p-6 mb-6">
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+              <CheckCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               Next Steps:
             </h3>
-            <ol className="space-y-2 text-sm text-gray-700">
+            <ol className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
               <li className="flex items-start gap-2">
                 <span className="inline-flex items-center justify-center w-5 h-5 bg-blue-600 text-white rounded-full text-xs flex-shrink-0 mt-0.5">
                   1
@@ -86,11 +86,11 @@ export default function VerifyPendingPage() {
           </div>
 
           {/* Tips */}
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
-            <p className="text-sm text-yellow-800 font-medium mb-2">
+          <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700/50 rounded-xl p-4 mb-6">
+            <p className="text-sm text-yellow-800 dark:text-yellow-300 font-medium mb-2">
               📬 Didn&apos;t receive the email?
             </p>
-            <ul className="text-xs text-yellow-700 space-y-1">
+            <ul className="text-xs text-yellow-700 dark:text-yellow-400 space-y-1">
               <li>• Check your spam or junk folder</li>
               <li>• Make sure you entered the correct email address</li>
               <li>• Wait a few minutes - it may be delayed</li>
@@ -120,7 +120,7 @@ export default function VerifyPendingPage() {
 
             <Link
               href="/auth/login"
-              className="w-full flex items-center justify-center gap-2 bg-gray-100 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
             >
               Already Verified? Login
               <ArrowRight className="h-4 w-4" />
@@ -129,7 +129,7 @@ export default function VerifyPendingPage() {
 
           {/* Footer */}
           <div className="mt-8 text-center">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               Need help?{" "}
               <Link
                 href="/contact"
@@ -143,7 +143,7 @@ export default function VerifyPendingPage() {
 
         {/* Additional Info */}
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             The verification link will expire in 24 hours
           </p>
         </div>

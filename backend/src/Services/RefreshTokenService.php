@@ -27,7 +27,11 @@ class RefreshTokenService
 
     public function __construct()
     {
-        $this->jwtSecret = $_ENV['JWT_SECRET'] ?? 'your-secret-key-change-in-production';
+        // JWT_SECRET is required - never use a default fallback in production
+        if (empty($_ENV['JWT_SECRET'])) {
+            throw new \RuntimeException('JWT_SECRET environment variable is required. Please set it in your .env file.');
+        }
+        $this->jwtSecret = $_ENV['JWT_SECRET'];
         $this->jwtAlgorithm = $_ENV['JWT_ALGORITHM'] ?? 'HS256';
         $this->accessTokenExpiry = (int)($_ENV['JWT_EXPIRY'] ?? 3600); // 1 hour
         $this->refreshTokenExpiry = (int)($_ENV['JWT_REFRESH_EXPIRY'] ?? 2592000); // 30 days

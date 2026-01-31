@@ -119,7 +119,7 @@ export function ApplicationJourneyTimeline() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="inline-block bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-semibold mb-4"
+          className="inline-block bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 px-4 py-2 rounded-full text-sm font-semibold mb-4"
         >
           📋 Your Application Journey
         </motion.div>
@@ -128,7 +128,7 @@ export function ApplicationJourneyTimeline() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+          className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4"
         >
           From Dream to Departure in{" "}
           <span className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
@@ -140,7 +140,7 @@ export function ApplicationJourneyTimeline() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="text-xl text-gray-600 max-w-2xl mx-auto"
+          className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
         >
           We guide you through every step of your study abroad journey
         </motion.p>
@@ -180,31 +180,31 @@ export function ApplicationJourneyTimeline() {
               } w-full`}
             >
               <div
-                className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all p-6 border-2 ${
+                className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all p-6 border-2 ${
                   step.status === "completed"
-                    ? "border-green-200 bg-green-50/30"
+                    ? "border-green-200 dark:border-green-700 bg-green-50/30 dark:bg-green-900/10"
                     : step.status === "current"
-                    ? "border-primary-300 bg-primary-50/30"
-                    : "border-gray-200"
+                    ? "border-primary-300 dark:border-primary-700 bg-primary-50/30 dark:bg-primary-900/10"
+                    : "border-gray-200 dark:border-gray-700"
                 }`}
               >
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-semibold text-gray-500">Step {step.id}</span>
+                  <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Step {step.id}</span>
                   {step.status === "completed" && (
-                    <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                    <span className="bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                       <CheckCircle className="w-3 h-3" />
                       Completed
                     </span>
                   )}
                   {step.status === "current" && (
-                    <span className="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 animate-pulse">
+                    <span className="bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 animate-pulse">
                       <Clock className="w-3 h-3" />
                       In Progress
                     </span>
                   )}
                   {step.status === "upcoming" && (
-                    <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-semibold">
+                    <span className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-3 py-1 rounded-full text-xs font-semibold">
                       Upcoming
                     </span>
                   )}
@@ -216,12 +216,12 @@ export function ApplicationJourneyTimeline() {
                 </h3>
 
                 {/* Description */}
-                <p className="text-gray-600 mb-3 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">
                   {step.description}
                 </p>
 
                 {/* Duration */}
-                <div className="flex items-center gap-2 text-sm text-gray-500">
+                <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                   <Clock className="w-4 h-4" />
                   <span className="font-medium">{step.duration}</span>
                 </div>
@@ -238,15 +238,15 @@ export function ApplicationJourneyTimeline() {
         viewport={{ once: true }}
         className="mt-16 text-center"
       >
-        <div className="bg-gradient-to-r from-primary-50 to-secondary-50 border-2 border-primary-200 rounded-2xl p-8 max-w-3xl mx-auto">
+        <div className="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 border-2 border-primary-200 dark:border-primary-700 rounded-2xl p-8 max-w-3xl mx-auto">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <GraduationCap className="w-8 h-8 text-primary-600" />
-            <h3 className="text-2xl font-bold text-gray-900">
+            <GraduationCap className="w-8 h-8 text-primary-600 dark:text-primary-400" />
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
               Average Timeline: 3-6 Months
             </h3>
           </div>
-          <p className="text-gray-600 mb-6">
-            From your first consultation to boarding your flight, we're with you every step of the way
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            From your first consultation to boarding your flight, we&apos;re with you every step of the way
           </p>
           <button className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
             Start Your Journey Today

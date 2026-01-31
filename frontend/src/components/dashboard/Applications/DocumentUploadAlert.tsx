@@ -39,19 +39,19 @@ export default function DocumentUploadAlert({
     <div
       className={`rounded-lg border-2 p-6 ${
         isUrgent
-          ? "bg-red-50 border-red-300"
-          : "bg-yellow-50 border-yellow-300"
+          ? "bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-700"
+          : "bg-yellow-50 dark:bg-yellow-900/20 border-yellow-300 dark:border-yellow-700"
       }`}
     >
       <div className="flex items-start gap-4">
         {/* Icon */}
         <div
           className={`p-2 rounded-full flex-shrink-0 ${
-            isUrgent ? "bg-red-100" : "bg-yellow-100"
+            isUrgent ? "bg-red-100 dark:bg-red-900/30" : "bg-yellow-100 dark:bg-yellow-900/30"
           }`}
         >
           <AlertCircle
-            className={`h-6 w-6 ${isUrgent ? "text-red-600" : "text-yellow-600"}`}
+            className={`h-6 w-6 ${isUrgent ? "text-red-600 dark:text-red-400" : "text-yellow-600 dark:text-yellow-400"}`}
           />
         </div>
 
@@ -61,7 +61,7 @@ export default function DocumentUploadAlert({
             <div>
               <h3
                 className={`text-lg font-bold mb-2 ${
-                  isUrgent ? "text-red-900" : "text-yellow-900"
+                  isUrgent ? "text-red-900 dark:text-red-300" : "text-yellow-900 dark:text-yellow-300"
                 }`}
               >
                 {isUrgent ? "⚠️ Urgent: " : ""}
@@ -69,7 +69,7 @@ export default function DocumentUploadAlert({
               </h3>
               <p
                 className={`text-sm mb-4 ${
-                  isUrgent ? "text-red-700" : "text-yellow-700"
+                  isUrgent ? "text-red-700 dark:text-red-400" : "text-yellow-700 dark:text-yellow-400"
                 }`}
               >
                 Please upload the following documents to continue processing your application
@@ -80,7 +80,7 @@ export default function DocumentUploadAlert({
             {/* Dismiss button */}
             <button
               onClick={handleDismiss}
-              className={`text-gray-400 hover:text-gray-600 transition-colors`}
+              className={`text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors`}
             >
               <X className="h-5 w-5" />
             </button>
@@ -91,22 +91,22 @@ export default function DocumentUploadAlert({
             {missingDocuments.slice(0, 3).map((doc) => (
               <div
                 key={doc.id}
-                className="flex items-center gap-3 bg-white rounded-lg p-3 border border-gray-200"
+                className="flex items-center gap-3 bg-white dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700"
               >
-                <FileText className="h-5 w-5 text-gray-400 flex-shrink-0" />
+                <FileText className="h-5 w-5 text-gray-400 dark:text-gray-500 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900">{doc.name}</p>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{doc.name}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
                     For: {doc.application_reference}
                     {doc.deadline && (
-                      <span className="text-red-600 font-medium ml-2">
+                      <span className="text-red-600 dark:text-red-400 font-medium ml-2">
                         • Due: {new Date(doc.deadline).toLocaleDateString()}
                       </span>
                     )}
                   </p>
                 </div>
                 {doc.urgent && (
-                  <span className="px-2 py-1 bg-red-100 text-red-700 text-xs font-bold rounded">
+                  <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-bold rounded">
                     URGENT
                   </span>
                 )}
@@ -114,7 +114,7 @@ export default function DocumentUploadAlert({
             ))}
 
             {missingDocuments.length > 3 && (
-              <p className="text-sm text-gray-600 italic">
+              <p className="text-sm text-gray-600 dark:text-gray-400 italic">
                 And {missingDocuments.length - 3} more document{missingDocuments.length - 3 > 1 ? "s" : ""}...
               </p>
             )}
@@ -136,7 +136,7 @@ export default function DocumentUploadAlert({
 
             <Link
               href="/dashboard/applications"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-gray-700 bg-white border-2 border-gray-300 hover:border-gray-400 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-colors"
             >
               View Applications
             </Link>

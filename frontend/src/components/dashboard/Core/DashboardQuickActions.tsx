@@ -25,55 +25,55 @@ const quickActions: QuickAction[] = [
     description: "Start a new study abroad application",
     icon: Plus,
     href: "/dashboard/applications/new",
-    color: "text-primary-600",
-    bgColor: "bg-primary-50",
+    color: "text-primary-600 dark:text-primary-400",
+    bgColor: "bg-primary-50 dark:bg-primary-900/20",
   },
   {
     title: "Upload Documents",
     description: "Upload required documents",
     icon: FileUp,
     href: "/dashboard/documents",
-    color: "text-blue-600",
-    bgColor: "bg-blue-50",
+    color: "text-blue-600 dark:text-blue-400",
+    bgColor: "bg-blue-50 dark:bg-blue-900/20",
   },
   {
     title: "View Applications",
     description: "Check your application status",
     icon: FileText,
     href: "/dashboard/applications",
-    color: "text-purple-600",
-    bgColor: "bg-purple-50",
+    color: "text-purple-600 dark:text-purple-400",
+    bgColor: "bg-purple-50 dark:bg-purple-900/20",
   },
   {
     title: "Add-On Services",
     description: "Browse additional services",
     icon: DollarSign,
     href: "/dashboard/addons",
-    color: "text-green-600",
-    bgColor: "bg-green-50",
+    color: "text-green-600 dark:text-green-400",
+    bgColor: "bg-green-50 dark:bg-green-900/20",
   },
   {
     title: "Knowledge Base",
     description: "Get help and answers",
     icon: BookOpen,
     href: "/dashboard/knowledge-base",
-    color: "text-orange-600",
-    bgColor: "bg-orange-50",
+    color: "text-orange-600 dark:text-orange-400",
+    bgColor: "bg-orange-50 dark:bg-orange-900/20",
   },
   {
     title: "Contact Support",
     description: "Get help from our team",
     icon: MessageCircle,
     href: "/dashboard/support",
-    color: "text-red-600",
-    bgColor: "bg-red-50",
+    color: "text-red-600 dark:text-red-400",
+    bgColor: "bg-red-50 dark:bg-red-900/20",
   },
 ];
 
 export default function DashboardQuickActions() {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-6">Quick Actions</h2>
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Quick Actions</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {quickActions.map((action) => {
           const Icon = action.icon;
@@ -81,14 +81,14 @@ export default function DashboardQuickActions() {
             <Link
               key={action.title}
               href={action.href}
-              className="flex items-start gap-4 p-4 rounded-lg border border-gray-200 hover:border-primary-300 hover:shadow-md transition-all group"
+              className="flex items-start gap-4 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary-300 hover:shadow-md transition-all group"
             >
               <div className={`${action.bgColor} p-3 rounded-lg group-hover:scale-110 transition-transform`}>
                 <Icon className={`h-6 w-6 ${action.color}`} />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 mb-1">{action.title}</h3>
-                <p className="text-sm text-gray-600">{action.description}</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{action.title}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{action.description}</p>
               </div>
             </Link>
           );

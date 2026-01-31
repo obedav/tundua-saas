@@ -59,7 +59,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Update meta theme-color for mobile browsers
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', effectiveTheme === 'dark' ? '#111827' : '#ffffff');
+      metaThemeColor.setAttribute('content', effectiveTheme === 'dark' ? '#1c1917' : '#ffffff');
     }
   }, [effectiveTheme]);
 

@@ -230,7 +230,7 @@ export default function TourGuide({ onComplete, onSkip }: TourGuideProps) {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: -20 }}
-          className="absolute bg-white rounded-2xl shadow-2xl w-[400px] overflow-hidden"
+          className="absolute bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-[400px] overflow-hidden"
           style={tooltipPosition}
         >
           {/* Header */}
@@ -257,13 +257,13 @@ export default function TourGuide({ onComplete, onSkip }: TourGuideProps) {
           <div className="p-6">
             {/* Progress */}
             <div className="mb-6">
-              <div className="flex justify-between text-sm text-gray-600 mb-2">
+              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
                 <span>
                   Step {currentStep + 1} of {tourSteps.length}
                 </span>
                 <span>{Math.round(((currentStep + 1) / tourSteps.length) * 100)}%</span>
               </div>
-              <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{
@@ -300,8 +300,8 @@ export default function TourGuide({ onComplete, onSkip }: TourGuideProps) {
                 disabled={currentStep === 0}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all ${
                   currentStep === 0
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    ? "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+                    : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
                 }`}
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -329,7 +329,7 @@ export default function TourGuide({ onComplete, onSkip }: TourGuideProps) {
 
             <button
               onClick={onSkip}
-              className="w-full mt-3 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              className="w-full mt-3 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
             >
               Skip tour
             </button>

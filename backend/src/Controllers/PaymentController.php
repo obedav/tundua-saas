@@ -9,10 +9,88 @@ use Yabacon\Paystack;
 use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeSession;
 use Stripe\Webhook as StripeWebhook;
+use Tundua\Services\PricingService;
 
 class PaymentController
 {
     private $db;
+
+    /**
+     * Validate and recalculate payment amount server-side
+     * Prevents payment amount manipulation attacks
+     */
+    private function validatePaymentAmount(array $application): array
+    {
+        // Recalculate expected amount from service tier and addons
+        $serviceTierId = (int) ($application['service_tier_id'] ?? 0);
+        $addons = json_decode($application['addon_ids'] ?? '[]', true) ?: [];
+        $discountCode = $application['discount_code'] ?? null;
+        $currency = $application['currency'] ?? 'NGN';
+
+        $calculated = PricingService::calculateTotal(
+            $serviceTierId,
+            $addons,
+            $discountCode,
+            $currency
+        );
+
+        if (!$calculated['success']) {
+            return [
+                'valid' => false,
+                'error' => 'Failed to calculate pricing',
+                'expected' => 0,
+                'stored' => $application['total_amount']
+            ];
+        }
+
+        // Handle custom pricing (Elite tier)
+        if ($calculated['is_custom_pricing'] ?? false) {
+            return [
+                'valid' => false,
+                'error' => 'Custom pricing requires manual approval',
+                'expected' => 0,
+                'stored' => $application['total_amount']
+            ];
+        }
+
+        $expectedAmount = (float) $calculated['pricing']['total_amount'];
+        $storedAmount = (float) $application['total_amount'];
+
+        // Allow 1% tolerance for rounding differences
+        $tolerance = $expectedAmount * 0.01;
+        $isValid = abs($expectedAmount - $storedAmount) <= $tolerance;
+
+        return [
+            'valid' => $isValid,
+            'expected' => $expectedAmount,
+            'stored' => $storedAmount,
+            'currency' => $currency,
+            'error' => $isValid ? null : 'Payment amount mismatch - possible tampering detected'
+        ];
+    }
+
+    /**
+     * Convert amount between currencies
+     */
+    private function convertCurrency(float $amount, string $fromCurrency, string $toCurrency): float
+    {
+        if ($fromCurrency === $toCurrency) {
+            return $amount;
+        }
+
+        $exchangeRate = PricingService::getExchangeRate(); // NGN to USD rate
+
+        if ($fromCurrency === 'NGN' && $toCurrency === 'USD') {
+            return round($amount / $exchangeRate, 2);
+        }
+
+        if ($fromCurrency === 'USD' && $toCurrency === 'NGN') {
+            return round($amount * $exchangeRate, 2);
+        }
+
+        // Unsupported conversion
+        return $amount;
+    }
 
     public function __construct()
     {
@@ -67,8 +145,23 @@ class PaymentController
                 return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
             }
 
+            // Validate payment amount server-side to prevent manipulation
+            $validation = $this->validatePaymentAmount($application);
+            if (!$validation['valid']) {
+                error_log("Payment validation failed for application {$applicationId}: " . json_encode($validation));
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => $validation['error'] ?? 'Payment validation failed'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            // Use validated amount
+            $paymentAmount = $validation['expected'];
+            $paymentCurrency = $validation['currency'];
+
             // Convert amount to kobo (Paystack uses kobo for NGN, pesewas for GHS, cents for ZAR)
-            $amountInKobo = (int)($application['total_amount'] * 100);
+            $amountInKobo = (int)($paymentAmount * 100);
 
             // Create payment record
             $transactionId = 'PAY-' . strtoupper(uniqid());
@@ -82,8 +175,8 @@ class PaymentController
                 $transactionId,
                 $applicationId,
                 $application['user_id'],
-                $application['total_amount'],
-                'NGN',
+                $paymentAmount,
+                $paymentCurrency,
                 'paystack',
                 'pending'
             ]);
@@ -257,28 +350,45 @@ class PaymentController
             if ($event->event === 'charge.success') {
                 $reference = $event->data->reference;
 
+                // IDEMPOTENCY CHECK: Prevent duplicate processing
+                $stmt = $this->getDb()->prepare("
+                    SELECT status FROM payments WHERE provider_transaction_id = ?
+                ");
+                $stmt->execute([$reference]);
+                $existingPayment = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+                // If already completed, return success without reprocessing
+                if ($existingPayment && $existingPayment['status'] === 'completed') {
+                    error_log("Webhook already processed for reference: {$reference}");
+                    $response->getBody()->write(json_encode(['success' => true, 'message' => 'Already processed']));
+                    return $response->withHeader('Content-Type', 'application/json');
+                }
+
                 // Update payment status
                 $stmt = $this->getDb()->prepare("
                     UPDATE payments
                     SET status = 'completed', paid_at = NOW()
-                    WHERE provider_transaction_id = ?
+                    WHERE provider_transaction_id = ? AND status != 'completed'
                 ");
                 $stmt->execute([$reference]);
 
-                // Update application
-                $stmt = $this->getDb()->prepare("
-                    SELECT application_id FROM payments WHERE provider_transaction_id = ?
-                ");
-                $stmt->execute([$reference]);
-                $payment = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-                if ($payment) {
+                // Only update application if payment was actually updated
+                if ($stmt->rowCount() > 0) {
+                    // Get application_id
                     $stmt = $this->getDb()->prepare("
-                        UPDATE applications
-                        SET payment_status = 'paid', status = 'submitted', submitted_at = NOW()
-                        WHERE id = ?
+                        SELECT application_id FROM payments WHERE provider_transaction_id = ?
                     ");
-                    $stmt->execute([$payment['application_id']]);
+                    $stmt->execute([$reference]);
+                    $payment = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+                    if ($payment) {
+                        $stmt = $this->getDb()->prepare("
+                            UPDATE applications
+                            SET payment_status = 'paid', status = 'submitted', submitted_at = NOW()
+                            WHERE id = ? AND payment_status != 'paid'
+                        ");
+                        $stmt->execute([$payment['application_id']]);
+                    }
                 }
             }
 
@@ -328,7 +438,26 @@ class PaymentController
                 return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
             }
 
-            // Create payment record
+            // Validate payment amount server-side to prevent manipulation
+            $validation = $this->validatePaymentAmount($application);
+            if (!$validation['valid']) {
+                error_log("Stripe payment validation failed for application {$applicationId}: " . json_encode($validation));
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => $validation['error'] ?? 'Payment validation failed'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            // Get validated amount and convert to USD for Stripe
+            $originalAmount = $validation['expected'];
+            $originalCurrency = $validation['currency'];
+
+            // Stripe charges in USD - convert if necessary
+            $stripeAmount = $this->convertCurrency($originalAmount, $originalCurrency, 'USD');
+            $stripeAmountCents = (int)($stripeAmount * 100);
+
+            // Create payment record (store in USD since that's what Stripe charges)
             $transactionId = 'STRIPE-' . strtoupper(uniqid());
             $stmt = $this->getDb()->prepare("
                 INSERT INTO payments (
@@ -340,8 +469,8 @@ class PaymentController
                 $transactionId,
                 $applicationId,
                 $application['user_id'],
-                $application['total_amount'],
-                'NGN',
+                $stripeAmount,
+                'USD',
                 'stripe',
                 'pending'
             ]);
@@ -357,9 +486,10 @@ class PaymentController
                         'currency' => 'usd',
                         'product_data' => [
                             'name' => 'Study Abroad Application - ' . $application['reference_number'],
-                            'description' => $application['service_tier_name'] ?? 'Application Fee',
+                            'description' => ($application['service_tier_name'] ?? 'Application Fee') .
+                                ' (Converted from ' . $originalCurrency . ' ' . number_format($originalAmount, 2) . ')',
                         ],
-                        'unit_amount' => (int)($application['total_amount'] * 100),
+                        'unit_amount' => $stripeAmountCents,
                     ],
                     'quantity' => 1,
                 ]],
@@ -586,5 +716,24 @@ class PaymentController
             ]));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
+    }
+
+    /**
+     * Get user's saved payment methods
+     * Note: Payment methods are managed by Paystack/Stripe, not stored locally
+     * This endpoint returns an empty array as we don't store card details
+     *
+     * GET /api/payments/methods
+     */
+    public function getPaymentMethods(Request $request, Response $response): Response
+    {
+        // We don't store payment methods locally - Paystack/Stripe handle this
+        // Return empty array with explanation
+        $response->getBody()->write(json_encode([
+            'success' => true,
+            'data' => [],
+            'message' => 'Payment methods are securely managed by our payment providers (Paystack/Stripe). Add a payment method during checkout.'
+        ]));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }

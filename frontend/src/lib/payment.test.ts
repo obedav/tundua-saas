@@ -1,392 +1,244 @@
-/*
- * DISABLED: Tests commented out until the following payment methods are added to ApiClient:
- * - initializePayment()
- * - verifyPayment()
- * - processRefund()
- *
- * These tests are comprehensive and ready to run once the payment API implementation
- * is completed. They cover Stripe and M-Pesa/Paystack payment flows, refund processing,
- * error scenarios, and security validation.
- *
- * To re-enable: Uncomment the code below and add the missing payment methods to ApiClient.
- */
-
-/*
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { apiClient } from "@/lib/api-client";
+import type { AxiosResponse } from "axios";
+
+// Helper to create mock AxiosResponse
+function mockAxiosResponse<T>(data: T): AxiosResponse<T> {
+  return {
+    data,
+    status: 200,
+    statusText: "OK",
+    headers: {},
+    config: { headers: {} },
+  } as AxiosResponse<T>;
+}
 
 // Mock API client
 vi.mock("@/lib/api-client", () => ({
   apiClient: {
-    initializePayment: vi.fn(),
-    verifyPayment: vi.fn(),
-    processRefund: vi.fn(),
+    initializePaystack: vi.fn(),
+    verifyPaystack: vi.fn(),
+    createStripeCheckout: vi.fn(),
+    getPaymentStatus: vi.fn(),
+    requestRefund: vi.fn(),
   },
 }));
 
-describe("Payment Flow Tests - CRITICAL", () => {
+describe("Payment Flow Tests", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   describe("Payment Initialization", () => {
-    it("should initialize Stripe payment successfully", async () => {
-      const mockPaymentIntent = {
-        data: {
-          clientSecret: "pi_test_secret_12345",
-          paymentIntentId: "pi_12345",
-          amount: 29900, // $299.00 in cents
-          currency: "usd",
-        },
-      };
-
-      vi.mocked(apiClient.initializePayment).mockResolvedValue(mockPaymentIntent);
-
-      const result = await apiClient.initializePayment({
-        amount: 299.0,
-        currency: "USD",
-        serviceTier: "Premium",
-        applicationId: 1,
+    it("should initialize Stripe checkout successfully", async () => {
+      const mockCheckout = mockAxiosResponse({
+        success: true,
+        checkout_url: "https://checkout.stripe.com/test_session",
+        session_id: "cs_test_12345",
       });
 
-      expect(result.data.clientSecret).toBe("pi_test_secret_12345");
-      expect(result.data.amount).toBe(29900);
+      vi.mocked(apiClient.createStripeCheckout).mockResolvedValue(mockCheckout);
+
+      const result = await apiClient.createStripeCheckout(
+        1,
+        "https://example.com/success",
+        "https://example.com/cancel"
+      );
+
+      expect(result.data.success).toBe(true);
+      expect(result.data.checkout_url).toContain("stripe.com");
     });
 
-    it("should initialize M-Pesa payment successfully", async () => {
-      const mockPaystackResponse = {
-        data: {
-          authorization_url: "https://paystack.com/pay/xyz123",
-          access_code: "xyz123",
-          reference: "ref_12345",
-        },
-      };
+    it("should initialize Paystack payment successfully", async () => {
+      const mockPaystackResponse = mockAxiosResponse({
+        success: true,
+        authorization_url: "https://checkout.paystack.com/test123",
+        access_code: "test_access_code",
+        reference: "TUN-1234567890",
+      });
 
-      vi.mocked(apiClient.initializePayment).mockResolvedValue(
+      vi.mocked(apiClient.initializePaystack).mockResolvedValue(
         mockPaystackResponse
       );
 
-      const result = await apiClient.initializePayment({
-        amount: 299.0,
-        currency: "KES",
-        serviceTier: "Premium",
-        paymentMethod: "mpesa",
-      });
+      const result = await apiClient.initializePaystack(1);
 
+      expect(result.data.success).toBe(true);
       expect(result.data.authorization_url).toContain("paystack.com");
-      expect(result.data.reference).toBe("ref_12345");
+      expect(result.data.reference).toMatch(/^TUN-/);
     });
 
     it("should handle payment initialization failure", async () => {
-      vi.mocked(apiClient.initializePayment).mockRejectedValue({
+      vi.mocked(apiClient.initializePaystack).mockRejectedValue({
         response: {
           status: 400,
           data: {
-            message: "Insufficient account balance",
+            success: false,
+            message: "Application not found or already paid",
           },
         },
       });
 
-      await expect(
-        apiClient.initializePayment({
-          amount: 299.0,
-          currency: "USD",
-        })
-      ).rejects.toMatchObject({
+      await expect(apiClient.initializePaystack(999)).rejects.toMatchObject({
         response: {
+          status: 400,
           data: {
-            message: "Insufficient account balance",
+            message: expect.stringContaining("Application"),
           },
         },
       });
-    });
-
-    it("should validate payment amount", async () => {
-      // Amount should be positive
-      await expect(
-        apiClient.initializePayment({
-          amount: -10,
-          currency: "USD",
-        })
-      ).rejects.toThrow();
-
-      // Amount should not be zero
-      await expect(
-        apiClient.initializePayment({
-          amount: 0,
-          currency: "USD",
-        })
-      ).rejects.toThrow();
     });
   });
 
   describe("Payment Verification", () => {
-    it("should verify successful Stripe payment", async () => {
-      const mockVerification = {
-        data: {
-          status: "succeeded",
-          paymentId: 123,
-          amount: 29900,
-          currency: "usd",
-          receipt_url: "https://stripe.com/receipt/xyz",
-        },
-      };
+    it("should verify successful Paystack payment", async () => {
+      const mockVerification = mockAxiosResponse({
+        success: true,
+        status: "success",
+        payment_id: 123,
+        amount: 50000,
+        currency: "NGN",
+      });
 
-      vi.mocked(apiClient.verifyPayment).mockResolvedValue(mockVerification);
+      vi.mocked(apiClient.verifyPaystack).mockResolvedValue(mockVerification);
 
-      const result = await apiClient.verifyPayment("pi_12345", "stripe");
+      const result = await apiClient.verifyPaystack("TUN-1234567890");
 
-      expect(result.data.status).toBe("succeeded");
-      expect(result.data.amount).toBe(29900);
+      expect(result.data.success).toBe(true);
+      expect(result.data.status).toBe("success");
     });
 
     it("should handle failed payment verification", async () => {
-      const mockVerification = {
-        data: {
-          status: "failed",
-          error: "Card declined",
-        },
-      };
+      const mockVerification = mockAxiosResponse({
+        success: false,
+        status: "failed",
+        error: "Payment was declined",
+      });
 
-      vi.mocked(apiClient.verifyPayment).mockResolvedValue(mockVerification);
+      vi.mocked(apiClient.verifyPaystack).mockResolvedValue(mockVerification);
 
-      const result = await apiClient.verifyPayment("pi_12345", "stripe");
+      const result = await apiClient.verifyPaystack("TUN-failed-ref");
 
+      expect(result.data.success).toBe(false);
       expect(result.data.status).toBe("failed");
-      expect(result.data.error).toBe("Card declined");
     });
 
-    it("should handle payment timeout", async () => {
-      vi.mocked(apiClient.verifyPayment).mockRejectedValue({
-        response: {
-          status: 408,
-          data: {
-            message: "Payment verification timeout",
-          },
+    it("should get payment status by ID", async () => {
+      const mockStatus = mockAxiosResponse({
+        success: true,
+        payment: {
+          id: 123,
+          status: "completed",
+          amount: 50000,
+          currency: "NGN",
+          payment_method: "paystack",
         },
       });
 
-      await expect(
-        apiClient.verifyPayment("pi_12345", "stripe")
-      ).rejects.toMatchObject({
-        response: {
-          status: 408,
-        },
-      });
-    });
+      vi.mocked(apiClient.getPaymentStatus).mockResolvedValue(mockStatus);
 
-    it("should verify Paystack/M-Pesa payment", async () => {
-      const mockVerification = {
-        data: {
-          status: "success",
-          reference: "ref_12345",
-          amount: 29900,
-          currency: "KES",
-        },
-      };
+      const result = await apiClient.getPaymentStatus(123);
 
-      vi.mocked(apiClient.verifyPayment).mockResolvedValue(mockVerification);
-
-      const result = await apiClient.verifyPayment("ref_12345", "paystack");
-
-      expect(result.data.status).toBe("success");
+      expect(result.data.success).toBe(true);
+      expect(result.data.payment.status).toBe("completed");
     });
   });
 
-  describe("Refund Processing - CRITICAL", () => {
-    it("should process full refund successfully", async () => {
-      const mockRefund = {
-        data: {
-          refundId: 456,
+  describe("Refund Processing", () => {
+    it("should request refund successfully", async () => {
+      const mockRefund = mockAxiosResponse({
+        success: true,
+        refund: {
+          id: 456,
           status: "pending",
-          amount: 29900,
-          reason: "Visa denied",
-          estimatedDays: 5,
+          amount: 50000,
+          reason: "Service not needed",
         },
-      };
-
-      vi.mocked(apiClient.processRefund).mockResolvedValue(mockRefund);
-
-      const result = await apiClient.processRefund({
-        paymentId: 123,
-        amount: 299.0,
-        reason: "Visa denied",
       });
 
-      expect(result.data.status).toBe("pending");
-      expect(result.data.amount).toBe(29900);
+      vi.mocked(apiClient.requestRefund).mockResolvedValue(mockRefund);
+
+      const result = await apiClient.requestRefund(1, "Service not needed");
+
+      expect(result.data.success).toBe(true);
+      expect(result.data.refund.status).toBe("pending");
     });
 
-    it("should process partial refund", async () => {
-      const mockRefund = {
-        data: {
-          refundId: 457,
-          status: "pending",
-          amount: 14950, // $149.50 - partial refund
-          reason: "Partial service completion",
-        },
-      };
-
-      vi.mocked(apiClient.processRefund).mockResolvedValue(mockRefund);
-
-      const result = await apiClient.processRefund({
-        paymentId: 123,
-        amount: 149.5,
-        reason: "Partial service completion",
-      });
-
-      expect(result.data.amount).toBe(14950);
-    });
-
-    it("should reject refund after 90 days", async () => {
-      vi.mocked(apiClient.processRefund).mockRejectedValue({
+    it("should reject refund for ineligible application", async () => {
+      vi.mocked(apiClient.requestRefund).mockRejectedValue({
         response: {
           status: 400,
           data: {
-            message: "Refund period expired (90 days)",
+            success: false,
+            message: "Application is not eligible for refund",
           },
         },
       });
 
       await expect(
-        apiClient.processRefund({
-          paymentId: 123,
-          amount: 299.0,
-          reason: "Changed mind",
-        })
+        apiClient.requestRefund(1, "Changed mind")
       ).rejects.toMatchObject({
-        response: {
-          data: {
-            message: expect.stringContaining("90 days"),
-          },
-        },
-      });
-    });
-
-    it("should not refund more than original amount", async () => {
-      vi.mocked(apiClient.processRefund).mockRejectedValue({
         response: {
           status: 400,
           data: {
-            message: "Refund amount exceeds original payment",
-          },
-        },
-      });
-
-      await expect(
-        apiClient.processRefund({
-          paymentId: 123,
-          amount: 500.0, // More than original $299
-          reason: "Invalid amount",
-        })
-      ).rejects.toMatchObject({
-        response: {
-          data: {
-            message: expect.stringContaining("exceeds"),
+            message: expect.stringContaining("eligible"),
           },
         },
       });
     });
   });
 
-  describe("Payment Error Scenarios", () => {
-    it("should handle insufficient funds", async () => {
-      vi.mocked(apiClient.initializePayment).mockRejectedValue({
-        response: {
-          data: {
-            code: "insufficient_funds",
-            message: "Your card has insufficient funds",
-          },
-        },
-      });
-
-      await expect(
-        apiClient.initializePayment({ amount: 299.0 })
-      ).rejects.toMatchObject({
-        response: {
-          data: {
-            code: "insufficient_funds",
-          },
-        },
-      });
-    });
-
-    it("should handle card declined", async () => {
-      vi.mocked(apiClient.verifyPayment).mockResolvedValue({
-        data: {
-          status: "failed",
-          decline_code: "generic_decline",
-          message: "Your card was declined",
-        },
-      });
-
-      const result = await apiClient.verifyPayment("pi_declined");
-
-      expect(result.data.status).toBe("failed");
-      expect(result.data.decline_code).toBe("generic_decline");
-    });
-
-    it("should handle network timeout during payment", async () => {
-      vi.mocked(apiClient.verifyPayment).mockRejectedValue(
+  describe("Payment Error Handling", () => {
+    it("should handle network timeout", async () => {
+      vi.mocked(apiClient.getPaymentStatus).mockRejectedValue(
         new Error("Network request failed")
       );
 
-      await expect(apiClient.verifyPayment("pi_12345")).rejects.toThrow(
+      await expect(apiClient.getPaymentStatus(123)).rejects.toThrow(
         "Network request failed"
       );
     });
 
-    it("should handle webhook delivery failure", async () => {
-      // Payment succeeds but webhook fails
-      // Application should still be able to verify payment manually
-      const mockVerification = {
-        data: {
-          status: "succeeded",
-          webhookDelivered: false,
-          manualVerificationRequired: true,
+    it("should handle unauthorized access", async () => {
+      vi.mocked(apiClient.getPaymentStatus).mockRejectedValue({
+        response: {
+          status: 401,
+          data: {
+            message: "Unauthorized",
+          },
         },
-      };
+      });
 
-      vi.mocked(apiClient.verifyPayment).mockResolvedValue(mockVerification);
-
-      const result = await apiClient.verifyPayment("pi_12345");
-
-      expect(result.data.webhookDelivered).toBe(false);
-      expect(result.data.manualVerificationRequired).toBe(true);
+      await expect(apiClient.getPaymentStatus(123)).rejects.toMatchObject({
+        response: {
+          status: 401,
+        },
+      });
     });
   });
 
   describe("Payment Security", () => {
-    it("should not expose sensitive card data", async () => {
-      const mockPayment = {
-        data: {
+    it("should not expose sensitive payment data in responses", async () => {
+      const mockPayment = mockAxiosResponse({
+        success: true,
+        payment: {
+          id: 123,
+          status: "completed",
+          amount: 50000,
           last4: "4242",
           brand: "visa",
-          // Should NOT include full card number, CVV, etc.
         },
-      };
+      });
 
-      vi.mocked(apiClient.verifyPayment).mockResolvedValue(mockPayment);
+      vi.mocked(apiClient.getPaymentStatus).mockResolvedValue(mockPayment);
 
-      const result = await apiClient.verifyPayment("pi_12345");
+      const result = await apiClient.getPaymentStatus(123);
 
-      expect(result.data).not.toHaveProperty("cardNumber");
-      expect(result.data).not.toHaveProperty("cvv");
-      expect(result.data).not.toHaveProperty("pin");
-    });
-
-    it("should use HTTPS for all payment requests in production", async () => {
-      // This would be tested in integration tests
-      // Ensure all payment API calls use HTTPS in production
-      // In development/test, localhost is acceptable
-      const apiUrl = process.env['NEXT_PUBLIC_API_URL'] || '';
-      if (process.env.NODE_ENV === 'production') {
-        expect(apiUrl).toMatch(/^https:/);
-      } else {
-        // In development/test, allow localhost with http
-        expect(apiUrl).toMatch(/^https?:\/\/(localhost|127\.0\.0\.1)/);
-      }
+      // Should only have last4, not full card number
+      expect(result.data.payment).not.toHaveProperty("cardNumber");
+      expect(result.data.payment).not.toHaveProperty("cvv");
+      expect(result.data.payment).not.toHaveProperty("pin");
+      expect(result.data.payment.last4).toBe("4242");
     });
   });
 });
-*/

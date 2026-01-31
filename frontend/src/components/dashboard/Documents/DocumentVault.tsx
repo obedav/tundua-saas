@@ -36,36 +36,36 @@ export default function DocumentVault({ documents = [] }: DocumentVaultProps) {
 
   const getStatusBadge = (status: Document["status"]) => {
     const badges = {
-      pending: { color: "bg-yellow-100 text-yellow-700", text: "Pending" },
-      approved: { color: "bg-green-100 text-green-700", text: "Approved" },
-      rejected: { color: "bg-red-100 text-red-700", text: "Rejected" },
+      pending: { color: "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400", text: "Pending" },
+      approved: { color: "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400", text: "Approved" },
+      rejected: { color: "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400", text: "Rejected" },
     };
     return badges[status];
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Document Vault</h2>
+      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Document Vault</h2>
 
         {/* Search & Filter */}
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
               placeholder="Search documents..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
             />
           </div>
 
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
           >
             <option value="all">All Types</option>
             <option value="passport">Passport</option>
@@ -78,12 +78,12 @@ export default function DocumentVault({ documents = [] }: DocumentVaultProps) {
       </div>
 
       {/* Document List */}
-      <div className="divide-y divide-gray-200">
+      <div className="divide-y divide-gray-200 dark:divide-gray-700">
         {filteredDocuments.length === 0 ? (
           <div className="p-12 text-center">
-            <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-600">No documents found</p>
-            <button className="mt-4 inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-medium">
+            <FileText className="h-12 w-12 text-gray-300 dark:text-gray-500 mx-auto mb-4" />
+            <p className="text-gray-600 dark:text-gray-400">No documents found</p>
+            <button className="mt-4 inline-flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 font-medium">
               <Upload className="h-4 w-4" />
               Upload Document
             </button>
@@ -92,17 +92,17 @@ export default function DocumentVault({ documents = [] }: DocumentVaultProps) {
           filteredDocuments.map((doc) => {
             const statusBadge = getStatusBadge(doc.status);
             return (
-              <div key={doc.id} className="p-4 hover:bg-gray-50 transition-colors">
+              <div key={doc.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                 <div className="flex items-center gap-4">
                   {/* Icon */}
-                  <div className="bg-primary-50 p-3 rounded-lg">
-                    <FileText className="h-6 w-6 text-primary-600" />
+                  <div className="bg-primary-50 dark:bg-primary-900/20 p-3 rounded-lg">
+                    <FileText className="h-6 w-6 text-primary-600 dark:text-primary-400" />
                   </div>
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-gray-900 truncate">{doc.name}</h3>
-                    <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                    <h3 className="font-semibold text-gray-900 dark:text-white truncate">{doc.name}</h3>
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mt-1">
                       <span>{formatFileSize(doc.size)}</span>
                       <span>•</span>
                       <span>{new Date(doc.uploaded_at).toLocaleDateString()}</span>
@@ -122,13 +122,13 @@ export default function DocumentVault({ documents = [] }: DocumentVaultProps) {
 
                   {/* Actions */}
                   <div className="flex items-center gap-2">
-                    <button className="p-2 text-gray-400 hover:text-primary-600 transition-colors" title="Preview">
+                    <button className="p-2 text-gray-400 dark:text-gray-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors" title="Preview">
                       <Eye className="h-5 w-5" />
                     </button>
-                    <button className="p-2 text-gray-400 hover:text-green-600 transition-colors" title="Download">
+                    <button className="p-2 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors" title="Download">
                       <Download className="h-5 w-5" />
                     </button>
-                    <button className="p-2 text-gray-400 hover:text-red-600 transition-colors" title="Delete">
+                    <button className="p-2 text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 transition-colors" title="Delete">
                       <Trash2 className="h-5 w-5" />
                     </button>
                   </div>

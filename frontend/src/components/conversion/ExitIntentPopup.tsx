@@ -75,17 +75,17 @@ export function ExitIntentPopup({
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
           >
-            <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 relative overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-lg w-full p-8 relative overflow-hidden">
               {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full blur-3xl opacity-50" />
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-secondary-100 to-secondary-200 rounded-full blur-3xl opacity-50" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/40 dark:to-primary-800/30 rounded-full blur-3xl opacity-50" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-secondary-100 to-secondary-200 dark:from-secondary-900/40 dark:to-secondary-800/30 rounded-full blur-3xl opacity-50" />
 
               {/* Close button */}
               <button
                 onClick={handleDecline}
-                className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors z-10"
+                className="absolute top-4 right-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors z-10"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               </button>
 
               {/* Content */}
@@ -97,24 +97,24 @@ export function ExitIntentPopup({
                 </div>
 
                 <h2 className="text-3xl font-bold text-center mb-3 bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                  Wait! Don't Leave Empty-Handed
+                  Wait! Don&apos;t Leave Empty-Handed
                 </h2>
 
-                <p className="text-gray-600 text-center mb-6">
+                <p className="text-gray-600 dark:text-gray-400 text-center mb-6">
                   Get <span className="font-bold text-primary-600 text-2xl">{discountPercentage}% OFF</span> your first application package!
                 </p>
 
-                <div className="bg-gradient-to-r from-primary-50 to-secondary-50 border-2 border-primary-200 rounded-2xl p-6 mb-6">
+                <div className="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 border-2 border-primary-200 dark:border-primary-700 rounded-2xl p-6 mb-6">
                   <div className="flex items-center justify-center gap-2 mb-3">
-                    <Sparkles className="w-5 h-5 text-primary-600" />
-                    <p className="font-semibold text-gray-900">Your Exclusive Code:</p>
+                    <Sparkles className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    <p className="font-semibold text-gray-900 dark:text-white">Your Exclusive Code:</p>
                   </div>
-                  <div className="bg-white border-2 border-dashed border-primary-400 rounded-xl p-4 text-center">
+                  <div className="bg-white dark:bg-gray-900 border-2 border-dashed border-primary-400 rounded-xl p-4 text-center">
                     <code className="text-2xl font-bold text-primary-600 tracking-wider">
                       {discountCode}
                     </code>
                   </div>
-                  <p className="text-xs text-gray-500 text-center mt-3">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
                     ✓ Valid for 24 hours only • ✓ No minimum purchase
                   </p>
                 </div>
@@ -130,9 +130,9 @@ export function ExitIntentPopup({
 
                   <button
                     onClick={handleDecline}
-                    className="w-full text-gray-500 hover:text-gray-700 text-sm transition-colors"
+                    className="w-full text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 text-sm transition-colors"
                   >
-                    No thanks, I'll pay full price
+                    No thanks, I&apos;ll pay full price
                   </button>
                 </div>
               </div>

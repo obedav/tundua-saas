@@ -31,28 +31,28 @@ export default function AccountDeletion() {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-sm border border-red-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-red-200 dark:border-red-700">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-red-200 bg-red-50">
+        <div className="px-6 py-4 border-b border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/20">
           <div className="flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-red-600" />
-            <h2 className="text-lg font-semibold text-red-900">Danger Zone</h2>
+            <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
+            <h2 className="text-lg font-semibold text-red-900 dark:text-red-300">Danger Zone</h2>
           </div>
-          <p className="text-sm text-red-700 mt-1">
+          <p className="text-sm text-red-700 dark:text-red-400 mt-1">
             Irreversible and destructive actions
           </p>
         </div>
 
         <div className="p-6">
           {/* Warning Banner */}
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4 mb-6">
             <div className="flex gap-3">
-              <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+              <AlertTriangle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="text-sm font-semibold text-yellow-900 mb-1">
+                <h3 className="text-sm font-semibold text-yellow-900 dark:text-yellow-300 mb-1">
                   Before you delete your account
                 </h3>
-                <p className="text-sm text-yellow-800">
+                <p className="text-sm text-yellow-800 dark:text-yellow-300">
                   Please note that account deletion is permanent and cannot be undone.
                   Consider the following before proceeding:
                 </p>
@@ -62,51 +62,51 @@ export default function AccountDeletion() {
 
           {/* What You'll Lose */}
           <div className="space-y-4 mb-6">
-            <h3 className="text-sm font-semibold text-gray-900">What you'll lose:</h3>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">What you&apos;ll lose:</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <X className="w-4 h-4 text-red-600" />
+              <div className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <X className="w-4 h-4 text-red-600 dark:text-red-400" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 mb-1">All Applications</h4>
-                  <p className="text-xs text-gray-600">
+                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-1">All Applications</h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
                     Your application history and current applications will be permanently deleted
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <X className="w-4 h-4 text-red-600" />
+              <div className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <X className="w-4 h-4 text-red-600 dark:text-red-400" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 mb-1">Documents</h4>
-                  <p className="text-xs text-gray-600">
+                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-1">Documents</h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
                     All uploaded documents will be permanently removed from our servers
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <X className="w-4 h-4 text-red-600" />
+              <div className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <X className="w-4 h-4 text-red-600 dark:text-red-400" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 mb-1">Payment History</h4>
-                  <p className="text-xs text-gray-600">
+                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-1">Payment History</h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
                     Access to invoices and payment records will be lost
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <X className="w-4 h-4 text-red-600" />
+              <div className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <X className="w-4 h-4 text-red-600 dark:text-red-400" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 mb-1">Add-On Services</h4>
-                  <p className="text-xs text-gray-600">
+                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-1">Add-On Services</h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
                     Purchased add-ons and deliverables will no longer be accessible
                   </p>
                 </div>
@@ -115,27 +115,27 @@ export default function AccountDeletion() {
           </div>
 
           {/* Alternatives */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <h3 className="text-sm font-semibold text-blue-900 mb-2">
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4 mb-6">
+            <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-2">
               Consider these alternatives:
             </h3>
-            <ul className="text-sm text-blue-800 space-y-2">
+            <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-2">
               <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">•</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold">•</span>
                 <span>
                   <strong>Temporarily deactivate:</strong> Keep your data but hide your profile
                 </span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">•</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold">•</span>
                 <span>
                   <strong>Download your data:</strong> Export all your information before deleting
                 </span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">•</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold">•</span>
                 <span>
-                  <strong>Contact support:</strong> We're here to help resolve any issues
+                  <strong>Contact support:</strong> We&apos;re here to help resolve any issues
                 </span>
               </li>
             </ul>
@@ -145,7 +145,7 @@ export default function AccountDeletion() {
           <div className="flex flex-col sm:flex-row gap-3">
             <a
               href="/dashboard/help/contact"
-              className="flex-1 px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors text-center"
+              className="flex-1 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-center"
             >
               Contact Support First
             </a>
@@ -159,12 +159,12 @@ export default function AccountDeletion() {
           </div>
 
           {/* Data Protection Notice */}
-          <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
             <div className="flex items-start gap-3">
-              <Shield className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
+              <Shield className="w-5 h-5 text-gray-400 dark:text-gray-500 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="text-sm font-medium text-gray-900 mb-1">Data Protection</h4>
-                <p className="text-sm text-gray-600">
+                <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-1">Data Protection</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   We take your privacy seriously. Upon account deletion, all personal data will be
                   permanently removed within 30 days, except where required by law for financial
                   records (7 years) or legal compliance.
@@ -178,28 +178,28 @@ export default function AccountDeletion() {
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                <AlertTriangle className="w-6 h-6 text-red-600" />
+              <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Delete Account</h3>
-                <p className="text-sm text-gray-600">This action cannot be undone</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Delete Account</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">This action cannot be undone</p>
               </div>
             </div>
 
             <div className="space-y-4 mb-6">
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-gray-700 dark:text-gray-300">
                 To confirm deletion, please type{" "}
-                <strong className="text-red-600">DELETE MY ACCOUNT</strong> below:
+                <strong className="text-red-600 dark:text-red-400">DELETE MY ACCOUNT</strong> below:
               </p>
               <input
                 type="text"
                 value={confirmText}
                 onChange={(e) => setConfirmText(e.target.value)}
                 placeholder="Type here..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 dark:text-white"
               />
             </div>
 
@@ -210,7 +210,7 @@ export default function AccountDeletion() {
                   setConfirmText("");
                 }}
                 disabled={isDeleting}
-                className="flex-1 px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                className="flex-1 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>

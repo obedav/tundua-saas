@@ -71,7 +71,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* First Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             <div className="flex items-center gap-2">
               <UserIcon className="h-4 w-4" />
               First Name
@@ -84,13 +84,13 @@ export default function ProfileForm({ user }: ProfileFormProps) {
             onChange={handleChange}
             required
             disabled={isPending}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:opacity-50"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:opacity-50"
           />
         </div>
 
         {/* Last Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             <div className="flex items-center gap-2">
               <UserIcon className="h-4 w-4" />
               Last Name
@@ -103,14 +103,14 @@ export default function ProfileForm({ user }: ProfileFormProps) {
             onChange={handleChange}
             required
             disabled={isPending}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:opacity-50"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:opacity-50"
           />
         </div>
       </div>
 
       {/* Email (Read-only) */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           <div className="flex items-center gap-2">
             <Mail className="h-4 w-4" />
             Email Address
@@ -121,16 +121,16 @@ export default function ProfileForm({ user }: ProfileFormProps) {
           value={user.email}
           readOnly
           disabled
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 cursor-not-allowed"
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 dark:text-white cursor-not-allowed"
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
           Email cannot be changed. Contact support if you need to update it.
         </p>
       </div>
 
       {/* Phone */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           <div className="flex items-center gap-2">
             <Phone className="h-4 w-4" />
             Phone Number (Optional)
@@ -143,7 +143,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
           onChange={handleChange}
           placeholder="+1 (555) 123-4567"
           disabled={isPending}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:opacity-50"
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:opacity-50"
         />
       </div>
 

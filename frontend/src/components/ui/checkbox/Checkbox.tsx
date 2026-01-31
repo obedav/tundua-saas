@@ -4,16 +4,16 @@ import { cn } from "@/lib/utils";
 import { Check, Minus } from "lucide-react";
 
 const checkboxVariants = cva(
-  "peer h-5 w-5 shrink-0 rounded border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+  "peer h-5 w-5 shrink-0 rounded border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "border-gray-300 text-white bg-white hover:border-gray-400 focus:ring-primary-500 data-[state=checked]:bg-primary-600 data-[state=checked]:border-primary-600 data-[state=indeterminate]:bg-primary-600 data-[state=indeterminate]:border-primary-600",
+          "border-gray-300 dark:border-gray-600 text-white bg-white dark:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 focus:ring-primary-500 data-[state=checked]:bg-primary-600 data-[state=checked]:border-primary-600 dark:data-[state=checked]:bg-primary-500 dark:data-[state=checked]:border-primary-500 data-[state=indeterminate]:bg-primary-600 data-[state=indeterminate]:border-primary-600",
         success:
-          "border-gray-300 text-white bg-white hover:border-gray-400 focus:ring-green-500 data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600 data-[state=indeterminate]:bg-green-600 data-[state=indeterminate]:border-green-600",
+          "border-gray-300 dark:border-gray-600 text-white bg-white dark:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 focus:ring-green-500 data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600 dark:data-[state=checked]:bg-green-500 dark:data-[state=checked]:border-green-500 data-[state=indeterminate]:bg-green-600 data-[state=indeterminate]:border-green-600",
         danger:
-          "border-gray-300 text-white bg-white hover:border-gray-400 focus:ring-red-500 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600 data-[state=indeterminate]:bg-red-600 data-[state=indeterminate]:border-red-600",
+          "border-gray-300 dark:border-gray-600 text-white bg-white dark:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 focus:ring-red-500 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600 dark:data-[state=checked]:bg-red-500 dark:data-[state=checked]:border-red-500 data-[state=indeterminate]:bg-red-600 data-[state=indeterminate]:border-red-600",
       },
       size: {
         sm: "h-4 w-4",
@@ -114,7 +114,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               <label
                 htmlFor={props.id}
                 className={cn(
-                  "text-sm font-medium text-gray-900 cursor-pointer select-none",
+                  "text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none",
                   disabled && "opacity-50 cursor-not-allowed"
                 )}
               >
@@ -124,7 +124,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             {description && (
               <p
                 className={cn(
-                  "text-sm text-gray-600 mt-0.5",
+                  "text-sm text-gray-600 dark:text-gray-400 mt-0.5",
                   disabled && "opacity-50"
                 )}
               >
@@ -132,7 +132,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               </p>
             )}
             {error && (
-              <p className="text-sm text-red-600 mt-1" role="alert">
+              <p className="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
                 {error}
               </p>
             )}

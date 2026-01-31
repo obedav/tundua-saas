@@ -80,15 +80,15 @@ export default function NotificationPreferences() {
     checked: boolean;
     onChange: () => void;
   }) => (
-    <div className="flex items-start justify-between py-4 border-b border-gray-100 last:border-0">
+    <div className="flex items-start justify-between py-4 border-b border-gray-100 dark:border-gray-700 last:border-0">
       <div className="flex-1 pr-4">
-        <h4 className="text-sm font-medium text-gray-900 mb-1">{label}</h4>
-        <p className="text-sm text-gray-600">{description}</p>
+        <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-1">{label}</h4>
+        <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
       </div>
       <button
         onClick={onChange}
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
-          checked ? "bg-primary-600" : "bg-gray-200"
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 ${
+          checked ? "bg-primary-600" : "bg-gray-200 dark:bg-gray-700"
         }`}
       >
         <span
@@ -101,13 +101,13 @@ export default function NotificationPreferences() {
   );
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-gray-200">
+      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Bell className="w-5 h-5 text-primary-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Notification Preferences</h2>
+            <Bell className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Notification Preferences</h2>
           </div>
           <button
             onClick={handleSave}
@@ -133,10 +133,10 @@ export default function NotificationPreferences() {
         {/* Email Notifications */}
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <Mail className="w-5 h-5 text-gray-700" />
-            <h3 className="text-base font-semibold text-gray-900">Email Notifications</h3>
+            <Mail className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+            <h3 className="text-base font-semibold text-gray-900 dark:text-white">Email Notifications</h3>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
             <NotificationToggle
               label="Application Updates"
               description="Get notified when your application status changes"
@@ -173,10 +173,10 @@ export default function NotificationPreferences() {
         {/* SMS Notifications */}
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <Smartphone className="w-5 h-5 text-gray-700" />
-            <h3 className="text-base font-semibold text-gray-900">SMS Notifications</h3>
+            <Smartphone className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+            <h3 className="text-base font-semibold text-gray-900 dark:text-white">SMS Notifications</h3>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
             <NotificationToggle
               label="Application Updates"
               description="Critical application status changes via SMS"
@@ -196,7 +196,7 @@ export default function NotificationPreferences() {
               onChange={() => handleToggle("sms", "paymentReminders")}
             />
           </div>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
             Standard SMS rates may apply. You can update your phone number in Profile Settings.
           </p>
         </div>
@@ -204,10 +204,10 @@ export default function NotificationPreferences() {
         {/* Push Notifications */}
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <MessageSquare className="w-5 h-5 text-gray-700" />
-            <h3 className="text-base font-semibold text-gray-900">Push Notifications</h3>
+            <MessageSquare className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+            <h3 className="text-base font-semibold text-gray-900 dark:text-white">Push Notifications</h3>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
             <NotificationToggle
               label="Application Updates"
               description="Real-time updates on your applications"
@@ -227,15 +227,15 @@ export default function NotificationPreferences() {
               onChange={() => handleToggle("push", "documentRequests")}
             />
           </div>
-          <p className="text-xs text-gray-500 mt-2">
-            Push notifications require browser permission. Click "Allow" when prompted.
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            Push notifications require browser permission. Click &quot;Allow&quot; when prompted.
           </p>
         </div>
 
         {/* Info Banner */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h4 className="text-sm font-semibold text-blue-900 mb-2">Notification Tips</h4>
-          <ul className="text-sm text-blue-800 space-y-1">
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+          <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-2">Notification Tips</h4>
+          <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-1">
             <li>• We recommend keeping Application Updates enabled to stay informed</li>
             <li>• Urgent Alerts are reserved for critical actions requiring immediate attention</li>
             <li>• You can always view all notifications in your dashboard</li>

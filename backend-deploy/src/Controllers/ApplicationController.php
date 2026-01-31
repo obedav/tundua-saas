@@ -30,9 +30,11 @@ class ApplicationController
             $application = Application::createApplication($data);
 
             if (!$application) {
+                error_log("ApplicationController::create - Failed to create application. Data received: " . json_encode($data));
                 $response->getBody()->write(json_encode([
                     'success' => false,
-                    'error' => 'Failed to create application'
+                    'error' => 'Failed to create application. Check server logs for details.',
+                    'debug_hint' => 'Possible causes: database column size constraints, missing required fields, or database connection issues.'
                 ]));
                 return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
             }

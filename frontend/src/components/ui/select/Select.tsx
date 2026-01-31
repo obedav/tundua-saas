@@ -10,13 +10,13 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronDown, Search, X } from "lucide-react";
 
 const selectVariants = cva(
-  "flex w-full items-center justify-between rounded-xl border-2 bg-white px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:cursor-not-allowed disabled:opacity-50",
+  "flex w-full items-center justify-between rounded-xl border-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-offset-gray-900 disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       state: {
-        default: "border-gray-200 hover:border-gray-300",
-        error: "border-red-300 focus:border-red-500 focus:ring-red-500",
-        success: "border-green-300 focus:border-green-500 focus:ring-green-500",
+        default: "border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500",
+        error: "border-red-300 dark:border-red-500/50 focus:border-red-500 focus:ring-red-500",
+        success: "border-green-300 dark:border-green-500/50 focus:border-green-500 focus:ring-green-500",
       },
       size: {
         sm: "h-9 text-xs px-3 py-2",
@@ -148,7 +148,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
       <div className={cn("w-full", wrapperClassName)} ref={ref}>
         {/* Label */}
         {label && (
-          <label className="block text-sm font-semibold text-gray-900 mb-2">
+          <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
             {label}
           </label>
         )}
@@ -171,7 +171,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
             <span
               className={cn(
                 "flex-1 text-left truncate",
-                !selectedValue && "text-gray-500"
+                !selectedValue && "text-gray-500 dark:text-gray-400"
               )}
             >
               {displayText}
@@ -181,10 +181,10 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="p-0.5 hover:bg-gray-100 rounded transition-colors"
+                  className="p-0.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
                   aria-label="Clear selection"
                 >
-                  <X className="h-4 w-4 text-gray-400" />
+                  <X className="h-4 w-4 text-gray-400 dark:text-gray-500" />
                 </button>
               )}
               <ChevronDown
@@ -199,13 +199,13 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
 
           {/* Dropdown */}
           {isOpen && (
-            <div className="absolute z-50 mt-2 w-full rounded-xl border border-gray-200 bg-white shadow-elevation-3 animate-fade-in">
+            <div className="absolute z-50 mt-2 w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-elevation-3 dark:shadow-gray-900/30 animate-fade-in">
               {/* Search Input */}
               {searchable && (
-                <div className="p-2 border-b border-gray-100">
+                <div className="p-2 border-b border-gray-100 dark:border-gray-700">
                   <div className="relative">
                     <Search
-                      className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500"
                       aria-hidden="true"
                     />
                     <input
@@ -214,7 +214,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search..."
-                      className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      className="w-full pl-9 pr-3 py-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 placeholder:text-gray-500 dark:placeholder:text-gray-400"
                     />
                   </div>
                 </div>
@@ -223,7 +223,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
               {/* Options List */}
               <div className="max-h-60 overflow-auto p-1" role="listbox">
                 {filteredOptions.length === 0 ? (
-                  <div className="px-3 py-2 text-sm text-gray-500 text-center">
+                  <div className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400 text-center">
                     No options found
                   </div>
                 ) : (
@@ -236,8 +236,8 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                       className={cn(
                         "w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors text-left",
                         option.value === selectedValue
-                          ? "bg-primary-50 text-primary-900 font-medium"
-                          : "text-gray-900 hover:bg-gray-50",
+                          ? "bg-primary-50 dark:bg-primary-900/30 text-primary-900 dark:text-primary-300 font-medium"
+                          : "text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700",
                         option.disabled && "opacity-50 cursor-not-allowed"
                       )}
                       role="option"
@@ -246,7 +246,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                       <span className="truncate">{option.label}</span>
                       {option.value === selectedValue && (
                         <Check
-                          className="h-4 w-4 text-primary-600 flex-shrink-0 ml-2"
+                          className="h-4 w-4 text-primary-600 dark:text-primary-400 flex-shrink-0 ml-2"
                           aria-hidden="true"
                         />
                       )}
@@ -260,15 +260,15 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
 
         {/* Helper/Error/Success Text */}
         {helper && !error && !success && (
-          <p className="mt-2 text-sm text-gray-600">{helper}</p>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{helper}</p>
         )}
         {error && (
-          <p className="mt-2 text-sm text-red-600" role="alert">
+          <p className="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">
             {error}
           </p>
         )}
         {success && !error && (
-          <p className="mt-2 text-sm text-green-600">{success}</p>
+          <p className="mt-2 text-sm text-green-600 dark:text-green-400">{success}</p>
         )}
       </div>
     );

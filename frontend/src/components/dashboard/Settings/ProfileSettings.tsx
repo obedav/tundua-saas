@@ -67,13 +67,13 @@ export default function ProfileSettings() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-gray-200">
+      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <User className="w-5 h-5 text-primary-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Profile Settings</h2>
+            <User className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Profile Settings</h2>
           </div>
           {!isEditing ? (
             <button
@@ -87,7 +87,7 @@ export default function ProfileSettings() {
               <button
                 onClick={handleCancel}
                 disabled={isSaving}
-                className="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                className="px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
               >
                 <X className="w-4 h-4 inline mr-1" />
                 Cancel
@@ -116,7 +116,7 @@ export default function ProfileSettings() {
 
       <div className="p-6">
         {/* Profile Image */}
-        <div className="flex items-center gap-6 mb-8 pb-8 border-b border-gray-200">
+        <div className="flex items-center gap-6 mb-8 pb-8 border-b border-gray-200 dark:border-gray-700">
           <div className="relative">
             <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary-400 to-purple-500 flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
               {profileImage ? (
@@ -133,11 +133,11 @@ export default function ProfileSettings() {
             )}
           </div>
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-1">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
               {profile.firstName} {profile.lastName}
             </h3>
-            <p className="text-gray-600 mb-2">{profile.email}</p>
-            <span className="px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+            <p className="text-gray-600 dark:text-gray-400 mb-2">{profile.email}</p>
+            <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-sm font-medium rounded-full">
               Verified Account
             </span>
           </div>
@@ -145,12 +145,12 @@ export default function ProfileSettings() {
 
         {/* Personal Information */}
         <div className="space-y-6">
-          <h3 className="text-sm font-semibold text-gray-900 mb-4">Personal Information</h3>
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Personal Information</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* First Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 First Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -158,13 +158,13 @@ export default function ProfileSettings() {
                 value={profile.firstName}
                 onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
                 disabled={!isEditing}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 disabled:text-gray-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:text-gray-500 dark:disabled:text-gray-400 bg-white dark:bg-gray-700 dark:text-white"
               />
             </div>
 
             {/* Last Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Last Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -172,13 +172,13 @@ export default function ProfileSettings() {
                 value={profile.lastName}
                 onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
                 disabled={!isEditing}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 disabled:text-gray-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:text-gray-500 dark:disabled:text-gray-400 bg-white dark:bg-gray-700 dark:text-white"
               />
             </div>
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Email Address <span className="text-red-500">*</span>
               </label>
               <div className="relative">
@@ -188,14 +188,14 @@ export default function ProfileSettings() {
                   value={profile.email}
                   onChange={(e) => setProfile({ ...profile, email: e.target.value })}
                   disabled={!isEditing}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:text-gray-500 dark:disabled:text-gray-400 bg-white dark:bg-gray-700 dark:text-white"
                 />
               </div>
             </div>
 
             {/* Phone */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Phone Number <span className="text-red-500">*</span>
               </label>
               <div className="relative">
@@ -205,14 +205,14 @@ export default function ProfileSettings() {
                   value={profile.phone}
                   onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
                   disabled={!isEditing}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:text-gray-500 dark:disabled:text-gray-400 bg-white dark:bg-gray-700 dark:text-white"
                 />
               </div>
             </div>
 
             {/* Date of Birth */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Date of Birth <span className="text-red-500">*</span>
               </label>
               <div className="relative">
@@ -222,14 +222,14 @@ export default function ProfileSettings() {
                   value={profile.dateOfBirth}
                   onChange={(e) => setProfile({ ...profile, dateOfBirth: e.target.value })}
                   disabled={!isEditing}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:text-gray-500 dark:disabled:text-gray-400 bg-white dark:bg-gray-700 dark:text-white"
                 />
               </div>
             </div>
 
             {/* Country */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Country <span className="text-red-500">*</span>
               </label>
               <div className="relative">
@@ -238,7 +238,7 @@ export default function ProfileSettings() {
                   value={profile.country}
                   onChange={(e) => setProfile({ ...profile, country: e.target.value })}
                   disabled={!isEditing}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 disabled:text-gray-500 appearance-none"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:text-gray-500 dark:disabled:text-gray-400 bg-white dark:bg-gray-700 dark:text-white appearance-none"
                 >
                   <option value="Kenya">Kenya</option>
                   <option value="Nigeria">Nigeria</option>
@@ -251,54 +251,54 @@ export default function ProfileSettings() {
           </div>
 
           {/* Address Section */}
-          <div className="pt-6 border-t border-gray-200">
-            <h3 className="text-sm font-semibold text-gray-900 mb-4">Address</h3>
+          <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Address</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Street Address</label>
                 <input
                   type="text"
                   value={profile.address}
                   onChange={(e) => setProfile({ ...profile, address: e.target.value })}
                   disabled={!isEditing}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:text-gray-500 dark:disabled:text-gray-400 bg-white dark:bg-gray-700 dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">City</label>
                 <input
                   type="text"
                   value={profile.city}
                   onChange={(e) => setProfile({ ...profile, city: e.target.value })}
                   disabled={!isEditing}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:text-gray-500 dark:disabled:text-gray-400 bg-white dark:bg-gray-700 dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Postal Code</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Postal Code</label>
                 <input
                   type="text"
                   value={profile.postalCode}
                   onChange={(e) => setProfile({ ...profile, postalCode: e.target.value })}
                   disabled={!isEditing}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:text-gray-500 dark:disabled:text-gray-400 bg-white dark:bg-gray-700 dark:text-white"
                 />
               </div>
             </div>
           </div>
 
           {/* Bio */}
-          <div className="pt-6 border-t border-gray-200">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+          <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Bio</label>
             <textarea
               value={profile.bio}
               onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
               disabled={!isEditing}
               rows={4}
               placeholder="Tell us a little about yourself..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 disabled:text-gray-500 resize-none"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:text-gray-500 dark:disabled:text-gray-400 bg-white dark:bg-gray-700 dark:text-white resize-none"
             />
-            <p className="text-xs text-gray-500 mt-1">{profile.bio.length}/500 characters</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{profile.bio.length}/500 characters</p>
           </div>
         </div>
       </div>

@@ -30,14 +30,30 @@ class EmailService
             $this->mailer->SMTPSecure = $_ENV['MAIL_ENCRYPTION'] ?? 'tls';
             $this->mailer->Port = (int)($_ENV['MAIL_PORT'] ?? 587);
 
+            // Enable debug mode in development
+            if (($_ENV['APP_ENV'] ?? 'production') === 'development') {
+                $this->mailer->SMTPDebug = 2; // Verbose debug output
+                $this->mailer->Debugoutput = function($str, $level) {
+                    error_log("SMTP Debug [{$level}]: {$str}");
+                };
+            }
+
             // Sender
             $fromAddress = $_ENV['MAIL_FROM_ADDRESS'] ?? 'noreply@tundua.com';
             $fromName = $_ENV['MAIL_FROM_NAME'] ?? 'Tundua Education';
             $this->mailer->setFrom($fromAddress, $fromName);
 
+            // Reply-To address (if different from sender)
+            if (!empty($_ENV['MAIL_REPLY_TO'])) {
+                $this->mailer->addReplyTo($_ENV['MAIL_REPLY_TO'], $fromName);
+            }
+
             // Email format
             $this->mailer->isHTML(true);
             $this->mailer->CharSet = 'UTF-8';
+
+            // Log configuration (without sensitive data)
+            error_log("Email configured - Host: " . $this->mailer->Host . ", Port: " . $this->mailer->Port . ", User: " . $this->mailer->Username);
         } catch (Exception $e) {
             error_log("Email configuration failed: " . $e->getMessage());
         }
@@ -53,14 +69,27 @@ class EmailService
             $this->mailer->Subject = $subject;
             $this->mailer->Body = $body;
 
+            error_log("Attempting to send email to: {$to}, Subject: {$subject}");
+
             $result = $this->mailer->send();
+
+            if ($result) {
+                error_log("Email sent successfully to: {$to}");
+            } else {
+                error_log("Email send returned false for: {$to}");
+            }
 
             // Clear addresses for next email
             $this->mailer->clearAddresses();
 
             return $result;
         } catch (Exception $e) {
-            error_log("Email send failed: " . $e->getMessage());
+            error_log("Email send failed to {$to}: " . $e->getMessage());
+            error_log("Error info: " . $this->mailer->ErrorInfo);
+
+            // Clear addresses for next attempt
+            $this->mailer->clearAddresses();
+
             return false;
         }
     }

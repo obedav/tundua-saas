@@ -14,15 +14,15 @@ export default function DocumentsPage() {
       <div>
         <Link
           href={`/dashboard/applications/${params['id']}`}
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
+          className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Application
         </Link>
 
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Application Documents</h1>
-          <p className="text-gray-600 mt-1">Upload and manage your application documents</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Application Documents</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">Upload and manage your application documents</p>
         </div>
       </div>
 

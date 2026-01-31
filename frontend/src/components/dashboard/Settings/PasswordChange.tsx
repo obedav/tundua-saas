@@ -79,22 +79,22 @@ export default function PasswordChange() {
     placeholder: string;
   }) => (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
         {label} <span className="text-red-500">*</span>
       </label>
       <div className="relative">
-        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
         <input
           type={show ? "text" : "password"}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full pl-10 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+          className="w-full pl-10 pr-12 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white dark:bg-gray-700 dark:text-white"
         />
         <button
           type="button"
           onClick={toggleShow}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
         >
           {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
         </button>
@@ -103,14 +103,14 @@ export default function PasswordChange() {
   );
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-gray-200">
+      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2">
-          <Lock className="w-5 h-5 text-primary-600" />
-          <h2 className="text-lg font-semibold text-gray-900">Change Password</h2>
+          <Lock className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Change Password</h2>
         </div>
-        <p className="text-sm text-gray-600 mt-1">
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
           Ensure your account is using a strong password to stay secure
         </p>
       </div>
@@ -139,19 +139,19 @@ export default function PasswordChange() {
 
           {/* Password Requirements */}
           {passwords.new && (
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h4 className="text-sm font-medium text-gray-900 mb-3">Password Requirements</h4>
+            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+              <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-3">Password Requirements</h4>
               <div className="space-y-2">
                 {requirements.map((requirement, index) => (
                   <div key={index} className="flex items-center gap-2">
                     {requirement.met ? (
-                      <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+                      <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 flex-shrink-0" />
                     ) : (
-                      <XCircle className="w-4 h-4 text-gray-300 flex-shrink-0" />
+                      <XCircle className="w-4 h-4 text-gray-300 dark:text-gray-500 flex-shrink-0" />
                     )}
                     <span
                       className={`text-sm ${
-                        requirement.met ? "text-green-700" : "text-gray-600"
+                        requirement.met ? "text-green-700 dark:text-green-400" : "text-gray-600 dark:text-gray-400"
                       }`}
                     >
                       {requirement.label}
@@ -177,8 +177,8 @@ export default function PasswordChange() {
             <div
               className={`flex items-center gap-2 p-3 rounded-lg ${
                 passwordsMatch
-                  ? "bg-green-50 text-green-700"
-                  : "bg-red-50 text-red-700"
+                  ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400"
+                  : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400"
               }`}
             >
               {passwordsMatch ? (
@@ -196,7 +196,7 @@ export default function PasswordChange() {
           )}
 
           {/* Submit Button */}
-          <div className="pt-4 border-t border-gray-200">
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
             <button
               type="submit"
               disabled={isSaving || !allRequirementsMet || !passwordsMatch || !passwords.current}
@@ -218,9 +218,9 @@ export default function PasswordChange() {
         </div>
 
         {/* Security Tips */}
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h4 className="text-sm font-semibold text-blue-900 mb-2">Security Tips</h4>
-          <ul className="text-sm text-blue-800 space-y-1">
+        <div className="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+          <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-2">Security Tips</h4>
+          <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-1">
             <li>• Never share your password with anyone</li>
             <li>• Use a unique password for this account</li>
             <li>• Change your password regularly</li>
@@ -229,7 +229,7 @@ export default function PasswordChange() {
         </div>
 
         {/* Last Changed */}
-        <div className="mt-4 text-sm text-gray-500 text-center">
+        <div className="mt-4 text-sm text-gray-500 dark:text-gray-400 text-center">
           Last changed: January 15, 2025
         </div>
       </form>

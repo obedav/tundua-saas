@@ -48,7 +48,7 @@ export function ScarcityIndicator({
             <p className="font-bold text-lg">
               ⚡ Only {slots} {message}!
             </p>
-            <p className="text-sm opacity-90">Don't miss out - secure your spot now</p>
+            <p className="text-sm opacity-90">Don&apos;t miss out - secure your spot now</p>
           </div>
         </div>
       </div>

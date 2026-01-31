@@ -68,10 +68,10 @@ export default async function DashboardPage() {
       <div className="space-y-8">
         {/* Welcome Section */}
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
             Welcome back, {user.first_name}!
           </h1>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
             Here&apos;s an overview of your study abroad journey
           </p>
         </div>
@@ -106,7 +106,7 @@ export default async function DashboardPage() {
 
             {/* Progress Tracker - Show only if user has active applications */}
             {latestApplication && (
-              <Suspense fallback={<div className="animate-pulse bg-gray-100 h-64 rounded-lg" />}>
+              <Suspense fallback={<div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-64 rounded-lg" />}>
                 <SmartProgressTracker
                   applicationId={latestApplication.id}
                   applicationStatus={latestApplication.status}
@@ -117,11 +117,11 @@ export default async function DashboardPage() {
             {/* Recent Applications */}
             <div>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg sm:text-xl font-bold text-gray-900">Recent Applications</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">Recent Applications</h2>
                 {recentApplications.length > 0 && (
                   <Link
                     href="/dashboard/applications"
-                    className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                    className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 font-medium"
                   >
                     View All →
                   </Link>
@@ -142,12 +142,12 @@ export default async function DashboardPage() {
             {recentApplications.length === 0 && <QuickStartChecklist />}
 
             {/* Notifications */}
-            <Suspense fallback={<div className="animate-pulse bg-gray-100 h-48 rounded-lg" />}>
+            <Suspense fallback={<div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-48 rounded-lg" />}>
               <DashboardNotifications />
             </Suspense>
 
             {/* Activity Feed */}
-            <Suspense fallback={<div className="animate-pulse bg-gray-100 h-64 rounded-lg" />}>
+            <Suspense fallback={<div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-64 rounded-lg" />}>
               <DashboardActivityFeed maxItems={5} />
             </Suspense>
 
@@ -182,14 +182,14 @@ export default async function DashboardPage() {
             )}
 
             {/* Referral Card */}
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="font-bold text-gray-900 mb-2">Refer & Earn</h3>
-              <p className="text-sm text-gray-600 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+              <h3 className="font-bold text-gray-900 dark:text-white mb-2">Refer & Earn</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
                 Get ₦10,000 off your next application for every friend you refer!
               </p>
               <Link
                 href="/dashboard/referrals"
-                className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 font-medium"
               >
                 Learn More →
               </Link>

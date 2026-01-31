@@ -316,6 +316,23 @@ class ApiClient {
     return this.client.get("/api/payments/history", { params });
   }
 
+  // Payment Methods
+  async getPaymentMethods() {
+    return this.client.get("/api/payments/methods");
+  }
+
+  async addPaymentMethod(data: { type: "card" | "mpesa"; token?: string; phone_number?: string }) {
+    return this.client.post("/api/payments/methods", data);
+  }
+
+  async deletePaymentMethod(id: number) {
+    return this.client.delete(`/api/payments/methods/${id}`);
+  }
+
+  async setDefaultPaymentMethod(id: number) {
+    return this.client.put(`/api/payments/methods/${id}/default`);
+  }
+
   // Add-Ons Management
   async getUserAddOns(params?: { status?: string }) {
     return this.client.get("/api/addons/purchased", { params });

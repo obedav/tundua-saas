@@ -104,7 +104,7 @@ export default async function ApplicationDetailPage({
       <div>
         <Link
           href="/dashboard/applications"
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
+          className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Applications
@@ -112,8 +112,8 @@ export default async function ApplicationDetailPage({
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{application.reference_number}</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{application.reference_number}</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">
               Created on {new Date(application.created_at).toLocaleDateString("en-US", {
                 month: "long",
                 day: "numeric",
@@ -128,7 +128,7 @@ export default async function ApplicationDetailPage({
             {application.status !== "draft" && (
               <Link
                 href={`/dashboard/applications/${application.id}/documents`}
-                className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 <FileText className="h-4 w-4" />
                 Documents
@@ -139,7 +139,7 @@ export default async function ApplicationDetailPage({
               <>
                 <Link
                   href={`/dashboard/applications/${application.id}/edit`}
-                  className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
                   <Edit className="h-4 w-4" />
                   Edit
@@ -156,58 +156,58 @@ export default async function ApplicationDetailPage({
         {/* Left Column - Application Details */}
         <div className="lg:col-span-2 space-y-6">
           {/* Personal Information */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <FileText className="h-5 w-5" />
               Personal Information
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-600">Full Name</p>
-                <p className="font-medium text-gray-900">{application.applicant_name}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Full Name</p>
+                <p className="font-medium text-gray-900 dark:text-white">{application.applicant_name}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Email</p>
-                <p className="font-medium text-gray-900">{application.applicant_email}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Email</p>
+                <p className="font-medium text-gray-900 dark:text-white">{application.applicant_email}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Phone</p>
-                <p className="font-medium text-gray-900">{application.applicant_phone || "Not provided"}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Phone</p>
+                <p className="font-medium text-gray-900 dark:text-white">{application.applicant_phone || "Not provided"}</p>
               </div>
             </div>
           </div>
 
           {/* Academic Background */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <GraduationCap className="h-5 w-5" />
               Academic Background
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-600">Education Level</p>
-                <p className="font-medium text-gray-900">{application.highest_education || "Not specified"}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Education Level</p>
+                <p className="font-medium text-gray-900 dark:text-white">{application.highest_education || "Not specified"}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Field of Study</p>
-                <p className="font-medium text-gray-900">{application.field_of_study || "Not specified"}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Field of Study</p>
+                <p className="font-medium text-gray-900 dark:text-white">{application.field_of_study || "Not specified"}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Institution</p>
-                <p className="font-medium text-gray-900">{application.institution_name || "Not specified"}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Institution</p>
+                <p className="font-medium text-gray-900 dark:text-white">{application.institution_name || "Not specified"}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Graduation Year</p>
-                <p className="font-medium text-gray-900">{application.graduation_year || "Not specified"}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Graduation Year</p>
+                <p className="font-medium text-gray-900 dark:text-white">{application.graduation_year || "Not specified"}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">GPA</p>
-                <p className="font-medium text-gray-900">{application.gpa || "Not specified"}/4.0</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">GPA</p>
+                <p className="font-medium text-gray-900 dark:text-white">{application.gpa || "Not specified"}/4.0</p>
               </div>
               {application.english_test_type && (
                 <div>
-                  <p className="text-sm text-gray-600">English Test</p>
-                  <p className="font-medium text-gray-900">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">English Test</p>
+                  <p className="font-medium text-gray-900 dark:text-white">
                     {application.english_test_type} - {application.english_test_score}
                   </p>
                 </div>
@@ -216,28 +216,28 @@ export default async function ApplicationDetailPage({
           </div>
 
           {/* Destination & Universities */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <MapPin className="h-5 w-5" />
               Destination & Universities
             </h2>
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-600">Destination Country</p>
-                  <p className="font-medium text-gray-900">{application.destination_country}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Destination Country</p>
+                  <p className="font-medium text-gray-900 dark:text-white">{application.destination_country}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Program Type</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Program Type</p>
                   <p className="font-medium text-gray-900 capitalize">{application.program_type}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Intended Major</p>
-                  <p className="font-medium text-gray-900">{application.intended_major}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Intended Major</p>
+                  <p className="font-medium text-gray-900 dark:text-white">{application.intended_major}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Intake</p>
-                  <p className="font-medium text-gray-900">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Intake</p>
+                  <p className="font-medium text-gray-900 dark:text-white">
                     {application.intake_season} {application.intake_year}
                   </p>
                 </div>
@@ -249,7 +249,7 @@ export default async function ApplicationDetailPage({
                   {application.universities?.map((uni, index) => (
                     <span
                       key={index}
-                      className="inline-flex items-center gap-1 px-3 py-1 bg-primary-50 text-primary-700 rounded-lg text-sm"
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 rounded-lg text-sm"
                     >
                       <Check className="h-3 w-3" />
                       {uni}
@@ -262,18 +262,18 @@ export default async function ApplicationDetailPage({
 
           {/* Add-On Services */}
           {application.addon_services && application.addon_services.length > 0 && (
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Add-On Services</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Add-On Services</h2>
               <div className="space-y-3">
                 {application.addon_services.map((addon, index) => (
-                  <div key={index} className="flex justify-between items-center pb-3 border-b border-gray-100 last:border-0">
+                  <div key={index} className="flex justify-between items-center pb-3 border-b border-gray-100 dark:border-gray-700 last:border-0">
                     <div className="flex items-center gap-2">
                       <Check className="h-4 w-4 text-green-500" />
-                      <span className="text-gray-900">
+                      <span className="text-gray-900 dark:text-white">
                         {addon.name} {addon.quantity > 1 && `(×${addon.quantity})`}
                       </span>
                     </div>
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-gray-900 dark:text-white">
                       ₦{(addon.price * addon.quantity).toLocaleString('en-NG')}
                     </span>
                   </div>
@@ -286,30 +286,30 @@ export default async function ApplicationDetailPage({
         {/* Right Column - Summary */}
         <div className="space-y-6">
           {/* Pricing Summary */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 sticky top-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <DollarSign className="h-5 w-5" />
               Pricing Summary
             </h2>
 
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Service Tier:</span>
-                <span className="font-medium text-gray-900">₦{parseFloat(application.base_price).toLocaleString('en-NG')}</span>
+                <span className="text-gray-600 dark:text-gray-400">Service Tier:</span>
+                <span className="font-medium text-gray-900 dark:text-white">₦{parseFloat(application.base_price).toLocaleString('en-NG')}</span>
               </div>
-              <div className="text-xs text-gray-500 pl-4">
+              <div className="text-xs text-gray-500 dark:text-gray-400 pl-4">
                 {application.service_tier_name}
               </div>
 
               {application.addon_total && parseFloat(application.addon_total) > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Add-On Services:</span>
-                  <span className="font-medium text-gray-900">₦{parseFloat(application.addon_total).toLocaleString('en-NG')}</span>
+                  <span className="text-gray-600 dark:text-gray-400">Add-On Services:</span>
+                  <span className="font-medium text-gray-900 dark:text-white">₦{parseFloat(application.addon_total).toLocaleString('en-NG')}</span>
                 </div>
               )}
 
-              <div className="border-t border-gray-200 pt-3 flex justify-between">
-                <span className="font-semibold text-gray-900">Total Amount:</span>
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-3 flex justify-between">
+                <span className="font-semibold text-gray-900 dark:text-white">Total Amount:</span>
                 <span className="text-xl font-bold text-primary-600">
                   ₦{parseFloat(application.total_amount).toLocaleString('en-NG')}
                 </span>
@@ -336,8 +336,8 @@ export default async function ApplicationDetailPage({
           </div>
 
           {/* Status Timeline */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Calendar className="h-5 w-5" />
               Timeline
             </h2>
@@ -345,13 +345,13 @@ export default async function ApplicationDetailPage({
             <div className="space-y-4">
               <div className="flex gap-3">
                 <div className="flex-shrink-0">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
                     <Check className="h-4 w-4 text-green-600" />
                   </div>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Application Created</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">Application Created</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     {new Date(application.created_at).toLocaleString()}
                   </p>
                 </div>
@@ -360,13 +360,13 @@ export default async function ApplicationDetailPage({
               {application.submitted_at && (
                 <div className="flex gap-3">
                   <div className="flex-shrink-0">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
                       <Check className="h-4 w-4 text-green-600" />
                     </div>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Application Submitted</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">Application Submitted</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       {new Date(application.submitted_at).toLocaleString()}
                     </p>
                   </div>

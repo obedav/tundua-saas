@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 const tabsListVariants = cva("inline-flex items-center gap-1", {
   variants: {
     variant: {
-      default: "border-b border-gray-200 w-full",
-      pills: "p-1 bg-gray-100 rounded-xl",
+      default: "border-b border-gray-200 dark:border-gray-700 w-full",
+      pills: "p-1 bg-gray-100 dark:bg-gray-800 rounded-xl",
       buttons: "gap-2",
     },
   },
@@ -16,16 +16,16 @@ const tabsListVariants = cva("inline-flex items-center gap-1", {
 });
 
 const tabsTriggerVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "border-b-2 border-transparent px-4 py-3 text-gray-600 hover:text-gray-900 hover:border-gray-300 data-[state=active]:border-primary-600 data-[state=active]:text-primary-600 data-[state=active]:font-semibold",
+          "border-b-2 border-transparent px-4 py-3 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 data-[state=active]:border-primary-600 dark:data-[state=active]:border-primary-400 data-[state=active]:text-primary-600 dark:data-[state=active]:text-primary-400 data-[state=active]:font-semibold",
         pills:
-          "rounded-lg px-4 py-2 text-gray-700 hover:bg-gray-50 data-[state=active]:bg-white data-[state=active]:text-primary-600 data-[state=active]:shadow-sm data-[state=active]:font-semibold",
+          "rounded-lg px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700 data-[state=active]:text-primary-600 dark:data-[state=active]:text-primary-400 data-[state=active]:shadow-sm data-[state=active]:font-semibold",
         buttons:
-          "rounded-xl px-4 py-2.5 border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 data-[state=active]:bg-primary-600 data-[state=active]:text-white data-[state=active]:border-primary-600 data-[state=active]:shadow-lg data-[state=active]:shadow-primary-500/30",
+          "rounded-xl px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 data-[state=active]:bg-primary-600 data-[state=active]:text-white data-[state=active]:border-primary-600 data-[state=active]:shadow-lg data-[state=active]:shadow-primary-500/30",
       },
       size: {
         sm: "text-sm",

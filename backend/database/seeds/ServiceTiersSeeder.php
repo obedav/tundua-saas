@@ -4,7 +4,9 @@ use Phinx\Seed\AbstractSeed;
 
 /**
  * Service Tiers Seeder
- * Seeds the service_tiers table with default packages
+ * Seeds the service_tiers table with Seeker (Free), Scholar ($29.99), and Fellow (Custom) packages
+ * Supports multi-currency pricing (NGN for Nigeria, USD for international)
+ * Nigerian users can switch to USD if preferred
  */
 class ServiceTiersSeeder extends AbstractSeed
 {
@@ -15,46 +17,60 @@ class ServiceTiersSeeder extends AbstractSeed
      */
     public function run(): void
     {
+        // First, clear existing tiers
+        $this->execute('DELETE FROM service_tiers');
+
         $data = [
+            // Seeker - Free tier for new users to explore
             [
-                'name' => 'Basic Package',
-                'slug' => 'basic',
-                'description' => 'Perfect starter package for budget-conscious students',
-                'base_price' => 89000.00,
+                'name' => 'Seeker',
+                'slug' => 'seeker',
+                'description' => 'Perfect for students exploring their options',
+                'base_price' => 0.00,
+                'price_usd' => 0.00,
+                'is_custom_pricing' => false,
+                'billing_type' => 'one_time',
                 'features' => json_encode([
-                    '3 university applications',
-                    'Basic document review',
-                    'Email support (48hr response)',
-                    'Application tracking dashboard',
-                    'Status updates via email',
-                    'University comparison tool'
+                    'University Search' => '5 searches per month',
+                    'Document Checklist' => '1 application draft',
+                    'Basic Eligibility Check' => '1 check per month',
+                    'Application Dashboard' => 'Track your progress',
+                    'University Comparison' => 'Compare up to 3 schools',
+                    'Community Forum' => 'Connect with other students',
+                    'Email Support' => 'Response within 72 hours'
                 ]),
-                'max_universities' => 3,
+                'max_universities' => 1,
                 'includes_essay_review' => false,
                 'includes_sop_writing' => false,
                 'includes_visa_support' => false,
                 'includes_interview_coaching' => false,
-                'support_level' => 'Email',
+                'support_level' => 'Community',
                 'is_active' => true,
                 'is_featured' => false,
                 'sort_order' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
+            // Scholar - Paid tier with full access
             [
-                'name' => 'Standard Package',
-                'slug' => 'standard',
-                'description' => 'Most popular choice - best value for money',
-                'base_price' => 149000.00,
+                'name' => 'Scholar',
+                'slug' => 'scholar',
+                'description' => 'For serious applicants - All limitations removed with expert human support',
+                'base_price' => 49999.00,
+                'price_usd' => 29.99,
+                'is_custom_pricing' => false,
+                'billing_type' => 'one_time',
                 'features' => json_encode([
-                    '5 university applications',
-                    'Essay review & editing (1 round)',
-                    'Document verification & formatting',
-                    'Priority email support (24hr response)',
-                    'Application tracking dashboard',
-                    'Dedicated counselor guidance',
-                    'University selection assistance',
-                    'Deadline reminders & alerts'
+                    'Unlimited University Search' => 'Explore any school instantly',
+                    'Unlimited Document Review' => 'Get feedback on all documents',
+                    'Unlimited Eligibility Checks' => 'Check requirements freely',
+                    'Application Dashboard' => 'Full progress tracking',
+                    'Essay Review & Editing' => 'Professional feedback on essays',
+                    'Priority Email Support' => 'Response within 24 hours',
+                    'Deadline Management' => 'Never miss a deadline',
+                    'University Recommendations' => 'Personalized school suggestions',
+                    'Scholarship Search' => 'Find funding opportunities',
+                    'Expert Human Support' => 'Live counselor guidance'
                 ]),
                 'max_universities' => 5,
                 'includes_essay_review' => true,
@@ -68,29 +84,34 @@ class ServiceTiersSeeder extends AbstractSeed
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
+            // Fellow - Premium tier with full visa support
             [
-                'name' => 'Premium Package',
-                'slug' => 'premium',
-                'description' => 'Complete application support with extra benefits',
-                'base_price' => 249000.00,
+                'name' => 'Fellow',
+                'slug' => 'fellow',
+                'description' => 'Complete end-to-end support from application to visa - Your dedicated study abroad partner',
+                'base_price' => 0.00,
+                'price_usd' => 0.00,
+                'is_custom_pricing' => true,
+                'billing_type' => 'one_time',
                 'features' => json_encode([
-                    '8 university applications',
-                    'Complete essay writing & review (2 rounds)',
-                    'Full document preparation & verification',
-                    'Basic visa application guidance',
-                    'Interview preparation tips',
-                    'Dedicated personal counselor',
-                    'WhatsApp priority support',
-                    'Scholarship search assistance',
-                    'Post-admission settlement guide',
-                    'Application fee negotiation tips'
+                    'Everything in Scholar' => 'All Scholar features included',
+                    'Unlimited Applications' => 'Apply to as many schools as you want',
+                    'Complete SOP Writing' => 'Professional statement of purpose',
+                    'Full Document Preparation' => 'End-to-end document support',
+                    'Visa Application Support' => 'Complete visa guidance',
+                    'Interview Coaching' => 'Mock interviews & preparation',
+                    'Dedicated Account Manager' => 'Your personal counselor',
+                    'WhatsApp Priority Support' => 'Instant messaging access',
+                    'Scholarship & Funding Help' => 'Maximize your funding',
+                    'Pre-departure Orientation' => 'Prepare for your journey',
+                    'Accommodation Assistance' => 'Help finding housing'
                 ]),
-                'max_universities' => 8,
+                'max_universities' => 99,
                 'includes_essay_review' => true,
                 'includes_sop_writing' => true,
                 'includes_visa_support' => true,
-                'includes_interview_coaching' => false,
-                'support_level' => 'WhatsApp Priority',
+                'includes_interview_coaching' => true,
+                'support_level' => 'Dedicated Manager',
                 'is_active' => true,
                 'is_featured' => false,
                 'sort_order' => 3,
@@ -102,6 +123,6 @@ class ServiceTiersSeeder extends AbstractSeed
         $serviceTiers = $this->table('service_tiers');
         $serviceTiers->insert($data)->saveData();
 
-        $this->output->writeln('<info>Service tiers seeded successfully!</info>');
+        $this->output->writeln('<info>Service tiers (Seeker, Scholar, Fellow) seeded successfully!</info>');
     }
 }

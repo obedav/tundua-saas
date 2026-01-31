@@ -47,16 +47,48 @@ class RefundController
             $uploadedFile = $uploadedFiles['file'];
             $applicationRef = $data['application_ref'] ?? 'unknown';
 
-            // Save file
-            $filename = 'refund-agreement-' . $applicationRef . '-' . time() . '.pdf';
-            $storagePath = __DIR__ . '/../../storage/refund-agreements/';
+            // SECURITY: Sanitize applicationRef to prevent path traversal attacks
+            // Only allow alphanumeric characters, dashes, and underscores
+            $sanitizedRef = preg_replace('/[^a-zA-Z0-9\-_]/', '', $applicationRef);
+            if (empty($sanitizedRef)) {
+                $sanitizedRef = 'unknown';
+            }
+
+            // Validate file type
+            $clientMediaType = $uploadedFile->getClientMediaType();
+            if ($clientMediaType !== 'application/pdf') {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Only PDF files are allowed'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            // Save file with sanitized name
+            $filename = 'refund-agreement-' . $sanitizedRef . '-' . time() . '.pdf';
+            $storagePath = realpath(__DIR__ . '/../../storage') . '/refund-agreements/';
 
             if (!is_dir($storagePath)) {
                 mkdir($storagePath, 0755, true);
             }
 
             $filePath = $storagePath . $filename;
+
+            // SECURITY: Verify the final path is within the expected directory
+            $realStoragePath = realpath(dirname($filePath));
+            $expectedPath = realpath(__DIR__ . '/../../storage') . DIRECTORY_SEPARATOR . 'refund-agreements';
+            if ($realStoragePath !== false && strpos($realStoragePath, realpath(__DIR__ . '/../../storage')) !== 0) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Invalid file path'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
             $uploadedFile->moveTo($filePath);
+
+            // Set secure file permissions
+            chmod($filePath, 0644);
 
             // Return URL
             $fileUrl = '/storage/refund-agreements/' . $filename;

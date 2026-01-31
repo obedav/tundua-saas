@@ -119,11 +119,11 @@ export default function PostPaymentAddOns({
   if (loading) {
     return (
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-        <div className="bg-white rounded-xl p-8 max-w-md">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md">
           <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-gray-200 rounded w-3/4"></div>
-            <div className="h-4 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
           </div>
         </div>
       </div>
@@ -147,7 +147,7 @@ export default function PostPaymentAddOns({
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}
-          className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-6 text-white relative overflow-hidden">
@@ -185,8 +185,8 @@ export default function PostPaymentAddOns({
                   onClick={() => toggleAddOn(addon.id)}
                   className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all hover:shadow-lg ${
                     selectedAddOns.includes(addon.id)
-                      ? "border-blue-500 bg-blue-50 shadow-md"
-                      : "border-gray-200 hover:border-blue-300"
+                      ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-md"
+                      : "border-gray-200 dark:border-gray-700 hover:border-blue-300"
                   }`}
                 >
                   {addon.popular && (
@@ -199,7 +199,7 @@ export default function PostPaymentAddOns({
                   <div className="text-4xl mb-4">{addon.icon}</div>
 
                   <h3 className="font-bold text-lg mb-2">{addon.name}</h3>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
                     {addon.description}
                   </p>
 
@@ -207,21 +207,21 @@ export default function PostPaymentAddOns({
                     {addon.features.slice(0, 3).map((feature, i) => (
                       <div key={i} className="flex items-start gap-2 text-sm">
                         <Check className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">{feature}</span>
+                        <span className="text-gray-700 dark:text-gray-300">{feature}</span>
                       </div>
                     ))}
                   </div>
 
-                  <div className="pt-4 border-t border-gray-200">
+                  <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-gray-400 line-through text-sm">
+                      <span className="text-gray-400 dark:text-gray-500 line-through text-sm">
                         ₦{addon.price.toLocaleString('en-NG')}
                       </span>
-                      <span className="text-2xl font-bold text-blue-600">
+                      <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                         ₦{(addon.price * 0.85).toLocaleString('en-NG')}
                       </span>
                     </div>
-                    <p className="text-xs text-green-600 font-medium mt-1">
+                    <p className="text-xs text-green-600 dark:text-green-400 font-medium mt-1">
                       Save ₦{(addon.price * 0.15).toLocaleString('en-NG')} (15% off)
                     </p>
                   </div>
@@ -243,23 +243,23 @@ export default function PostPaymentAddOns({
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="mt-6 bg-gray-50 rounded-xl p-6 border-2 border-blue-200"
+                className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-blue-200 dark:border-blue-700"
               >
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-gray-600">
+                  <span className="text-gray-600 dark:text-gray-400">
                     {selectedAddOns.length} service{selectedAddOns.length > 1 ? "s" : ""}{" "}
                     selected
                   </span>
                   <div className="text-right">
-                    <div className="text-sm text-gray-500 line-through">
+                    <div className="text-sm text-gray-500 dark:text-gray-400 line-through">
                       ₦{totalPrice.toLocaleString('en-NG')}
                     </div>
-                    <div className="text-2xl font-bold text-blue-600">
+                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                       ₦{discountedTotal.toLocaleString('en-NG')}
                     </div>
                   </div>
                 </div>
-                <div className="text-sm text-green-600 font-medium text-right">
+                <div className="text-sm text-green-600 dark:text-green-400 font-medium text-right">
                   You save: ₦{totalSavings.toLocaleString('en-NG')}
                 </div>
               </motion.div>
@@ -267,10 +267,10 @@ export default function PostPaymentAddOns({
           </div>
 
           {/* Footer */}
-          <div className="border-t border-gray-200 px-8 py-6 bg-gray-50 flex gap-4">
+          <div className="border-t border-gray-200 dark:border-gray-700 px-8 py-6 bg-gray-50 dark:bg-gray-900 flex gap-4">
             <button
               onClick={onSkip}
-              className="flex-1 px-6 py-3 border-2 border-gray-300 rounded-xl font-semibold text-gray-700 hover:bg-gray-100 transition-colors"
+              className="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             >
               Skip for now
             </button>

@@ -146,19 +146,19 @@ export default function DashboardNotifications() {
       case "success":
         return {
           Icon: CheckCircle,
-          color: "text-green-600",
-          bg: "bg-green-50",
+          color: "text-green-600 dark:text-green-400",
+          bg: "bg-green-50 dark:bg-green-900/20",
         };
       case "warning":
         return {
           Icon: AlertCircle,
-          color: "text-yellow-600",
-          bg: "bg-yellow-50",
+          color: "text-yellow-600 dark:text-yellow-400",
+          bg: "bg-yellow-50 dark:bg-yellow-900/20",
         };
       case "error":
-        return { Icon: AlertCircle, color: "text-red-600", bg: "bg-red-50" };
+        return { Icon: AlertCircle, color: "text-red-600 dark:text-red-400", bg: "bg-red-50 dark:bg-red-900/20" };
       default:
-        return { Icon: Info, color: "text-blue-600", bg: "bg-blue-50" };
+        return { Icon: Info, color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50 dark:bg-blue-900/20" };
     }
   };
 
@@ -169,12 +169,12 @@ export default function DashboardNotifications() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
         <div className="animate-pulse">
-          <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-16 bg-gray-200 rounded"></div>
+              <div key={i} className="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
         </div>
@@ -183,10 +183,10 @@ export default function DashboardNotifications() {
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <h2 className="text-xl font-bold text-gray-900">Notifications</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Notifications</h2>
           {unreadCount > 0 && (
             <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
               {unreadCount}
@@ -197,7 +197,7 @@ export default function DashboardNotifications() {
           <button
             onClick={markAllAsRead}
             disabled={isPending}
-            className="text-sm text-primary-600 hover:text-primary-700 font-medium disabled:opacity-50"
+            className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium disabled:opacity-50"
           >
             Mark all as read
           </button>
@@ -206,8 +206,8 @@ export default function DashboardNotifications() {
 
       {notifications.length === 0 ? (
         <div className="text-center py-8">
-          <Bell className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600">No notifications</p>
+          <Bell className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+          <p className="text-gray-600 dark:text-gray-400">No notifications</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -218,8 +218,8 @@ export default function DashboardNotifications() {
                 key={notification.id}
                 className={`flex gap-4 p-4 rounded-lg border ${
                   notification.read
-                    ? "bg-white border-gray-200"
-                    : "bg-blue-50 border-blue-200"
+                    ? "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                    : "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700"
                 }`}
               >
                 <div className={`${bg} p-2 rounded-full flex-shrink-0`}>
@@ -227,7 +227,7 @@ export default function DashboardNotifications() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-semibold text-gray-900 text-sm">
+                    <h3 className="font-semibold text-gray-900 dark:text-white text-sm">
                       {notification.title}
                     </h3>
                     <div className="flex gap-1">
@@ -235,7 +235,7 @@ export default function DashboardNotifications() {
                         <button
                           onClick={() => markAsRead(notification.id)}
                           disabled={isPending}
-                          className="text-gray-400 hover:text-green-600 disabled:opacity-50"
+                          className="text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 disabled:opacity-50"
                           title="Mark as read"
                         >
                           <Check className="h-4 w-4" />
@@ -244,23 +244,23 @@ export default function DashboardNotifications() {
                       <button
                         onClick={() => deleteNotification(notification.id)}
                         disabled={isPending}
-                        className="text-gray-400 hover:text-red-600 disabled:opacity-50"
+                        className="text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 disabled:opacity-50"
                         title="Delete"
                       >
                         <X className="h-4 w-4" />
                       </button>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                     {notification.message}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     {new Date(notification.timestamp).toLocaleString()}
                   </p>
                   {notification.actionUrl && (
                     <a
                       href={notification.actionUrl}
-                      className="text-sm text-primary-600 hover:text-primary-700 font-medium mt-2 inline-block"
+                      className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium mt-2 inline-block"
                     >
                       Take Action →
                     </a>
@@ -275,7 +275,7 @@ export default function DashboardNotifications() {
       {notifications.length > 3 && (
         <button
           onClick={() => setShowAll(!showAll)}
-          className="w-full mt-4 text-sm text-primary-600 hover:text-primary-700 font-medium"
+          className="w-full mt-4 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
         >
           {showAll ? "Show Less" : `Show All (${notifications.length})`}
         </button>

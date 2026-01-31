@@ -4,31 +4,94 @@ namespace Tundua\Services;
 
 use Tundua\Models\ServiceTier;
 use Tundua\Models\AddonService;
+use Tundua\Models\DiscountCode;
 
 class PricingService
 {
+    /**
+     * Supported currencies
+     */
+    public const CURRENCY_NGN = 'NGN';
+    public const CURRENCY_USD = 'USD';
+
+    /**
+     * Get the current NGN to USD exchange rate
+     * Fetches live rate from ExchangeRate-API with 24-hour caching
+     * Falls back to EXCHANGE_RATE_NGN_USD env variable if API fails
+     */
+    public static function getExchangeRate(): float
+    {
+        return ExchangeRateService::getNgnToUsdRate();
+    }
+
+    /**
+     * Default currency by country
+     */
+    private static array $countryToCurrency = [
+        'NG' => self::CURRENCY_NGN,
+        'Nigeria' => self::CURRENCY_NGN,
+    ];
+
     /**
      * Calculate total price for an application
      *
      * @param int $serviceTierId
      * @param array $addonServiceIds Array of addon service IDs with quantities
      * @param string $discountCode Optional discount code
+     * @param string $currency Currency code (NGN or USD)
      * @return array Pricing breakdown
      */
     public static function calculateTotal(
         int $serviceTierId,
         array $addonServiceIds = [],
-        ?string $discountCode = null
+        ?string $discountCode = null,
+        string $currency = self::CURRENCY_NGN
     ): array {
         try {
+            // Validate currency
+            $currency = in_array($currency, [self::CURRENCY_NGN, self::CURRENCY_USD])
+                ? $currency
+                : self::CURRENCY_NGN;
+
             // Get service tier
             $serviceTier = ServiceTier::getById($serviceTierId);
 
             if (!$serviceTier) {
-                return self::errorResponse('Service tier not found');
+                return self::errorResponse('Service tier not found', $currency);
             }
 
-            $basePrice = (float) $serviceTier->base_price;
+            // Check if this is custom pricing (Elite tier)
+            if ($serviceTier->is_custom_pricing) {
+                return [
+                    'success' => true,
+                    'is_custom_pricing' => true,
+                    'service_tier' => [
+                        'id' => $serviceTier->id,
+                        'name' => $serviceTier->name,
+                        'slug' => $serviceTier->slug,
+                        'price' => null,
+                        'is_custom_pricing' => true
+                    ],
+                    'addons' => [],
+                    'pricing' => [
+                        'base_price' => null,
+                        'addons_total' => 0,
+                        'subtotal' => null,
+                        'discount_code' => null,
+                        'discount_percentage' => 0,
+                        'discount_amount' => 0,
+                        'tax_rate' => 0,
+                        'tax_amount' => 0,
+                        'total_amount' => null,
+                        'currency' => $currency,
+                        'requires_quote' => true,
+                        'contact_message' => 'Contact us for a personalized quote'
+                    ]
+                ];
+            }
+
+            // Get price based on currency
+            $basePrice = self::getPriceForCurrency($serviceTier, $currency);
 
             // Calculate add-ons total
             $addonsTotal = 0.00;
@@ -42,7 +105,8 @@ class PricingService
                     $addon = AddonService::getById($addonId);
 
                     if ($addon && $addon->is_active) {
-                        $addonPrice = (float) $addon->price;
+                        // Get addon price in the selected currency
+                        $addonPrice = self::getAddonPriceForCurrency($addon, $currency);
                         $addonSubtotal = $addonPrice * $quantity;
                         $addonsTotal += $addonSubtotal;
 
@@ -81,10 +145,13 @@ class PricingService
 
             return [
                 'success' => true,
+                'is_custom_pricing' => false,
                 'service_tier' => [
                     'id' => $serviceTier->id,
                     'name' => $serviceTier->name,
-                    'price' => $basePrice
+                    'slug' => $serviceTier->slug ?? '',
+                    'price' => $basePrice,
+                    'is_custom_pricing' => false
                 ],
                 'addons' => $addonsDetails,
                 'pricing' => [
@@ -97,48 +164,77 @@ class PricingService
                     'tax_rate' => $taxRate,
                     'tax_amount' => round($taxAmount, 2),
                     'total_amount' => round($totalAmount, 2),
-                    'currency' => 'NGN'
+                    'currency' => $currency,
+                    'formatted_total' => self::formatCurrency($totalAmount, $currency)
                 ]
             ];
         } catch (\Exception $e) {
             error_log("Error calculating pricing: " . $e->getMessage());
-            return self::errorResponse('Error calculating pricing');
+            return self::errorResponse('Error calculating pricing', $currency);
         }
+    }
+
+    /**
+     * Get price for a specific currency from service tier
+     *
+     * @param object $serviceTier
+     * @param string $currency
+     * @return float
+     */
+    private static function getPriceForCurrency(object $serviceTier, string $currency): float
+    {
+        if ($currency === self::CURRENCY_USD) {
+            return (float) ($serviceTier->price_usd ?? 0);
+        }
+        return (float) ($serviceTier->base_price ?? 0);
+    }
+
+    /**
+     * Get addon price for a specific currency
+     * Note: For now, addons use NGN price with conversion for USD
+     *
+     * @param object $addon
+     * @param string $currency
+     * @return float
+     */
+    private static function getAddonPriceForCurrency(object $addon, string $currency): float
+    {
+        $ngnPrice = (float) $addon->price;
+
+        if ($currency === self::CURRENCY_USD) {
+            // Convert NGN to USD using configurable exchange rate
+            $exchangeRate = self::getExchangeRate();
+            return round($ngnPrice / $exchangeRate, 2);
+        }
+
+        return $ngnPrice;
+    }
+
+    /**
+     * Detect currency based on country code
+     *
+     * @param string|null $countryCode
+     * @return string
+     */
+    public static function detectCurrency(?string $countryCode): string
+    {
+        if (!$countryCode) {
+            return self::CURRENCY_USD; // Default to USD for unknown
+        }
+
+        return self::$countryToCurrency[$countryCode] ?? self::CURRENCY_USD;
     }
 
     /**
      * Validate discount code
      *
      * @param string $code
+     * @param float|null $orderAmount
      * @return array
      */
-    private static function validateDiscountCode(string $code): array
+    private static function validateDiscountCode(string $code, ?float $orderAmount = null): array
     {
-        // Hardcoded discount codes for now
-        // TODO: Move to database table
-        $discountCodes = [
-            'WELCOME10' => ['percentage' => 10, 'active' => true, 'description' => '10% off first application'],
-            'EARLY20' => ['percentage' => 20, 'active' => true, 'description' => 'Early bird 20% discount'],
-            'STUDENT15' => ['percentage' => 15, 'active' => true, 'description' => '15% student discount'],
-        ];
-
-        $code = strtoupper($code);
-
-        if (isset($discountCodes[$code]) && $discountCodes[$code]['active']) {
-            return [
-                'valid' => true,
-                'code' => $code,
-                'percentage' => $discountCodes[$code]['percentage'],
-                'description' => $discountCodes[$code]['description']
-            ];
-        }
-
-        return [
-            'valid' => false,
-            'code' => $code,
-            'percentage' => 0,
-            'description' => 'Invalid or expired discount code'
-        ];
+        return DiscountCode::validate($code, $orderAmount);
     }
 
     /**
@@ -149,8 +245,20 @@ class PricingService
      */
     public static function getPricingSummary(array $pricingData): array
     {
-        $currency = $pricingData['pricing']['currency'] ?? 'NGN';
+        $currency = $pricingData['pricing']['currency'] ?? self::CURRENCY_NGN;
+        $isCustomPricing = $pricingData['is_custom_pricing'] ?? false;
+
+        if ($isCustomPricing) {
+            return [
+                'is_custom_pricing' => true,
+                'requires_quote' => true,
+                'currency' => $currency,
+                'message' => 'Contact us for a personalized quote'
+            ];
+        }
+
         return [
+            'is_custom_pricing' => false,
             'base_price' => $pricingData['pricing']['base_price'] ?? 0,
             'addons_count' => count($pricingData['addons'] ?? []),
             'addons_total' => $pricingData['pricing']['addons_total'] ?? 0,
@@ -171,7 +279,7 @@ class PricingService
      * @param string $currency
      * @return string
      */
-    public static function formatCurrency(float $amount, string $currency = 'NGN'): string
+    public static function formatCurrency(float $amount, string $currency = self::CURRENCY_NGN): string
     {
         $symbols = [
             'USD' => '$',
@@ -184,7 +292,7 @@ class PricingService
         $symbol = $symbols[$currency] ?? '₦';
 
         // Nigerian Naira typically doesn't use decimals for whole amounts
-        $decimals = ($currency === 'NGN') ? 0 : 2;
+        $decimals = ($currency === self::CURRENCY_NGN) ? 0 : 2;
 
         return $symbol . number_format($amount, $decimals);
     }
@@ -238,9 +346,10 @@ class PricingService
      * Error response helper
      *
      * @param string $message
+     * @param string $currency
      * @return array
      */
-    private static function errorResponse(string $message): array
+    private static function errorResponse(string $message, string $currency = self::CURRENCY_NGN): array
     {
         return [
             'success' => false,
@@ -252,38 +361,61 @@ class PricingService
                 'discount_amount' => 0,
                 'tax_amount' => 0,
                 'total_amount' => 0,
-                'currency' => 'NGN'
+                'currency' => $currency
             ]
         ];
     }
 
     /**
-     * Get service tier comparison
+     * Get service tier comparison with multi-currency support
      *
+     * @param string $currency
      * @return array
      */
-    public static function getTierComparison(): array
+    public static function getTierComparison(string $currency = self::CURRENCY_NGN): array
     {
         $tiers = ServiceTier::getActiveTiers();
 
         $comparison = [];
         foreach ($tiers as $tier) {
+            $isCustomPricing = (bool) ($tier['is_custom_pricing'] ?? false);
+
+            // Get price based on currency
+            $price = null;
+            $formattedPrice = null;
+
+            if (!$isCustomPricing) {
+                if ($currency === self::CURRENCY_USD) {
+                    $price = (float) ($tier['price_usd'] ?? 0);
+                } else {
+                    $price = (float) ($tier['base_price'] ?? 0);
+                }
+                $formattedPrice = self::formatCurrency($price, $currency);
+            }
+
             $comparison[] = [
                 'id' => $tier['id'],
                 'name' => $tier['name'],
                 'slug' => $tier['slug'],
-                'price' => (float) $tier['base_price'],
-                'formatted_price' => self::formatCurrency((float) $tier['base_price']),
+                'description' => $tier['description'] ?? '',
+                'price' => $price,
+                'price_ngn' => (float) ($tier['base_price'] ?? 0),
+                'price_usd' => (float) ($tier['price_usd'] ?? 0),
+                'formatted_price' => $formattedPrice,
+                'formatted_price_ngn' => !$isCustomPricing ? self::formatCurrency((float) ($tier['base_price'] ?? 0), self::CURRENCY_NGN) : null,
+                'formatted_price_usd' => !$isCustomPricing ? self::formatCurrency((float) ($tier['price_usd'] ?? 0), self::CURRENCY_USD) : null,
+                'is_custom_pricing' => $isCustomPricing,
+                'billing_type' => $tier['billing_type'] ?? 'one_time',
                 'max_universities' => $tier['max_universities'],
-                'features' => $tier['features'],
+                'features' => is_string($tier['features']) ? json_decode($tier['features'], true) : $tier['features'],
                 'support_level' => $tier['support_level'],
                 'includes' => [
-                    'essay_review' => $tier['includes_essay_review'],
-                    'sop_writing' => $tier['includes_sop_writing'],
-                    'visa_support' => $tier['includes_visa_support'],
-                    'interview_coaching' => $tier['includes_interview_coaching']
+                    'essay_review' => (bool) $tier['includes_essay_review'],
+                    'sop_writing' => (bool) $tier['includes_sop_writing'],
+                    'visa_support' => (bool) $tier['includes_visa_support'],
+                    'interview_coaching' => (bool) $tier['includes_interview_coaching']
                 ],
-                'is_featured' => $tier['is_featured']
+                'is_featured' => (bool) $tier['is_featured']
             ];
         }
 
@@ -291,11 +423,12 @@ class PricingService
     }
 
     /**
-     * Get add-ons grouped by category
+     * Get add-ons grouped by category with multi-currency support
      *
+     * @param string $currency
      * @return array
      */
-    public static function getAddonsByCategory(): array
+    public static function getAddonsByCategory(string $currency = self::CURRENCY_NGN): array
     {
         $addons = AddonService::getActiveAddons();
 
@@ -311,13 +444,19 @@ class PricingService
                 ];
             }
 
+            // Convert price if USD
+            $price = (float) $addon['price'];
+            if ($currency === self::CURRENCY_USD) {
+                $price = round($price / self::getExchangeRate(), 2);
+            }
+
             $grouped[$category]['services'][] = [
                 'id' => $addon['id'],
                 'name' => $addon['name'],
                 'slug' => $addon['slug'],
                 'description' => $addon['description'],
-                'price' => (float) $addon['price'],
-                'formatted_price' => self::formatCurrency((float) $addon['price']),
+                'price' => $price,
+                'formatted_price' => self::formatCurrency($price, $currency),
                 'delivery_time_days' => $addon['delivery_time_days'],
                 'is_featured' => $addon['is_featured']
             ];
@@ -331,9 +470,10 @@ class PricingService
      *
      * @param float $totalAmount Total amount to be paid
      * @param int $installments Number of installments (2 or 3)
+     * @param string $currency Currency code
      * @return array Installment breakdown
      */
-    public static function calculateInstallmentPlan(float $totalAmount, int $installments = 2): array
+    public static function calculateInstallmentPlan(float $totalAmount, int $installments = 2, string $currency = self::CURRENCY_NGN): array
     {
         // Validate installments
         if (!in_array($installments, [2, 3])) {
@@ -343,12 +483,13 @@ class PricingService
             ];
         }
 
-        // Minimum amount for installments: ₦100,000
-        $minimumAmount = 100000.00;
+        // Minimum amount for installments varies by currency
+        $minimumAmount = $currency === self::CURRENCY_USD ? 50.00 : 100000.00;
+
         if ($totalAmount < $minimumAmount) {
             return [
                 'success' => false,
-                'error' => 'Installment plans available for amounts ₦100,000 and above only.',
+                'error' => 'Installment plans available for amounts ' . self::formatCurrency($minimumAmount, $currency) . ' and above only.',
                 'minimum_amount' => $minimumAmount
             ];
         }
@@ -371,7 +512,7 @@ class PricingService
             'success' => true,
             'total_amount' => $totalAmount,
             'installments' => $installments,
-            'currency' => 'NGN',
+            'currency' => $currency,
             'payments' => []
         ];
 
@@ -379,7 +520,7 @@ class PricingService
         $plan['payments'][] = [
             'payment_number' => 1,
             'amount' => $firstPayment,
-            'formatted_amount' => self::formatCurrency($firstPayment),
+            'formatted_amount' => self::formatCurrency($firstPayment, $currency),
             'percentage' => $firstPaymentPercentage,
             'due_description' => 'Due at booking (to start application process)',
             'due_days_from_booking' => 0
@@ -394,7 +535,7 @@ class PricingService
             $plan['payments'][] = [
                 'payment_number' => $i,
                 'amount' => $subsequentPayment,
-                'formatted_amount' => self::formatCurrency($subsequentPayment),
+                'formatted_amount' => self::formatCurrency($subsequentPayment, $currency),
                 'percentage' => $percentageRemaining,
                 'due_description' => "Due {$dueDate} days after booking",
                 'due_days_from_booking' => $dueDate
@@ -403,9 +544,9 @@ class PricingService
 
         // Add summary
         $plan['summary'] = [
-            'first_payment' => self::formatCurrency($firstPayment),
-            'subsequent_payments' => self::formatCurrency($subsequentPayment),
-            'total_payable' => self::formatCurrency($totalAmount),
+            'first_payment' => self::formatCurrency($firstPayment, $currency),
+            'subsequent_payments' => self::formatCurrency($subsequentPayment, $currency),
+            'total_payable' => self::formatCurrency($totalAmount, $currency),
             'payment_schedule' => $installments === 2
                 ? 'Pay 50% now, 50% in 30 days'
                 : 'Pay 40% now, 30% in 21 days, 30% in 42 days'
@@ -418,17 +559,19 @@ class PricingService
      * Get available installment options for an amount
      *
      * @param float $totalAmount
+     * @param string $currency
      * @return array
      */
-    public static function getInstallmentOptions(float $totalAmount): array
+    public static function getInstallmentOptions(float $totalAmount, string $currency = self::CURRENCY_NGN): array
     {
-        $minimumAmount = 100000.00;
+        $minimumAmount = $currency === self::CURRENCY_USD ? 50.00 : 100000.00;
 
         if ($totalAmount < $minimumAmount) {
             return [
                 'available' => false,
                 'reason' => 'Amount below minimum threshold',
                 'minimum_required' => $minimumAmount,
+                'formatted_minimum' => self::formatCurrency($minimumAmount, $currency),
                 'options' => []
             ];
         }
@@ -436,18 +579,19 @@ class PricingService
         return [
             'available' => true,
             'minimum_required' => $minimumAmount,
+            'formatted_minimum' => self::formatCurrency($minimumAmount, $currency),
             'options' => [
                 [
                     'installments' => 2,
                     'label' => '2 Installments',
                     'description' => 'Pay 50% now, 50% in 30 days',
-                    'plan' => self::calculateInstallmentPlan($totalAmount, 2)
+                    'plan' => self::calculateInstallmentPlan($totalAmount, 2, $currency)
                 ],
                 [
                     'installments' => 3,
                     'label' => '3 Installments',
                     'description' => 'Pay 40% now, then 2 more payments over 42 days',
-                    'plan' => self::calculateInstallmentPlan($totalAmount, 3)
+                    'plan' => self::calculateInstallmentPlan($totalAmount, 3, $currency)
                 ]
             ]
         ];

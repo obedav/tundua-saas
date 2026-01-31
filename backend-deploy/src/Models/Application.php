@@ -124,6 +124,8 @@ class Application extends Model
             return self::create($data);
         } catch (\Exception $e) {
             error_log("Error creating application: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
+            error_log("Application data: " . json_encode($data, JSON_PRETTY_PRINT));
             return null;
         }
     }

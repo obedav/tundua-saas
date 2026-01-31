@@ -9,68 +9,68 @@ export default function PaymentCancelPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="bg-white rounded-lg border border-yellow-200 p-8">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-yellow-200 dark:border-yellow-800 p-8">
         <div className="text-center mb-6">
           <div className="flex justify-center mb-4">
-            <div className="rounded-full bg-yellow-100 p-3">
-              <XCircle className="h-12 w-12 text-yellow-600" />
+            <div className="rounded-full bg-yellow-100 dark:bg-yellow-900/20 p-3">
+              <XCircle className="h-12 w-12 text-yellow-600 dark:text-yellow-400" />
             </div>
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Payment Cancelled</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Payment Cancelled</h1>
+          <p className="text-gray-600 dark:text-gray-400">
             Your payment was cancelled. No charges have been made to your account.
           </p>
         </div>
 
-        <div className="bg-gray-50 rounded-lg p-6 mb-6">
-          <h3 className="font-semibold text-gray-900 mb-3">Why was my payment cancelled?</h3>
-          <ul className="space-y-2 text-gray-600 text-sm">
+        <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 mb-6">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Why was my payment cancelled?</h3>
+          <ul className="space-y-2 text-gray-600 dark:text-gray-400 text-sm">
             <li className="flex items-start gap-2">
-              <span className="text-gray-400">•</span>
+              <span className="text-gray-400 dark:text-gray-500">•</span>
               <span>You clicked the back or cancel button during payment</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-gray-400">•</span>
+              <span className="text-gray-400 dark:text-gray-500">•</span>
               <span>The payment window was closed before completion</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-gray-400">•</span>
+              <span className="text-gray-400 dark:text-gray-500">•</span>
               <span>Payment authorization was declined</span>
             </li>
           </ul>
         </div>
 
-        <div className="border-t border-gray-200 pt-6 mb-6">
-          <h3 className="font-semibold text-gray-900 mb-3">What would you like to do?</h3>
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mb-6">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-3">What would you like to do?</h3>
           <div className="space-y-3">
             <Link
               href={`/dashboard/applications/${params['id']}/payment`}
-              className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-primary-600 hover:bg-primary-50 transition-all group"
+              className="flex items-center gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all group"
             >
               <div className="flex-shrink-0">
-                <div className="rounded-full bg-primary-100 p-2 group-hover:bg-primary-200">
-                  <CreditCard className="h-5 w-5 text-primary-600" />
+                <div className="rounded-full bg-primary-100 dark:bg-primary-900/30 p-2 group-hover:bg-primary-200">
+                  <CreditCard className="h-5 w-5 text-primary-600 dark:text-primary-400" />
                 </div>
               </div>
               <div className="flex-1">
-                <p className="font-medium text-gray-900">Try payment again</p>
-                <p className="text-sm text-gray-600">Choose a different payment method or try again</p>
+                <p className="font-medium text-gray-900 dark:text-white">Try payment again</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Choose a different payment method or try again</p>
               </div>
             </Link>
 
             <Link
               href={`/dashboard/applications/${params['id']}`}
-              className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all group"
+              className="flex items-center gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all group"
             >
               <div className="flex-shrink-0">
-                <div className="rounded-full bg-gray-100 p-2 group-hover:bg-gray-200">
-                  <ArrowLeft className="h-5 w-5 text-gray-600" />
+                <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-2 group-hover:bg-gray-200 dark:group-hover:bg-gray-700">
+                  <ArrowLeft className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                 </div>
               </div>
               <div className="flex-1">
-                <p className="font-medium text-gray-900">Go back to application</p>
-                <p className="text-sm text-gray-600">Review your application details</p>
+                <p className="font-medium text-gray-900 dark:text-white">Go back to application</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Review your application details</p>
               </div>
             </Link>
           </div>
@@ -79,15 +79,15 @@ export default function PaymentCancelPage() {
         <div className="text-center">
           <Link
             href="/dashboard"
-            className="text-primary-600 hover:text-primary-700 font-medium text-sm"
+            className="text-primary-600 dark:text-primary-400 hover:text-primary-700 font-medium text-sm"
           >
             Return to Dashboard →
           </Link>
         </div>
 
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-sm text-blue-800">
-            <strong>Need help?</strong> If you're having trouble completing your payment,
+        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg">
+          <p className="text-sm text-blue-800 dark:text-blue-300">
+            <strong>Need help?</strong> If you&apos;re having trouble completing your payment,
             please contact our support team for assistance.
           </p>
         </div>

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { PusherProvider } from "@/contexts/PusherContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 /**
@@ -13,6 +14,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
  * Wraps the entire app with necessary providers:
  * - ErrorBoundary: Catches and handles React errors
  * - ThemeProvider: Dark mode support (2025 standard)
+ * - CurrencyProvider: Multi-currency support (NGN/USD)
  * - QueryClient: TanStack Query for data fetching
  * - AuthProvider: Centralized authentication state (MUST be before PusherProvider)
  * - PusherProvider: Real-time notifications (depends on AuthProvider)
@@ -38,13 +40,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ErrorBoundary>
       <ThemeProvider>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <PusherProvider>
-              {children}
-            </PusherProvider>
-          </AuthProvider>
-        </QueryClientProvider>
+        <CurrencyProvider>
+          <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+              <PusherProvider>
+                {children}
+              </PusherProvider>
+            </AuthProvider>
+          </QueryClientProvider>
+        </CurrencyProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

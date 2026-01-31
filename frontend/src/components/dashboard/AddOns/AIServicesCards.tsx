@@ -8,35 +8,38 @@ export default function AIServicesCards() {
     {
       name: 'AI SOP Generator',
       description: 'Generate a professional Statement of Purpose in minutes',
-      price: '₦8,000',
-      oldPrice: '₦25,000',
+      price: 'FREE',
+      oldPrice: 'Worth ₦25,000',
       href: '/dashboard/addons/ai-sop-generator',
       icon: FileEdit,
       tag: 'Instant',
-      savings: '68% off',
+      savings: '100% Free',
       color: 'blue',
+      isFree: true,
     },
     {
       name: 'AI University Report',
       description: 'Get 10 personalized university recommendations',
-      price: '₦5,000',
-      oldPrice: '₦18,000',
+      price: 'FREE',
+      oldPrice: 'Worth ₦18,000',
       href: '/dashboard/addons/ai-university-report',
       icon: GraduationCap,
       tag: 'Instant',
-      savings: '72% off',
+      savings: '100% Free',
       color: 'green',
+      isFree: true,
     },
     {
       name: 'AI Resume Optimizer',
       description: 'Optimize your resume for maximum impact',
-      price: '₦5,000',
-      oldPrice: '₦15,000',
+      price: 'FREE',
+      oldPrice: 'Worth ₦15,000',
       href: '/dashboard/addons/ai-resume-optimizer',
       icon: Briefcase,
       tag: 'Instant',
-      savings: '67% off',
+      savings: '100% Free',
       color: 'purple',
+      isFree: true,
     },
   ]
 
@@ -71,10 +74,10 @@ export default function AIServicesCards() {
                   <Icon className={`h-6 w-6 text-${service.color}-600 dark:text-${service.color}-400`} />
                 </div>
                 <div className="text-right">
-                  <span className="inline-block px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs font-semibold rounded">
+                  <span className="inline-block px-2 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 text-xs font-semibold rounded">
                     {service.tag}
                   </span>
-                  <div className="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">
+                  <div className="mt-1 text-xs text-emerald-600 dark:text-emerald-400 font-bold">
                     {service.savings}
                   </div>
                 </div>
@@ -89,15 +92,15 @@ export default function AIServicesCards() {
 
               <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
                 <div>
-                  <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                  <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
                     {service.price}
                   </span>
                   <span className="ml-2 text-sm text-gray-500 dark:text-gray-400 line-through">
                     {service.oldPrice}
                   </span>
                 </div>
-                <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400 font-medium group-hover:gap-2 transition-all">
-                  <span className="text-sm">Get Started</span>
+                <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium group-hover:gap-2 transition-all">
+                  <span className="text-sm">Try Free</span>
                   <ArrowRight className="h-4 w-4" />
                 </div>
               </div>
@@ -106,28 +109,36 @@ export default function AIServicesCards() {
         })}
       </div>
 
-      {/* Bundle Package */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-xl p-8 text-white">
+      {/* Upgrade to Scholar Package */}
+      <div className="bg-gradient-to-r from-blue-600 to-teal-600 rounded-xl shadow-xl p-8 text-white">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 rounded-full mb-3">
               <Sparkles className="h-4 w-4" />
-              <span className="text-sm font-medium">Best Value</span>
+              <span className="text-sm font-medium">Upgrade for Full Support</span>
             </div>
-            <h3 className="text-2xl font-bold mb-2">Complete Package Bundle</h3>
+            <h3 className="text-2xl font-bold mb-2">Want Expert Human Guidance?</h3>
             <p className="text-blue-100 mb-4">
-              Get all 3 AI services and save ₦3,000!
+              Get unlimited document reviews, essay editing, counselor support, and more with the Scholar package.
             </p>
-            <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold">₦15,000</span>
-              <span className="text-xl text-blue-200 line-through">₦18,000</span>
+            <div className="flex flex-col sm:flex-row sm:items-baseline gap-2">
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-bold">$29.99</span>
+                <span className="text-lg text-blue-200">USD</span>
+              </div>
+              <span className="text-blue-200 hidden sm:inline">/</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-bold">₦49,999</span>
+                <span className="text-lg text-blue-200">NGN</span>
+              </div>
+              <span className="text-sm text-blue-200 ml-1">one-time</span>
             </div>
           </div>
           <Link
-            href="/dashboard/addons"
-            className="px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors shadow-lg hover:shadow-xl whitespace-nowrap"
+            href="/dashboard/applications/new"
+            className="px-8 py-4 bg-white text-teal-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors shadow-lg hover:shadow-xl whitespace-nowrap"
           >
-            View Bundle Package
+            Upgrade to Scholar
           </Link>
         </div>
       </div>
@@ -149,10 +160,10 @@ export default function AIServicesCards() {
           </div>
           <div className="text-center p-4">
             <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-              <span className="text-2xl">💰</span>
+              <span className="text-2xl">🎁</span>
             </div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Save 60-70%</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Affordable pricing for students</p>
+            <h4 className="font-semibold text-gray-900 dark:text-white mb-1">100% Free</h4>
+            <p className="text-sm text-gray-600 dark:text-gray-400">No payment required to start</p>
           </div>
           <div className="text-center p-4">
             <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-3">

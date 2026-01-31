@@ -124,15 +124,15 @@ export default function SOPGenerator() {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h1 className="text-2xl font-bold text-gray-900">AI SOP Generator</h1>
-        <p className="mt-2 text-gray-600">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">AI SOP Generator</h1>
+        <p className="mt-2 text-gray-600 dark:text-gray-400">
           Generate a professional Statement of Purpose using AI. Share your story in your own words, and we&apos;ll transform it into a compelling SOP.
         </p>
 
         {quota && (
-          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
-            <p className="text-sm text-blue-800">
+          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded">
+            <p className="text-sm text-blue-800 dark:text-blue-300">
               <span className="font-semibold">{quota.remaining}</span> AI generations remaining this hour
               {quota.remaining === 0 && (
                 <span className="ml-2 text-xs">
@@ -150,8 +150,8 @@ export default function SOPGenerator() {
       )}
 
       {/* Mode Selector */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Choose Generation Mode</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Choose Generation Mode</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Express Mode */}
           <button
@@ -159,27 +159,27 @@ export default function SOPGenerator() {
             onClick={() => setMode('express')}
             className={`p-4 rounded-lg border-2 transition-all text-left ${
               mode === 'express'
-                ? 'border-blue-500 bg-blue-50 shadow-md'
-                : 'border-gray-200 hover:border-gray-300'
+                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-md'
+                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
             }`}
           >
             <div className="flex items-start gap-3">
-              <div className={`mt-1 ${mode === 'express' ? 'text-blue-600' : 'text-gray-400'}`}>
+              <div className={`mt-1 ${mode === 'express' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}>
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-gray-900">Express Mode</h3>
-                  <span className="px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full">
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Express Mode</h3>
+                  <span className="px-2 py-0.5 text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded-full">
                     Fast
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Quick generation with minimal inputs. AI creates your story from key facts.
                 </p>
-                <p className="text-xs text-gray-500 mt-2">⏱️ ~2 minutes • 7 fields</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">⏱️ ~2 minutes • 7 fields</p>
               </div>
             </div>
           </button>
@@ -190,27 +190,27 @@ export default function SOPGenerator() {
             onClick={() => setMode('custom')}
             className={`p-4 rounded-lg border-2 transition-all text-left ${
               mode === 'custom'
-                ? 'border-blue-500 bg-blue-50 shadow-md'
-                : 'border-gray-200 hover:border-gray-300'
+                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-md'
+                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
             }`}
           >
             <div className="flex items-start gap-3">
-              <div className={`mt-1 ${mode === 'custom' ? 'text-blue-600' : 'text-gray-400'}`}>
+              <div className={`mt-1 ${mode === 'custom' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}>
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-gray-900">Custom Mode</h3>
-                  <span className="px-2 py-0.5 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Custom Mode</h3>
+                  <span className="px-2 py-0.5 text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-400 rounded-full">
                     Recommended
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Full control with detailed inputs. You write your story, AI structures and polishes it.
                 </p>
-                <p className="text-xs text-gray-500 mt-2">⏱️ ~10 minutes • Full detail</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">⏱️ ~10 minutes • Full detail</p>
               </div>
             </div>
           </button>
@@ -222,11 +222,11 @@ export default function SOPGenerator() {
         {mode === 'express' ? (
           /* EXPRESS MODE FORM */
           <>
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Essential Information</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Essential Information</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Full Name *
                   </label>
                   <input
@@ -234,14 +234,14 @@ export default function SOPGenerator() {
                     required
                     value={formData.fullName}
                     onChange={(e) => handleInputChange('fullName', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="John Doe"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Current Degree *
                     </label>
                     <input
@@ -249,13 +249,13 @@ export default function SOPGenerator() {
                       required
                       value={formData.currentEducation}
                       onChange={(e) => handleInputChange('currentEducation', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                       placeholder="Bachelor's in Computer Science"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Target Degree *
                     </label>
                     <input
@@ -263,7 +263,7 @@ export default function SOPGenerator() {
                       required
                       value={formData.targetDegree}
                       onChange={(e) => handleInputChange('targetDegree', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                       placeholder="Master's in Data Science"
                     />
                   </div>
@@ -271,7 +271,7 @@ export default function SOPGenerator() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Target University *
                     </label>
                     <input
@@ -279,13 +279,13 @@ export default function SOPGenerator() {
                       required
                       value={formData.targetUniversity}
                       onChange={(e) => handleInputChange('targetUniversity', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                       placeholder="Stanford University"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Country *
                     </label>
                     <input
@@ -293,7 +293,7 @@ export default function SOPGenerator() {
                       required
                       value={formData.targetCountry}
                       onChange={(e) => handleInputChange('targetCountry', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                       placeholder="United States"
                     />
                   </div>
@@ -301,7 +301,7 @@ export default function SOPGenerator() {
 
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                       Key Background Points * <span className="text-xs text-gray-500">(3-5 bullet points)</span>
                     </label>
                     {formData.academicBackground && (
@@ -323,17 +323,17 @@ export default function SOPGenerator() {
                     rows={6}
                     value={formData.academicBackground}
                     onChange={(e) => handleInputChange('academicBackground', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="• Graduated with honors in Computer Science&#10;• Led university robotics team to national competition&#10;• Published research paper on machine learning&#10;• 2 years experience as software engineer&#10;• Passionate about AI and its applications in healthcare"
                   />
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                     List your key achievements, experience, and qualifications. AI will expand these into a compelling narrative.
                   </p>
                 </div>
 
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                       Career Goal * <span className="text-xs text-gray-500">(1-2 sentences)</span>
                     </label>
                     {formData.careerGoals && (
@@ -355,7 +355,7 @@ export default function SOPGenerator() {
                     rows={3}
                     value={formData.careerGoals}
                     onChange={(e) => handleInputChange('careerGoals', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="I aim to become an AI research scientist developing accessible healthcare solutions for underserved communities."
                   />
                 </div>
@@ -366,11 +366,11 @@ export default function SOPGenerator() {
           /* CUSTOM MODE FORM */
           <>
             {/* Personal Information */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Personal Information</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Personal Information</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Full Name *
               </label>
               <input
@@ -378,13 +378,13 @@ export default function SOPGenerator() {
                 required
                 value={formData.fullName}
                 onChange={(e) => handleInputChange('fullName', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="John Doe"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Nationality *
               </label>
               <input
@@ -392,13 +392,13 @@ export default function SOPGenerator() {
                 required
                 value={formData.nationality}
                 onChange={(e) => handleInputChange('nationality', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="Nigerian"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Current Education *
               </label>
               <input
@@ -406,20 +406,20 @@ export default function SOPGenerator() {
                 required
                 value={formData.currentEducation}
                 onChange={(e) => handleInputChange('currentEducation', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="Bachelor's in Computer Science"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 GPA (Optional)
               </label>
               <input
                 type="text"
                 value={formData.gpa}
                 onChange={(e) => handleInputChange('gpa', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="3.8/4.0"
               />
             </div>
@@ -440,11 +440,11 @@ export default function SOPGenerator() {
         </div>
 
         {/* Target Program */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Target Program</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Target Program</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Target Degree *
               </label>
               <input
@@ -452,13 +452,13 @@ export default function SOPGenerator() {
                 required
                 value={formData.targetDegree}
                 onChange={(e) => handleInputChange('targetDegree', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="Master's in Data Science"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Target University *
               </label>
               <input
@@ -466,13 +466,13 @@ export default function SOPGenerator() {
                 required
                 value={formData.targetUniversity}
                 onChange={(e) => handleInputChange('targetUniversity', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="Stanford University"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Target Country *
               </label>
               <input
@@ -480,7 +480,7 @@ export default function SOPGenerator() {
                 required
                 value={formData.targetCountry}
                 onChange={(e) => handleInputChange('targetCountry', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="United States"
               />
             </div>
@@ -488,7 +488,7 @@ export default function SOPGenerator() {
         </div>
 
         {/* Your Story (Most Important Section) */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-2">Your Story</h2>
           <p className="text-sm text-gray-600 mb-4">
             Write in your own words. Be authentic and specific. Minimum 200 words for each section.
@@ -521,7 +521,7 @@ export default function SOPGenerator() {
                 onChange={(e) => handleInputChange('academicBackground', e.target.value)}
                 className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${
                   academicWords < 200 ? 'border-red-300' : 'border-gray-300'
-                }`}
+                } dark:bg-gray-700 dark:text-white`}
                 placeholder="Tell us about your academic journey, key courses, projects, research experience, etc. What sparked your interest in this field?"
               />
             </div>
@@ -552,7 +552,7 @@ export default function SOPGenerator() {
                 onChange={(e) => handleInputChange('careerGoals', e.target.value)}
                 className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${
                   careerWords < 200 ? 'border-red-300' : 'border-gray-300'
-                }`}
+                } dark:bg-gray-700 dark:text-white`}
                 placeholder="What do you want to achieve in your career? Short-term and long-term goals. Be specific."
               />
             </div>
@@ -583,7 +583,7 @@ export default function SOPGenerator() {
                 onChange={(e) => handleInputChange('whyThisProgram', e.target.value)}
                 className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${
                   whyProgramWords < 200 ? 'border-red-300' : 'border-gray-300'
-                }`}
+                } dark:bg-gray-700 dark:text-white`}
                 placeholder="Why this specific program at this university? Mention specific courses, faculty, research opportunities, or unique aspects of the program."
               />
             </div>
@@ -611,7 +611,7 @@ export default function SOPGenerator() {
                 rows={4}
                 value={formData.achievements}
                 onChange={(e) => handleInputChange('achievements', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="Awards, publications, leadership roles, significant projects, etc."
               />
             </div>
@@ -639,7 +639,7 @@ export default function SOPGenerator() {
                 rows={4}
                 value={formData.challenges}
                 onChange={(e) => handleInputChange('challenges', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="Obstacles you've faced and how you overcame them. This adds depth to your story."
               />
             </div>
@@ -647,17 +647,17 @@ export default function SOPGenerator() {
         </div>
 
         {/* Preferences */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Preferences</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Preferences</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Tone
               </label>
               <select
                 value={formData.tone}
                 onChange={(e) => handleInputChange('tone', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               >
                 <option value="formal">Formal (Traditional Academic)</option>
                 <option value="balanced">Balanced (Recommended)</option>
@@ -666,7 +666,7 @@ export default function SOPGenerator() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Target Word Count
               </label>
               <input
@@ -676,7 +676,7 @@ export default function SOPGenerator() {
                 step="50"
                 value={formData.wordCount}
                 onChange={(e) => handleInputChange('wordCount', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               />
             </div>
           </div>
@@ -712,8 +712,8 @@ export default function SOPGenerator() {
             </div>
             {/* Loading Text */}
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Generating Your SOP</h3>
-              <p className="text-sm text-gray-600">AI is crafting your personalized statement...</p>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Generating Your SOP</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">AI is crafting your personalized statement...</p>
               <div className="mt-4 flex items-center justify-center gap-1">
                 <span className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></span>
                 <span className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></span>
@@ -726,8 +726,8 @@ export default function SOPGenerator() {
 
       {/* Error Display */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-800">{error}</p>
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg p-4">
+          <p className="text-red-800 dark:text-red-300">{error}</p>
         </div>
       )}
 
@@ -735,7 +735,7 @@ export default function SOPGenerator() {
       {generatedSOP && (
         <div className="space-y-6">
           {/* Quality Score - Circular Progress */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-6">SOP Quality Score</h2>
             <div className="flex items-center justify-center">
               {/* Circular Progress Chart */}
@@ -779,11 +779,11 @@ export default function SOPGenerator() {
                   }`}>
                     {getQualityScore(generatedSOP.estimatedQuality)}
                   </div>
-                  <div className="text-sm text-gray-500 mt-1">out of 100</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">out of 100</div>
                   <div className={`mt-2 px-3 py-1 rounded-full text-xs font-medium ${
-                    generatedSOP.estimatedQuality === 'excellent' ? 'bg-green-100 text-green-800' :
-                    generatedSOP.estimatedQuality === 'good' ? 'bg-blue-100 text-blue-800' :
-                    'bg-yellow-100 text-yellow-800'
+                    generatedSOP.estimatedQuality === 'excellent' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400' :
+                    generatedSOP.estimatedQuality === 'good' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400' :
+                    'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400'
                   }`}>
                     {generatedSOP.estimatedQuality}
                   </div>
@@ -792,18 +792,18 @@ export default function SOPGenerator() {
             </div>
             {/* Score interpretation */}
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {generatedSOP.estimatedQuality === 'excellent' && (
-                  <span className="text-green-700 font-semibold">Excellent! Your SOP is compelling and well-structured. ✨</span>
+                  <span className="text-green-700 dark:text-green-400 font-semibold">Excellent! Your SOP is compelling and well-structured. ✨</span>
                 )}
                 {generatedSOP.estimatedQuality === 'good' && (
-                  <span className="text-blue-700 font-semibold">Good! Review suggestions below to make it excellent.</span>
+                  <span className="text-blue-700 dark:text-blue-400 font-semibold">Good! Review suggestions below to make it excellent.</span>
                 )}
                 {generatedSOP.estimatedQuality === 'needs-review' && (
-                  <span className="text-yellow-700 font-semibold">Needs improvement - please review suggestions carefully.</span>
+                  <span className="text-yellow-700 dark:text-yellow-400 font-semibold">Needs improvement - please review suggestions carefully.</span>
                 )}
               </p>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                 <strong>Word Count:</strong> {generatedSOP.wordCount} words
               </p>
             </div>
@@ -819,13 +819,13 @@ export default function SOPGenerator() {
               {generatedSOP.sop.split('\n\n').map((paragraph, idx) => (
                 <div
                   key={idx}
-                  className="relative pl-8 pr-4 py-3 bg-gray-50 rounded-lg border-l-4 border-blue-500 hover:bg-blue-50 transition-colors"
+                  className="relative pl-8 pr-4 py-3 bg-gray-50 dark:bg-gray-900 rounded-lg border-l-4 border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
                 >
                   {/* Paragraph number */}
-                  <div className="absolute left-2 top-3 text-xs font-bold text-blue-600 bg-blue-100 w-5 h-5 rounded-full flex items-center justify-center">
+                  <div className="absolute left-2 top-3 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 w-5 h-5 rounded-full flex items-center justify-center">
                     {idx + 1}
                   </div>
-                  <p className="text-gray-800 leading-relaxed text-justify whitespace-pre-wrap">
+                  <p className="text-gray-800 dark:text-gray-300 leading-relaxed text-justify whitespace-pre-wrap">
                     {paragraph}
                   </p>
                 </div>
@@ -848,10 +848,10 @@ export default function SOPGenerator() {
                   {generatedSOP.suggestions.map((suggestion, idx) => (
                     <div
                       key={idx}
-                      className="flex items-start gap-3 bg-white border border-blue-200 rounded-lg p-3 hover:border-blue-400 transition-all"
+                      className="flex items-start gap-3 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-700 rounded-lg p-3 hover:border-blue-400 transition-all"
                     >
-                      <span className="text-blue-600 text-lg mt-0.5">✓</span>
-                      <span className="text-sm text-gray-800 flex-1">{suggestion}</span>
+                      <span className="text-blue-600 dark:text-blue-400 text-lg mt-0.5">✓</span>
+                      <span className="text-sm text-gray-800 dark:text-gray-300 flex-1">{suggestion}</span>
                     </div>
                   ))}
                 </div>
@@ -861,7 +861,7 @@ export default function SOPGenerator() {
           </div>
 
           {/* Action Buttons */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <div className="flex gap-3">
             {/* Download Dropdown */}
             <div className="relative">
@@ -881,7 +881,7 @@ export default function SOPGenerator() {
 
               {/* Dropdown Menu */}
               {showDownloadMenu && (
-                <div className="absolute top-full mt-1 left-0 bg-white rounded-md shadow-lg border border-gray-200 py-1 min-w-[180px] z-10">
+                <div className="absolute top-full mt-1 left-0 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 py-1 min-w-[180px] z-10">
                   <button
                     onClick={() => {
                       // Create Word document
@@ -919,7 +919,7 @@ export default function SOPGenerator() {
                       URL.revokeObjectURL(url)
                       setShowDownloadMenu(false)
                     }}
-                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-50 flex items-center gap-2"
+                    className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 flex items-center gap-2"
                   >
                     <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -937,7 +937,7 @@ export default function SOPGenerator() {
                       URL.revokeObjectURL(url)
                       setShowDownloadMenu(false)
                     }}
-                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-50 flex items-center gap-2"
+                    className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 flex items-center gap-2"
                   >
                     <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -954,7 +954,7 @@ export default function SOPGenerator() {
                 navigator.clipboard.writeText(generatedSOP.sop)
                 showToastNotification('✓ SOP copied to clipboard!')
               }}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300 rounded-md transition-colors flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -971,7 +971,7 @@ export default function SOPGenerator() {
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }
               }}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors border border-gray-300 flex items-center gap-2"
+              className="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md transition-colors border border-gray-300 dark:border-gray-600 flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />

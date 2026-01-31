@@ -1,6 +1,10 @@
 # Enable URL Rewriting
 RewriteEngine On
 
+# Pass Authorization header to PHP (CRITICAL for JWT authentication)
+RewriteCond %{HTTP:Authorization} ^(.+)$
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 # Handle CORS preflight requests
 <IfModule mod_headers.c>
     SetEnvIf Origin "^https?://(www\.)?(tundua\.com)$" ORIGIN_MATCH=$0

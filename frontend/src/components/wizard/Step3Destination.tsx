@@ -183,13 +183,13 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* Destination Country Section */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 pb-2 border-b-2 border-primary-100">
-          <Globe className="h-5 w-5 text-primary-600" />
-          <h3 className="text-lg font-semibold text-gray-900">Study Destination</h3>
+        <div className="flex items-center gap-2 pb-2 border-b-2 border-primary-100 dark:border-primary-800">
+          <Globe className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Study Destination</h3>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-2xl p-6 border border-blue-100">
-          <p className="text-sm text-gray-700 flex items-center gap-2">
+        <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900/20 dark:via-indigo-900/20 dark:to-purple-900/20 rounded-2xl p-6 border border-blue-100 dark:border-blue-800">
+          <p className="text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2">
             <span className="text-2xl">🌍</span>
             <span>Select your destination country and target universities to begin your study abroad journey.</span>
           </p>
@@ -197,7 +197,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
 
         {/* Destination Country */}
         <div className="group">
-          <label htmlFor="destination_country" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="destination_country" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Destination Country <span className="text-red-500">*</span>
           </label>
           <div className="relative">
@@ -206,7 +206,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
             </div>
             <select
               {...register("destination_country")}
-              className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white disabled:opacity-50"
+              className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white dark:bg-gray-700 dark:text-white disabled:opacity-50"
               disabled={loadingCountries}
             >
               <option value="">
@@ -233,8 +233,8 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
 
         {/* Error Display */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-            <p className="text-sm text-red-800 flex items-center gap-2">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-xl p-4">
+            <p className="text-sm text-red-800 dark:text-red-300 flex items-center gap-2">
               <span className="text-red-500">⚠</span>
               {error}
             </p>
@@ -245,18 +245,18 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
         {selectedCountry && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Select Universities <span className="text-red-500">*</span>
               </label>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
                 {selectedUniversities.length} / 8 selected
               </span>
             </div>
 
             {/* Selected Universities */}
             {selectedUniversities.length > 0 && (
-              <div className="bg-primary-50 border border-primary-100 rounded-xl p-4">
-                <p className="text-xs font-medium text-primary-800 mb-3 flex items-center gap-1">
+              <div className="bg-primary-50 dark:bg-primary-900/20 border border-primary-100 dark:border-primary-800 rounded-xl p-4">
+                <p className="text-xs font-medium text-primary-800 dark:text-primary-300 mb-3 flex items-center gap-1">
                   <Building2 className="h-4 w-4" />
                   Your Selected Universities
                 </p>
@@ -264,7 +264,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
                   {selectedUniversities.map((uni) => (
                     <div
                       key={uni}
-                      className="inline-flex items-center gap-2 bg-white text-primary-700 px-3 py-2 rounded-lg text-sm font-medium border border-primary-200 shadow-sm"
+                      className="inline-flex items-center gap-2 bg-white dark:bg-gray-800 text-primary-700 dark:text-primary-400 px-3 py-2 rounded-lg text-sm font-medium border border-primary-200 dark:border-primary-700 shadow-sm"
                     >
                       {uni}
                       <button
@@ -283,9 +283,9 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
             {/* Available Universities */}
             {selectedUniversities.length < 8 && (
               <>
-                <div className="border-2 border-gray-200 rounded-xl p-5 bg-gradient-to-br from-gray-50 to-white">
-                  <p className="text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">
-                    <Building2 className="h-5 w-5 text-gray-500" />
+                <div className="border-2 border-gray-200 dark:border-gray-700 rounded-xl p-5 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4 flex items-center gap-2">
+                    <Building2 className="h-5 w-5 text-gray-500 dark:text-gray-400" />
                     {loadingUniversities ? 'Loading universities...' : `Popular universities in ${selectedCountry}:`}
                   </p>
                   {loadingUniversities ? (
@@ -293,7 +293,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
                       <Loader2 className="h-8 w-8 text-primary-500 animate-spin" />
                     </div>
                   ) : universities.length === 0 ? (
-                    <div className="text-center py-6 text-gray-500">
+                    <div className="text-center py-6 text-gray-500 dark:text-gray-400">
                       <p>No universities found for this country.</p>
                     </div>
                   ) : (
@@ -304,9 +304,9 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
                           type="button"
                           onClick={() => addUniversity(uni.name)}
                           disabled={selectedUniversities.includes(uni.name)}
-                          className="group w-full text-left px-4 py-3 rounded-xl bg-white border-2 border-gray-200 hover:border-primary-500 hover:bg-primary-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-gray-200 disabled:hover:bg-white transition-all duration-200 flex items-center justify-between"
+                          className="group w-full text-left px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-gray-200 disabled:hover:bg-white dark:disabled:hover:bg-gray-800 transition-all duration-200 flex items-center justify-between"
                         >
-                          <span className="font-medium text-gray-700 group-hover:text-primary-700">
+                          <span className="font-medium text-gray-700 dark:text-gray-300 group-hover:text-primary-700 dark:group-hover:text-primary-400">
                             {uni.name}
                           </span>
                           {!selectedUniversities.includes(uni.name) && (
@@ -320,7 +320,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
 
                 {/* Custom University */}
                 <div className="group">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Can&apos;t find your university? Add a custom one
                   </label>
                   <div className="flex gap-2">
@@ -333,7 +333,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
                         value={customUniversity}
                         onChange={(e) => setCustomUniversity(e.target.value)}
                         placeholder="Enter university name"
-                        className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400"
+                        className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
                         onKeyPress={(e) => {
                           if (e.key === "Enter") {
                             e.preventDefault();
@@ -365,14 +365,14 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
 
       {/* Program Details Section */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 pb-2 border-b-2 border-primary-100">
-          <GraduationCap className="h-5 w-5 text-primary-600" />
-          <h3 className="text-lg font-semibold text-gray-900">Program Details</h3>
+        <div className="flex items-center gap-2 pb-2 border-b-2 border-primary-100 dark:border-primary-800">
+          <GraduationCap className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Program Details</h3>
         </div>
 
         {/* Program Type */}
         <div className="group">
-          <label htmlFor="program_type" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="program_type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Program Type <span className="text-red-500">*</span>
           </label>
           <div className="relative">
@@ -381,7 +381,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
             </div>
             <select
               {...register("program_type")}
-              className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white"
+              className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white dark:bg-gray-700 dark:text-white"
             >
               <option value="">Select program type</option>
               <option value="undergraduate">Undergraduate (Bachelor&apos;s)</option>
@@ -399,7 +399,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
 
         {/* Intended Major */}
         <div className="group">
-          <label htmlFor="intended_major" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="intended_major" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Intended Major/Field of Study <span className="text-red-500">*</span>
           </label>
           <div className="relative">
@@ -409,7 +409,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
             <input
               type="text"
               {...register("intended_major")}
-              className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400"
+              className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
               placeholder="e.g., Computer Science, MBA, Data Science"
             />
           </div>
@@ -423,7 +423,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
         {/* Intake Season and Year */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div className="group">
-            <label htmlFor="intake_season" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="intake_season" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Intake Season <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -432,7 +432,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
               </div>
               <select
                 {...register("intake_season")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white dark:bg-gray-700 dark:text-white"
               >
                 <option value="">Select intake</option>
                 <option value="Spring 2025">Spring 2025</option>
@@ -449,7 +449,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
           </div>
 
           <div className="group">
-            <label htmlFor="intake_year" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="intake_year" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Year <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -459,7 +459,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
               <input
                 type="number"
                 {...register("intake_year")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
                 placeholder="2025"
                 min="2024"
                 max="2030"

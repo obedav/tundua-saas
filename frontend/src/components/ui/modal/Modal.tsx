@@ -31,7 +31,7 @@ const modalOverlayVariants = cva(
 );
 
 const modalContentVariants = cva(
-  "fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%] bg-white rounded-2xl shadow-elevation-5 transition-all duration-300 max-h-[90vh] overflow-auto",
+  "fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%] bg-white dark:bg-gray-800 rounded-2xl shadow-elevation-5 dark:shadow-gray-900/50 transition-all duration-300 max-h-[90vh] overflow-auto",
   {
     variants: {
       size: {
@@ -209,7 +209,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
                 {title && (
                   <h2
                     id="modal-title"
-                    className="text-2xl font-bold text-gray-900 leading-tight"
+                    className="text-2xl font-bold text-gray-900 dark:text-white leading-tight"
                   >
                     {title}
                   </h2>
@@ -217,7 +217,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
                 {description && (
                   <p
                     id="modal-description"
-                    className="text-sm text-gray-600 leading-relaxed"
+                    className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed"
                   >
                     {description}
                   </p>
@@ -229,7 +229,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
                 <button
                   type="button"
                   onClick={onClose}
-                  className="ml-4 flex-shrink-0 rounded-lg p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                  className="ml-4 flex-shrink-0 rounded-lg p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
                   aria-label="Close modal"
                 >
                   <X className="h-5 w-5" aria-hidden="true" />
@@ -243,7 +243,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 
           {/* Footer */}
           {footer && (
-            <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-gray-100">
+            <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-gray-100 dark:border-gray-700">
               {footer}
             </div>
           )}
@@ -279,7 +279,7 @@ const ModalTitle = forwardRef<
   <h2
     ref={ref}
     className={cn(
-      "text-2xl font-bold text-gray-900 leading-tight tracking-tight",
+      "text-2xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight",
       className
     )}
     {...props}
@@ -294,7 +294,7 @@ const ModalDescription = forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-gray-600 leading-relaxed", className)}
+    className={cn("text-sm text-gray-600 dark:text-gray-400 leading-relaxed", className)}
     {...props}
   />
 ));
@@ -314,7 +314,7 @@ const ModalFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     <div
       ref={ref}
       className={cn(
-        "flex items-center justify-end gap-3 mt-6 pt-6 border-t border-gray-100",
+        "flex items-center justify-end gap-3 mt-6 pt-6 border-t border-gray-100 dark:border-gray-700",
         className
       )}
       {...props}

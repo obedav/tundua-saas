@@ -31,7 +31,7 @@ export default function NotFound() {
             Page Not Found
           </h2>
           <p className="text-lg text-gray-600 mb-2">
-            Oops! The page you're looking for doesn't exist.
+            Oops! The page you&apos;re looking for doesn&apos;t exist.
           </p>
           <p className="text-gray-500">
             It might have been moved, deleted, or the URL might be incorrect.
@@ -85,7 +85,7 @@ export default function NotFound() {
 
         {/* Support Text */}
         <p className="text-sm text-gray-500 mt-8">
-          Still can't find what you're looking for?{' '}
+          Still can&apos;t find what you&apos;re looking for?{' '}
           <Link href="/dashboard/support" className="text-blue-600 hover:underline font-medium">
             Contact our support team
           </Link>

@@ -26,14 +26,14 @@ interface DashboardStatsProps {
   };
 }
 
-const StatsCard = ({ title, value, icon: Icon, trend, iconColor = "text-gray-400" }: StatsCardProps) => {
+const StatsCard = ({ title, value, icon: Icon, trend, iconColor = "text-gray-400 dark:text-gray-500" }: StatsCardProps) => {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between mb-2">
-        <p className="text-sm font-medium text-gray-600">{title}</p>
+        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
         <Icon className={`h-5 w-5 ${iconColor}`} />
       </div>
-      <p className="text-2xl sm:text-3xl font-bold text-gray-900">{value}</p>
+      <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{value}</p>
       {trend && (
         <div className="flex items-center gap-1 mt-2">
           {trend.isPositive ? (
@@ -41,10 +41,10 @@ const StatsCard = ({ title, value, icon: Icon, trend, iconColor = "text-gray-400
           ) : (
             <TrendingDown className="h-4 w-4 text-red-500" />
           )}
-          <span className={`text-sm font-medium ${trend.isPositive ? 'text-green-600' : 'text-red-600'}`}>
+          <span className={`text-sm font-medium ${trend.isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
             {trend.value}%
           </span>
-          <span className="text-sm text-gray-500">vs last month</span>
+          <span className="text-sm text-gray-500 dark:text-gray-400">vs last month</span>
         </div>
       )}
     </div>
@@ -64,7 +64,7 @@ export default function DashboardStats({
         title="Total Applications"
         value={totalApplications}
         icon={FileText}
-        iconColor="text-primary-600"
+        iconColor="text-primary-600 dark:text-primary-400"
         trend={trends?.applications ? {
           value: trends.applications,
           isPositive: trends.applications > 0
@@ -97,7 +97,7 @@ export default function DashboardStats({
         title="Total Spent"
         value={`₦${typeof totalSpent === 'number' ? totalSpent.toLocaleString('en-NG') : totalSpent}`}
         icon={DollarSign}
-        iconColor="text-primary-600"
+        iconColor="text-primary-600 dark:text-primary-400"
         trend={trends?.spending ? {
           value: trends.spending,
           isPositive: trends.spending > 0

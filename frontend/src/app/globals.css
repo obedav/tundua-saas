@@ -3,13 +3,142 @@
 @tailwind utilities;
 
 @layer base {
+  /* 2027 Standard: color-scheme declaration for native element theming */
+  :root {
+    color-scheme: light dark;
+
+    /* Semantic color tokens - Light mode */
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f9fafb;
+    --color-bg-tertiary: #f3f4f6;
+    --color-text-primary: #111827;
+    --color-text-secondary: #4b5563;
+    --color-text-tertiary: #6b7280;
+    --color-text-muted: #9ca3af;
+    --color-border-primary: #e5e7eb;
+    --color-border-secondary: #d1d5db;
+    --color-accent: #0284c7;
+    --color-accent-hover: #0369a1;
+
+    /* Focus ring colors */
+    --color-focus-ring: #0ea5e9;
+    --color-focus-ring-offset: #ffffff;
+
+    /* Status colors */
+    --color-success: #059669;
+    --color-success-bg: #d1fae5;
+    --color-warning: #d97706;
+    --color-warning-bg: #fef3c7;
+    --color-error: #dc2626;
+    --color-error-bg: #fee2e2;
+    --color-info: #0284c7;
+    --color-info-bg: #e0f2fe;
+  }
+
+  .dark {
+    /* Semantic color tokens - Dark mode */
+    --color-bg-primary: #111827;
+    --color-bg-secondary: #1f2937;
+    --color-bg-tertiary: #374151;
+    --color-text-primary: #f9fafb;
+    --color-text-secondary: #e5e7eb;
+    --color-text-tertiary: #d1d5db;
+    --color-text-muted: #9ca3af;
+    --color-border-primary: #374151;
+    --color-border-secondary: #4b5563;
+    --color-accent: #38bdf8;
+    --color-accent-hover: #0ea5e9;
+
+    /* Focus ring colors */
+    --color-focus-ring: #38bdf8;
+    --color-focus-ring-offset: #111827;
+
+    /* Status colors - Dark mode variants */
+    --color-success: #34d399;
+    --color-success-bg: rgba(6, 78, 59, 0.3);
+    --color-warning: #fbbf24;
+    --color-warning-bg: rgba(120, 53, 15, 0.3);
+    --color-error: #f87171;
+    --color-error-bg: rgba(127, 29, 29, 0.3);
+    --color-info: #38bdf8;
+    --color-info-bg: rgba(7, 89, 133, 0.3);
+  }
+
   * {
     border-color: theme('colors.gray.200');
   }
 
+  .dark * {
+    border-color: theme('colors.gray.700');
+  }
+
   body {
-    @apply bg-white text-gray-900;
+    @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100;
     font-family: var(--font-inter), system-ui, sans-serif;
+  }
+
+  /* Scrollbar theming for 2027 standards */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-text-muted) var(--color-bg-secondary);
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-text-muted);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-tertiary);
+  }
+
+  /* Selection styling */
+  ::selection {
+    background-color: var(--color-accent);
+    color: white;
+  }
+
+  /* Focus visible for keyboard navigation (accessibility) */
+  :focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* Reduced motion support for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: more) {
+    :root {
+      --color-text-secondary: #1f2937;
+      --color-text-tertiary: #374151;
+      --color-border-primary: #111827;
+    }
+
+    .dark {
+      --color-text-secondary: #f3f4f6;
+      --color-text-tertiary: #e5e7eb;
+      --color-border-primary: #f9fafb;
+    }
   }
 }
 

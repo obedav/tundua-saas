@@ -109,7 +109,14 @@ class AuthController
 
         // Send verification email
         $verificationUrl = $this->authService->generateVerificationUrl($verificationToken);
-        $this->emailService->sendVerificationEmail($email, $firstName, $verificationUrl);
+        $emailSent = $this->emailService->sendVerificationEmail($email, $firstName, $verificationUrl);
+
+        if (!$emailSent) {
+            error_log("⚠️ FAILED to send verification email to: {$email}");
+            error_log("Check your email credentials in .env file (MAIL_HOST, MAIL_USERNAME, MAIL_PASSWORD)");
+        } else {
+            error_log("✅ Verification email sent successfully to: {$email}");
+        }
 
         // Log user registration (Audit)
         AuditLogger::logUserRegister($user->id, $email);
@@ -458,7 +465,7 @@ class AuthController
         ]);
 
         // Send reset email
-        $resetUrl = $this->authService->generatePasswordResetUrl($resetToken);
+        $resetUrl = $this->authService->generatePasswordResetUrl($resetToken, $email);
         $this->emailService->sendPasswordResetEmail($email, $user['first_name'], $resetUrl);
 
         $response->getBody()->write(json_encode([

@@ -3,16 +3,16 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const radioVariants = cva(
-  "peer h-5 w-5 shrink-0 rounded-full border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+  "peer h-5 w-5 shrink-0 rounded-full border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "border-gray-300 bg-white hover:border-gray-400 focus:ring-primary-500 data-[state=checked]:border-primary-600 data-[state=checked]:border-[6px]",
+          "border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 focus:ring-primary-500 data-[state=checked]:border-primary-600 dark:data-[state=checked]:border-primary-400 data-[state=checked]:border-[6px]",
         success:
-          "border-gray-300 bg-white hover:border-gray-400 focus:ring-green-500 data-[state=checked]:border-green-600 data-[state=checked]:border-[6px]",
+          "border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 focus:ring-green-500 data-[state=checked]:border-green-600 dark:data-[state=checked]:border-green-400 data-[state=checked]:border-[6px]",
         danger:
-          "border-gray-300 bg-white hover:border-gray-400 focus:ring-red-500 data-[state=checked]:border-red-600 data-[state=checked]:border-[6px]",
+          "border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 focus:ring-red-500 data-[state=checked]:border-red-600 dark:data-[state=checked]:border-red-400 data-[state=checked]:border-[6px]",
       },
       size: {
         sm: "h-4 w-4 data-[state=checked]:border-[5px]",
@@ -80,7 +80,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
               <label
                 htmlFor={props.id}
                 className={cn(
-                  "text-sm font-medium text-gray-900 cursor-pointer select-none",
+                  "text-sm font-medium text-gray-900 dark:text-white cursor-pointer select-none",
                   disabled && "opacity-50 cursor-not-allowed"
                 )}
               >
@@ -90,7 +90,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
             {description && (
               <p
                 className={cn(
-                  "text-sm text-gray-600 mt-0.5",
+                  "text-sm text-gray-600 dark:text-gray-400 mt-0.5",
                   disabled && "opacity-50"
                 )}
               >
@@ -98,7 +98,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
               </p>
             )}
             {error && (
-              <p className="text-sm text-red-600 mt-1" role="alert">
+              <p className="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
                 {error}
               </p>
             )}
@@ -179,7 +179,7 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
           />
         ))}
         {error && (
-          <p className="text-sm text-red-600 mt-2" role="alert">
+          <p className="text-sm text-red-600 dark:text-red-400 mt-2" role="alert">
             {error}
           </p>
         )}

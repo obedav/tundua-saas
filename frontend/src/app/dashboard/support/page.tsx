@@ -138,8 +138,8 @@ export default function SupportPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Support Center</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Support Center</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
             Get help with your applications and account
           </p>
         </div>
@@ -154,53 +154,53 @@ export default function SupportPage() {
 
       {/* Contact Options */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center gap-3 mb-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-100">
-              <Mail className="h-6 w-6 text-primary-600" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900/30">
+              <Mail className="h-6 w-6 text-primary-600 dark:text-primary-400" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Email Support</h3>
-              <p className="text-sm text-gray-600">24/7 Response</p>
+              <h3 className="font-semibold text-gray-900 dark:text-white">Email Support</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">24/7 Response</p>
             </div>
           </div>
           <a
             href="mailto:support@tundua.com"
-            className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+            className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 font-medium"
           >
             support@tundua.com
           </a>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center gap-3 mb-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-              <Phone className="h-6 w-6 text-green-600" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+              <Phone className="h-6 w-6 text-green-600 dark:text-green-400" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Phone Support</h3>
-              <p className="text-sm text-gray-600">Mon-Fri 9AM-5PM</p>
+              <h3 className="font-semibold text-gray-900 dark:text-white">Phone Support</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Mon-Fri 9AM-5PM</p>
             </div>
           </div>
           <a
             href="tel:+1234567890"
-            className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+            className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 font-medium"
           >
             +1 (234) 567-890
           </a>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center gap-3 mb-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-              <MessageSquare className="h-6 w-6 text-blue-600" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+              <MessageSquare className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Live Chat</h3>
-              <p className="text-sm text-gray-600">Instant Help</p>
+              <h3 className="font-semibold text-gray-900 dark:text-white">Live Chat</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Instant Help</p>
             </div>
           </div>
-          <button className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+          <button className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 font-medium">
             Start Chat
           </button>
         </div>
@@ -208,13 +208,13 @@ export default function SupportPage() {
 
       {/* New Ticket Form */}
       {showNewTicket && (
-        <div className="bg-white rounded-lg border border-gray-200 p-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Create Support Ticket</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-8">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Create Support Ticket</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Category */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Category
                 </label>
                 <select
@@ -222,7 +222,7 @@ export default function SupportPage() {
                   value={formData.category}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 >
                   <option value="general">General Inquiry</option>
                   <option value="application">Application Support</option>
@@ -235,7 +235,7 @@ export default function SupportPage() {
 
               {/* Priority */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Priority
                 </label>
                 <select
@@ -243,7 +243,7 @@ export default function SupportPage() {
                   value={formData.priority}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 >
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>
@@ -255,7 +255,7 @@ export default function SupportPage() {
 
             {/* Subject */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Subject
               </label>
               <input
@@ -265,13 +265,13 @@ export default function SupportPage() {
                 onChange={handleChange}
                 required
                 placeholder="Brief description of your issue"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               />
             </div>
 
             {/* Message */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Message
               </label>
               <textarea
@@ -281,21 +281,21 @@ export default function SupportPage() {
                 required
                 rows={6}
                 placeholder="Provide detailed information about your issue..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               />
             </div>
 
             {/* Attachment (UI only for now) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Attachments (Optional)
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary-500 transition-colors cursor-pointer">
-                <Paperclip className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-600">
+              <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-primary-500 transition-colors cursor-pointer">
+                <Paperclip className="h-8 w-8 text-gray-400 dark:text-gray-500 mx-auto mb-2" />
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Click to upload or drag and drop
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   PNG, JPG, PDF up to 10MB
                 </p>
               </div>
@@ -306,7 +306,7 @@ export default function SupportPage() {
               <button
                 type="button"
                 onClick={() => setShowNewTicket(false)}
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 Cancel
               </button>
@@ -324,25 +324,25 @@ export default function SupportPage() {
       )}
 
       {/* Tickets List */}
-      <div className="bg-white rounded-lg border border-gray-200">
-        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-900">Your Support Tickets</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Your Support Tickets</h2>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
               type="text"
               placeholder="Search tickets..."
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+              className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
         </div>
 
-        <div className="divide-y divide-gray-200">
+        <div className="divide-y divide-gray-200 dark:divide-gray-700">
           {tickets.length === 0 ? (
             <div className="p-12 text-center">
-              <HelpCircle className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-500">No support tickets yet</p>
-              <p className="text-sm text-gray-400 mt-1">
+              <HelpCircle className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-3" />
+              <p className="text-gray-500 dark:text-gray-400">No support tickets yet</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
                 Create a ticket if you need help with anything
               </p>
             </div>
@@ -350,18 +350,18 @@ export default function SupportPage() {
             tickets.map((ticket) => (
               <div
                 key={ticket.id}
-                className="p-6 hover:bg-gray-50 transition-colors cursor-pointer"
+                className="p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-semibold text-gray-900">
+                      <h3 className="font-semibold text-gray-900 dark:text-white">
                         {ticket.subject}
                       </h3>
                       {getStatusBadge(ticket.status)}
                       {getPriorityBadge(ticket.priority)}
                     </div>
-                    <p className="text-sm text-gray-600 line-clamp-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                       {ticket.message}
                     </p>
                   </div>
@@ -391,39 +391,39 @@ export default function SupportPage() {
       </div>
 
       {/* FAQ Section */}
-      <div className="bg-gradient-to-br from-primary-50 to-blue-50 rounded-lg p-8 border border-primary-200">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+      <div className="bg-gradient-to-br from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 rounded-lg p-8 border border-primary-200 dark:border-primary-700">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
         <div className="space-y-3">
           <a
             href="/dashboard/help"
-            className="block p-4 bg-white rounded-lg hover:shadow-md transition-shadow"
+            className="block p-4 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition-shadow"
           >
-            <h3 className="font-medium text-gray-900 mb-1">
+            <h3 className="font-medium text-gray-900 dark:text-white mb-1">
               How long does the application process take?
             </h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Learn about typical processing times and what to expect
             </p>
           </a>
           <a
             href="/dashboard/help"
-            className="block p-4 bg-white rounded-lg hover:shadow-md transition-shadow"
+            className="block p-4 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition-shadow"
           >
-            <h3 className="font-medium text-gray-900 mb-1">
+            <h3 className="font-medium text-gray-900 dark:text-white mb-1">
               What documents do I need to upload?
             </h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Complete checklist of required documents for your application
             </p>
           </a>
           <a
             href="/dashboard/help"
-            className="block p-4 bg-white rounded-lg hover:shadow-md transition-shadow"
+            className="block p-4 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition-shadow"
           >
-            <h3 className="font-medium text-gray-900 mb-1">
+            <h3 className="font-medium text-gray-900 dark:text-white mb-1">
               How do I track my application status?
             </h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Step-by-step guide to monitoring your application progress
             </p>
           </a>

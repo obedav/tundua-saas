@@ -72,8 +72,9 @@ describe("BillingHistory Component", () => {
 
     expect(screen.getByText(/Premium Service/i)).toBeInTheDocument();
     // Currency format check (₦299 for NGN, $299.00 for USD)
-    const amountElement = screen.getByText(/299/);
-    expect(amountElement).toBeInTheDocument();
+    // Use getAllByText since "299" appears in both summary card and payment row
+    const amountElements = screen.getAllByText(/299/);
+    expect(amountElements.length).toBeGreaterThanOrEqual(1);
   });
 
   it("filters payments by status", async () => {

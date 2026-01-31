@@ -117,13 +117,13 @@ export default function LoginForm() {
             className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-sm"
           >
             <motion.div
-              className="bg-white rounded-3xl p-8 shadow-2xl flex flex-col items-center"
+              className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl flex flex-col items-center"
             >
               <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
                 <CheckCircle2 className="w-10 h-10 text-green-600" />
               </div>
-              <p className="text-xl font-semibold text-gray-900">Login Successful!</p>
-              <p className="text-gray-600 mt-2">Redirecting to your dashboard...</p>
+              <p className="text-xl font-semibold text-gray-900 dark:text-white">Login Successful!</p>
+              <p className="text-gray-600 dark:text-gray-400 mt-2">Redirecting to your dashboard...</p>
             </motion.div>
           </motion.div>
         )}
@@ -131,13 +131,13 @@ export default function LoginForm() {
 
       {/* Form Card */}
       <motion.div
-        className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10"
+        className="bg-white dark:bg-gray-800/95 rounded-3xl shadow-2xl shadow-gray-200/50 dark:shadow-gray-950/50 border border-gray-100 dark:border-gray-700/50 p-6 sm:p-8 lg:p-10 backdrop-blur-sm"
       >
         <div className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
             Welcome back
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             Sign in to continue your journey
           </p>
         </div>
@@ -176,10 +176,10 @@ export default function LoginForm() {
         {/* Divider */}
         <div className="relative my-8">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200" />
+            <div className="w-full border-t border-gray-200 dark:border-gray-700" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-white text-gray-500 font-medium">
+            <span className="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">
               or sign in with email
             </span>
           </div>
@@ -207,7 +207,7 @@ export default function LoginForm() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-semibold text-gray-900 mb-2"
+              className="block text-sm font-semibold text-gray-900 dark:text-white mb-2"
             >
               Password
             </label>
@@ -220,12 +220,12 @@ export default function LoginForm() {
                 autoComplete="current-password"
                 aria-invalid={errors.password ? "true" : "false"}
                 aria-describedby={errors.password ? "password-error" : undefined}
-                className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl transition-all text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:bg-gray-50 disabled:cursor-not-allowed ${
+                className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl transition-all text-gray-900 dark:text-white dark:bg-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:bg-gray-50 disabled:cursor-not-allowed ${
                   errors.password
                     ? "border-red-300 focus:border-red-500"
                     : touchedFields.password && passwordValue
                     ? "border-green-300 focus:border-primary-500"
-                    : "border-gray-200 focus:border-primary-500 hover:border-gray-300"
+                    : "border-gray-200 dark:border-gray-600 focus:border-primary-500 hover:border-gray-300"
                 }`}
                 placeholder="••••••••"
                 disabled={isLoading}
@@ -260,7 +260,7 @@ export default function LoginForm() {
                 className="w-5 h-5 rounded border-gray-300 text-primary-600 focus:ring-2 focus:ring-primary-500 focus:ring-offset-0 cursor-pointer transition-colors"
                 disabled={isLoading}
               />
-              <span className="text-sm text-gray-700 select-none group-hover:text-gray-900 transition-colors">
+              <span className="text-sm text-gray-700 dark:text-gray-300 select-none group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
                 Remember me
               </span>
             </label>
@@ -286,14 +286,14 @@ export default function LoginForm() {
           </Button>
 
           {/* Keyboard Hint */}
-          <p className="text-xs text-center text-gray-500 mt-3">
-            Press <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs font-mono">Enter ↵</kbd> to sign in
+          <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-3">
+            Press <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-xs font-mono">Enter ↵</kbd> to sign in
           </p>
         </form>
 
         {/* Sign Up Link */}
-        <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-          <p className="text-gray-600">
+        <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 text-center">
+          <p className="text-gray-600 dark:text-gray-400">
             Don&apos;t have an account?{" "}
             <Link
               href="/auth/register"

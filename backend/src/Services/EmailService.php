@@ -30,6 +30,27 @@ class EmailService
             $this->mailer->SMTPSecure = $_ENV['MAIL_ENCRYPTION'] ?? 'tls';
             $this->mailer->Port = (int)($_ENV['MAIL_PORT'] ?? 587);
 
+            // Timeout settings (important for preventing hangs)
+            $this->mailer->Timeout = 30; // 30 seconds connection timeout
+            $this->mailer->SMTPKeepAlive = false;
+
+            // Enable SMTP debugging in development
+            if (($_ENV['APP_ENV'] ?? 'production') === 'development') {
+                $this->mailer->SMTPDebug = 2; // Detailed debug output
+                $this->mailer->Debugoutput = function($str, $level) {
+                    error_log("SMTP Debug ($level): $str");
+                };
+            }
+
+            // Additional options for Gmail
+            $this->mailer->SMTPOptions = [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                ]
+            ];
+
             // Sender
             $fromAddress = $_ENV['MAIL_FROM_ADDRESS'] ?? 'noreply@tundua.com';
             $fromName = $_ENV['MAIL_FROM_NAME'] ?? 'Tundua Education';
@@ -58,9 +79,19 @@ class EmailService
             // Clear addresses for next email
             $this->mailer->clearAddresses();
 
+            if ($result) {
+                error_log("Email sent successfully to: $to");
+            }
+
             return $result;
         } catch (Exception $e) {
-            error_log("Email send failed: " . $e->getMessage());
+            error_log("Email send failed to $to: " . $e->getMessage());
+            error_log("PHPMailer Error Info: " . $this->mailer->ErrorInfo);
+
+            // Clear addresses even on failure
+            $this->mailer->clearAddresses();
+
+            // Return false instead of throwing - registration should still succeed
             return false;
         }
     }

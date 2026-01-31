@@ -8,14 +8,26 @@ use Dotenv\Dotenv;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-// Start session for OAuth state management
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Load environment variables
+// Load environment variables FIRST (before session config)
 $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
+
+// Configure session for OAuth state management
+// Must use SameSite=Lax for OAuth redirects to work properly
+if (session_status() === PHP_SESSION_NONE) {
+    $isProduction = ($_ENV['APP_ENV'] ?? 'production') === 'production';
+
+    session_set_cookie_params([
+        'lifetime' => (int)($_ENV['SESSION_LIFETIME'] ?? 120) * 60,
+        'path' => '/',
+        'domain' => '', // Use default domain
+        'secure' => $isProduction, // HTTPS only in production
+        'httponly' => true, // Not accessible via JavaScript
+        'samesite' => 'Lax' // Required for OAuth redirects from Google
+    ]);
+
+    session_start();
+}
 
 // Initialize Eloquent ORM
 $capsule = new \Illuminate\Database\Capsule\Manager;
@@ -55,11 +67,17 @@ $errorHandler->forceContentType('application/json');
 
 // CORS Middleware
 $app->add(function (Request $request, $handler) {
-    $response = $handler->handle($request);
-
-    $allowedOrigins = explode(',', $_ENV['CORS_ORIGIN'] ?? 'http://localhost:3000');
     $origin = $request->getHeaderLine('Origin');
+    $allowedOrigins = explode(',', $_ENV['CORS_ORIGIN'] ?? 'http://localhost:3000');
+
+    // Trim whitespace from allowed origins
+    $allowedOrigins = array_map('trim', $allowedOrigins);
+
+    // Determine which origin to allow
     $allowOrigin = in_array($origin, $allowedOrigins) ? $origin : $allowedOrigins[0];
+
+    // Handle the request
+    $response = $handler->handle($request);
 
     return $response
         ->withHeader('Access-Control-Allow-Origin', $allowOrigin)
@@ -93,6 +111,8 @@ use Tundua\Controllers\KnowledgeBaseController;
 use Tundua\Controllers\UniversityController;
 use Tundua\Controllers\GoogleOAuthController;
 use Tundua\Controllers\AIUsageController;
+use Tundua\Controllers\PusherController;
+use Tundua\Controllers\PartnerController;
 use Tundua\Middleware\AuthMiddleware;
 use Tundua\Middleware\AdminMiddleware;
 use Tundua\Middleware\RateLimitMiddleware;
@@ -102,7 +122,16 @@ $app->add(new RateLimitMiddleware());
 
 $authController = new AuthController();
 $refreshTokenController = new RefreshTokenController();
-$googleOAuthController = new GoogleOAuthController(new \Tundua\Services\AuthService());
+
+// Initialize Google OAuth Controller only if the package is installed
+$googleOAuthController = null;
+if (class_exists('League\OAuth2\Client\Provider\Google')) {
+    try {
+        $googleOAuthController = new GoogleOAuthController(new \Tundua\Services\AuthService());
+    } catch (\Throwable $e) {
+        error_log('Failed to initialize GoogleOAuthController: ' . $e->getMessage());
+    }
+}
 $applicationController = new ApplicationController();
 $serviceController = new ServiceController();
 $paymentController = new PaymentController();
@@ -118,6 +147,8 @@ $referralController = new ReferralController();
 $knowledgeBaseController = new KnowledgeBaseController();
 $universityController = new UniversityController();
 $aiUsageController = new AIUsageController();
+$pusherController = new PusherController();
+$partnerController = new PartnerController();
 
 // ============================================================================
 // API ROOT
@@ -218,7 +249,13 @@ $app->get('/', function (Request $request, Response $response) {
                 'GET /api/admin/users' => 'List users',
                 'GET /api/admin/addons/orders' => 'List all add-on orders',
                 'PUT /api/admin/addons/orders/{id}/status' => 'Update add-on order status',
-                'GET /api/admin/activity' => 'Get recent activity log'
+                'GET /api/admin/activity' => 'Get recent activity log',
+                'GET /api/admin/partners' => 'List partners with statistics',
+                'GET /api/admin/commissions/dashboard' => 'Commission dashboard summary',
+                'GET /api/admin/commissions' => 'List commissions (filter by status, partner)',
+                'POST /api/admin/commissions' => 'Create commission record',
+                'PATCH /api/admin/commissions/{id}' => 'Update commission status',
+                'GET /api/admin/commissions/report' => 'Revenue report by period'
             ]
         ]
     ];
@@ -271,8 +308,22 @@ $app->group('/api/auth', function ($group) use ($authController, $refreshTokenCo
     $group->post('/revoke', [$refreshTokenController, 'revoke']);
 
     // Google OAuth routes
-    $group->get('/google', [$googleOAuthController, 'redirectToGoogle']);
-    $group->get('/google/callback', [$googleOAuthController, 'handleCallback']);
+    if ($googleOAuthController) {
+        $group->get('/google', [$googleOAuthController, 'redirectToGoogle']);
+        $group->get('/google/callback', [$googleOAuthController, 'handleCallback']);
+    } else {
+        // Fallback routes when Google OAuth is not configured
+        $group->get('/google', function ($request, $response) {
+            $frontendUrl = $_ENV['APP_URL'] ?? 'https://tundua.com';
+            $error = urlencode('Google login is temporarily unavailable. Please use email login.');
+            return $response->withHeader('Location', $frontendUrl . '/auth/login?error=' . $error)->withStatus(302);
+        });
+        $group->get('/google/callback', function ($request, $response) {
+            $frontendUrl = $_ENV['APP_URL'] ?? 'https://tundua.com';
+            $error = urlencode('Google login is temporarily unavailable. Please use email login.');
+            return $response->withHeader('Location', $frontendUrl . '/auth/login?error=' . $error)->withStatus(302);
+        });
+    }
 
     // Protected routes (authentication required)
     $group->get('/me', [$authController, 'me'])->add(new AuthMiddleware());
@@ -280,6 +331,12 @@ $app->group('/api/auth', function ($group) use ($authController, $refreshTokenCo
     $group->post('/logout', [$authController, 'logout'])->add(new AuthMiddleware());
     $group->post('/revoke-all', [$refreshTokenController, 'revokeAll'])->add(new AuthMiddleware());
 });
+
+// ============================================================================
+// PUSHER AUTHENTICATION (REAL-TIME)
+// ============================================================================
+
+$app->post('/api/pusher/auth', [$pusherController, 'auth'])->add(new AuthMiddleware());
 
 // ============================================================================
 // SERVICE CONFIGURATION ROUTES (PUBLIC)
@@ -357,6 +414,7 @@ $app->group('/api/payments/stripe', function ($group) use ($paymentController) {
 // General Payment Routes (Protected)
 $app->group('/api/payments', function ($group) use ($paymentController) {
     // Static routes must come before dynamic routes
+    $group->get('/methods', [$paymentController, 'getPaymentMethods']);
     $group->get('/history', [$paymentController, 'getPaymentHistory']);
     $group->get('/{id}', [$paymentController, 'getPayment']);
 })->add(new AuthMiddleware());
@@ -549,8 +607,8 @@ $app->group('/api/admin/activity', function ($group) use ($activityController) {
 // AI USAGE TRACKING ROUTES
 // ============================================================================
 
-// Public AI usage tracking endpoint (called from frontend)
-$app->post('/api/ai/usage', [$aiUsageController, 'trackUsage']);
+// AI usage tracking endpoint (requires authentication to prevent user_id spoofing)
+$app->post('/api/ai/usage', [$aiUsageController, 'trackUsage'])->add(new AuthMiddleware());
 
 // Protected AI usage routes (user)
 $app->group('/api/ai/usage', function ($group) use ($aiUsageController) {
@@ -562,6 +620,24 @@ $app->group('/api/ai/usage', function ($group) use ($aiUsageController) {
 $app->group('/api/admin/ai', function ($group) use ($aiUsageController) {
     $group->get('/usage', [$aiUsageController, 'getRecentUsage']);
     $group->get('/analytics', [$aiUsageController, 'getAnalytics']);
+})->add(new AdminMiddleware())->add(new AuthMiddleware());
+
+// ============================================================================
+// PARTNER & COMMISSION TRACKING ROUTES (ADMIN)
+// ============================================================================
+
+// Partner Management
+$app->group('/api/admin/partners', function ($group) use ($partnerController) {
+    $group->get('', [$partnerController, 'getPartners']);
+})->add(new AdminMiddleware())->add(new AuthMiddleware());
+
+// Commission Tracking
+$app->group('/api/admin/commissions', function ($group) use ($partnerController) {
+    $group->get('/dashboard', [$partnerController, 'dashboard']);
+    $group->get('/report', [$partnerController, 'getReport']);
+    $group->get('', [$partnerController, 'getCommissions']);
+    $group->post('', [$partnerController, 'createCommission']);
+    $group->patch('/{id}', [$partnerController, 'updateCommission']);
 })->add(new AdminMiddleware())->add(new AuthMiddleware());
 
 // ============================================================================

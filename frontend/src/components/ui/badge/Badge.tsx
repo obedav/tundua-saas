@@ -8,14 +8,14 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-gray-100 text-gray-800 hover:bg-gray-200",
-        primary: "bg-primary-100 text-primary-800 hover:bg-primary-200",
-        secondary: "bg-secondary-100 text-secondary-800 hover:bg-secondary-200",
-        success: "bg-green-100 text-green-800 hover:bg-green-200",
-        warning: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200",
-        danger: "bg-red-100 text-red-800 hover:bg-red-200",
-        info: "bg-blue-100 text-blue-800 hover:bg-blue-200",
-        outline: "border-2 border-gray-300 text-gray-700 hover:bg-gray-50",
+        default: "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600",
+        primary: "bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 hover:bg-primary-200 dark:hover:bg-primary-900/50",
+        secondary: "bg-secondary-100 dark:bg-secondary-900/30 text-secondary-800 dark:text-secondary-300 hover:bg-secondary-200 dark:hover:bg-secondary-900/50",
+        success: "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50",
+        warning: "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 hover:bg-yellow-200 dark:hover:bg-yellow-900/50",
+        danger: "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/50",
+        info: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50",
+        outline: "border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800",
       },
       size: {
         sm: "px-2 py-0.5 text-xs",
@@ -36,14 +36,14 @@ const badgeVariants = cva(
 );
 
 const dotVariants = {
-  default: "bg-gray-600",
-  primary: "bg-primary-600",
-  secondary: "bg-secondary-600",
-  success: "bg-green-600",
-  warning: "bg-yellow-600",
-  danger: "bg-red-600",
-  info: "bg-blue-600",
-  outline: "bg-gray-600",
+  default: "bg-gray-600 dark:bg-gray-400",
+  primary: "bg-primary-600 dark:bg-primary-400",
+  secondary: "bg-secondary-600 dark:bg-secondary-400",
+  success: "bg-green-600 dark:bg-green-400",
+  warning: "bg-yellow-600 dark:bg-yellow-400",
+  danger: "bg-red-600 dark:bg-red-400",
+  info: "bg-blue-600 dark:bg-blue-400",
+  outline: "bg-gray-600 dark:bg-gray-400",
 };
 
 export interface BadgeProps

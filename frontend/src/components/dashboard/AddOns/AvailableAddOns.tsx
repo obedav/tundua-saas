@@ -89,11 +89,11 @@ export default function AvailableAddOns() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Add-On Services</h2>
-          <p className="text-gray-600 mt-1">Enhance your application with expert services</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Add-On Services</h2>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">Enhance your application with expert services</p>
         </div>
         {cart.length > 0 && (
-          <div className="bg-primary-600 text-white px-6 py-3 rounded-lg">
+          <div className="bg-primary-600 dark:bg-primary-700 text-white px-6 py-3 rounded-lg shadow-lg dark:shadow-primary-900/30">
             <p className="text-sm font-medium">Cart: {cart.length} items</p>
             <p className="text-xl font-bold">₦{totalCartValue.toLocaleString('en-NG')}</p>
           </div>
@@ -109,7 +109,7 @@ export default function AvailableAddOns() {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors capitalize ${
               filter === category
                 ? "bg-primary-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
             {category}
@@ -124,8 +124,8 @@ export default function AvailableAddOns() {
           return (
             <div
               key={service.id}
-              className={`bg-white rounded-lg border-2 p-6 transition-all hover:shadow-lg ${
-                inCart ? "border-primary-500 bg-primary-50" : "border-gray-200"
+              className={`bg-white dark:bg-gray-800 rounded-lg border-2 p-6 transition-all hover:shadow-lg ${
+                inCart ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20" : "border-gray-200 dark:border-gray-700"
               }`}
             >
               {/* Header */}
@@ -133,24 +133,24 @@ export default function AvailableAddOns() {
                 <div className="text-4xl">{service.icon}</div>
                 <div className="text-right">
                   {service.popular && (
-                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700 mb-2">
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 mb-2">
                       <Star className="h-3 w-3 fill-current" />
                       Popular
                     </span>
                   )}
-                  <p className="text-2xl font-bold text-gray-900">₦{service.price.toLocaleString('en-NG')}</p>
-                  <p className="text-xs text-gray-500 uppercase">{service.category}</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">₦{service.price.toLocaleString('en-NG')}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">{service.category}</p>
                 </div>
               </div>
 
               {/* Content */}
-              <h3 className="text-lg font-bold text-gray-900 mb-2">{service.name}</h3>
-              <p className="text-sm text-gray-600 mb-4">{service.description}</p>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{service.name}</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{service.description}</p>
 
               {/* Features */}
               <ul className="space-y-2 mb-6">
                 {service.features.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
+                  <li key={index} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
                     <Check className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
                     <span>{feature}</span>
                   </li>
@@ -162,7 +162,7 @@ export default function AvailableAddOns() {
                 onClick={() => inCart ? removeFromCart(service.id) : addToCart(service.id)}
                 className={`w-full px-4 py-3 rounded-lg font-semibold transition-colors inline-flex items-center justify-center gap-2 ${
                   inCart
-                    ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                     : "bg-primary-600 text-white hover:bg-primary-700"
                 }`}
               >
@@ -185,14 +185,14 @@ export default function AvailableAddOns() {
 
       {/* Cart Summary */}
       {cart.length > 0 && (
-        <div className="fixed bottom-6 right-6 bg-white rounded-lg shadow-2xl border border-gray-200 p-6 max-w-sm">
-          <h3 className="font-bold text-gray-900 mb-4">Cart Summary</h3>
+        <div className="fixed bottom-6 right-6 bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 p-6 max-w-sm">
+          <h3 className="font-bold text-gray-900 dark:text-white mb-4">Cart Summary</h3>
           <div className="space-y-2 mb-4">
             {cart.map(id => {
               const service = addOnServices.find(s => s.id === id);
               return service ? (
                 <div key={id} className="flex items-center justify-between text-sm">
-                  <span className="text-gray-700">{service.name}</span>
+                  <span className="text-gray-700 dark:text-gray-300">{service.name}</span>
                   <span className="font-semibold">₦{service.price.toLocaleString('en-NG')}</span>
                 </div>
               ) : null;
@@ -200,8 +200,8 @@ export default function AvailableAddOns() {
           </div>
           <div className="border-t pt-4 mb-4">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-gray-900">Total</span>
-              <span className="text-2xl font-bold text-primary-600">₦{totalCartValue.toLocaleString('en-NG')}</span>
+              <span className="font-bold text-gray-900 dark:text-white">Total</span>
+              <span className="text-2xl font-bold text-primary-600 dark:text-primary-400">₦{totalCartValue.toLocaleString('en-NG')}</span>
             </div>
           </div>
           <button className="w-full bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors">

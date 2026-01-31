@@ -357,11 +357,11 @@ export default function UniversityReportGenerator() {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-gray-900">AI University Report Generator</h1>
-            <p className="mt-2 text-gray-600">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">AI University Report Generator</h1>
+            <p className="mt-2 text-gray-600 dark:text-gray-400">
               Get personalized university recommendations based on your academic profile and preferences.
               Our AI analyzes thousands of programs to find your perfect matches.
             </p>
@@ -372,8 +372,8 @@ export default function UniversityReportGenerator() {
             <div className="ml-4 flex-shrink-0">
               <div className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${
                 draftSaved
-                  ? 'bg-green-50 border-green-200 text-green-700'
-                  : 'bg-gray-50 border-gray-200 text-gray-600'
+                  ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-700 text-green-700 dark:text-green-400'
+                  : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400'
               }`}>
                 <svg
                   className={`w-4 h-4 transition-transform ${draftSaved ? 'scale-110' : ''}`}
@@ -396,8 +396,8 @@ export default function UniversityReportGenerator() {
         </div>
 
         {quota && (
-          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
-            <p className="text-sm text-blue-800">
+          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded">
+            <p className="text-sm text-blue-800 dark:text-blue-300">
               <span className="font-semibold">{quota.remaining}</span> AI generations remaining this hour
               {quota.remaining === 0 && (
                 <span className="ml-2 text-xs">
@@ -413,12 +413,12 @@ export default function UniversityReportGenerator() {
       {!generatedReport && (
         <div className={`rounded-lg shadow p-5 border transition-all duration-500 ${
           progress.isComplete
-            ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'
-            : 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-100'
+            ? 'bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-200 dark:border-green-700'
+            : 'bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-100 dark:border-blue-700'
         }`}>
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 Form Progress
                 {progress.isComplete && (
                   <span className="inline-flex items-center justify-center w-5 h-5 bg-green-600 text-white rounded-full animate-bounce">
@@ -428,7 +428,7 @@ export default function UniversityReportGenerator() {
                   </span>
                 )}
               </h3>
-              <p className="text-xs text-gray-600 mt-0.5">
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
                 {progress.isComplete ? (
                   <span className="text-green-600 font-medium animate-pulse">✓ All set! Ready to generate your personalized report</span>
                 ) : (
@@ -442,14 +442,14 @@ export default function UniversityReportGenerator() {
               }`}>
                 {progress.percentage}%
               </div>
-              <div className="text-xs text-gray-600">
+              <div className="text-xs text-gray-600 dark:text-gray-400">
                 {progress.filledCount}/{progress.totalCount} complete
               </div>
             </div>
           </div>
 
           {/* Progress Bar */}
-          <div className="relative w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+          <div className="relative w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
             <div
               className={`h-3 rounded-full transition-all duration-500 ease-out ${
                 progress.isComplete
@@ -467,11 +467,11 @@ export default function UniversityReportGenerator() {
           {/* Missing Fields Indicator */}
           {!progress.isComplete && progress.missingFields.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
-              <span className="text-xs text-gray-600">Still needed:</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">Still needed:</span>
               {progress.missingFields.map((field) => (
                 <span
                   key={field}
-                  className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200"
+                  className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-700"
                 >
                   {field}
                 </span>
@@ -489,16 +489,16 @@ export default function UniversityReportGenerator() {
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Academic Profile */}
-        <div className="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:shadow-lg">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full text-sm font-bold">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 transform transition-all duration-300 hover:shadow-lg">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <span className="flex items-center justify-center w-8 h-8 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm font-bold">
               1
             </span>
             Academic Profile
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-300 mb-1">
                 Field of Study *
               </label>
               <input
@@ -507,7 +507,7 @@ export default function UniversityReportGenerator() {
                 list="field-suggestions"
                 value={formData.field}
                 onChange={(e) => handleInputChange('field', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400 dark:bg-gray-700 dark:text-white"
                 placeholder="Type to see suggestions or enter your own..."
                 aria-label="Field of Study"
                 aria-required="true"
@@ -517,20 +517,20 @@ export default function UniversityReportGenerator() {
                   <option key={field} value={field} />
                 ))}
               </datalist>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                 💡 Choose from suggestions or type your own field of study
               </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-300 mb-1">
                 Degree Level *
               </label>
               <select
                 required
                 value={formData.degree}
                 onChange={(e) => handleInputChange('degree', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               >
                 <option value="">Select degree level</option>
                 {degreeOptions.map((option) => (
@@ -543,7 +543,7 @@ export default function UniversityReportGenerator() {
 
             <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-300 mb-1">
                   GPA Scale *
                 </label>
                 <select
@@ -553,7 +553,7 @@ export default function UniversityReportGenerator() {
                     setFormData(prev => ({ ...prev, gpa: 0 })) // Reset GPA when scale changes
                     setValidationErrors(prev => ({ ...prev, gpa: '' })) // Clear GPA validation errors
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   aria-label="GPA Scale"
                 >
                   {gpaScales.map((scale) => (
@@ -565,7 +565,7 @@ export default function UniversityReportGenerator() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-300 mb-1">
                   Your GPA *
                 </label>
                 <input
@@ -582,8 +582,8 @@ export default function UniversityReportGenerator() {
                     const error = validateGPA(value)
                     setValidationErrors(prev => ({ ...prev, gpa: error }))
                   }}
-                  className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 transition-all duration-200 hover:border-gray-400 ${
-                    validationErrors['gpa'] ? 'border-red-300' : 'border-gray-300'
+                  className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 transition-all duration-200 hover:border-gray-400 dark:bg-gray-700 dark:text-white ${
+                    validationErrors['gpa'] ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
                   }`}
                   placeholder={gpaScales.find(s => s.value === gpaScale)?.placeholder}
                   aria-label="GPA Value"
@@ -604,13 +604,13 @@ export default function UniversityReportGenerator() {
 
             <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-300 mb-1">
                   Currency *
                 </label>
                 <select
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value as any)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   aria-label="Budget Currency"
                 >
                   {currencies.map((curr) => (
@@ -622,7 +622,7 @@ export default function UniversityReportGenerator() {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-300 mb-1">
                   Annual Tuition Budget *
                 </label>
                 <input
@@ -637,15 +637,15 @@ export default function UniversityReportGenerator() {
                     const error = validateBudget(value)
                     setValidationErrors(prev => ({ ...prev, budget: error }))
                   }}
-                  className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${
-                    validationErrors['budget'] ? 'border-red-300' : 'border-gray-300'
+                  className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white ${
+                    validationErrors['budget'] ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
                   }`}
                   placeholder="20000"
                   aria-label="Annual Tuition Budget"
                   aria-required="true"
                   aria-invalid={!!validationErrors['budget']}
                 />
-                <div className="mt-1 flex items-center justify-between text-xs text-gray-500">
+                <div className="mt-1 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                   <span>Maximum tuition fees per year (living expenses separate)</span>
                   {formData['budget'] > 0 && currency !== 'USD' && (
                     <span className="font-medium">
@@ -667,24 +667,24 @@ export default function UniversityReportGenerator() {
         </div>
 
         {/* Preferences */}
-        <div className="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:shadow-lg">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="flex items-center justify-center w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full text-sm font-bold">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 transform transition-all duration-300 hover:shadow-lg">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <span className="flex items-center justify-center w-8 h-8 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-sm font-bold">
               2
             </span>
             Preferences
-            <span className="text-sm font-normal text-gray-500">(Optional)</span>
+            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">(Optional)</span>
           </h2>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-300 mb-1">
                 Preferred Country
               </label>
               <select
                 value={formData.country}
                 onChange={(e) => handleInputChange('country', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 aria-label="Preferred Country"
               >
                 <option value="">Any Country (Worldwide)</option>
@@ -696,20 +696,20 @@ export default function UniversityReportGenerator() {
                   ))}
                 </optgroup>
               </select>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                 💡 Leave as &ldquo;Any Country&rdquo; for worldwide recommendations
               </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-300 mb-2">
                 Priorities (Select all that apply)
               </label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {priorityOptions.map((priority) => (
                   <label
                     key={priority.value}
-                    className="flex items-center p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50"
+                    className="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     <input
                       type="checkbox"
@@ -717,16 +717,16 @@ export default function UniversityReportGenerator() {
                       onChange={() => togglePriority(priority.value)}
                       className="mr-2"
                     />
-                    <span className="text-sm text-gray-700">{priority.label}</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">{priority.label}</span>
                   </label>
                 ))}
               </div>
             </div>
 
             <div>
-              <label className="flex justify-between items-center text-sm font-medium text-gray-700 mb-1">
+              <label className="flex justify-between items-center text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-300 mb-1">
                 <span>Career Goal</span>
-                <span className="text-xs font-normal text-gray-500">
+                <span className="text-xs font-normal text-gray-500 dark:text-gray-400">
                   {formData.careerGoal?.length || 0}/500 characters
                 </span>
               </label>
@@ -735,11 +735,11 @@ export default function UniversityReportGenerator() {
                 maxLength={500}
                 value={formData.careerGoal}
                 onChange={(e) => handleInputChange('careerGoal', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="e.g., Become a data scientist at a tech company, Start my own business, Work in research..."
                 aria-label="Career Goal"
               />
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                 💡 Tip: Be specific about your 5-10 year career aspirations
               </p>
             </div>
@@ -753,7 +753,7 @@ export default function UniversityReportGenerator() {
             <button
               type="button"
               onClick={clearDraft}
-              className="px-4 py-2 text-sm bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-md transition-colors flex items-center gap-2"
+              className="px-4 py-2 text-sm bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md transition-colors flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -791,23 +791,23 @@ export default function UniversityReportGenerator() {
 
       {/* Error Display */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-800">{error}</p>
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg p-4">
+          <p className="text-red-800 dark:text-red-300">{error}</p>
         </div>
       )}
 
       {/* Generated Report */}
       {generatedReport && (
-        <div className="bg-white rounded-lg shadow p-6 space-y-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 space-y-6">
           {/* IMPORTANT DISCLAIMER */}
-          <div className="bg-amber-50 border-2 border-amber-400 rounded-lg p-5">
+          <div className="bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-400 dark:border-amber-600 rounded-lg p-5">
             <div className="flex items-start gap-3">
               <svg className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <div className="flex-1">
-                <h3 className="font-bold text-amber-900 mb-2">⚠️ Important: Verify All Information</h3>
-                <div className="text-sm text-amber-800 space-y-1">
+                <h3 className="font-bold text-amber-900 dark:text-amber-300 mb-2">⚠️ Important: Verify All Information</h3>
+                <div className="text-sm text-amber-800 dark:text-amber-200 space-y-1">
                   <p>• <strong>Tuition fees, deposits, and living costs are AI estimates</strong> and may be outdated or inaccurate</p>
                   <p>• <strong>CAS deposits can range from £2,000 to 50% of annual tuition</strong> - contact universities directly</p>
                   <p>• <strong>Always verify current fees on official university websites</strong> before making decisions</p>
@@ -818,19 +818,19 @@ export default function UniversityReportGenerator() {
             </div>
           </div>
 
-          <div className="border-b pb-4">
-            <h2 className="text-2xl font-bold text-gray-900">Your Personalized University Report</h2>
-            <p className="mt-2 text-gray-600">{generatedReport.summary}</p>
+          <div className="border-b dark:border-gray-700 pb-4">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Your Personalized University Report</h2>
+            <p className="mt-2 text-gray-600 dark:text-gray-400">{generatedReport.summary}</p>
           </div>
 
           {/* University Recommendations */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recommended Universities</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recommended Universities</h3>
             <div className="space-y-4">
               {generatedReport.recommendations.map((uni, idx) => (
                 <div
                   key={idx}
-                  className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                  className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -839,36 +839,36 @@ export default function UniversityReportGenerator() {
                           {idx + 1}
                         </span>
                         <div>
-                          <h4 className="text-lg font-semibold text-gray-900">{uni.name}</h4>
-                          <p className="text-sm text-gray-600">{uni.country}</p>
+                          <h4 className="text-lg font-semibold text-gray-900 dark:text-white">{uni.name}</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">{uni.country}</p>
                         </div>
                       </div>
 
                       <div className="mt-3 grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
                         {uni.ranking && (
                           <div>
-                            <span className="font-medium text-gray-700">Ranking:</span>
-                            <span className="ml-1 text-gray-600">{uni.ranking}</span>
+                            <span className="font-medium text-gray-700 dark:text-gray-300">Ranking:</span>
+                            <span className="ml-1 text-gray-600 dark:text-gray-400">{uni.ranking}</span>
                           </div>
                         )}
                         <div>
-                          <span className="font-medium text-gray-700">Tuition:</span>
-                          <span className="ml-1 text-gray-600">{uni.tuitionRange}</span>
+                          <span className="font-medium text-gray-700 dark:text-gray-300">Tuition:</span>
+                          <span className="ml-1 text-gray-600 dark:text-gray-400">{uni.tuitionRange}</span>
                         </div>
                         {uni.casDeposit && (
                           <div>
-                            <span className="font-medium text-gray-700">CAS Deposit:</span>
-                            <span className="ml-1 text-gray-600">{uni.casDeposit}</span>
+                            <span className="font-medium text-gray-700 dark:text-gray-300">CAS Deposit:</span>
+                            <span className="ml-1 text-gray-600 dark:text-gray-400">{uni.casDeposit}</span>
                           </div>
                         )}
                         {uni.livingCosts && (
                           <div>
-                            <span className="font-medium text-gray-700">Living Costs:</span>
-                            <span className="ml-1 text-gray-600">{uni.livingCosts}</span>
+                            <span className="font-medium text-gray-700 dark:text-gray-300">Living Costs:</span>
+                            <span className="ml-1 text-gray-600 dark:text-gray-400">{uni.livingCosts}</span>
                           </div>
                         )}
                         <div>
-                          <span className="font-medium text-gray-700">Admission Chance:</span>
+                          <span className="font-medium text-gray-700 dark:text-gray-300">Admission Chance:</span>
                           <span
                             className={`ml-1 font-medium ${
                               uni.admissionProbability === 'high'
@@ -883,18 +883,18 @@ export default function UniversityReportGenerator() {
                         </div>
                       </div>
 
-                      <p className="mt-3 text-sm text-gray-700">{uni.reasoning}</p>
+                      <p className="mt-3 text-sm text-gray-700 dark:text-gray-300">{uni.reasoning}</p>
 
                       <div className="mt-3">
-                        <p className="text-xs font-medium text-gray-700 mb-1">Program Strengths:</p>
-                        <ul className="list-disc list-inside text-xs text-gray-600 space-y-0.5">
+                        <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Program Strengths:</p>
+                        <ul className="list-disc list-inside text-xs text-gray-600 dark:text-gray-400 space-y-0.5">
                           {uni.strengths.map((strength, sIdx) => (
                             <li key={sIdx}>{strength}</li>
                           ))}
                         </ul>
                       </div>
 
-                      <div className="mt-2 p-2 bg-blue-50 rounded text-xs text-gray-700">
+                      <div className="mt-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-xs text-gray-700 dark:text-gray-300">
                         <strong>Program Fit:</strong> {uni.programFit}
                       </div>
                     </div>
@@ -905,30 +905,30 @@ export default function UniversityReportGenerator() {
           </div>
 
           {/* Admission Tips */}
-          <div className="border-t pt-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Admission Tips for Your Profile</h3>
+          <div className="border-t dark:border-gray-700 pt-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Admission Tips for Your Profile</h3>
             <ul className="space-y-2">
               {generatedReport.admissionTips.map((tip, idx) => (
                 <li key={idx} className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-green-100 text-green-700 rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="flex-shrink-0 w-6 h-6 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full flex items-center justify-center text-xs font-bold">
                     ✓
                   </span>
-                  <span className="text-sm text-gray-700">{tip}</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">{tip}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           {/* Verification Reminder */}
-          <div className="border-t pt-4">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h4 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
+          <div className="border-t dark:border-gray-700 pt-4">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+              <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-2 flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Next Steps
               </h4>
-              <ul className="text-sm text-blue-800 space-y-1">
+              <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
                 <li>1. Visit each university&apos;s official website to verify current tuition fees</li>
                 <li>2. Contact admissions offices directly to confirm CAS deposit requirements</li>
                 <li>3. Check scholarship deadlines and application requirements</li>
@@ -939,7 +939,7 @@ export default function UniversityReportGenerator() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 pt-4 border-t">
+          <div className="flex gap-3 pt-4 border-t dark:border-gray-700">
             <button
               onClick={() => {
                 const reportText = `
@@ -983,7 +983,7 @@ ${generatedReport.admissionTips.map((tip, idx) => `${idx + 1}. ${tip}`).join('\n
                 navigator.clipboard.writeText(reportText)
                 alert('Report copied to clipboard!')
               }}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md transition-colors"
+              className="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md transition-colors"
             >
               Copy Report
             </button>
@@ -1034,7 +1034,7 @@ ${generatedReport.admissionTips.map((tip, idx) => `${idx + 1}. ${tip}`).join('\n
                 a.download = 'university-selection-report.txt'
                 a.click()
               }}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md transition-colors flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -1051,7 +1051,7 @@ ${generatedReport.admissionTips.map((tip, idx) => `${idx + 1}. ${tip}`).join('\n
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }
               }}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors border border-gray-300 flex items-center gap-2"
+              className="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-md transition-colors border border-gray-300 dark:border-gray-600 flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />

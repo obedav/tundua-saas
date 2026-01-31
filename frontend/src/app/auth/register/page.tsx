@@ -149,14 +149,15 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       <div className="flex min-h-screen">
         {/* Left Side - Brand & Marketing */}
-        <div className="hidden lg:flex lg:w-1/2 xl:w-[45%] bg-gradient-to-br from-primary-50/50 via-white to-blue-50/50 relative overflow-hidden">
-          {/* Brand color gradient accents */}
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-primary-200/40 to-blue-200/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-primary-100/30 to-purple-100/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
-          <div className="absolute top-1/2 left-1/2 w-[300px] h-[300px] bg-gradient-to-br from-blue-100/20 to-primary-100/20 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="hidden lg:flex lg:w-1/2 xl:w-[45%] bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 dark:from-primary-800 dark:via-primary-900 dark:to-gray-950 relative overflow-hidden">
+          {/* Premium gradient overlays */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent" />
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-primary-400/30 to-blue-500/20 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-purple-500/20 to-primary-400/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
+          <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-gradient-to-br from-white/5 to-primary-300/10 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2" />
 
           <div className="relative z-10 flex flex-col justify-between p-12 xl:p-16 w-full">
             {/* Logo */}
@@ -180,13 +181,13 @@ export default function RegisterPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight mb-4">
+                  <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-white leading-tight mb-4">
                     Begin your journey to
-                    <span className="block mt-2 bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
+                    <span className="block mt-2 bg-gradient-to-r from-white to-primary-200 bg-clip-text text-transparent">
                       world-class education
                     </span>
                   </h1>
-                  <p className="text-lg text-gray-600 mt-6 leading-relaxed">
+                  <p className="text-lg text-primary-100 mt-6 leading-relaxed">
                     Join thousands of students who have successfully applied to their dream universities through our platform.
                   </p>
                 </motion.div>
@@ -196,22 +197,28 @@ export default function RegisterPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 mt-12"
+                  className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5 mt-12"
                 >
-                  <div className="text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-primary-100/50 shadow-sm">
-                    <Globe className="w-8 h-8 text-primary-600 mx-auto mb-3" />
-                    <div className="text-3xl font-bold text-gray-900">906</div>
-                    <div className="text-sm text-gray-600 mt-1">Universities</div>
+                  <div className="text-center p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all duration-300 group">
+                    <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                      <Globe className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="text-3xl font-bold text-white">906</div>
+                    <div className="text-sm text-primary-200 mt-1 font-medium">Universities</div>
                   </div>
-                  <div className="text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-blue-100/50 shadow-sm">
-                    <Users className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                    <div className="text-3xl font-bold text-gray-900">20+</div>
-                    <div className="text-sm text-gray-600 mt-1">Countries</div>
+                  <div className="text-center p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all duration-300 group">
+                    <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                      <Users className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="text-3xl font-bold text-white">20+</div>
+                    <div className="text-sm text-primary-200 mt-1 font-medium">Countries</div>
                   </div>
-                  <div className="text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-primary-100/50 shadow-sm">
-                    <Target className="w-8 h-8 text-primary-700 mx-auto mb-3" />
-                    <div className="text-3xl font-bold text-gray-900">7-14</div>
-                    <div className="text-sm text-gray-600 mt-1">Days Process</div>
+                  <div className="text-center p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all duration-300 group">
+                    <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                      <Target className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="text-3xl font-bold text-white">7-14</div>
+                    <div className="text-sm text-primary-200 mt-1 font-medium">Days Process</div>
                   </div>
                 </motion.div>
               </div>
@@ -228,11 +235,11 @@ export default function RegisterPage() {
                   { icon: "✓", text: "Streamlined application management" },
                   { icon: "✓", text: "Expert support throughout your journey" },
                 ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-4 text-gray-700">
-                    <div className="w-6 h-6 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                  <div key={index} className="flex items-center gap-4 text-white/90">
+                    <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-sm font-bold flex-shrink-0 text-white">
                       {item.icon}
                     </div>
-                    <span className="text-base">{item.text}</span>
+                    <span className="text-base font-medium">{item.text}</span>
                   </div>
                 ))}
               </motion.div>
@@ -243,19 +250,19 @@ export default function RegisterPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.6 }}
-              className="relative p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-primary-100/50 shadow-sm"
+              className="relative p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20"
             >
-              <Sparkles className="w-5 h-5 text-primary-500 mb-3" />
-              <p className="text-gray-700 italic mb-4">
+              <Sparkles className="w-5 h-5 text-primary-200 mb-3" />
+              <p className="text-white/90 italic mb-4 leading-relaxed">
                 &quot;Creating an account was seamless, and the application process was incredibly smooth!&quot;
               </p>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-semibold shadow-md">
+                <div className="w-11 h-11 rounded-full bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-sm flex items-center justify-center text-white font-bold shadow-lg ring-2 ring-white/20">
                   MC
                 </div>
                 <div>
-                  <div className="font-semibold text-gray-900">Michael Chen</div>
-                  <div className="text-sm text-gray-600">University of Toronto</div>
+                  <div className="font-semibold text-white">Michael Chen</div>
+                  <div className="text-sm text-primary-200">University of Toronto</div>
                 </div>
               </div>
             </motion.div>
@@ -302,19 +309,19 @@ export default function RegisterPage() {
             {/* Progress Indicator */}
             <div className="mb-6">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-sm font-bold text-gray-900 dark:text-white">
                   Step {currentStep} of 2
                 </span>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
                   {currentStep === 1 ? "Personal Information" : "Account Type"}
                 </span>
               </div>
-              <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div className="h-2.5 bg-gray-100 dark:bg-gray-700/50 rounded-full overflow-hidden shadow-inner">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-primary-600 to-primary-700 rounded-full"
+                  className="h-full bg-gradient-to-r from-primary-500 via-primary-600 to-primary-700 rounded-full shadow-sm"
                   initial={{ width: "0%" }}
                   animate={{ width: currentStep === 1 ? "50%" : "100%" }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
                 />
               </div>
             </div>
@@ -322,7 +329,7 @@ export default function RegisterPage() {
             {/* Form Card */}
             <motion.div
               layout
-              className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10"
+              className="bg-white dark:bg-gray-800/95 rounded-3xl shadow-2xl shadow-gray-200/50 dark:shadow-gray-950/50 border border-gray-100 dark:border-gray-700/50 p-6 sm:p-8 lg:p-10 backdrop-blur-sm"
             >
               <AnimatePresence mode="wait">
                 {currentStep === 1 ? (
@@ -334,10 +341,10 @@ export default function RegisterPage() {
                     transition={{ duration: 0.3 }}
                   >
                     <div className="mb-8">
-                      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
                         Create account
                       </h2>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 dark:text-gray-400">
                         Start your study abroad journey today
                       </p>
                     </div>
@@ -366,10 +373,10 @@ export default function RegisterPage() {
                     {/* Divider */}
                     <div className="relative my-8">
                       <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-200" />
+                        <div className="w-full border-t border-gray-200 dark:border-gray-700" />
                       </div>
                       <div className="relative flex justify-center text-sm">
-                        <span className="px-4 bg-white text-gray-500 font-medium">
+                        <span className="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">
                           or continue with email
                         </span>
                       </div>
@@ -423,7 +430,7 @@ export default function RegisterPage() {
                         <div className="flex items-center gap-2 mb-2">
                           <label
                             htmlFor="password"
-                            className="block text-sm font-semibold text-gray-900"
+                            className="block text-sm font-semibold text-gray-900 dark:text-white"
                           >
                             Password
                           </label>
@@ -437,8 +444,8 @@ export default function RegisterPage() {
                             {...register("password")}
                             type={showPassword ? "text" : "password"}
                             id="password"
-                            className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl focus:ring-2 focus:ring-primary-500 transition-all text-gray-900 placeholder:text-gray-400 ${
-                              errors.password ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-primary-500'
+                            className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl focus:ring-2 focus:ring-primary-500 transition-all text-gray-900 dark:text-white dark:bg-gray-700 placeholder:text-gray-400 ${
+                              errors.password ? 'border-red-300 focus:border-red-500' : 'border-gray-200 dark:border-gray-600 focus:border-primary-500'
                             }`}
                             placeholder="••••••••"
                             disabled={isLoading}
@@ -494,7 +501,7 @@ export default function RegisterPage() {
                       <div>
                         <label
                           htmlFor="confirm_password"
-                          className="block text-sm font-semibold text-gray-900 mb-2"
+                          className="block text-sm font-semibold text-gray-900 dark:text-white mb-2"
                         >
                           Confirm password
                         </label>
@@ -504,8 +511,8 @@ export default function RegisterPage() {
                             {...register("confirm_password")}
                             type={showConfirmPassword ? "text" : "password"}
                             id="confirm_password"
-                            className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl focus:ring-2 focus:ring-primary-500 transition-all text-gray-900 placeholder:text-gray-400 ${
-                              errors.confirm_password ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-primary-500'
+                            className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl focus:ring-2 focus:ring-primary-500 transition-all text-gray-900 dark:text-white dark:bg-gray-700 placeholder:text-gray-400 ${
+                              errors.confirm_password ? 'border-red-300 focus:border-red-500' : 'border-gray-200 dark:border-gray-600 focus:border-primary-500'
                             }`}
                             placeholder="••••••••"
                             disabled={isLoading}
@@ -538,7 +545,7 @@ export default function RegisterPage() {
 
                       {/* Sign In Link */}
                       <div className="text-center mt-6">
-                        <p className="text-gray-600">
+                        <p className="text-gray-600 dark:text-gray-400">
                           Already have an account?{" "}
                           <Link
                             href="/auth/login"
@@ -559,10 +566,10 @@ export default function RegisterPage() {
                     transition={{ duration: 0.3 }}
                   >
                     <div className="mb-8">
-                      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
                         Choose your path
                       </h2>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 dark:text-gray-400">
                         Select the type of account you want to create
                       </p>
                     </div>
@@ -578,8 +585,8 @@ export default function RegisterPage() {
                           whileTap={{ scale: 0.99 }}
                           className={`relative w-full p-5 sm:p-6 rounded-2xl border-2 transition-all text-left ${
                             selectedUserType === "student"
-                              ? "border-primary-600 bg-gradient-to-br from-primary-50 to-white shadow-lg shadow-primary-100"
-                              : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
+                              ? "border-primary-500 bg-gradient-to-br from-primary-50 to-white dark:from-primary-900/30 dark:to-gray-800 shadow-xl shadow-primary-200/50 dark:shadow-primary-900/30 ring-1 ring-primary-200 dark:ring-primary-700"
+                              : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/80 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-lg"
                           }`}
                         >
                           <div className="flex items-start gap-4">
@@ -587,22 +594,22 @@ export default function RegisterPage() {
                               className={`p-4 rounded-xl transition-all ${
                                 selectedUserType === "student"
                                   ? "bg-gradient-to-br from-primary-600 to-primary-700 shadow-lg"
-                                  : "bg-gray-100"
+                                  : "bg-gray-100 dark:bg-gray-700"
                               }`}
                             >
                               <GraduationCap
                                 className={`h-7 w-7 ${
                                   selectedUserType === "student"
                                     ? "text-white"
-                                    : "text-gray-600"
+                                    : "text-gray-600 dark:text-gray-400"
                                 }`}
                               />
                             </div>
                             <div className="flex-1">
-                              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1.5">
+                              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-1.5">
                                 Student
                               </h3>
-                              <p className="text-sm text-gray-600 leading-relaxed">
+                              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                                 I want to study abroad and need help with my application
                               </p>
                             </div>
@@ -628,8 +635,8 @@ export default function RegisterPage() {
                           whileTap={{ scale: 0.99 }}
                           className={`relative w-full p-5 sm:p-6 rounded-2xl border-2 transition-all text-left ${
                             selectedUserType === "partner"
-                              ? "border-primary-600 bg-gradient-to-br from-primary-50 to-white shadow-lg shadow-primary-100"
-                              : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
+                              ? "border-primary-500 bg-gradient-to-br from-primary-50 to-white dark:from-primary-900/30 dark:to-gray-800 shadow-xl shadow-primary-200/50 dark:shadow-primary-900/30 ring-1 ring-primary-200 dark:ring-primary-700"
+                              : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/80 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-lg"
                           }`}
                         >
                           <div className="flex items-start gap-4">
@@ -637,22 +644,22 @@ export default function RegisterPage() {
                               className={`p-4 rounded-xl transition-all ${
                                 selectedUserType === "partner"
                                   ? "bg-gradient-to-br from-primary-600 to-primary-700 shadow-lg"
-                                  : "bg-gray-100"
+                                  : "bg-gray-100 dark:bg-gray-700"
                               }`}
                             >
                               <Briefcase
                                 className={`h-7 w-7 ${
                                   selectedUserType === "partner"
                                     ? "text-white"
-                                    : "text-gray-600"
+                                    : "text-gray-600 dark:text-gray-400"
                                 }`}
                               />
                             </div>
                             <div className="flex-1">
-                              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1.5">
+                              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-1.5">
                                 Agency Partner
                               </h3>
-                              <p className="text-sm text-gray-600 leading-relaxed">
+                              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                                 I&apos;m an education agency or recruitment partner
                               </p>
                             </div>
@@ -709,16 +716,16 @@ export default function RegisterPage() {
 
             {/* Footer Links */}
             <div className="mt-8 text-center">
-              <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
-                <Link href="/privacy" className="hover:text-gray-900 transition-colors">
+              <div className="flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   Privacy
                 </Link>
                 <span>•</span>
-                <Link href="/terms" className="hover:text-gray-900 transition-colors">
+                <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   Terms
                 </Link>
                 <span>•</span>
-                <Link href="/support" className="hover:text-gray-900 transition-colors">
+                <Link href="/support" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   Support
                 </Link>
               </div>

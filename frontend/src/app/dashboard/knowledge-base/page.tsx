@@ -166,7 +166,7 @@ export default function KnowledgeBasePage() {
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
@@ -176,7 +176,7 @@ export default function KnowledgeBasePage() {
               placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
 
@@ -185,20 +185,20 @@ export default function KnowledgeBasePage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as "popular" | "recent")}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+              className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             >
               <option value="popular">Most Popular</option>
               <option value="recent">Most Recent</option>
             </select>
 
             {/* View Mode Toggle */}
-            <div className="flex border border-gray-300 rounded-lg overflow-hidden">
+            <div className="flex border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
               <button
                 onClick={() => setViewMode("grid")}
                 className={`p-3 ${
                   viewMode === "grid"
                     ? "bg-primary-600 text-white"
-                    : "bg-white text-gray-600 hover:bg-gray-50"
+                    : "bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600"
                 }`}
               >
                 <Grid className="w-5 h-5" />
@@ -208,7 +208,7 @@ export default function KnowledgeBasePage() {
                 className={`p-3 ${
                   viewMode === "list"
                     ? "bg-primary-600 text-white"
-                    : "bg-white text-gray-600 hover:bg-gray-50"
+                    : "bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600"
                 }`}
               >
                 <List className="w-5 h-5" />
@@ -219,9 +219,9 @@ export default function KnowledgeBasePage() {
       </div>
 
       {/* Categories */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-          <Filter className="w-5 h-5 text-primary-600" />
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <Filter className="w-5 h-5 text-primary-600 dark:text-primary-400" />
           Browse by Category
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

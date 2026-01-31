@@ -68,10 +68,6 @@ class DocumentController
                     'success' => false,
                     'error' => 'Application ID and document type are required'
                 ]));
-                return $response->getBody()->write(json_encode([
-                    'success' => false,
-                    'error' => 'Application ID and document type are required'
-                ]));
                 return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
             }
 

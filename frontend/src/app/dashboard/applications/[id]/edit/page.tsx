@@ -224,26 +224,26 @@ export default function EditApplicationPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-12 w-12 animate-spin text-primary-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading application data...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading application data...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-24">
       {/* Header */}
-      <div className="bg-white border-b sticky top-0 z-10 shadow-sm">
+      <div className="bg-white dark:bg-gray-800 border-b dark:border-gray-700 sticky top-0 z-10 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-3">
-                <h1 className="text-2xl font-bold text-gray-900">Edit Application #{applicationId}</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Edit Application #{applicationId}</h1>
                 <div className="flex items-center gap-2 text-sm">
-                  <div className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full font-medium">
+                  <div className="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 rounded-full font-medium">
                     {progressPercentage}% Complete
                   </div>
                   {lastSaved && (
@@ -269,14 +269,14 @@ export default function EditApplicationPage() {
             </div>
             <button
               onClick={() => router.push("/dashboard/applications")}
-              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+              className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
             >
               Save & Exit
             </button>
           </div>
 
           {/* Progress Bar */}
-          <div className="mt-4 w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+          <div className="mt-4 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
             <div
               className="bg-gradient-to-r from-primary-500 to-primary-600 h-full rounded-full transition-all duration-500 ease-out"
               style={{ width: `${progressPercentage}%` }}
@@ -286,7 +286,7 @@ export default function EditApplicationPage() {
       </div>
 
       {/* Progress Steps */}
-      <div className="bg-white border-b">
+      <div className="bg-white dark:bg-gray-800 border-b dark:border-gray-700">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <nav aria-label="Progress">
             <ol className="flex items-center justify-between">
@@ -377,15 +377,15 @@ export default function EditApplicationPage() {
 
       {/* Step Content */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-lg p-4 mb-6">
+        <div className="bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 border border-primary-200 dark:border-primary-700 rounded-lg p-4 mb-6">
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold">
               {currentStep}
             </div>
             <div className="flex-1">
-              <h2 className="text-lg font-semibold text-gray-900">{STEPS[currentStep - 1]?.title}</h2>
-              <p className="text-sm text-gray-600 mt-1">{STEPS[currentStep - 1]?.description}</p>
-              <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{STEPS[currentStep - 1]?.title}</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{STEPS[currentStep - 1]?.description}</p>
+              <div className="flex items-center gap-2 mt-2 text-xs text-gray-500 dark:text-gray-400">
                 <Clock className="h-3 w-3" />
                 <span>Estimated time: {STEPS[currentStep - 1]?.estimatedTime}</span>
               </div>
@@ -393,30 +393,30 @@ export default function EditApplicationPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm p-8 border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 border border-gray-200 dark:border-gray-700">
           {renderStep()}
         </div>
       </div>
 
       {/* Navigation Buttons */}
       {currentStep < 6 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-20">
+        <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t dark:border-gray-700 shadow-lg z-20">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex justify-between items-center">
               <button
                 onClick={handleBack}
                 disabled={currentStep === 1 || isSaving}
-                className="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95"
+                className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95"
               >
                 <ChevronLeft className="h-5 w-5 mr-2" />
                 Back
               </button>
 
               <div className="hidden sm:flex flex-col items-center">
-                <div className="text-sm font-medium text-gray-900">
+                <div className="text-sm font-medium text-gray-900 dark:text-white">
                   Step {currentStep} of {STEPS.length}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   {STEPS.length - currentStep} {STEPS.length - currentStep === 1 ? 'step' : 'steps'} remaining
                 </div>
               </div>
@@ -449,11 +449,11 @@ export default function EditApplicationPage() {
 
             <div className="hidden lg:flex items-center justify-center gap-4 mt-3 text-xs text-gray-500">
               <span className="flex items-center gap-1">
-                <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded">←</kbd>
+                <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded">←</kbd>
                 <span>Go back</span>
               </span>
               <span className="flex items-center gap-1">
-                <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded">→</kbd>
+                <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded">→</kbd>
                 <span>Continue</span>
               </span>
             </div>

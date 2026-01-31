@@ -19,7 +19,7 @@ export default function UpgradePrompt({
   featureName = 'AI generation'
 }: UpgradePromptProps) {
   return (
-    <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg p-6">
+    <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-2 border-purple-200 dark:border-purple-700 rounded-lg p-6">
       <div className="flex items-start gap-4">
         {/* Icon */}
         <div className="flex-shrink-0">
@@ -32,10 +32,10 @@ export default function UpgradePrompt({
 
         {/* Content */}
         <div className="flex-1">
-          <h3 className="text-lg font-bold text-gray-900 mb-2">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
             You&apos;ve reached your free {featureName} limit
           </h3>
-          <p className="text-sm text-gray-700 mb-4">
+          <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
             {quotaResetTime ? (
               <>Your quota will reset at <strong>{new Date(quotaResetTime).toLocaleTimeString()}</strong>. Upgrade to Premium for unlimited access!</>
             ) : (
@@ -49,25 +49,25 @@ export default function UpgradePrompt({
               <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <span className="text-sm text-gray-700"><strong>Unlimited</strong> AI generations</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300"><strong>Unlimited</strong> AI generations</span>
             </div>
             <div className="flex items-start gap-2">
               <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <span className="text-sm text-gray-700"><strong>Priority</strong> processing</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300"><strong>Priority</strong> processing</span>
             </div>
             <div className="flex items-start gap-2">
               <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <span className="text-sm text-gray-700"><strong>Premium</strong> AI models</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300"><strong>Premium</strong> AI models</span>
             </div>
             <div className="flex items-start gap-2">
               <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <span className="text-sm text-gray-700"><strong>Advanced</strong> export options</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300"><strong>Advanced</strong> export options</span>
             </div>
           </div>
 
@@ -84,7 +84,7 @@ export default function UpgradePrompt({
             </Link>
             <Link
               href="/dashboard/billing"
-              className="px-5 py-2.5 bg-white hover:bg-gray-50 text-gray-700 font-medium rounded-md border border-gray-300 transition-colors"
+              className="px-5 py-2.5 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-md border border-gray-300 dark:border-gray-600 transition-colors"
             >
               View Pricing
             </Link>
@@ -94,8 +94,8 @@ export default function UpgradePrompt({
 
       {/* Small print */}
       {quotaResetTime && (
-        <div className="mt-4 pt-4 border-t border-purple-200">
-          <p className="text-xs text-gray-600 text-center">
+        <div className="mt-4 pt-4 border-t border-purple-200 dark:border-purple-700">
+          <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
             Or wait for your free quota to reset. We&apos;ll see you at{' '}
             <strong>{new Date(quotaResetTime).toLocaleTimeString()}</strong>!
           </p>

@@ -383,13 +383,13 @@ export default function AllDocumentsManager() {
 
   const getStatusIcon = (status: string, isVerified: boolean) => {
     if (isVerified || status === "approved") {
-      return <CheckCircle className="h-4 w-4 text-green-600" />;
+      return <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />;
     }
     const icons: Record<string, any> = {
-      pending: <Clock className="h-4 w-4 text-yellow-600" />,
-      under_review: <AlertCircle className="h-4 w-4 text-blue-600" />,
-      rejected: <XCircle className="h-4 w-4 text-red-600" />,
-      needs_revision: <AlertCircle className="h-4 w-4 text-orange-600" />,
+      pending: <Clock className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />,
+      under_review: <AlertCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />,
+      rejected: <XCircle className="h-4 w-4 text-red-600 dark:text-red-400" />,
+      needs_revision: <AlertCircle className="h-4 w-4 text-orange-600 dark:text-orange-400" />,
     };
     return icons[status] || icons["pending"];
   };
@@ -397,7 +397,7 @@ export default function AllDocumentsManager() {
   const getStatusBadge = (status: string, isVerified: boolean) => {
     if (isVerified || status === "approved") {
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs font-medium">
           {getStatusIcon(status, isVerified)}
           Approved
         </span>
@@ -405,10 +405,10 @@ export default function AllDocumentsManager() {
     }
 
     const badges: Record<string, { color: string; text: string }> = {
-      pending: { color: "bg-yellow-100 text-yellow-700", text: "Pending" },
-      under_review: { color: "bg-blue-100 text-blue-700", text: "Under Review" },
-      rejected: { color: "bg-red-100 text-red-700", text: "Rejected" },
-      needs_revision: { color: "bg-orange-100 text-orange-700", text: "Needs Revision" },
+      pending: { color: "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400", text: "Pending" },
+      under_review: { color: "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400", text: "Under Review" },
+      rejected: { color: "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400", text: "Rejected" },
+      needs_revision: { color: "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400", text: "Needs Revision" },
     };
 
     const badge = badges[status] || badges["pending"];
@@ -430,21 +430,21 @@ export default function AllDocumentsManager() {
     const iconClass = "h-6 w-6";
     if (["jpg", "jpeg", "png", "gif"].includes(extension.toLowerCase())) {
       return (
-        <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-          <ImageIcon className={`${iconClass} text-blue-600`} />
+        <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+          <ImageIcon className={`${iconClass} text-blue-600 dark:text-blue-400`} />
         </div>
       );
     }
     if (extension.toLowerCase() === "pdf") {
       return (
-        <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-          <FileText className={`${iconClass} text-red-600`} />
+        <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+          <FileText className={`${iconClass} text-red-600 dark:text-red-400`} />
         </div>
       );
     }
     return (
-      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-        <FileCheck className={`${iconClass} text-gray-600`} />
+      <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
+        <FileCheck className={`${iconClass} text-gray-600 dark:text-gray-400`} />
       </div>
     );
   };
@@ -466,56 +466,56 @@ export default function AllDocumentsManager() {
         {/* Skeleton for Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-white rounded-lg border border-gray-200 p-4 animate-pulse">
+            <div key={i} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 animate-pulse">
               <div className="flex items-center justify-between">
                 <div className="space-y-2 flex-1">
-                  <div className="h-4 bg-gray-200 rounded w-24" />
-                  <div className="h-8 bg-gray-200 rounded w-16" />
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24" />
+                  <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-16" />
                 </div>
-                <div className="w-8 h-8 bg-gray-200 rounded" />
+                <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded" />
               </div>
             </div>
           ))}
         </div>
 
         {/* Skeleton for Filters */}
-        <div className="bg-white rounded-lg border border-gray-200 p-4 animate-pulse">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 animate-pulse">
           <div className="flex flex-col lg:flex-row gap-4">
-            <div className="flex-1 h-10 bg-gray-200 rounded-lg" />
-            <div className="h-10 bg-gray-200 rounded-lg w-32" />
-            <div className="h-10 bg-gray-200 rounded-lg w-32" />
-            <div className="h-10 bg-gray-200 rounded-lg w-10" />
+            <div className="flex-1 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded-lg w-32" />
+            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded-lg w-32" />
+            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded-lg w-10" />
           </div>
         </div>
 
         {/* Skeleton for Documents List */}
-        <div className="bg-white rounded-lg border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <div className="h-6 bg-gray-200 rounded w-48 animate-pulse" />
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-48 animate-pulse" />
           </div>
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {[...Array(5)].map((_, i) => (
               <div key={i} className="p-4 animate-pulse">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gray-200 rounded-lg flex-shrink-0" />
+                  <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg flex-shrink-0" />
                   <div className="flex-1 space-y-3">
                     <div className="flex items-start justify-between gap-2">
                       <div className="space-y-2 flex-1">
-                        <div className="h-5 bg-gray-200 rounded w-48" />
-                        <div className="h-4 bg-gray-200 rounded w-32" />
+                        <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-48" />
+                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32" />
                       </div>
-                      <div className="h-5 bg-gray-200 rounded w-20" />
+                      <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-20" />
                     </div>
-                    <div className="h-4 bg-gray-200 rounded w-32" />
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32" />
                     <div className="flex items-center gap-4">
-                      <div className="h-3 bg-gray-200 rounded w-24" />
-                      <div className="h-3 bg-gray-200 rounded w-16" />
-                      <div className="h-3 bg-gray-200 rounded w-20" />
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-24" />
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-16" />
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-20" />
                     </div>
                   </div>
                   <div className="flex items-center gap-1">
-                    <div className="w-9 h-9 bg-gray-200 rounded-lg" />
-                    <div className="w-9 h-9 bg-gray-200 rounded-lg" />
+                    <div className="w-9 h-9 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+                    <div className="w-9 h-9 bg-gray-200 dark:bg-gray-700 rounded-lg" />
                   </div>
                 </div>
               </div>
@@ -532,58 +532,58 @@ export default function AllDocumentsManager() {
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Total Documents</p>
-              <p className="text-2xl font-bold text-gray-900 mt-1">{stats.total}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Total Documents</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{stats.total}</p>
             </div>
-            <FileText className="h-8 w-8 text-gray-400" />
+            <FileText className="h-8 w-8 text-gray-400 dark:text-gray-500" />
           </div>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Approved</p>
-              <p className="text-2xl font-bold text-green-600 mt-1">{stats.approved}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Approved</p>
+              <p className="text-2xl font-bold text-green-600 dark:text-green-400 mt-1">{stats.approved}</p>
             </div>
-            <CheckCircle className="h-8 w-8 text-green-600" />
+            <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
           </div>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Pending Review</p>
-              <p className="text-2xl font-bold text-yellow-600 mt-1">{stats.pending}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Pending Review</p>
+              <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400 mt-1">{stats.pending}</p>
             </div>
-            <Clock className="h-8 w-8 text-yellow-600" />
+            <Clock className="h-8 w-8 text-yellow-600 dark:text-yellow-400" />
           </div>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Rejected</p>
-              <p className="text-2xl font-bold text-red-600 mt-1">{stats.rejected}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Rejected</p>
+              <p className="text-2xl font-bold text-red-600 dark:text-red-400 mt-1">{stats.rejected}</p>
             </div>
-            <XCircle className="h-8 w-8 text-red-600" />
+            <XCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
           </div>
         </div>
       </div>
 
       {/* Quick Upload Section */}
       {applications.length > 0 && (
-        <div className="bg-gradient-to-r from-primary-50 to-blue-50 border-2 border-primary-200 rounded-xl p-6">
+        <div className="bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 border-2 border-primary-200 dark:border-primary-700 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center">
                 <Upload className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Quick Upload</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Quick Upload</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   {showUploadForm
                     ? "Select application and document type to upload"
                     : "Upload documents with enhanced security validation and quality checks"}
@@ -614,14 +614,14 @@ export default function AllDocumentsManager() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Application Selection */}
                 <div>
-                  <label htmlFor="quick-upload-application" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="quick-upload-application" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Select Application *
                   </label>
                   <select
                     id="quick-upload-application"
                     value={selectedApplication}
                     onChange={(e) => setSelectedApplication(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
                     required
                   >
                     <option value="">Choose an application...</option>
@@ -635,14 +635,14 @@ export default function AllDocumentsManager() {
 
                 {/* Document Type Selection */}
                 <div>
-                  <label htmlFor="quick-upload-doc-type" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="quick-upload-doc-type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Document Type *
                   </label>
                   <select
                     id="quick-upload-doc-type"
                     value={selectedDocType}
                     onChange={(e) => setSelectedDocType(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
                     required
                   >
                     <option value="">Choose document type...</option>
@@ -663,8 +663,8 @@ export default function AllDocumentsManager() {
                 onDrop={handleDrop}
                 className={`relative border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
                   dragActive
-                    ? "border-primary-500 bg-primary-50"
-                    : "border-gray-300 hover:border-gray-400 bg-white"
+                    ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20"
+                    : "border-gray-300 dark:border-gray-600 hover:border-gray-400 bg-white dark:bg-gray-800"
                 }`}
               >
                 <input
@@ -679,48 +679,48 @@ export default function AllDocumentsManager() {
 
                 {selectedFiles.length === 0 ? (
                   <label htmlFor="quick-file-upload" className="cursor-pointer">
-                    <Upload className="h-10 w-10 text-gray-400 mx-auto mb-3" />
-                    <p className="text-sm text-gray-600 mb-1">
-                      <span className="text-primary-600 hover:text-primary-700 font-medium">
+                    <Upload className="h-10 w-10 text-gray-400 dark:text-gray-500 mx-auto mb-3" />
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                      <span className="text-primary-600 dark:text-primary-400 hover:text-primary-700 font-medium">
                         Click to browse
                       </span>{" "}
                       or drag and drop files here
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       PDF, JPG, PNG, DOCX, WebP • Max 10MB • Security validated • Quality checked
                     </p>
                   </label>
                 ) : (
                   <div className="space-y-2">
-                    <p className="text-sm font-medium text-gray-900 mb-3">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white mb-3">
                       {selectedFiles.length} file(s) selected
                     </p>
                     <div className="space-y-2 max-h-40 overflow-y-auto">
                       {selectedFiles.map((file, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between bg-gray-50 rounded-lg p-2 text-left"
+                          className="flex items-center justify-between bg-gray-50 dark:bg-gray-900 rounded-lg p-2 text-left"
                         >
                           <div className="flex items-center gap-2 flex-1 min-w-0">
-                            <FileText className="h-4 w-4 text-gray-400 flex-shrink-0" />
-                            <span className="text-sm text-gray-700 truncate">{file.name}</span>
-                            <span className="text-xs text-gray-500 flex-shrink-0">
+                            <FileText className="h-4 w-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300 truncate">{file.name}</span>
+                            <span className="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">
                               {(file.size / 1024).toFixed(1)} KB
                             </span>
                           </div>
                           <button
                             onClick={() => removeFile(index)}
-                            className="p-1 hover:bg-gray-200 rounded"
+                            className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
                             aria-label={`Remove ${file.name}`}
                           >
-                            <X className="h-4 w-4 text-gray-600" />
+                            <X className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                           </button>
                         </div>
                       ))}
                     </div>
                     <label
                       htmlFor="quick-file-upload"
-                      className="inline-flex items-center gap-2 text-sm text-primary-600 hover:text-primary-700 font-medium cursor-pointer mt-2"
+                      className="inline-flex items-center gap-2 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 font-medium cursor-pointer mt-2"
                     >
                       <Plus className="h-4 w-4" />
                       Add more files
@@ -738,7 +738,7 @@ export default function AllDocumentsManager() {
                       setSelectedApplication("");
                       setSelectedDocType("");
                     }}
-                    className="px-4 py-2 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded-lg font-medium transition-colors"
+                    className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors"
                   >
                     Clear All
                   </button>
@@ -755,18 +755,18 @@ export default function AllDocumentsManager() {
 
               {/* Uploading Files Progress */}
               {uploadingFiles.size > 0 && (
-                <div className="bg-white rounded-lg border border-gray-200 p-4 space-y-3">
-                  <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 space-y-3">
+                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                     <Loader2 className="h-4 w-4 animate-spin" />
                     Uploading {uploadingFiles.size} file(s)
                   </h4>
                   {Array.from(uploadingFiles.entries()).map(([fileId, { file, progress, status, error }]) => (
                     <div key={fileId} className="space-y-2">
                       <div className="flex items-center gap-3">
-                        <FileText className="h-5 w-5 text-gray-400 flex-shrink-0" />
+                        <FileText className="h-5 w-5 text-gray-400 dark:text-gray-500 flex-shrink-0" />
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">{file.name}</p>
-                          <p className="text-xs text-gray-500">{(file.size / 1024).toFixed(1)} KB</p>
+                          <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{file.name}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">{(file.size / 1024).toFixed(1)} KB</p>
                         </div>
                         {status === "success" && (
                           <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
@@ -776,7 +776,7 @@ export default function AllDocumentsManager() {
                         )}
                       </div>
                       {status === "uploading" && (
-                        <div className="w-full bg-gray-200 rounded-full h-1.5">
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
                           <div
                             className="bg-primary-600 h-1.5 rounded-full transition-all duration-300"
                             style={{ width: `${progress}%` }}
@@ -784,7 +784,7 @@ export default function AllDocumentsManager() {
                         </div>
                       )}
                       {status === "error" && error && (
-                        <p className="text-xs text-red-600">{error}</p>
+                        <p className="text-xs text-red-600 dark:text-red-400">{error}</p>
                       )}
                     </div>
                   ))}
@@ -792,9 +792,9 @@ export default function AllDocumentsManager() {
               )}
 
               {/* Security Info */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-800">
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-3 text-sm text-blue-800 dark:text-blue-300">
                 <div className="flex gap-2">
-                  <Shield className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="font-medium mb-1">Enhanced Security & Quality Validation</p>
                     <ul className="text-xs space-y-0.5">
@@ -812,19 +812,19 @@ export default function AllDocumentsManager() {
       )}
 
       {/* Filters & Search */}
-      <div className="bg-white rounded-lg border border-gray-200 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
             <label htmlFor="document-search" className="sr-only">Search documents</label>
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" aria-hidden="true" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
             <input
               id="document-search"
               type="text"
               placeholder="Search documents..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
               aria-label="Search documents by name or reference"
             />
           </div>
@@ -835,7 +835,7 @@ export default function AllDocumentsManager() {
             id="status-filter"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 dark:text-white"
             aria-label="Filter documents by status"
           >
             <option value="all">All Status</option>
@@ -852,7 +852,7 @@ export default function AllDocumentsManager() {
             id="type-filter"
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 dark:text-white"
             aria-label="Filter documents by type"
           >
             <option value="all">All Types</option>
@@ -866,50 +866,50 @@ export default function AllDocumentsManager() {
           {/* Refresh Button */}
           <button
             onClick={fetchAllDocuments}
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
             title="Refresh documents"
             aria-label="Refresh documents list"
           >
-            <RefreshCw className="h-5 w-5 text-gray-600" aria-hidden="true" />
+            <RefreshCw className="h-5 w-5 text-gray-600 dark:text-gray-400" aria-hidden="true" />
           </button>
         </div>
       </div>
 
       {/* Documents List */}
-      <div className="bg-white rounded-lg border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             All Documents ({filteredDocuments.length})
           </h2>
         </div>
 
         {filteredDocuments.length === 0 ? (
           <div className="p-12 text-center">
-            <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-600 mb-2">
+            <FileText className="h-12 w-12 text-gray-300 dark:text-gray-500 mx-auto mb-4" />
+            <p className="text-gray-600 dark:text-gray-400 mb-2">
               {documents.length === 0 ? "No documents uploaded yet" : "No documents match your filters"}
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               {documents.length === 0
                 ? "Upload documents from your application pages"
                 : "Try adjusting your search or filters"}
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {filteredDocuments.map((doc) => (
-              <div key={doc.id} className="p-4 hover:bg-gray-50 transition-colors">
+              <div key={doc.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                 <div className="flex items-start gap-4">
                   {getFileIcon(doc.file_extension)}
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2 mb-1">
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-gray-900 truncate">{doc.document_name}</h3>
+                        <h3 className="font-semibold text-gray-900 dark:text-white truncate">{doc.document_name}</h3>
                         {doc.application_reference && (
                           <Link
                             href={`/dashboard/applications/${doc.application_id}/documents`}
-                            className="text-sm text-primary-600 hover:text-primary-700 inline-flex items-center gap-1 mt-1"
+                            className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 inline-flex items-center gap-1 mt-1"
                           >
                             {doc.application_reference}
                             <ExternalLink className="h-3 w-3" />
@@ -919,18 +919,18 @@ export default function AllDocumentsManager() {
                       {getStatusBadge(doc.status, doc.is_verified)}
                     </div>
 
-                    <p className="text-sm text-gray-600 mb-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                       {documentTypes.find((t) => t.value === doc.document_type)?.label || doc.document_type}
                     </p>
 
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                    <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
                       <span>{doc.original_filename}</span>
                       <span>{formatFileSize(doc.file_size)}</span>
                       <span>{new Date(doc.uploaded_at).toLocaleDateString()}</span>
                     </div>
 
                     {doc.verification_notes && (
-                      <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-800">
+                      <div className="mt-2 p-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded text-sm text-yellow-800 dark:text-yellow-300">
                         <strong>Note:</strong> {doc.verification_notes}
                       </div>
                     )}
@@ -939,7 +939,7 @@ export default function AllDocumentsManager() {
                   <div className="flex items-center gap-1">
                     <Link
                       href={`/dashboard/applications/${doc.application_id}/documents`}
-                      className="p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+                      className="p-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors"
                       title="View in application"
                     >
                       <Eye className="h-5 w-5" />
@@ -947,7 +947,7 @@ export default function AllDocumentsManager() {
 
                     <button
                       onClick={() => handleDownload(doc)}
-                      className="p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+                      className="p-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors"
                       title="Download"
                     >
                       <Download className="h-5 w-5" />
@@ -956,7 +956,7 @@ export default function AllDocumentsManager() {
                     {!doc.is_verified && doc.status !== "approved" && (
                       <button
                         onClick={() => handleDelete(doc)}
-                        className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-2 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                         title="Delete"
                       >
                         <Trash2 className="h-5 w-5" />
@@ -971,10 +971,10 @@ export default function AllDocumentsManager() {
       </div>
 
       {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4" role="complementary">
+      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4" role="complementary">
         <div className="flex gap-3">
-          <AlertCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-blue-800">
+          <AlertCircle className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+          <div className="text-sm text-blue-800 dark:text-blue-300">
             <p className="font-medium mb-1">Document Management & Security</p>
             <p className="mb-2">
               This page shows all documents across all your applications. To upload new documents, visit the
@@ -1002,16 +1002,16 @@ export default function AllDocumentsManager() {
             if (e.target === e.currentTarget) setShowDeleteModal(null);
           }}
         >
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
             <div className="flex items-start gap-4 mb-4">
-              <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                <AlertCircle className="h-6 w-6 text-red-600" />
+              <div className="flex-shrink-0 w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                <AlertCircle className="h-6 w-6 text-red-600 dark:text-red-400" />
               </div>
               <div className="flex-1">
-                <h2 id="delete-modal-title" className="text-lg font-semibold text-gray-900 mb-2">
+                <h2 id="delete-modal-title" className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                   Delete Document?
                 </h2>
-                <p id="delete-modal-description" className="text-sm text-gray-600">
+                <p id="delete-modal-description" className="text-sm text-gray-600 dark:text-gray-400">
                   Are you sure you want to delete &quot;<strong>{showDeleteModal.document_name}</strong>&quot;?
                   This action cannot be undone.
                 </p>
@@ -1021,7 +1021,7 @@ export default function AllDocumentsManager() {
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setShowDeleteModal(null)}
-                className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                 autoFocus
               >
                 Cancel

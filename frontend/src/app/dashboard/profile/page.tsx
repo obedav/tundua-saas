@@ -18,30 +18,30 @@ export default async function ProfilePage() {
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Profile Settings</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Profile Settings</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">
           Manage your personal information and account settings
         </p>
       </div>
 
       {/* Profile Card */}
-      <div className="bg-white rounded-lg border border-gray-200 p-8">
-        <div className="flex items-center gap-6 mb-8 pb-8 border-b">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-100 text-primary-700 text-2xl font-bold">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-8">
+        <div className="flex items-center gap-6 mb-8 pb-8 border-b dark:border-gray-700">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 text-2xl font-bold">
             {user.first_name?.[0]}
             {user.last_name?.[0]}
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               {user.first_name} {user.last_name}
             </h2>
-            <p className="text-gray-600">{user.email}</p>
+            <p className="text-gray-600 dark:text-gray-400">{user.email}</p>
             <div className="flex items-center gap-2 mt-2">
-              <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+              <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium rounded-full">
                 {user.role === "admin" ? "Admin" : "User"}
               </span>
               {user.email_verified && (
-                <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
+                <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-medium rounded-full">
                   ✓ Verified
                 </span>
               )}
@@ -54,9 +54,9 @@ export default async function ProfilePage() {
       </div>
 
       {/* Account Info */}
-      <div className="bg-gray-50 rounded-lg p-6 space-y-3">
-        <h3 className="font-semibold text-gray-900 mb-4">Account Information</h3>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+      <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 space-y-3">
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Account Information</h3>
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
           <Calendar className="h-4 w-4" />
           <span>
             Member since:{" "}
@@ -66,7 +66,7 @@ export default async function ProfilePage() {
           </span>
         </div>
         {(user as any)?.last_login && (
-          <div className="flex items-center gap-2 text-sm text-gray-600">
+          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
             <MapPin className="h-4 w-4" />
             <span>
               Last login: {new Date((user as any).last_login).toLocaleString()}
@@ -76,18 +76,18 @@ export default async function ProfilePage() {
       </div>
 
       {/* Additional Settings */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
           Account Actions
         </h3>
         <div className="space-y-3">
-          <button className="w-full text-left px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+          <button className="w-full text-left px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300 transition-colors">
             Change Password
           </button>
-          <button className="w-full text-left px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+          <button className="w-full text-left px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300 transition-colors">
             Two-Factor Authentication
           </button>
-          <button className="w-full text-left px-4 py-3 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors">
+          <button className="w-full text-left px-4 py-3 border border-red-300 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
             Delete Account
           </button>
         </div>

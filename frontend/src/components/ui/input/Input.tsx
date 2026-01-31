@@ -4,19 +4,19 @@ import { cn } from "@/lib/utils";
 import { CheckCircle2, AlertCircle, Info } from "lucide-react";
 
 const inputVariants = cva(
-  // Base styles
-  "flex w-full rounded-xl border-2 bg-white px-4 py-3 text-base transition-all duration-200 placeholder:text-gray-400 focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500",
+  // Base styles with dark mode support
+  "flex w-full rounded-xl border-2 bg-white dark:bg-gray-800 px-4 py-3 text-base text-gray-900 dark:text-white transition-all duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:text-gray-500 dark:disabled:text-gray-600",
   {
     variants: {
       state: {
         default:
-          "border-gray-200 focus:border-primary-500 focus:ring-primary-500 hover:border-gray-300",
+          "border-gray-200 dark:border-gray-600 focus:border-primary-500 focus:ring-primary-500 hover:border-gray-300 dark:hover:border-gray-500",
         error:
-          "border-red-300 focus:border-red-500 focus:ring-red-500 text-red-900 placeholder:text-red-400",
+          "border-red-300 dark:border-red-500/50 focus:border-red-500 focus:ring-red-500 text-red-900 dark:text-red-400 placeholder:text-red-400",
         success:
-          "border-green-300 focus:border-green-500 focus:ring-green-500",
+          "border-green-300 dark:border-green-500/50 focus:border-green-500 focus:ring-green-500",
         warning:
-          "border-yellow-300 focus:border-yellow-500 focus:ring-yellow-500",
+          "border-yellow-300 dark:border-yellow-500/50 focus:border-yellow-500 focus:ring-yellow-500",
       },
       inputSize: {
         sm: "h-9 px-3 py-2 text-sm",
@@ -92,11 +92,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-sm font-semibold text-gray-900 mb-2"
+            className="block text-sm font-semibold text-gray-900 dark:text-white mb-2"
           >
             {label}
             {required && (
-              <span className="text-red-600 ml-1" aria-label="required">
+              <span className="text-red-600 dark:text-red-400 ml-1" aria-label="required">
                 *
               </span>
             )}
@@ -107,7 +107,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <div className="relative">
           {/* Left Icon */}
           {leftIcon && (
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 dark:text-gray-500">
               {leftIcon}
             </div>
           )}
@@ -144,7 +144,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               />
             )}
             {!error && !success && rightIcon && (
-              <span className="text-gray-400">{rightIcon}</span>
+              <span className="text-gray-400 dark:text-gray-500">{rightIcon}</span>
             )}
           </div>
         </div>
@@ -155,7 +155,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {error && (
               <p
                 id={errorId}
-                className="text-sm text-red-600 flex items-center gap-1.5"
+                className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1.5"
                 role="alert"
               >
                 <AlertCircle className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
@@ -163,14 +163,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               </p>
             )}
             {success && !error && (
-              <p className="text-sm text-green-600 flex items-center gap-1.5">
+              <p className="text-sm text-green-600 dark:text-green-400 flex items-center gap-1.5">
                 <CheckCircle2 className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
                 <span>{success}</span>
               </p>
             )}
             {helperText && !error && !success && (
-              <p id={helperId} className="text-sm text-gray-600 flex items-center gap-1.5">
-                <Info className="h-4 w-4 flex-shrink-0 text-gray-400" aria-hidden="true" />
+              <p id={helperId} className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1.5">
+                <Info className="h-4 w-4 flex-shrink-0 text-gray-400 dark:text-gray-500" aria-hidden="true" />
                 <span>{helperText}</span>
               </p>
             )}

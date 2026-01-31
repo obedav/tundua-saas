@@ -14,11 +14,11 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-gray-50 border-gray-200 text-gray-900",
-        info: "bg-blue-50 border-blue-200 text-blue-900",
-        success: "bg-green-50 border-green-200 text-green-900",
-        warning: "bg-yellow-50 border-yellow-200 text-yellow-900",
-        danger: "bg-red-50 border-red-200 text-red-900",
+        default: "bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100",
+        info: "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 text-blue-900 dark:text-blue-300",
+        success: "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-700 text-green-900 dark:text-green-300",
+        warning: "bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700 text-yellow-900 dark:text-yellow-300",
+        danger: "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-700 text-red-900 dark:text-red-300",
       },
     },
     defaultVariants: {
@@ -36,11 +36,11 @@ const iconMap = {
 };
 
 const iconColorMap = {
-  default: "text-gray-600",
-  info: "text-blue-600",
-  success: "text-green-600",
-  warning: "text-yellow-600",
-  danger: "text-red-600",
+  default: "text-gray-600 dark:text-gray-400",
+  info: "text-blue-600 dark:text-blue-400",
+  success: "text-green-600 dark:text-green-400",
+  warning: "text-yellow-600 dark:text-yellow-400",
+  danger: "text-red-600 dark:text-red-400",
 };
 
 export interface AlertProps

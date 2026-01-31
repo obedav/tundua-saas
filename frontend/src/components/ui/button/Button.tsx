@@ -10,19 +10,19 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 focus-visible:ring-primary-500 shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40",
+          "bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 focus-visible:ring-primary-500 shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40 dark:focus-visible:ring-offset-gray-900",
         secondary:
-          "bg-gray-100 text-gray-900 hover:bg-gray-200 focus-visible:ring-gray-500",
+          "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600 focus-visible:ring-gray-500 dark:focus-visible:ring-offset-gray-900",
         outline:
-          "border-2 border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 focus-visible:ring-primary-500",
+          "border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900",
         ghost:
-          "text-gray-700 hover:bg-gray-100 focus-visible:ring-gray-500",
+          "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:ring-gray-500 dark:focus-visible:ring-offset-gray-900",
         link:
-          "text-primary-600 underline-offset-4 hover:underline focus-visible:ring-primary-500",
+          "text-primary-600 dark:text-primary-400 underline-offset-4 hover:underline focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900",
         destructive:
-          "bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500 shadow-lg shadow-red-500/30",
+          "bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500 shadow-lg shadow-red-500/30 dark:focus-visible:ring-offset-gray-900",
         success:
-          "bg-green-600 text-white hover:bg-green-700 focus-visible:ring-green-500 shadow-lg shadow-green-500/30",
+          "bg-green-600 text-white hover:bg-green-700 focus-visible:ring-green-500 shadow-lg shadow-green-500/30 dark:focus-visible:ring-offset-gray-900",
       },
       size: {
         sm: "h-9 px-3 py-2 text-sm",

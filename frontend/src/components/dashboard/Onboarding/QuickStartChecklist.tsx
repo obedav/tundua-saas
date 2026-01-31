@@ -66,11 +66,11 @@ export default function QuickStartChecklist() {
   }
 
   return (
-    <div className="bg-gradient-to-r from-primary-50 to-purple-50 rounded-lg shadow-sm border border-primary-200 p-6 relative">
+    <div className="bg-gradient-to-r from-primary-50 to-purple-50 dark:from-primary-900/20 dark:to-purple-900/20 rounded-lg shadow-sm border border-primary-200 dark:border-primary-700 p-6 relative">
       {/* Close button */}
       <button
         onClick={() => setIsVisible(false)}
-        className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+        className="absolute top-4 right-4 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
       >
         <X className="w-5 h-5" />
       </button>
@@ -78,10 +78,10 @@ export default function QuickStartChecklist() {
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
-          <Sparkles className="w-5 h-5 text-primary-600" />
-          <h2 className="text-lg font-semibold text-gray-900">Quick Start Guide</h2>
+          <Sparkles className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Quick Start Guide</h2>
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
           Complete these tasks to get the most out of Tundua
         </p>
       </div>
@@ -89,12 +89,12 @@ export default function QuickStartChecklist() {
       {/* Progress Bar */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
             {completedCount} of {tasks.length} completed
           </span>
-          <span className="text-sm font-semibold text-primary-600">{Math.round(progress)}%</span>
+          <span className="text-sm font-semibold text-primary-600 dark:text-primary-400">{Math.round(progress)}%</span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
           <div
             className="bg-gradient-to-r from-primary-600 to-purple-600 h-full transition-all duration-500 ease-out"
             style={{ width: `${progress}%` }}
@@ -107,10 +107,10 @@ export default function QuickStartChecklist() {
         {tasks.map((task) => (
           <div
             key={task.id}
-            className={`bg-white rounded-lg p-4 border transition-all ${
+            className={`bg-white dark:bg-gray-800 rounded-lg p-4 border transition-all ${
               task.completed
-                ? "border-green-200 bg-green-50"
-                : "border-gray-200 hover:border-primary-300"
+                ? "border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/20"
+                : "border-gray-200 dark:border-gray-700 hover:border-primary-300"
             }`}
           >
             <div className="flex items-start gap-3">
@@ -132,12 +132,12 @@ export default function QuickStartChecklist() {
                   <div>
                     <h3
                       className={`text-sm font-semibold mb-1 ${
-                        task.completed ? "text-green-900 line-through" : "text-gray-900"
+                        task.completed ? "text-green-900 dark:text-green-400 line-through" : "text-gray-900 dark:text-white"
                       }`}
                     >
                       {task.title}
                     </h3>
-                    <p className={`text-sm ${task.completed ? "text-green-700" : "text-gray-600"}`}>
+                    <p className={`text-sm ${task.completed ? "text-green-700 dark:text-green-400" : "text-gray-600 dark:text-gray-400"}`}>
                       {task.description}
                     </p>
                   </div>
@@ -161,17 +161,17 @@ export default function QuickStartChecklist() {
 
       {/* Completion Message */}
       {completedCount === tasks.length && (
-        <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg border border-green-200">
+        <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border border-green-200 dark:border-green-700">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
               <CheckCircle className="w-6 h-6 text-white" />
             </div>
             <div className="flex-1">
               <h3 className="text-sm font-semibold text-green-900 mb-1">
-                Great job! You're all set up! 🎉
+                Great job! You&apos;re all set up! 🎉
               </h3>
               <p className="text-sm text-green-700">
-                You've completed the quick start guide. Ready to begin your journey?
+                You&apos;ve completed the quick start guide. Ready to begin your journey?
               </p>
             </div>
           </div>
@@ -179,8 +179,8 @@ export default function QuickStartChecklist() {
       )}
 
       {/* Help Link */}
-      <div className="mt-6 pt-6 border-t border-primary-100">
-        <p className="text-sm text-gray-600 text-center">
+      <div className="mt-6 pt-6 border-t border-primary-100 dark:border-primary-700">
+        <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
           Need help?{" "}
           <a
             href="/dashboard/help"

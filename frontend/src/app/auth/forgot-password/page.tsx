@@ -65,13 +65,14 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       <div className="flex min-h-screen">
         {/* Left Side - Brand */}
-        <div className="hidden lg:flex lg:w-1/2 xl:w-[45%] bg-gradient-to-br from-primary-50/50 via-white to-blue-50/50 relative overflow-hidden">
-          {/* Brand color gradient accents */}
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-primary-200/40 to-blue-200/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-primary-100/30 to-purple-100/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
+        <div className="hidden lg:flex lg:w-1/2 xl:w-[45%] bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 dark:from-primary-800 dark:via-primary-900 dark:to-gray-950 relative overflow-hidden">
+          {/* Premium gradient overlays */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent" />
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-primary-400/30 to-blue-500/20 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-purple-500/20 to-primary-400/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
 
           <div className="relative z-10 flex flex-col justify-between p-12 xl:p-16 w-full">
             {/* Logo */}
@@ -95,13 +96,13 @@ export default function ForgotPasswordPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight mb-4">
+                <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-white leading-tight mb-4">
                   Forgot your
-                  <span className="block mt-2 bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
+                  <span className="block mt-2 bg-gradient-to-r from-white to-primary-200 bg-clip-text text-transparent">
                     password?
                   </span>
                 </h1>
-                <p className="text-lg text-gray-600 mt-6 leading-relaxed">
+                <p className="text-lg text-primary-100 mt-6 leading-relaxed">
                   No worries! Enter your email address and we&apos;ll send you instructions to reset your password.
                 </p>
               </motion.div>
@@ -113,20 +114,20 @@ export default function ForgotPasswordPage() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="space-y-4"
               >
-                <div className="p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-primary-100/50 shadow-sm">
-                  <h3 className="font-semibold text-gray-900 mb-3">What happens next?</h3>
-                  <ul className="space-y-3 text-gray-600">
+                <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
+                  <h3 className="font-semibold text-white mb-3">What happens next?</h3>
+                  <ul className="space-y-3 text-primary-100">
                     <li className="flex items-start gap-3">
-                      <span className="w-6 h-6 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0 text-sm font-semibold">1</span>
-                      <span>Check your email inbox for a reset link</span>
+                      <span className="w-7 h-7 rounded-full bg-white/20 text-white flex items-center justify-center flex-shrink-0 text-sm font-bold">1</span>
+                      <span className="pt-0.5">Check your email inbox for a reset link</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="w-6 h-6 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0 text-sm font-semibold">2</span>
-                      <span>Click the link to create a new password</span>
+                      <span className="w-7 h-7 rounded-full bg-white/20 text-white flex items-center justify-center flex-shrink-0 text-sm font-bold">2</span>
+                      <span className="pt-0.5">Click the link to create a new password</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="w-6 h-6 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0 text-sm font-semibold">3</span>
-                      <span>Sign in with your new password</span>
+                      <span className="w-7 h-7 rounded-full bg-white/20 text-white flex items-center justify-center flex-shrink-0 text-sm font-bold">3</span>
+                      <span className="pt-0.5">Sign in with your new password</span>
                     </li>
                   </ul>
                 </div>
@@ -138,11 +139,11 @@ export default function ForgotPasswordPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="text-sm text-gray-600"
+              className="text-sm text-primary-200"
             >
               <p>
                 Need help?{" "}
-                <Link href="/support" className="text-primary-600 hover:text-primary-700 font-semibold">
+                <Link href="/support" className="text-white hover:text-primary-100 font-semibold underline underline-offset-2">
                   Contact Support
                 </Link>
               </p>
@@ -170,7 +171,7 @@ export default function ForgotPasswordPage() {
             {/* Back Link */}
             <Link
               href="/auth/login"
-              className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-8 group"
+              className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-8 group"
             >
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               <span>Back to sign in</span>
@@ -181,13 +182,13 @@ export default function ForgotPasswordPage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10"
+                className="bg-white dark:bg-gray-800/95 rounded-3xl shadow-2xl shadow-gray-200/50 dark:shadow-gray-950/50 border border-gray-100 dark:border-gray-700/50 p-6 sm:p-8 lg:p-10 backdrop-blur-sm"
               >
                 <div className="mb-8">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
                     Reset password
                   </h2>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-400">
                     Enter your email and we&apos;ll send you a reset link
                   </p>
                 </div>
@@ -235,8 +236,8 @@ export default function ForgotPasswordPage() {
                 </form>
 
                 {/* Sign In Link */}
-                <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-                  <p className="text-gray-600">
+                <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 text-center">
+                  <p className="text-gray-600 dark:text-gray-400">
                     Remember your password?{" "}
                     <Link
                       href="/auth/login"
@@ -252,25 +253,25 @@ export default function ForgotPasswordPage() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10 text-center"
+                className="bg-white dark:bg-gray-800/95 rounded-3xl shadow-2xl shadow-gray-200/50 dark:shadow-gray-950/50 border border-gray-100 dark:border-gray-700/50 p-6 sm:p-8 lg:p-10 text-center backdrop-blur-sm"
               >
-                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle2 className="w-10 h-10 text-green-600" />
+                <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle2 className="w-10 h-10 text-green-600 dark:text-green-400" />
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
                   Check your email
                 </h2>
 
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 dark:text-gray-400 mb-6">
                   We&apos;ve sent password reset instructions to:
                 </p>
 
-                <p className="font-semibold text-gray-900 bg-gray-50 rounded-lg py-3 px-4 mb-8">
+                <p className="font-semibold text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-900 rounded-lg py-3 px-4 mb-8">
                   {submittedEmail}
                 </p>
 
-                <div className="space-y-4 text-sm text-gray-600 mb-8">
+                <div className="space-y-4 text-sm text-gray-600 dark:text-gray-400 mb-8">
                   <p>
                     Didn&apos;t receive the email? Check your spam folder or{" "}
                     <button
@@ -293,21 +294,21 @@ export default function ForgotPasswordPage() {
 
             {/* Footer Links */}
             <div className="mt-8 text-center">
-              <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
-                <Link href="/privacy" className="hover:text-gray-900 transition-colors">
+              <div className="flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   Privacy
                 </Link>
                 <span>•</span>
-                <Link href="/terms" className="hover:text-gray-900 transition-colors">
+                <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   Terms
                 </Link>
                 <span>•</span>
-                <Link href="/support" className="hover:text-gray-900 transition-colors">
+                <Link href="/support" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   Support
                 </Link>
               </div>
-              <p className="text-xs text-gray-500 mt-3">
-                © 2025 Tundua Edu Consults. All rights reserved.
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                © 2026 Tundua Edu Consults. All rights reserved.
               </p>
             </div>
           </div>

@@ -72,17 +72,17 @@ export default function SmartProgressTracker({
   const progress = (completedSteps / steps.length) * 100;
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-xl font-bold text-gray-900">Application Progress</h2>
-          <span className="text-sm font-medium text-gray-600">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Application Progress</h2>
+          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
             {completedSteps} of {steps.length} completed
           </span>
         </div>
 
         {/* Progress Bar */}
-        <div className="w-full bg-gray-200 rounded-full h-2">
+        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
           <div
             className="bg-primary-600 h-2 rounded-full transition-all duration-500"
             style={{ width: `${progress}%` }}
@@ -109,8 +109,8 @@ export default function SmartProgressTracker({
                       <Clock className="h-5 w-5 text-white animate-pulse" />
                     </div>
                   ) : (
-                    <div className="border-2 border-gray-300 rounded-full p-2">
-                      <Circle className="h-5 w-5 text-gray-300" />
+                    <div className="border-2 border-gray-300 dark:border-gray-600 rounded-full p-2">
+                      <Circle className="h-5 w-5 text-gray-300 dark:text-gray-600" />
                     </div>
                   )}
 
@@ -118,7 +118,7 @@ export default function SmartProgressTracker({
                   {!isLast && (
                     <div
                       className={`absolute left-1/2 top-10 w-0.5 h-12 -ml-px ${
-                        step.status === "completed" ? "bg-green-500" : "bg-gray-300"
+                        step.status === "completed" ? "bg-green-500" : "bg-gray-300 dark:bg-gray-600"
                       }`}
                     ></div>
                   )}
@@ -129,18 +129,18 @@ export default function SmartProgressTracker({
                   <h3
                     className={`font-semibold mb-1 ${
                       step.status === "completed"
-                        ? "text-gray-900"
+                        ? "text-gray-900 dark:text-white"
                         : step.status === "current"
-                        ? "text-primary-600"
-                        : "text-gray-500"
+                        ? "text-primary-600 dark:text-primary-400"
+                        : "text-gray-500 dark:text-gray-400"
                     }`}
                   >
                     {step.title}
                   </h3>
-                  <p className="text-sm text-gray-600">{step.description}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{step.description}</p>
 
                   {step.completedAt && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       Completed on {new Date(step.completedAt).toLocaleDateString()}
                     </p>
                   )}

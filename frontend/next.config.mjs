@@ -24,8 +24,8 @@ eslint: {
   //   root: path.join(__dirname, '..'),
   // },
 
-  // Output file tracing - disabled for Vercel deployment
-  // outputFileTracingRoot: path.join(__dirname, '..'),
+  // Output file tracing root - set to frontend directory to avoid lockfile confusion
+  outputFileTracingRoot: __dirname,
 
   // Enable experimental features for Next.js 15
   experimental: {
@@ -42,7 +42,13 @@ eslint: {
     // ✅ Server Actions enabled by default in Next.js 15
     serverActions: {
       bodySizeLimit: '2mb', // Increase if needed for file uploads
-      allowedOrigins: ['localhost:3000', 'localhost:3001'],
+      // Allow both development and production origins
+      allowedOrigins: [
+        'localhost:3000',
+        'localhost:3001',
+        'tundua.com',
+        'www.tundua.com',
+      ],
     },
 
     // ✅ Enable optimized package imports (stable feature)
@@ -61,27 +67,43 @@ eslint: {
    * Add your CDN, storage providers, etc. to this list
    */
   images: {
-    domains: ['localhost'],
     remotePatterns: [
-      // Local development
+      // Local development - frontend
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/**',
+      },
+      // Local development - backend API
       {
         protocol: 'http',
         hostname: 'localhost',
         port: '8000',
         pathname: '/storage/**',
       },
-      // Add your production domains here
-      // Example for AWS S3:
+      // Production - API server (document storage)
+      {
+        protocol: 'https',
+        hostname: 'api.tundua.com',
+        pathname: '/storage/**',
+      },
+      // Production - Main domain
+      {
+        protocol: 'https',
+        hostname: 'tundua.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.tundua.com',
+        pathname: '/**',
+      },
+      // Common image CDNs - uncomment as needed
       // {
       //   protocol: 'https',
       //   hostname: '*.s3.amazonaws.com',
       //   pathname: '/tundua-uploads/**',
-      // },
-      // Example for Cloudinary:
-      // {
-      //   protocol: 'https',
-      //   hostname: 'res.cloudinary.com',
-      //   pathname: '/your-cloud-name/**',
       // },
     ],
     formats: ['image/avif', 'image/webp'], // Modern image formats

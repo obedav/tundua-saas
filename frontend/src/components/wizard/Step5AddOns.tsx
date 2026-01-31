@@ -146,7 +146,7 @@ export default function Step5AddOns({ data, updateData, onNext }: Props) {
         <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-2xl p-6 border border-blue-100">
           <p className="text-sm text-gray-700 flex items-center gap-2">
             <span className="text-2xl">✨</span>
-            <span>Enhance your application with optional services. These add-ons are completely optional - you can skip this step if you don't need any extras.</span>
+            <span>Enhance your application with optional services. These add-ons are completely optional - you can skip this step if you don&apos;t need any extras.</span>
           </p>
         </div>
       </div>

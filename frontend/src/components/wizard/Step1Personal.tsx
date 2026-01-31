@@ -68,7 +68,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* Passport OCR Upload - Featured Section */}
-      <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-2xl p-6 border-2 border-dashed border-blue-200">
+      <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900/20 dark:via-indigo-900/20 dark:to-purple-900/20 rounded-2xl p-6 border-2 border-dashed border-blue-200 dark:border-blue-700">
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0">
             <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
@@ -76,9 +76,9 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
             </div>
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">⚡ Quick Fill with Passport</h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Upload your passport photo to automatically fill most fields. It's fast and accurate!
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">⚡ Quick Fill with Passport</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              Upload your passport photo to automatically fill most fields. It&apos;s fast and accurate!
             </p>
             <PassportUpload onDataExtracted={handlePassportData} />
           </div>
@@ -88,24 +88,24 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
       {/* Manual Entry Divider */}
       <div className="relative">
         <div className="absolute inset-0 flex items-center" aria-hidden="true">
-          <div className="w-full border-t border-gray-200" />
+          <div className="w-full border-t border-gray-200 dark:border-gray-700" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="bg-white px-4 text-gray-500 font-medium">Or enter manually</span>
+          <span className="bg-white dark:bg-gray-800 px-4 text-gray-500 dark:text-gray-400 font-medium">Or enter manually</span>
         </div>
       </div>
 
       {/* Personal Details Section */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 pb-2 border-b-2 border-primary-100">
-          <User className="h-5 w-5 text-primary-600" />
-          <h3 className="text-lg font-semibold text-gray-900">Personal Details</h3>
+        <div className="flex items-center gap-2 pb-2 border-b-2 border-primary-100 dark:border-primary-800">
+          <User className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Personal Details</h3>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {/* First Name */}
           <div className="group">
-            <label htmlFor="first_name" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="first_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               First Name <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -115,7 +115,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
               <input
                 type="text"
                 {...register("first_name")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
                 placeholder="John"
               />
             </div>
@@ -128,7 +128,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
 
           {/* Last Name */}
           <div className="group">
-            <label htmlFor="last_name" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="last_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Last Name <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -138,7 +138,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
               <input
                 type="text"
                 {...register("last_name")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
                 placeholder="Doe"
               />
             </div>
@@ -151,7 +151,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
 
           {/* Email */}
           <div className="group">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Email Address <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -161,7 +161,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
               <input
                 type="email"
                 {...register("email")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
                 placeholder="john.doe@example.com"
               />
             </div>
@@ -174,7 +174,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
 
           {/* Phone */}
           <div className="group">
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Phone Number <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -184,7 +184,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
               <input
                 type="tel"
                 {...register("phone")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
                 placeholder="+1 (555) 123-4567"
               />
             </div>
@@ -197,7 +197,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
 
           {/* Date of Birth */}
           <div className="group">
-            <label htmlFor="date_of_birth" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="date_of_birth" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Date of Birth <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -207,7 +207,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
               <input
                 type="date"
                 {...register("date_of_birth")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
               />
             </div>
             {errors.date_of_birth && (
@@ -221,16 +221,16 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
 
       {/* Identification Section */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 pb-2 border-b-2 border-primary-100">
-          <Globe className="h-5 w-5 text-primary-600" />
-          <h3 className="text-lg font-semibold text-gray-900">Identification</h3>
+        <div className="flex items-center gap-2 pb-2 border-b-2 border-primary-100 dark:border-primary-800">
+          <Globe className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Identification</h3>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
 
           {/* Nationality */}
           <div className="group">
-            <label htmlFor="nationality" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="nationality" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Nationality <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -239,7 +239,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
               </div>
               <select
                 {...register("nationality")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white dark:bg-gray-700 dark:text-white"
               >
             <option value="">Select nationality</option>
             <option value="Afghanistan">Afghanistan</option>
@@ -448,8 +448,8 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
 
           {/* Passport Number */}
           <div className="group">
-            <label htmlFor="passport_number" className="block text-sm font-medium text-gray-700 mb-2">
-              Passport Number <span className="text-gray-500 text-xs">(Optional)</span>
+            <label htmlFor="passport_number" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Passport Number <span className="text-gray-500 dark:text-gray-400 text-xs">(Optional)</span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -458,7 +458,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
               <input
                 type="text"
                 {...register("passport_number")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
                 placeholder="A12345678"
               />
             </div>
@@ -468,15 +468,15 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
 
       {/* Location Section */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 pb-2 border-b-2 border-primary-100">
-          <MapPin className="h-5 w-5 text-primary-600" />
-          <h3 className="text-lg font-semibold text-gray-900">Current Location</h3>
+        <div className="flex items-center gap-2 pb-2 border-b-2 border-primary-100 dark:border-primary-800">
+          <MapPin className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Current Location</h3>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {/* Current Country */}
           <div className="group">
-            <label htmlFor="current_country" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="current_country" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Current Country <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -485,7 +485,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
               </div>
               <select
                 {...register("current_country")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white dark:bg-gray-700 dark:text-white"
               >
             <option value="">Select current country</option>
             <option value="Afghanistan">Afghanistan</option>
@@ -694,7 +694,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
 
           {/* Current City */}
           <div className="group">
-            <label htmlFor="current_city" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="current_city" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Current City <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -704,7 +704,7 @@ export default function Step1Personal({ data, updateData, onNext }: Props) {
               <input
                 type="text"
                 {...register("current_city")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
                 placeholder="New York"
               />
             </div>

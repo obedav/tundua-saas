@@ -44,6 +44,10 @@ export interface ServiceTier {
   slug: string;
   description: string;
   base_price: number;
+  price_usd: number;
+  price_ngn?: number;
+  is_custom_pricing: boolean;
+  billing_type: 'one_time' | 'monthly' | 'yearly';
   features: string[];
   max_universities: number;
   includes_essay_review: boolean;
@@ -54,6 +58,8 @@ export interface ServiceTier {
   is_active: boolean;
   is_featured: boolean;
 }
+
+export type Currency = 'NGN' | 'USD';
 
 export interface AddonService {
   id: number;

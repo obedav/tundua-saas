@@ -141,8 +141,8 @@ export default function ReferralsPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Refer & Earn</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Refer & Earn</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">
           Share Tundua with friends and earn ₦10,000 for every successful referral!
         </p>
       </div>
@@ -157,41 +157,41 @@ export default function ReferralsPage() {
           <p className="text-3xl font-bold">{stats?.total_referrals || 0}</p>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center gap-3 mb-2">
-            <TrendingUp className="h-6 w-6 text-green-600" />
-            <p className="text-sm font-medium text-gray-600">Conversion Rate</p>
+            <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Conversion Rate</p>
           </div>
-          <p className="text-3xl font-bold text-gray-900">{stats?.conversion_rate || 0}%</p>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats?.conversion_rate || 0}%</p>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center gap-3 mb-2">
-            <DollarSign className="h-6 w-6 text-primary-600" />
-            <p className="text-sm font-medium text-gray-600">Total Earned</p>
+            <DollarSign className="h-6 w-6 text-primary-600 dark:text-primary-400" />
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Earned</p>
           </div>
-          <p className="text-3xl font-bold text-gray-900">₦{stats?.total_rewards_earned.toLocaleString('en-NG') || "0"}</p>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">₦{stats?.total_rewards_earned.toLocaleString('en-NG') || "0"}</p>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center gap-3 mb-2">
             <Gift className="h-6 w-6 text-purple-600" />
-            <p className="text-sm font-medium text-gray-600">Pending Rewards</p>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Pending Rewards</p>
           </div>
-          <p className="text-3xl font-bold text-gray-900">₦{stats?.total_rewards_pending.toLocaleString('en-NG') || "0"}</p>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">₦{stats?.total_rewards_pending.toLocaleString('en-NG') || "0"}</p>
         </div>
       </div>
 
       {/* Referral Link Section */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 border border-blue-200">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Your Referral Link</h2>
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-8 border border-blue-200 dark:border-blue-700">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Your Referral Link</h2>
         <div className="space-y-4">
           <div className="flex gap-2">
             <input
               type="text"
               value={referralLink}
               readOnly
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg bg-white"
+              className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white"
             />
             <button
               onClick={() => copyToClipboard(referralLink, "Link")}
@@ -205,7 +205,7 @@ export default function ReferralsPage() {
           <div className="flex flex-wrap gap-3">
             <button
               onClick={shareViaEmail}
-              className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors inline-flex items-center gap-2"
+              className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors inline-flex items-center gap-2"
             >
               <Mail className="h-4 w-4" />
               Email
@@ -236,8 +236,8 @@ export default function ReferralsPage() {
       </div>
 
       {/* Invite by Email */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Invite a Friend</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Invite a Friend</h2>
         <form onSubmit={inviteFriend} className="flex gap-3">
           <input
             type="email"
@@ -245,7 +245,7 @@ export default function ReferralsPage() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="friend@example.com"
             required
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           />
           <button
             type="submit"
@@ -258,38 +258,38 @@ export default function ReferralsPage() {
       </div>
 
       {/* Referrals List */}
-      <div className="bg-white rounded-lg border border-gray-200">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-gray-900">Your Referrals</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Your Referrals</h2>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-900">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Reward</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Action</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Reward</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Date</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {referrals.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={5} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
                     No referrals yet. Start sharing your link to earn rewards!
                   </td>
                 </tr>
               ) : (
                 referrals.map((referral) => (
-                  <tr key={referral.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-900">{referral.referred_email}</td>
+                  <tr key={referral.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">{referral.referred_email}</td>
                     <td className="px-6 py-4">{getStatusBadge(referral.status)}</td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
                       ₦{referral.reward_amount.toLocaleString('en-NG')}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
+                    <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                       {new Date(referral.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 text-right">

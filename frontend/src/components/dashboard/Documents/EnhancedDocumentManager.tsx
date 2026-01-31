@@ -522,13 +522,13 @@ export default function EnhancedDocumentManager({
 
   const getStatusIcon = (status: string, isVerified: boolean) => {
     if (isVerified || status === 'approved') {
-      return <CheckCircle className="h-4 w-4 text-green-600" />;
+      return <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />;
     }
     const icons: Record<string, any> = {
-      pending: <Clock className="h-4 w-4 text-yellow-600" />,
-      under_review: <AlertCircle className="h-4 w-4 text-blue-600" />,
-      rejected: <XCircle className="h-4 w-4 text-red-600" />,
-      needs_revision: <AlertCircle className="h-4 w-4 text-orange-600" />,
+      pending: <Clock className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />,
+      under_review: <AlertCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />,
+      rejected: <XCircle className="h-4 w-4 text-red-600 dark:text-red-400" />,
+      needs_revision: <AlertCircle className="h-4 w-4 text-orange-600 dark:text-orange-400" />,
     };
     return icons[status] || icons['pending'];
   };
@@ -536,7 +536,7 @@ export default function EnhancedDocumentManager({
   const getStatusBadge = (status: string, isVerified: boolean) => {
     if (isVerified || status === 'approved') {
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs font-medium">
           {getStatusIcon(status, isVerified)}
           Approved
         </span>
@@ -544,10 +544,10 @@ export default function EnhancedDocumentManager({
     }
 
     const badges: Record<string, { color: string; text: string }> = {
-      pending: { color: 'bg-yellow-100 text-yellow-700', text: 'Pending' },
-      under_review: { color: 'bg-blue-100 text-blue-700', text: 'Under Review' },
-      rejected: { color: 'bg-red-100 text-red-700', text: 'Rejected' },
-      needs_revision: { color: 'bg-orange-100 text-orange-700', text: 'Needs Revision' },
+      pending: { color: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400', text: 'Pending' },
+      under_review: { color: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400', text: 'Under Review' },
+      rejected: { color: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400', text: 'Rejected' },
+      needs_revision: { color: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400', text: 'Needs Revision' },
     };
 
     const badge = badges[status] || badges['pending'];
@@ -577,21 +577,21 @@ export default function EnhancedDocumentManager({
     const iconClass = "h-6 w-6";
     if (['jpg', 'jpeg', 'png', 'gif'].includes(extension.toLowerCase())) {
       return (
-        <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-          <ImageIcon className={`${iconClass} text-blue-600`} />
+        <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+          <ImageIcon className={`${iconClass} text-blue-600 dark:text-blue-400`} />
         </div>
       );
     }
     if (extension.toLowerCase() === 'pdf') {
       return (
-        <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-          <FileText className={`${iconClass} text-red-600`} />
+        <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+          <FileText className={`${iconClass} text-red-600 dark:text-red-400`} />
         </div>
       );
     }
     return (
-      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-        <FileCheck className={`${iconClass} text-gray-600`} />
+      <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
+        <FileCheck className={`${iconClass} text-gray-600 dark:text-gray-400`} />
       </div>
     );
   };
@@ -600,42 +600,42 @@ export default function EnhancedDocumentManager({
     return (
       <div className="space-y-6" role="region" aria-label="Document Management" aria-busy="true">
         {/* Skeleton for Upload Zone */}
-        <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 bg-gray-50 animate-pulse">
+        <div className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-8 bg-gray-50 dark:bg-gray-900 animate-pulse">
           <div className="text-center space-y-4">
-            <div className="mx-auto w-16 h-16 bg-gray-200 rounded-full" />
+            <div className="mx-auto w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full" />
             <div className="space-y-2">
-              <div className="h-6 bg-gray-200 rounded w-48 mx-auto" />
-              <div className="h-4 bg-gray-200 rounded w-64 mx-auto" />
-              <div className="h-3 bg-gray-200 rounded w-56 mx-auto" />
+              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto" />
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto" />
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-56 mx-auto" />
             </div>
           </div>
         </div>
 
         {/* Skeleton for Documents List */}
-        <div className="bg-white rounded-lg border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <div className="h-6 bg-gray-200 rounded w-48 animate-pulse" />
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-48 animate-pulse" />
           </div>
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="p-4 animate-pulse">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gray-200 rounded-lg flex-shrink-0" />
+                  <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg flex-shrink-0" />
                   <div className="flex-1 space-y-3">
                     <div className="flex items-start justify-between gap-2">
-                      <div className="h-5 bg-gray-200 rounded w-48" />
-                      <div className="h-5 bg-gray-200 rounded w-20" />
+                      <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-48" />
+                      <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-20" />
                     </div>
-                    <div className="h-4 bg-gray-200 rounded w-32" />
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32" />
                     <div className="flex items-center gap-4">
-                      <div className="h-3 bg-gray-200 rounded w-24" />
-                      <div className="h-3 bg-gray-200 rounded w-16" />
-                      <div className="h-3 bg-gray-200 rounded w-20" />
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-24" />
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-16" />
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-20" />
                     </div>
                   </div>
                   <div className="flex items-center gap-1">
-                    <div className="w-9 h-9 bg-gray-200 rounded-lg" />
-                    <div className="w-9 h-9 bg-gray-200 rounded-lg" />
+                    <div className="w-9 h-9 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+                    <div className="w-9 h-9 bg-gray-200 dark:bg-gray-700 rounded-lg" />
                   </div>
                 </div>
               </div>
@@ -680,8 +680,8 @@ export default function EnhancedDocumentManager({
         onKeyDown={handleUploadZoneKeyDown}
         className={`relative border-2 border-dashed rounded-xl p-8 transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
           dragActive
-            ? 'border-primary-500 bg-primary-50 scale-[1.02]'
-            : 'border-gray-300 hover:border-gray-400 bg-white'
+            ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 scale-[1.02]'
+            : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 bg-white dark:bg-gray-800'
         }`}
         role="button"
         tabIndex={0}
@@ -701,21 +701,21 @@ export default function EnhancedDocumentManager({
 
         <div className="text-center">
           <div className={`mx-auto mb-4 w-16 h-16 rounded-full flex items-center justify-center transition-colors ${
-            dragActive ? 'bg-primary-100' : 'bg-gray-100'
+            dragActive ? 'bg-primary-100 dark:bg-primary-900/30' : 'bg-gray-100 dark:bg-gray-800'
           }`}>
-            <Upload className={`h-8 w-8 ${dragActive ? 'text-primary-600' : 'text-gray-400'}`} />
+            <Upload className={`h-8 w-8 ${dragActive ? 'text-primary-600' : 'text-gray-400 dark:text-gray-500'}`} />
           </div>
 
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
             {dragActive ? 'Drop files here' : 'Upload Documents'}
           </h3>
-          <p className="text-sm text-gray-600 mb-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
             Drag and drop files or{' '}
-            <label htmlFor="file-upload" className="text-primary-600 hover:text-primary-700 font-medium cursor-pointer">
+            <label htmlFor="file-upload" className="text-primary-600 dark:text-primary-400 hover:text-primary-700 font-medium cursor-pointer">
               browse
             </label>
           </p>
-          <p className="text-xs text-gray-500" id="upload-help-text">
+          <p className="text-xs text-gray-500 dark:text-gray-400" id="upload-help-text">
             Supported: PDF, JPG, PNG, DOCX, WebP • Max 10MB per file
           </p>
         </div>

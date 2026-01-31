@@ -55,10 +55,10 @@ export default function BillingHistory() {
 
   const getStatusBadge = (status: Payment["status"]) => {
     const badges = {
-      completed: { color: "bg-green-100 text-green-700", icon: CheckCircle, text: "Completed" },
-      pending: { color: "bg-yellow-100 text-yellow-700", icon: Clock, text: "Pending" },
-      failed: { color: "bg-red-100 text-red-700", icon: XCircle, text: "Failed" },
-      refunded: { color: "bg-gray-100 text-gray-700", icon: DollarSign, text: "Refunded" },
+      completed: { color: "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400", icon: CheckCircle, text: "Completed" },
+      pending: { color: "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400", icon: Clock, text: "Pending" },
+      failed: { color: "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400", icon: XCircle, text: "Failed" },
+      refunded: { color: "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300", icon: DollarSign, text: "Refunded" },
     };
     return badges[status];
   };
@@ -82,12 +82,12 @@ export default function BillingHistory() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-6 bg-gray-200 rounded w-1/4"></div>
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-20 bg-gray-200 rounded"></div>
+              <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
         </div>
@@ -107,33 +107,33 @@ export default function BillingHistory() {
           <p className="text-3xl font-bold">₦{totalSpent.toLocaleString('en-NG')}</p>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center gap-3 mb-2">
-            <CheckCircle className="h-6 w-6 text-green-600" />
-            <p className="text-sm font-medium text-gray-600">Successful</p>
+            <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Successful</p>
           </div>
-          <p className="text-3xl font-bold text-gray-900">
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">
             {payments.filter(p => p.status === "completed").length}
           </p>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center gap-3 mb-2">
-            <Clock className="h-6 w-6 text-yellow-600" />
-            <p className="text-sm font-medium text-gray-600">Pending</p>
+            <Clock className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Pending</p>
           </div>
-          <p className="text-3xl font-bold text-gray-900">
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">
             {payments.filter(p => p.status === "pending").length}
           </p>
         </div>
       </div>
 
       {/* Billing History */}
-      <div className="bg-white rounded-lg border border-gray-200">
-        <div className="p-6 border-b border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Payment History</h2>
-            <button className="text-sm text-primary-600 hover:text-primary-700 font-medium inline-flex items-center gap-2">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Payment History</h2>
+            <button className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 font-medium inline-flex items-center gap-2">
               <Download className="h-4 w-4" />
               Export All
             </button>
@@ -148,7 +148,7 @@ export default function BillingHistory() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   filter === status
                     ? "bg-primary-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                 }`}
               >
                 {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -158,11 +158,11 @@ export default function BillingHistory() {
         </div>
 
         {/* Payment List */}
-        <div className="divide-y divide-gray-200">
+        <div className="divide-y divide-gray-200 dark:divide-gray-700">
           {filteredPayments.length === 0 ? (
             <div className="p-12 text-center">
-              <CreditCard className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-600">No payments found</p>
+              <CreditCard className="h-12 w-12 text-gray-300 dark:text-gray-500 mx-auto mb-4" />
+              <p className="text-gray-600 dark:text-gray-400">No payments found</p>
             </div>
           ) : (
             filteredPayments.map((payment) => {
@@ -171,27 +171,27 @@ export default function BillingHistory() {
               const StatusIcon = statusBadge.icon;
 
               return (
-                <div key={payment.id} className="p-6 hover:bg-gray-50 transition-colors">
+                <div key={payment.id} className="p-6 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                   <div className="flex items-start gap-4">
                     {/* Icon */}
-                    <div className="bg-primary-50 p-3 rounded-full flex-shrink-0">
-                      <CreditCard className="h-6 w-6 text-primary-600" />
+                    <div className="bg-primary-50 dark:bg-primary-900/20 p-3 rounded-full flex-shrink-0">
+                      <CreditCard className="h-6 w-6 text-primary-600 dark:text-primary-400" />
                     </div>
 
                     {/* Details */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-4 mb-2">
                         <div>
-                          <h3 className="font-semibold text-gray-900">{payment.description}</h3>
-                          <p className="text-sm text-gray-600 mt-1">
+                          <h3 className="font-semibold text-gray-900 dark:text-white">{payment.description}</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                             {payment.reference_number}
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="text-xl font-bold text-gray-900">
+                          <p className="text-xl font-bold text-gray-900 dark:text-white">
                             ₦{payment.amount.toLocaleString('en-NG')}
                           </p>
-                          <p className="text-sm text-gray-600">NGN</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">NGN</p>
                         </div>
                       </div>
 
@@ -203,20 +203,20 @@ export default function BillingHistory() {
                         </span>
 
                         {/* Payment Method */}
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
                           <span>{methodBadge.icon}</span>
                           {methodBadge.text}
                         </span>
 
                         {/* Date */}
-                        <span className="text-xs text-gray-500 inline-flex items-center gap-1">
+                        <span className="text-xs text-gray-500 dark:text-gray-400 inline-flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
                           {new Date(payment.created_at).toLocaleDateString()}
                         </span>
 
                         {/* Invoice Download */}
                         {payment.invoice_url && payment.status === "completed" && (
-                          <button className="text-xs text-primary-600 hover:text-primary-700 font-medium inline-flex items-center gap-1 ml-auto">
+                          <button className="text-xs text-primary-600 dark:text-primary-400 hover:text-primary-700 font-medium inline-flex items-center gap-1 ml-auto">
                             <Download className="h-3 w-3" />
                             Download Invoice
                           </button>

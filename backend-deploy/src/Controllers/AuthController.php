@@ -109,7 +109,15 @@ class AuthController
 
         // Send verification email
         $verificationUrl = $this->authService->generateVerificationUrl($verificationToken);
-        $this->emailService->sendVerificationEmail($email, $firstName, $verificationUrl);
+        $emailSent = $this->emailService->sendVerificationEmail($email, $firstName, $verificationUrl);
+
+        // Log email sending status
+        if (!$emailSent) {
+            error_log("⚠️ FAILED to send verification email to: {$email}");
+            error_log("Check your email credentials in .env file (MAIL_HOST, MAIL_USERNAME, MAIL_PASSWORD)");
+        } else {
+            error_log("✅ Verification email sent successfully to: {$email}");
+        }
 
         // Log user registration (Audit)
         AuditLogger::logUserRegister($user->id, $email);
@@ -187,6 +195,16 @@ class AuthController
                 'error' => 'Invalid credentials'
             ]));
             return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
+        }
+
+        // Check if email is verified
+        if (!$user['email_verified']) {
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error' => 'Please verify your email address before logging in. Check your inbox for the verification link.',
+                'email_not_verified' => true
+            ]));
+            return $response->withStatus(403)->withHeader('Content-Type', 'application/json');
         }
 
         // Check if account is active
@@ -311,6 +329,10 @@ class AuthController
     {
         $token = $args['token'] ?? null;
 
+        // Debug logging
+        error_log("Verification attempt - Token: " . ($token ? substr($token, 0, 10) . '...' : 'null'));
+        error_log("Request URI: " . $request->getUri()->getPath());
+
         if (!$token) {
             $response->getBody()->write(json_encode([
                 'success' => false,
@@ -321,10 +343,21 @@ class AuthController
 
         $user = User::findByEmailVerificationToken($token);
 
+        // Debug logging
+        if (!$user) {
+            error_log("Token not found in database or expired: " . substr($token, 0, 10) . '...');
+        } else {
+            error_log("User found for verification: " . $user->email);
+        }
+
         if (!$user) {
             $response->getBody()->write(json_encode([
                 'success' => false,
-                'error' => 'Invalid or expired verification token'
+                'error' => 'Invalid or expired verification token',
+                'debug' => [
+                    'token_length' => strlen($token),
+                    'token_preview' => substr($token, 0, 10) . '...'
+                ]
             ]));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
@@ -345,6 +378,71 @@ class AuthController
         $response->getBody()->write(json_encode([
             'success' => true,
             'message' => 'Email verified successfully'
+        ]));
+
+        return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+    }
+
+    /**
+     * Resend verification email
+     * POST /api/auth/resend-verification
+     */
+    public function resendVerification(Request $request, Response $response): Response
+    {
+        $data = $request->getParsedBody();
+        $email = strtolower(trim($data['email'] ?? ''));
+
+        if (empty($email)) {
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error' => 'Email is required'
+            ]));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+
+        // Find user by email
+        $user = User::findByEmail($email);
+
+        if (!$user) {
+            // Return success even if user not found (security best practice)
+            $response->getBody()->write(json_encode([
+                'success' => true,
+                'message' => 'If an account exists with this email, a verification link has been sent.'
+            ]));
+            return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+        }
+
+        // Check if already verified
+        if ($user['email_verified']) {
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error' => 'Email is already verified'
+            ]));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+
+        // Generate new verification token
+        $verificationToken = $this->authService->generateEmailVerificationToken();
+        $verificationExpires = date('Y-m-d H:i:s', strtotime('+24 hours'));
+
+        // Update user with new token
+        User::updateById($user['id'], [
+            'email_verification_token' => $verificationToken,
+            'email_verification_expires' => $verificationExpires
+        ]);
+
+        // Send verification email
+        $verificationUrl = $this->authService->generateVerificationUrl($verificationToken);
+        $emailSent = $this->emailService->sendVerificationEmail($email, $user['first_name'], $verificationUrl);
+
+        // Log email sending status
+        if (!$emailSent) {
+            error_log("Failed to resend verification email to: {$email}");
+        }
+
+        $response->getBody()->write(json_encode([
+            'success' => true,
+            'message' => 'Verification email sent successfully'
         ]));
 
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
@@ -389,7 +487,7 @@ class AuthController
         ]);
 
         // Send reset email
-        $resetUrl = $this->authService->generatePasswordResetUrl($resetToken);
+        $resetUrl = $this->authService->generatePasswordResetUrl($resetToken, $email);
         $this->emailService->sendPasswordResetEmail($email, $user['first_name'], $resetUrl);
 
         $response->getBody()->write(json_encode([

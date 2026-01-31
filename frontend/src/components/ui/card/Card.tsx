@@ -3,13 +3,13 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const cardVariants = cva(
-  "rounded-2xl bg-white transition-all duration-200",
+  "rounded-2xl bg-white dark:bg-gray-800 transition-all duration-200",
   {
     variants: {
       variant: {
-        default: "border border-gray-100 shadow-sm",
-        elevated: "shadow-elevation-3 hover:shadow-elevation-4",
-        outlined: "border-2 border-gray-200",
+        default: "border border-gray-100 dark:border-gray-700 shadow-sm",
+        elevated: "shadow-elevation-3 hover:shadow-elevation-4 dark:shadow-gray-900/30",
+        outlined: "border-2 border-gray-200 dark:border-gray-700",
         ghost: "border-0 shadow-none",
       },
       padding: {
@@ -61,7 +61,7 @@ const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadingEleme
   ({ className, children, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn("text-2xl font-bold leading-tight text-gray-900", className)}
+      className={cn("text-2xl font-bold leading-tight text-gray-900 dark:text-white", className)}
       {...props}
     >
       {children}
@@ -75,7 +75,7 @@ const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLPara
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn("text-sm text-gray-600", className)}
+      className={cn("text-sm text-gray-600 dark:text-gray-400", className)}
       {...props}
     />
   )
