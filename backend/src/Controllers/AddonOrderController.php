@@ -160,7 +160,7 @@ class AddonOrderController
             $queryParams = $request->getQueryParams();
             $status = $queryParams['status'] ?? null;
             $page = isset($queryParams['page']) ? (int)$queryParams['page'] : 1;
-            $perPage = isset($queryParams['per_page']) ? (int)$queryParams['per_page'] : 20;
+            $perPage = min(isset($queryParams['per_page']) ? (int)$queryParams['per_page'] : 20, 100);
 
             $result = AddonOrder::getAllOrders($status, $page, $perPage);
 

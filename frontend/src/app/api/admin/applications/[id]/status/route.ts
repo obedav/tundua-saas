@@ -12,10 +12,7 @@ export async function PUT(
     const { id } = await context.params;
     const token = (await cookies()).get('auth_token')?.value;
 
-    console.log(`[API Route] PUT /api/admin/applications/${id}/status`);
-
     if (!token) {
-      console.log('[API Route] No auth token found');
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -23,10 +20,8 @@ export async function PUT(
     }
 
     const body = await request.json();
-    console.log('[API Route] Request body:', body);
 
     const url = `${API_URL}/api/admin/applications/${id}/status`;
-    console.log('[API Route] Proxying to:', url);
 
     const response = await fetch(url, {
       method: 'PUT',
@@ -37,14 +32,11 @@ export async function PUT(
       body: JSON.stringify(body),
     });
 
-    console.log('[API Route] Backend response status:', response.status);
-    console.log('[API Route] Backend response content-type:', response.headers.get('content-type'));
-
     if (!response.ok) {
       const contentType = response.headers.get('content-type');
       const errorText = await response.text();
 
-      console.error('[API Route] Backend error response:', errorText.substring(0, 500));
+      console.error('[Application Status API] Backend error, status:', response.status);
 
       // Try to parse as JSON if it's JSON
       if (contentType?.includes('application/json')) {
@@ -66,10 +58,9 @@ export async function PUT(
     }
 
     const data = await response.json();
-    console.log('[API Route] Success:', data);
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error('[API Route] Exception:', error);
+    console.error('[Application Status API] Exception:', error);
     return NextResponse.json(
       { success: false, error: error.message },
       { status: 500 }

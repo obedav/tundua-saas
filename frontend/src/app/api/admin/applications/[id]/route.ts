@@ -12,10 +12,7 @@ export async function GET(
     const { id } = await context.params;
     const token = (await cookies()).get('auth_token')?.value;
 
-    console.log(`[Admin Application API] GET /api/admin/applications/${id}`);
-
     if (!token) {
-      console.log('[Admin Application API] No auth token found');
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -23,7 +20,6 @@ export async function GET(
     }
 
     const url = `${API_URL}/api/admin/applications/${id}`;
-    console.log('[Admin Application API] Fetching from:', url);
 
     const response = await fetch(url, {
       headers: {
@@ -32,11 +28,9 @@ export async function GET(
       },
     });
 
-    console.log('[Admin Application API] Backend response status:', response.status);
-
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('[Admin Application API] Backend error response:', errorText.substring(0, 500));
+      console.error('[Admin Application API] Backend error, status:', response.status);
 
       try {
         const errorJson = JSON.parse(errorText);
@@ -50,7 +44,6 @@ export async function GET(
     }
 
     const data = await response.json();
-    console.log('[Admin Application API] Success, application data received');
     return NextResponse.json(data);
   } catch (error: any) {
     console.error('[Admin Application API] Exception:', error);

@@ -5,14 +5,24 @@ RewriteEngine On
 RewriteCond %{HTTP:Authorization} ^(.+)$
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-# Handle CORS preflight requests
+# Handle CORS - strict origin matching (no subdomain wildcards)
 <IfModule mod_headers.c>
-    SetEnvIf Origin "^https?://(www\.)?(tundua\.com)$" ORIGIN_MATCH=$0
+    SetEnvIf Origin "^https://(www\.)?tundua\.com$" ORIGIN_MATCH=$0
     Header always set Access-Control-Allow-Origin "%{ORIGIN_MATCH}e" env=ORIGIN_MATCH
-    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-    Header always set Access-Control-Allow-Headers "X-Requested-With, Content-Type, Accept, Origin, Authorization, X-API-Key"
-    Header always set Access-Control-Allow-Credentials "true"
-    Header always set Access-Control-Max-Age "86400"
+    Header always unset Access-Control-Allow-Origin env=!ORIGIN_MATCH
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, PATCH, OPTIONS" env=ORIGIN_MATCH
+    Header always set Access-Control-Allow-Headers "X-Requested-With, Content-Type, Accept, Origin, Authorization" env=ORIGIN_MATCH
+    Header always set Access-Control-Allow-Credentials "true" env=ORIGIN_MATCH
+    Header always set Access-Control-Max-Age "86400" env=ORIGIN_MATCH
+
+    # Security Headers
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    Header always set Content-Security-Policy "default-src 'none'; frame-ancestors 'none'"
 </IfModule>
 
 # Redirect all requests to index.php (Slim Framework routing)
@@ -26,8 +36,17 @@ RewriteRule ^ index.php [QSA,L]
     Deny from all
 </FilesMatch>
 
+# Block access to sensitive file types
+<FilesMatch "\.(env|sql|log|sh|bak|config|dist|fla|inc|ini|phps|tar|gz)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
 # Prevent directory browsing
 Options -Indexes
+
+# Disable server signature
+ServerSignature Off
 
 # Enable gzip compression for better performance
 <IfModule mod_deflate.c>

@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment files - NEVER commit
+.env
+.env.*
+*.env
+*.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Archives with potential secrets
+*.tar.gz
+*.zip
+
+# Debug & utility scripts that shouldn't be in repo
+debug-*.js
+make-admin.sql
+
+# Husky internals
+.husky/_/.gitignore

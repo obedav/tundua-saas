@@ -105,7 +105,7 @@ class UniversityController
 
         // Pagination
         $page = (int) ($params['page'] ?? 1);
-        $perPage = (int) ($params['per_page'] ?? 20);
+        $perPage = min((int) ($params['per_page'] ?? 20), 100);
         $offset = ($page - 1) * $perPage;
 
         $total = $query->count(DB::raw('DISTINCT universities.id'));

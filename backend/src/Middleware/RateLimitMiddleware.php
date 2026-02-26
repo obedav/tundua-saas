@@ -30,13 +30,18 @@ class RateLimitMiddleware
         $this->defaultMaxRequests = (int)($_ENV['RATE_LIMIT_MAX_REQUESTS'] ?? 100);
         $this->defaultWindowMinutes = (int)($_ENV['RATE_LIMIT_WINDOW_MINUTES'] ?? 15);
 
-        // Custom limits per endpoint
+        // Custom limits per endpoint (stricter for auth to prevent brute-force)
         $this->endpointLimits = [
-            '/api/auth/login' => ['max' => 10, 'window' => 15],
-            '/api/auth/register' => ['max' => 10, 'window' => 15],
-            '/api/auth/forgot-password' => ['max' => 5, 'window' => 15],
-            '/api/auth/reset-password' => ['max' => 10, 'window' => 15],
-            '/api/auth/verify-email' => ['max' => 20, 'window' => 15],
+            '/api/auth/login' => ['max' => 5, 'window' => 15],
+            '/api/auth/register' => ['max' => 3, 'window' => 60],
+            '/api/auth/forgot-password' => ['max' => 3, 'window' => 60],
+            '/api/auth/reset-password' => ['max' => 3, 'window' => 60],
+            '/api/auth/verify-email' => ['max' => 10, 'window' => 15],
+            '/api/auth/resend-verification' => ['max' => 3, 'window' => 60],
+            '/api/documents/upload' => ['max' => 20, 'window' => 60],
+            '/api/refunds' => ['max' => 5, 'window' => 60],
+            '/api/payments/paystack/initialize' => ['max' => 10, 'window' => 15],
+            '/api/payments/stripe/create-checkout' => ['max' => 10, 'window' => 15],
         ];
 
         // Ensure storage directory exists

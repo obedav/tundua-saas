@@ -42,17 +42,12 @@ export async function POST(request: NextRequest) {
 
     const data = await response.json();
 
-    console.log('📦 Backend response:', JSON.stringify(data, null, 2));
-
     // The backend might return data in different structures, check all possibilities
     const token = data.token || data.access_token || data.data?.token || data.data?.access_token;
     const user = data.user || data.data?.user;
 
-    console.log('✅ Login successful, token received:', token ? 'YES' : 'NO');
-    console.log('👤 User:', user?.email);
-
     if (!token) {
-      console.error('❌ No token found in backend response!');
+      console.error('No token found in backend login response');
       return NextResponse.json(
         { success: false, error: 'Login failed: No token received from server' },
         { status: 500 }
@@ -68,8 +63,6 @@ export async function POST(request: NextRequest) {
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: '/',
     });
-
-    console.log('🍪 Cookie set with token:', token.substring(0, 20) + '...');
 
     // Create response
     const nextResponse = NextResponse.json({

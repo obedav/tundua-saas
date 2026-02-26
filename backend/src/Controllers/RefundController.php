@@ -252,7 +252,7 @@ class RefundController
         $queryParams = $request->getQueryParams();
         $status = $queryParams['status'] ?? null;
         $page = (int)($queryParams['page'] ?? 1);
-        $perPage = (int)($queryParams['per_page'] ?? 20);
+        $perPage = min((int)($queryParams['per_page'] ?? 20), 100);
         $offset = ($page - 1) * $perPage;
 
         try {

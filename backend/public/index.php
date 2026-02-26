@@ -116,8 +116,12 @@ use Tundua\Controllers\PartnerController;
 use Tundua\Middleware\AuthMiddleware;
 use Tundua\Middleware\AdminMiddleware;
 use Tundua\Middleware\RateLimitMiddleware;
+use Tundua\Middleware\SecurityHeadersMiddleware;
+use Tundua\Middleware\CsrfMiddleware;
 
-// Rate Limiting Middleware (Security Layer)
+// Security Middleware Stack (order matters - outermost first)
+$app->add(new SecurityHeadersMiddleware());
+$app->add(new CsrfMiddleware());
 $app->add(new RateLimitMiddleware());
 
 $authController = new AuthController();
@@ -492,6 +496,7 @@ $app->group('/api/referrals', function ($group) use ($referralController) {
 
 $app->group('/api/knowledge-base', function ($group) use ($knowledgeBaseController) {
     $group->get('', [$knowledgeBaseController, 'getArticles']);
+    $group->get('/slugs', [$knowledgeBaseController, 'getPublishedSlugs']);
     $group->get('/popular', [$knowledgeBaseController, 'getPopular']);
     $group->get('/featured', [$knowledgeBaseController, 'getFeatured']);
     $group->get('/categories', [$knowledgeBaseController, 'getCategories']);
@@ -512,33 +517,9 @@ $app->group('/api/admin/applications', function ($group) use ($applicationContro
     $group->post('/{id}/notes', [$applicationController, 'addAdminNotes']);
 })->add(new AdminMiddleware())->add(new AuthMiddleware());
 
-// Test route WITHOUT middleware (for debugging)
-$app->get('/api/test/download/{id}', function ($request, $response, $args) {
-    $documentId = $args['id'] ?? 'none';
-    $response->getBody()->write(json_encode([
-        'success' => true,
-        'message' => 'Test download endpoint reached!',
-        'document_id' => $documentId,
-        'timestamp' => date('Y-m-d H:i:s'),
-        'route_pattern' => '/api/test/download/{id}'
-    ]));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
 // Admin Document Routes
 $app->group('/api/admin/documents', function ($group) use ($documentController) {
     $group->get('/pending', [$documentController, 'getPendingDocuments']);
-
-    // Test endpoint to verify routing works
-    $group->get('/test', function ($request, $response) {
-        $response->getBody()->write(json_encode([
-            'success' => true,
-            'message' => 'Admin documents test endpoint working!',
-            'timestamp' => date('Y-m-d H:i:s')
-        ]));
-        return $response->withHeader('Content-Type', 'application/json');
-    });
-
     $group->get('/{id}/download', [$documentController, 'adminDownload']);
     $group->put('/{id}/review', [$documentController, 'reviewDocument']);
 })->add(new AdminMiddleware())->add(new AuthMiddleware());
@@ -601,6 +582,14 @@ $app->group('/api/admin/addons', function ($group) use ($addonOrderController) {
 // Admin Activity Routes
 $app->group('/api/admin/activity', function ($group) use ($activityController) {
     $group->get('', [$activityController, 'getRecentActivity']);
+})->add(new AdminMiddleware())->add(new AuthMiddleware());
+
+// Admin Knowledge Base Routes
+$app->group('/api/admin/knowledge-base', function ($group) use ($knowledgeBaseController) {
+    $group->get('', [$knowledgeBaseController, 'getAllArticles']);
+    $group->post('', [$knowledgeBaseController, 'createArticle']);
+    $group->put('/{id}', [$knowledgeBaseController, 'updateArticle']);
+    $group->delete('/{id}', [$knowledgeBaseController, 'deleteArticle']);
 })->add(new AdminMiddleware())->add(new AuthMiddleware());
 
 // ============================================================================

@@ -12,10 +12,7 @@ export async function GET(
     const { id } = await context.params;
     const token = (await cookies()).get('auth_token')?.value;
 
-    console.log(`[User Details API] GET /api/admin/users/${id}`);
-
     if (!token) {
-      console.log('[User Details API] No auth token found');
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -23,7 +20,6 @@ export async function GET(
     }
 
     const url = `${API_URL}/api/admin/users/${id}`;
-    console.log('[User Details API] Fetching from:', url);
 
     const response = await fetch(url, {
       headers: {
@@ -32,14 +28,11 @@ export async function GET(
       },
     });
 
-    console.log('[User Details API] Backend response status:', response.status);
-    console.log('[User Details API] Backend response content-type:', response.headers.get('content-type'));
-
     if (!response.ok) {
       const contentType = response.headers.get('content-type');
       const errorText = await response.text();
 
-      console.error('[User Details API] Backend error response:', errorText.substring(0, 500));
+      console.error('[User Details API] Backend error, status:', response.status);
 
       // Try to parse as JSON
       if (contentType?.includes('application/json')) {
@@ -58,7 +51,6 @@ export async function GET(
     }
 
     const data = await response.json();
-    console.log('[User Details API] Success, user data received');
     return NextResponse.json(data);
   } catch (error: any) {
     console.error('[User Details API] Exception:', error);

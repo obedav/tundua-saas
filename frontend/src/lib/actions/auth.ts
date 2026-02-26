@@ -64,17 +64,12 @@ export async function loginAction(
 
     const data = await response.json()
 
-    console.log('📦 Backend login response:', JSON.stringify(data, null, 2));
-
     // Handle different response structures
     const token = data.token || data.access_token || data.data?.token || data.data?.access_token;
     const user = data.user || data.data?.user;
 
-    console.log('✅ Token received:', token ? 'YES' : 'NO');
-    console.log('👤 User:', user?.email);
-
     if (!token) {
-      console.error('❌ No token in backend response');
+      console.error('No token in backend login response');
       return {
         success: false,
         error: 'Login failed: No token received from server',
@@ -84,16 +79,13 @@ export async function loginAction(
     // Set HttpOnly cookie (secure!)
     const cookieStore = await cookies()
     cookieStore.set('auth_token', token, {
-      httpOnly: true, // ✅ Not accessible via JavaScript (XSS protection)
-      secure: process.env.NODE_ENV === 'production', // ✅ HTTPS only in production
+      httpOnly: true, // Not accessible via JavaScript (XSS protection)
+      secure: process.env.NODE_ENV === 'production', // HTTPS only in production
       sameSite: 'lax', // Changed from strict to lax for better compatibility
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: '/',
       priority: 'high', // Ensure cookie is sent with requests
     })
-
-    console.log('🍪 Cookie set successfully');
-    console.log('🍪 Cookie value preview:', token.substring(0, 30) + '...');
 
     // Revalidate cached pages
     revalidatePath('/', 'layout')
@@ -208,10 +200,7 @@ export async function getCurrentUser() {
     const cookieStore = await cookies()
     const token = cookieStore.get('auth_token')?.value
 
-    console.log('🔍 getCurrentUser: Token exists:', token ? 'YES' : 'NO')
-
     if (!token) {
-      console.log('❌ getCurrentUser: No token, returning null')
       return null
     }
 
@@ -225,20 +214,14 @@ export async function getCurrentUser() {
       },
     })
 
-    console.log('📡 getCurrentUser: Backend response status:', response.status)
-
     if (!response.ok) {
-      console.log('❌ getCurrentUser: Backend returned error')
       return null
     }
 
     const data = await response.json()
-    console.log('📦 getCurrentUser: Backend response:', JSON.stringify(data, null, 2))
 
     // Handle different response structures
     const user = data.user || data.data || data.data?.user
-
-    console.log('✅ getCurrentUser: User found:', user?.email || 'NO')
 
     return user
   } catch (error) {

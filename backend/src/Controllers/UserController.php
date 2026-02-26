@@ -38,7 +38,7 @@ class UserController
         try {
             $queryParams = $request->getQueryParams();
             $page = (int) ($queryParams['page'] ?? 1);
-            $perPage = (int) ($queryParams['per_page'] ?? 20);
+            $perPage = min((int) ($queryParams['per_page'] ?? 20), 100);
             $role = $queryParams['role'] ?? null;
             $status = $queryParams['status'] ?? null;
             $search = $queryParams['search'] ?? null;

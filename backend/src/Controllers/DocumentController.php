@@ -146,9 +146,10 @@ class DocumentController
             ]));
             return $response->withHeader('Content-Type', 'application/json');
         } catch (\Exception $e) {
+            error_log("Document upload error: " . $e->getMessage());
             $response->getBody()->write(json_encode([
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => 'Failed to upload document'
             ]));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
@@ -202,9 +203,10 @@ class DocumentController
             ]));
             return $response->withHeader('Content-Type', 'application/json');
         } catch (\Exception $e) {
+            error_log("Get application documents error: " . $e->getMessage());
             $response->getBody()->write(json_encode([
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => 'Failed to retrieve documents'
             ]));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
@@ -251,9 +253,10 @@ class DocumentController
             ]));
             return $response->withHeader('Content-Type', 'application/json');
         } catch (\Exception $e) {
+            error_log("Get document error: " . $e->getMessage());
             $response->getBody()->write(json_encode([
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => 'Failed to retrieve document'
             ]));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
@@ -289,7 +292,18 @@ class DocumentController
 
             $filePath = $this->storagePath . '/' . $document->file_path;
 
-            if (!file_exists($filePath)) {
+            // Prevent path traversal attacks
+            $realPath = realpath($filePath);
+            $realStoragePath = realpath($this->storagePath);
+            if ($realPath === false || $realStoragePath === false || strpos($realPath, $realStoragePath) !== 0) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Invalid file path'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            if (!file_exists($realPath)) {
                 $response->getBody()->write(json_encode([
                     'success' => false,
                     'error' => 'File not found on server'
@@ -297,17 +311,20 @@ class DocumentController
                 return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
             }
 
-            $fileContent = file_get_contents($filePath);
+            $fileContent = file_get_contents($realPath);
             $response->getBody()->write($fileContent);
+
+            // Sanitize filename for Content-Disposition header
+            $safeFilename = preg_replace('/[^a-zA-Z0-9._-]/', '_', $document->original_filename);
 
             return $response
                 ->withHeader('Content-Type', $document->mime_type)
-                ->withHeader('Content-Disposition', 'attachment; filename="' . $document->original_filename . '"')
+                ->withHeader('Content-Disposition', 'attachment; filename="' . $safeFilename . '"')
                 ->withHeader('Content-Length', (string)$document->file_size);
         } catch (\Exception $e) {
             $response->getBody()->write(json_encode([
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => 'Failed to download document'
             ]));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
@@ -344,10 +361,12 @@ class DocumentController
                 return $response->withStatus(403)->withHeader('Content-Type', 'application/json');
             }
 
-            // Delete file from storage
+            // Delete file from storage (with path traversal protection)
             $filePath = $this->storagePath . '/' . $document->file_path;
-            if (file_exists($filePath)) {
-                unlink($filePath);
+            $realPath = realpath($filePath);
+            $realStoragePath = realpath($this->storagePath);
+            if ($realPath !== false && $realStoragePath !== false && strpos($realPath, $realStoragePath) === 0 && file_exists($realPath)) {
+                unlink($realPath);
             }
 
             // Delete database record
@@ -359,9 +378,10 @@ class DocumentController
             ]));
             return $response->withHeader('Content-Type', 'application/json');
         } catch (\Exception $e) {
+            error_log("Document delete error: " . $e->getMessage());
             $response->getBody()->write(json_encode([
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => 'Failed to delete document'
             ]));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
@@ -472,7 +492,18 @@ class DocumentController
 
             $filePath = $this->storagePath . '/' . $document->file_path;
 
-            if (!file_exists($filePath)) {
+            // Prevent path traversal attacks
+            $realPath = realpath($filePath);
+            $realStoragePath = realpath($this->storagePath);
+            if ($realPath === false || $realStoragePath === false || strpos($realPath, $realStoragePath) !== 0) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Invalid file path'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            if (!file_exists($realPath)) {
                 $response->getBody()->write(json_encode([
                     'success' => false,
                     'error' => 'File not found on server'
@@ -480,12 +511,14 @@ class DocumentController
                 return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
             }
 
-            $fileContent = file_get_contents($filePath);
+            $fileContent = file_get_contents($realPath);
             $response->getBody()->write($fileContent);
+
+            $safeFilename = preg_replace('/[^a-zA-Z0-9._-]/', '_', $document->original_filename);
 
             return $response
                 ->withHeader('Content-Type', $document->mime_type)
-                ->withHeader('Content-Disposition', 'inline; filename="' . $document->original_filename . '"')
+                ->withHeader('Content-Disposition', 'inline; filename="' . $safeFilename . '"')
                 ->withHeader('Content-Length', (string)$document->file_size);
         } catch (\Exception $e) {
             error_log("Admin download error: " . $e->getMessage());
@@ -559,9 +592,10 @@ class DocumentController
             ]));
             return $response->withHeader('Content-Type', 'application/json');
         } catch (\Exception $e) {
+            error_log("Document review error: " . $e->getMessage());
             $response->getBody()->write(json_encode([
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => 'Failed to review document'
             ]));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
