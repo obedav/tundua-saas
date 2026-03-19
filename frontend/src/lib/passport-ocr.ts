@@ -106,9 +106,9 @@ export async function extractPassportText(imageFile: File): Promise<string> {
           console.log(`OCR Progress: ${Math.round(m.progress * 100)}%`);
         }
       },
-      // Use CDN for reliability (works with internet connection)
-      // Note: Local files don't work well with Next.js Turbopack in dev mode
-      // For production, these can be configured to use local files
+      workerPath: "/tesseract/worker.min.js",
+      corePath: "/tesseract/tesseract-core-simd.wasm.js",
+      langPath: "/tesseract",
     });
 
     try {
