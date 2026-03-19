@@ -16,16 +16,11 @@ Allow: /about
 Allow: /contact
 Allow: /terms
 Allow: /privacy
+Allow: /blog
+Allow: /blog/
 
 # Crawl delay (be nice to servers)
 Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://yourdomain.com/sitemap.xml
-
-# Block specific bots (if needed)
-# User-agent: BadBot
-# Disallow: /
-
-# Host (specify preferred domain)
-# Host: https://yourdomain.com
+Sitemap: https://tundua.com/sitemap.xml

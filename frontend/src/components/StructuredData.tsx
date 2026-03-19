@@ -10,6 +10,7 @@ import {
   getOrganizationSchema,
   getWebsiteSchema,
   getServiceSchema,
+  getBlogPostSchema,
   combineSchemas,
 } from '@/lib/structured-data';
 
@@ -116,6 +117,40 @@ export function FAQStructuredData({
   return (
     <Script
       id="structured-data-faq"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      strategy="afterInteractive"
+    />
+  );
+}
+
+/**
+ * Blog Post Structured Data Component
+ *
+ * Add this to individual blog post pages for BlogPosting rich results
+ */
+export function BlogPostStructuredData({
+  article,
+}: {
+  article: {
+    title: string;
+    slug: string;
+    excerpt?: string;
+    content?: string;
+    category?: string;
+    published_at?: string;
+    updated_at?: string;
+    author_name?: string;
+  };
+}) {
+  const schema = {
+    '@context': 'https://schema.org',
+    ...getBlogPostSchema(article),
+  };
+
+  return (
+    <Script
+      id="structured-data-blog-post"
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       strategy="afterInteractive"

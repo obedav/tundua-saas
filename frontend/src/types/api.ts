@@ -232,11 +232,23 @@ export interface KnowledgeBaseArticle {
   title: string;
   slug: string;
   content: string;
+  excerpt: string;
   category: string;
-  views: number;
+  tags: string[];
+  author_id: number | null;
+  view_count: number;
+  helpful_count: number;
+  not_helpful_count: number;
   is_featured: boolean;
   is_published: boolean;
+  metadata: Record<string, unknown> | null;
+  published_at: string | null;
   created_at: string;
+  updated_at: string;
+}
+
+export interface ArticleSlug {
+  slug: string;
   updated_at: string;
 }
 

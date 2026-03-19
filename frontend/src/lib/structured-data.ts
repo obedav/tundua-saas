@@ -8,7 +8,7 @@
  * @see https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data
  */
 
-import type { Organization, WebSite, BreadcrumbList, Service } from 'schema-dts';
+import type { Organization, WebSite, BreadcrumbList, Service, BlogPosting } from 'schema-dts';
 
 const APP_URL = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
 
@@ -25,17 +25,15 @@ export function getOrganizationSchema(): Organization {
     url: APP_URL,
     logo: `${APP_URL}/logo.png`,
     description: 'Complete study abroad application support from ₦89,000. Apply to top universities with expert guidance.',
-    email: 'info@tundua.com', // TODO: Update with real email
+    email: 'support@tundua.com',
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'US', // TODO: Update with real address
     } as any,
     sameAs: [
-      // TODO: Add your social media profiles
-      // 'https://www.facebook.com/tundua',
-      // 'https://twitter.com/tundua',
-      // 'https://www.linkedin.com/company/tundua',
-      // 'https://www.instagram.com/tundua',
+      'https://x.com/tundua',
+      'https://www.instagram.com/tundua',
+      'https://www.linkedin.com/company/tundua',
     ],
   } as Organization;
 }
@@ -118,6 +116,49 @@ export function getBreadcrumbSchema(
       name: item.name,
       item: `${APP_URL}${item.url}`,
     })),
+  };
+}
+
+/**
+ * Blog Post Schema
+ * Generates BlogPosting structured data for individual blog articles
+ */
+export function getBlogPostSchema(article: {
+  title: string;
+  slug: string;
+  excerpt?: string;
+  content?: string;
+  category?: string;
+  published_at?: string;
+  updated_at?: string;
+  author_name?: string;
+}): BlogPosting {
+  return {
+    '@type': 'BlogPosting',
+    headline: article.title,
+    url: `${APP_URL}/blog/${article.slug}`,
+    description: article.excerpt || '',
+    datePublished: article.published_at || article.updated_at || new Date().toISOString(),
+    dateModified: article.updated_at || new Date().toISOString(),
+    author: {
+      '@type': 'Organization',
+      '@id': `${APP_URL}#organization`,
+      name: article.author_name || 'Tundua',
+    },
+    publisher: {
+      '@type': 'Organization',
+      '@id': `${APP_URL}#organization`,
+      name: 'Tundua',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${APP_URL}/logo.png`,
+      },
+    } as any,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${APP_URL}/blog/${article.slug}`,
+    },
+    ...(article.category ? { articleSection: article.category } : {}),
   };
 }
 

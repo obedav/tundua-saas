@@ -12,6 +12,7 @@ import {
   Trophy, Rocket, Briefcase, Sun, Moon
 } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { FAQStructuredData } from "@/components/StructuredData";
 import {
   FadeIn,
   Stagger,
@@ -499,6 +500,10 @@ export default function HomePage() {
               Pricing
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
             </button>
+            <Link href="/blog" className="text-slate-600 dark:text-stone-300 hover:text-slate-900 dark:hover:text-white font-medium transition-colors relative group">
+              Blog
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+            </Link>
             <Link href="/auth/login" className="text-slate-600 dark:text-stone-300 hover:text-slate-900 dark:hover:text-white font-medium transition-colors">
               Login
             </Link>
@@ -607,6 +612,13 @@ export default function HomePage() {
               >
                 Pricing
               </button>
+              <Link
+                href="/blog"
+                className="text-slate-600 dark:text-stone-300 hover:text-slate-900 dark:hover:text-white font-medium py-3 px-2 hover:bg-slate-50 dark:hover:bg-stone-800 rounded-lg transition-colors block"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Blog
+              </Link>
               <Link
                 href="/auth/login"
                 className="text-slate-600 dark:text-stone-300 hover:text-slate-900 dark:hover:text-white font-medium py-3 px-2 hover:bg-slate-50 dark:hover:bg-stone-800 rounded-lg transition-colors block"
@@ -719,7 +731,7 @@ export default function HomePage() {
               <FadeIn direction="up" delay={0.3}>
                 <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-stone-300 mb-8 leading-relaxed">
                   Professional application management with expert guidance, document review, and submission support.
-                  Join students getting accepted to their dream universities.
+                  Trusted by students worldwide.
                 </p>
               </FadeIn>
 
@@ -768,7 +780,7 @@ export default function HomePage() {
                       onClick={() => scrollToSection('quiz')}
                       className="group bg-white dark:bg-stone-800 text-slate-900 dark:text-stone-100 px-8 py-4 rounded-full text-lg font-semibold border-2 border-slate-200 dark:border-stone-600 hover:border-teal-300 dark:hover:border-teal-500 hover:shadow-lg dark:hover:shadow-teal-500/20 transition-all inline-flex items-center justify-center gap-2"
                     >
-                      Find Your Package
+                      Take the Quiz to Find Your Package
                       <Sparkles className="h-5 w-5 text-teal-600 dark:text-teal-400" />
                     </button>
                   </MagneticButton>
@@ -858,7 +870,7 @@ export default function HomePage() {
               <span className="text-sm font-bold text-blue-900 dark:text-blue-300">NEW: AI-Powered Instant Services</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-              Quick Start: Get Documents Ready Today
+              Quick, Professional, AI-Powered Document Services
             </h2>
             <p className="text-lg md:text-xl text-slate-600 dark:text-stone-300 max-w-3xl mx-auto">
               Need something specific fast? Our AI services deliver professional documents instantly.
@@ -1191,9 +1203,9 @@ export default function HomePage() {
                 color: "from-teal-500 to-cyan-500"
               },
               {
-                icon: Zap,
-                title: "Fast Processing",
-                description: "Quick turnaround on all reviews",
+                icon: FileCheck,
+                title: "Document Verification",
+                description: "AI-assisted OCR plus human review",
                 color: "from-yellow-500 to-orange-500"
               },
               {
@@ -1285,9 +1297,9 @@ export default function HomePage() {
         <div className="container-custom">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-              Trusted by Students Worldwide
+              Real Results, Real Stories
             </h2>
-            <p className="text-lg md:text-xl text-slate-600 dark:text-stone-400">Real stories from real students</p>
+            <p className="text-lg md:text-xl text-slate-600 dark:text-stone-400">Trusted by students worldwide</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -1349,7 +1361,7 @@ export default function HomePage() {
         <div className="container-custom">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-              Simple, Transparent Pricing
+              From Application to Acceptance – We Guide You Every Step
             </h2>
             <p className="text-lg md:text-xl text-slate-600 dark:text-stone-400 mb-4">Choose the package that fits your needs</p>
 
@@ -1652,6 +1664,32 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* FAQ Structured Data for Google Rich Results */}
+      <FAQStructuredData
+        faqs={[
+          {
+            question: "How long does the application process take?",
+            answer: "The timeline varies depending on your package and university deadlines, but most applications are completed within 4-6 weeks from when you submit all required documents."
+          },
+          {
+            question: "Do you guarantee university acceptance?",
+            answer: "While we can't guarantee acceptance (as that decision is made by universities), we ensure your application is polished, complete, and presents you in the best possible light. Our clients have high success rates."
+          },
+          {
+            question: "Can I change my package after signing up?",
+            answer: "Yes! You can upgrade your package at any time by paying the difference. We'll apply all work already completed to your new package."
+          },
+          {
+            question: "What if I need help with more universities than my package includes?",
+            answer: "You can add additional universities to any package for a supplemental fee. Contact our team for pricing details."
+          },
+          {
+            question: "How do I communicate with my counselor?",
+            answer: "You'll have access to email support, scheduled video calls, and our application dashboard messaging system. Premium and Concierge packages get priority response times."
+          }
+        ]}
+      />
+
       {/* Modern Footer */}
       <footer className="bg-slate-900 dark:bg-stone-950 text-white py-16 transition-colors duration-300">
         <div className="container-custom">
@@ -1695,6 +1733,12 @@ export default function HomePage() {
                     Pricing
                   </button>
                 </li>
+                <li>
+                  <button onClick={() => scrollToSection('quiz')} className="hover:text-white transition-colors">
+                    Take the Quiz
+                  </button>
+                </li>
+                <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
                 <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
                 <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
               </ul>
