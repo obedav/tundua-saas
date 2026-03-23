@@ -25,6 +25,8 @@ class Application extends Model
         'highest_education',
         'field_of_study',
         'institution_name',
+        'institution_start_date',
+        'institution_end_date',
         'graduation_year',
         'gpa',
         'gpa_scale',

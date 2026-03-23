@@ -248,6 +248,38 @@ export default function Step6Review({ data, onBack, onSubmit, isSubmitting }: Pr
         </div>
       </div>
 
+      {/* Add-On Services */}
+      {data.addon_services && data.addon_services.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Add-On Services</h3>
+            </div>
+            <button
+              type="button"
+              onClick={onBack}
+              className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 inline-flex items-center gap-1 px-3 py-1 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+            >
+              <Edit2 className="h-4 w-4" />
+              Edit
+            </button>
+          </div>
+          <div className="space-y-2 text-sm">
+            {data.addon_services.map((addon: any) => (
+              <div key={addon.id} className="flex justify-between items-center py-2 px-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                <span className="text-gray-700 dark:text-gray-300">
+                  {addon.name} {addon.quantity > 1 && `(×${addon.quantity})`}
+                </span>
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  {formatPrice(addon.price * addon.quantity, data.currency)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Pricing Summary */}
       <div className="bg-gradient-to-br from-primary-50 via-blue-50 to-purple-50 dark:from-primary-900/20 dark:via-blue-900/20 dark:to-purple-900/20 border-2 border-primary-600 dark:border-primary-500 rounded-xl p-6 shadow-lg">
         <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-300 mb-4 flex items-center gap-2">
@@ -259,6 +291,12 @@ export default function Step6Review({ data, onBack, onSubmit, isSubmitting }: Pr
             <span className="text-gray-700 dark:text-gray-300">Service Package:</span>
             <span className="font-semibold text-gray-900 dark:text-white">{formatPrice(data.base_price, data.currency)}</span>
           </div>
+          {data.addon_total && data.addon_total > 0 ? (
+            <div className="flex justify-between items-center py-2 px-3 bg-white dark:bg-gray-800 rounded-lg">
+              <span className="text-gray-700 dark:text-gray-300">Add-On Services:</span>
+              <span className="font-semibold text-gray-900 dark:text-white">{formatPrice(data.addon_total, data.currency)}</span>
+            </div>
+          ) : null}
           <div className="border-t-2 border-primary-200 dark:border-primary-700 pt-3 mt-2 flex justify-between items-center py-3 px-3 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
             <span className="font-bold text-primary-900 dark:text-primary-300 text-lg">Total Amount:</span>
             <span className="font-bold text-primary-900 dark:text-primary-300 text-2xl">

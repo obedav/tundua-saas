@@ -153,7 +153,7 @@ export default function Step4ServiceTier({ data, updateData, onNext }: Props) {
       </div>
 
       {/* Plan Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" role="radiogroup" aria-label="Select a service plan">
         {serviceTiers.map((tier) => {
           const isSelected = selectedTierId === tier.id;
           const isExpanded = expandedTier === tier.id;
@@ -166,6 +166,11 @@ export default function Step4ServiceTier({ data, updateData, onNext }: Props) {
           return (
             <div
               key={tier.id}
+              role="radio"
+              aria-checked={isSelected}
+              aria-label={`${tier.name} plan - ${isFree ? 'Free' : formatPrice(price)}`}
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSelectTier(tier); } }}
               onClick={() => handleSelectTier(tier)}
               className={`relative rounded-2xl border-2 transition-all duration-200 cursor-pointer ${
                 isSelected
