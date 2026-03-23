@@ -796,73 +796,105 @@ function calculatePartialConfidence(fields: any): number {
 }
 
 /**
- * Full OCR process with enhanced preprocessing and fallback
+ * Extract passport data using Gemini Vision API (server-side)
+ */
+async function extractWithGemini(imageFile: File): Promise<PassportData | null> {
+  try {
+    console.log("🤖 Attempting Gemini Vision extraction...");
+
+    const formData = new FormData();
+    formData.append("image", imageFile);
+
+    const response = await fetch("/api/passport-ocr", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      console.warn("Gemini OCR returned status:", response.status);
+      return null;
+    }
+
+    const result = await response.json();
+
+    if (result.success && result.data) {
+      console.log("Gemini extraction result:", result.data);
+      return result.data as PassportData;
+    }
+
+    return null;
+  } catch (error) {
+    console.warn("Gemini Vision unavailable, falling back to Tesseract:", error);
+    return null;
+  }
+}
+
+/**
+ * Full OCR process: Gemini Vision first, Tesseract.js fallback
  */
 export async function processPassportImage(
   imageFile: File,
 ): Promise<PassportData | null> {
   try {
-    console.log("🚀 Starting enhanced passport OCR process...");
+    console.log("🚀 Starting passport OCR process...");
     console.log(`📸 Image: ${imageFile.name} (${Math.round(imageFile.size / 1024)}KB)`);
 
-    // Step 1: OCR with preprocessing
-    console.log("\n=== Step 1: Enhanced Text Extraction ===");
+    // Step 1: Try Gemini Vision (fast, accurate, server-side)
+    console.log("\n=== Step 1: Gemini Vision API ===");
+    const geminiResult = await extractWithGemini(imageFile);
+
+    if (geminiResult && geminiResult.confidence >= 50) {
+      console.log(`✅ SUCCESS via Gemini Vision (${geminiResult.confidence}% confidence)`);
+      return geminiResult;
+    }
+
+    // Step 2: Fall back to Tesseract.js (client-side, offline-capable)
+    console.log("\n=== Step 2: Tesseract.js Fallback ===");
     const extractedText = await extractPassportText(imageFile);
-    console.log(`✓ Extracted ${extractedText.length} characters`);
+    console.log(`Extracted ${extractedText.length} characters`);
 
     if (!extractedText || extractedText.trim().length < 50) {
-      console.error("❌ OCR failed - text too short");
+      // If Gemini returned low-confidence data, still use it
+      if (geminiResult) return geminiResult;
+      console.error("OCR failed - text too short");
       return null;
     }
 
-    // Step 2: Try MRZ extraction
-    console.log("\n=== Step 2: MRZ Detection ===");
+    // Step 3: Try MRZ extraction from Tesseract text
+    console.log("\n=== Step 3: MRZ Detection ===");
     const mrzLines = findMRZLines(extractedText);
 
     if (mrzLines.length >= 2) {
-      console.log("✓ Found MRZ lines, attempting parse...");
       const line1 = mrzLines[0];
       const line2 = mrzLines[1];
-      if (!line1 || !line2) {
-        console.log("⚠️ Missing MRZ lines");
-        return null;
-      }
-      const passportData = parseMRZ(line1, line2);
+      if (line1 && line2) {
+        const passportData = parseMRZ(line1, line2);
 
-      if (passportData) {
-        // Accept MRZ data with lower confidence threshold
-        // - Fully validated MRZ: any confidence (usually 100%)
-        // - Partial MRZ (validation failed): >= 30% confidence
-        const threshold = passportData.mrzValid ? 0 : 30;
-
-        if (passportData.confidence >= threshold) {
-          console.log(`✅ SUCCESS via ${passportData.mrzValid ? 'validated' : 'partial'} MRZ:`, passportData);
-          return passportData;
-        } else {
-          console.log(`⚠️ MRZ data confidence too low: ${passportData.confidence}% (threshold: ${threshold}%)`);
+        if (passportData) {
+          const threshold = passportData.mrzValid ? 0 : 30;
+          if (passportData.confidence >= threshold) {
+            console.log(`✅ SUCCESS via ${passportData.mrzValid ? 'validated' : 'partial'} MRZ`);
+            return passportData;
+          }
         }
       }
     }
 
-    // Step 3: Enhanced fallback extraction
-    console.log("\n=== Step 3: Enhanced Fallback Extraction ===");
+    // Step 4: Text-based fallback extraction
+    console.log("\n=== Step 4: Text Fallback Extraction ===");
     const fallbackData = extractFromReadableText(extractedText, mrzLines);
 
     if (fallbackData) {
-      console.log("✅ SUCCESS via fallback:", fallbackData);
+      console.log("✅ SUCCESS via text fallback");
       return fallbackData;
     }
 
-    console.error("\n❌ All extraction methods failed");
-    console.log("💡 Tips:");
-    console.log("  - Use better lighting");
-    console.log("  - Ensure passport is flat and in focus");
-    console.log("  - Try a higher resolution photo");
-    console.log("  - Make sure MRZ (bottom 2 lines) is visible");
-    
+    // Return low-confidence Gemini data as last resort
+    if (geminiResult) return geminiResult;
+
     return null;
   } catch (error) {
-    console.error("💥 OCR processing error:", error);
+    console.error("OCR processing error:", error);
     return null;
   }
 }
