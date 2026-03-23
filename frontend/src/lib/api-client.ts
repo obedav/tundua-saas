@@ -30,8 +30,9 @@ class ApiClient {
           config.url?.includes('/api/v1/applications') ||
           config.url?.includes('/api/v1/documents/')
         ) {
-          // Use relative URL to hit Next.js API routes instead of backend directly
+          // Use relative URL to hit Next.js API routes (which are at /api/, not /api/v1/)
           config.baseURL = '';
+          config.url = config.url?.replace('/api/v1/', '/api/');
         }
         return config;
       },
