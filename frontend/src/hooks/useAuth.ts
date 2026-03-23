@@ -8,7 +8,7 @@ export type { User } from "@/contexts/AuthContext";
  *
  * This hook now uses the centralized AuthContext instead of making
  * its own API calls. This ensures:
- * - Only ONE call to /api/auth/me per page load
+ * - Only ONE call to /api/v1/auth/me per page load
  * - Shared authentication state across all components
  * - Better performance and reduced server load
  *

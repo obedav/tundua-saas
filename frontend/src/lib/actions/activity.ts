@@ -26,7 +26,7 @@ export async function getUserActivity(params?: { limit?: number }) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const url = new URL(`${API_URL}/api/activity`)
+    const url = new URL(`${API_URL}/api/v1/activity`)
     if (params?.limit) {
       url.searchParams.set('limit', String(params.limit))
     }
@@ -61,7 +61,7 @@ export async function getEntityActivity(
     const token = await getAuthToken()
     if (!token) return null
 
-    const url = new URL(`${API_URL}/api/activity/${entityType}/${entityId}`)
+    const url = new URL(`${API_URL}/api/v1/activity/${entityType}/${entityId}`)
     if (params?.limit) {
       url.searchParams.set('limit', String(params.limit))
     }

@@ -50,7 +50,7 @@ interface AuthProviderProps {
 /**
  * AuthProvider - Centralized Authentication State Management
  *
- * This provider makes a SINGLE call to /api/auth/me and shares the result
+ * This provider makes a SINGLE call to /api/v1/auth/me and shares the result
  * across all components that need authentication state.
  *
  * This eliminates redundant API calls and improves performance.
@@ -64,7 +64,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const checkAuth = useCallback(async () => {
     console.log('🔐 AuthContext: Checking authentication...');
     try {
-      const response = await fetch('/api/auth/me', {
+      const response = await fetch('/api/v1/auth/me', {
         credentials: 'include', // Include cookies
       });
 

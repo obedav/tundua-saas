@@ -38,7 +38,7 @@ export async function getAllAddOnOrders(params?: {
     const token = await getAuthToken()
     if (!token) return null
 
-    const url = new URL(`${API_URL}/api/admin/addons/orders`)
+    const url = new URL(`${API_URL}/api/v1/admin/addons/orders`)
     if (params?.status) url.searchParams.set('status', params.status)
     if (params?.search) url.searchParams.set('search', params.search)
     if (params?.page) url.searchParams.set('page', String(params.page))
@@ -88,7 +88,7 @@ export async function updateAddOnOrderStatusAction(
     if (fulfillmentNotes) data['fulfillment_notes'] = fulfillmentNotes
     if (trackingNumber) data['tracking_number'] = trackingNumber
 
-    const response = await fetch(`${API_URL}/api/admin/addons/orders/${id}/status`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/addons/orders/${id}/status`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

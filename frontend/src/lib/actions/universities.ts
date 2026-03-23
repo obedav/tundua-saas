@@ -36,7 +36,7 @@ export async function getCountries() {
       headers['Authorization'] = `Bearer ${token}`
     }
 
-    const response = await fetch(`${API_URL}/api/universities/countries`, {
+    const response = await fetch(`${API_URL}/api/v1/universities/countries`, {
       headers,
       next: {
         revalidate: 86400, // Cache for 24 hours
@@ -70,7 +70,7 @@ export async function searchUniversities(params: {
   try {
     const token = await getAuthToken()
 
-    const url = new URL(`${API_URL}/api/universities/search`)
+    const url = new URL(`${API_URL}/api/v1/universities/search`)
 
     // Add all search parameters
     Object.entries(params).forEach(([key, value]) => {
@@ -127,7 +127,7 @@ export async function getUniversityRecommendationsAction(
       headers['Authorization'] = `Bearer ${token}`
     }
 
-    const response = await fetch(`${API_URL}/api/universities/recommend`, {
+    const response = await fetch(`${API_URL}/api/v1/universities/recommend`, {
       method: 'POST',
       headers,
       body: JSON.stringify(profile),
@@ -158,7 +158,7 @@ export async function getUniversityById(id: number) {
       headers['Authorization'] = `Bearer ${token}`
     }
 
-    const response = await fetch(`${API_URL}/api/universities/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/universities/${id}`, {
       headers,
       next: {
         tags: [`university-${id}`],

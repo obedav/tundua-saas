@@ -49,6 +49,12 @@ class SecurityHeadersMiddleware
             "default-src 'none'; frame-ancestors 'none'"
         );
 
+        // Cross-Origin-Opener-Policy (2026 standard)
+        $response = $response->withHeader('Cross-Origin-Opener-Policy', 'same-origin');
+
+        // Cross-Origin-Resource-Policy (2026 standard)
+        $response = $response->withHeader('Cross-Origin-Resource-Policy', 'same-origin');
+
         // Prevent caching of authenticated responses
         $authHeader = $request->getHeaderLine('Authorization');
         if (!empty($authHeader)) {

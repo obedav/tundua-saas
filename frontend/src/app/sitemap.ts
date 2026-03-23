@@ -38,7 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch published blog slugs
   let blogRoutes: MetadataRoute.Sitemap = [];
   try {
-    const response = await fetch(`${apiUrl}/api/knowledge-base/slugs`, {
+    const response = await fetch(`${apiUrl}/api/v1/knowledge-base/slugs`, {
       next: { revalidate: 3600 },
     });
 

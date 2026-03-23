@@ -15,7 +15,7 @@ export default function VerifyPendingPage() {
     setResending(true);
     try {
       const response = await fetch(
-        `${process.env['NEXT_PUBLIC_API_URL']}/api/auth/resend-verification`,
+        `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/auth/resend-verification`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

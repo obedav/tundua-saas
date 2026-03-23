@@ -141,20 +141,25 @@ class GoogleOAuthController
 
                 $user = $existingUser;
             } else {
-                // Create new user
+                // Create new user with UUID
+                $uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
+
                 $user = User::create([
+                    'uuid' => $uuid,
                     'first_name' => $firstName,
                     'last_name' => $lastName,
                     'email' => $email,
                     'google_id' => $googleId,
-                    'profile_picture' => $avatar,
-                    'user_type' => $userType,
+                    'avatar_url' => $avatar,
                     'role' => 'user',
-                    'password' => '', // No password for OAuth users
+                    'password_hash' => password_hash($uuid, PASSWORD_DEFAULT), // Random password for OAuth users
                     'email_verified' => true, // Google has already verified the email
-                    'email_verified_at' => date('Y-m-d H:i:s'),
-                    'status' => 'active'
+                    'is_active' => true
                 ]);
+
+                if (!$user) {
+                    throw new Exception('Failed to create user account. Please try again.');
+                }
             }
 
             // Generate JWT tokens
@@ -170,8 +175,7 @@ class GoogleOAuthController
             $redirectUrl = $frontendUrl . '/auth/oauth-callback?' . http_build_query([
                 'access_token' => $accessToken,
                 'refresh_token' => $refreshToken,
-                'user_role' => $user->role,
-                'user_type' => $user->user_type
+                'user_role' => $user->role
             ]);
 
             return $response

@@ -19,7 +19,7 @@ export async function GET(
       );
     }
 
-    const url = `${API_URL}/api/documents/${id}/download`;
+    const url = `${API_URL}/api/v1/documents/${id}/download`;
 
     const response = await fetch(url, {
       method: 'GET',

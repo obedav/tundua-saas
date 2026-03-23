@@ -4,7 +4,7 @@ import Pusher from 'pusher-js';
 export const createPusherClient = () => {
   const pusher = new Pusher(process.env['NEXT_PUBLIC_PUSHER_KEY'] || '', {
     cluster: process.env['NEXT_PUBLIC_PUSHER_CLUSTER'] || 'us2',
-    authEndpoint: `${process.env['NEXT_PUBLIC_API_URL']}/api/pusher/auth`,
+    authEndpoint: `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/pusher/auth`,
     auth: {
       headers: {
         Authorization: `Bearer ${typeof window !== 'undefined' ? document.cookie.split('auth_token=')[1]?.split(';')[0] : ''}`,

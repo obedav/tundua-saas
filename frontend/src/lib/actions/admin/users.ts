@@ -39,7 +39,7 @@ export async function getAllUsers(params?: {
     const token = await getAuthToken()
     if (!token) return null
 
-    const url = new URL(`${API_URL}/api/admin/users`)
+    const url = new URL(`${API_URL}/api/v1/admin/users`)
     if (params?.search) url.searchParams.set('search', params.search)
     if (params?.role) url.searchParams.set('role', params.role)
     if (params?.status) url.searchParams.set('status', params.status)
@@ -72,7 +72,7 @@ export async function getUserDetails(id: number) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/admin/users/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/users/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: [`admin-user-${id}`],
@@ -115,7 +115,7 @@ export async function updateUserAction(
       }
     }
 
-    const response = await fetch(`${API_URL}/api/admin/users/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/users/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ export async function suspendUserAction(
       return { success: false, error: 'Action is required' }
     }
 
-    const response = await fetch(`${API_URL}/api/admin/users/${id}/suspend`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/users/${id}/suspend`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -196,7 +196,7 @@ export async function getUserStatistics() {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/admin/users/statistics`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/users/statistics`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['admin-user-stats'],

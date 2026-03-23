@@ -49,7 +49,7 @@ export async function createApplicationAction(
       additional_notes: formData.get('additional_notes') as string || undefined,
     }
 
-    const response = await fetch(`${API_URL}/api/applications`, {
+    const response = await fetch(`${API_URL}/api/v1/applications`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export async function getApplications() {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/applications`, {
+    const response = await fetch(`${API_URL}/api/v1/applications`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['applications'],
@@ -111,7 +111,7 @@ export async function getApplication(id: number) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/applications/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/applications/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: [`application-${id}`],
@@ -168,7 +168,7 @@ export async function updateApplicationAction(
       data['budget'] = Number(budget)
     }
 
-    const response = await fetch(`${API_URL}/api/applications/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/applications/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -207,7 +207,7 @@ export async function submitApplicationAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/applications/${id}/submit`, {
+    const response = await fetch(`${API_URL}/api/v1/applications/${id}/submit`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -244,7 +244,7 @@ export async function deleteApplicationAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/applications/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/applications/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -287,7 +287,7 @@ export async function calculatePricingAction(
       rush_processing: formData.get('rush_processing') === 'true',
     }
 
-    const response = await fetch(`${API_URL}/api/applications/${id}/calculate`, {
+    const response = await fetch(`${API_URL}/api/v1/applications/${id}/calculate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

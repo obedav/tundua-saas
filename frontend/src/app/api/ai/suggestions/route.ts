@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     // Get user from token
     const userResponse = await fetch(
-      `${process.env['NEXT_PUBLIC_API_URL']}/api/auth/me`,
+      `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/auth/me`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }

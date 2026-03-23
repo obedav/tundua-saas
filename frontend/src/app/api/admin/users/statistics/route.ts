@@ -15,7 +15,7 @@ export async function GET() {
       );
     }
 
-    const response = await fetch(`${API_URL}/api/admin/users/statistics`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/users/statistics`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',

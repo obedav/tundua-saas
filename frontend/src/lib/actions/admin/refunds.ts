@@ -38,7 +38,7 @@ export async function getAllRefunds(params?: {
     const token = await getAuthToken()
     if (!token) return null
 
-    const url = new URL(`${API_URL}/api/admin/refunds`)
+    const url = new URL(`${API_URL}/api/v1/admin/refunds`)
     if (params?.status) url.searchParams.set('status', params.status)
     if (params?.search) url.searchParams.set('search', params.search)
     if (params?.page) url.searchParams.set('page', String(params.page))
@@ -83,7 +83,7 @@ export async function reviewRefundAction(
       return { success: false, error: 'Action is required' }
     }
 
-    const response = await fetch(`${API_URL}/api/admin/refunds/${id}/review`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/refunds/${id}/review`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

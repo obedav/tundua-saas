@@ -44,12 +44,18 @@ class User extends Model
         'timezone',
         'language',
         'notification_preferences',
+        'two_factor_secret',
+        'two_factor_enabled',
+        'two_factor_recovery_codes',
+        'two_factor_confirmed_at',
     ];
 
     protected $hidden = [
         'password_hash',
         'email_verification_token',
         'password_reset_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     protected $casts = [
@@ -61,6 +67,8 @@ class User extends Model
         'locked_until' => 'datetime',
         'last_login' => 'datetime',
         'notification_preferences' => 'array',
+        'two_factor_enabled' => 'boolean',
+        'two_factor_confirmed_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -346,6 +354,8 @@ class User extends Model
             'email_verification_expires',
             'password_reset_token',
             'password_reset_expires',
+            'two_factor_secret',
+            'two_factor_recovery_codes',
         ])->toArray();
     }
 
@@ -371,6 +381,8 @@ class User extends Model
             unset($user['email_verification_expires']);
             unset($user['password_reset_token']);
             unset($user['password_reset_expires']);
+            unset($user['two_factor_secret']);
+            unset($user['two_factor_recovery_codes']);
             return $user;
         }
 

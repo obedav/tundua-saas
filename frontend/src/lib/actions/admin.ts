@@ -29,7 +29,7 @@ export async function getAdminAnalytics() {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/admin/analytics`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/analytics`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['admin-analytics'],
@@ -69,7 +69,7 @@ export async function getAdminApplications(params?: {
     if (params?.page) queryParams.append('page', params.page.toString())
     if (params?.order) queryParams.append('order', params.order)
 
-    const url = `${API_URL}/api/admin/applications${queryParams.toString() ? `?${queryParams}` : ''}`
+    const url = `${API_URL}/api/v1/admin/applications${queryParams.toString() ? `?${queryParams}` : ''}`
 
     console.log('Fetching admin applications from:', url)
 
@@ -115,7 +115,7 @@ export async function getAdminUsers(params?: {
     if (params?.limit) queryParams.append('limit', params.limit.toString())
     if (params?.page) queryParams.append('page', params.page.toString())
 
-    const url = `${API_URL}/api/admin/users${queryParams.toString() ? `?${queryParams}` : ''}`
+    const url = `${API_URL}/api/v1/admin/users${queryParams.toString() ? `?${queryParams}` : ''}`
 
     const response = await fetch(url, {
       headers: { Authorization: `Bearer ${token}` },
@@ -156,9 +156,9 @@ export async function getAdminDashboardStats() {
       }
     }
 
-    console.log('Fetching admin stats from:', `${API_URL}/api/admin/analytics`)
+    console.log('Fetching admin stats from:', `${API_URL}/api/v1/admin/analytics`)
 
-    const response = await fetch(`${API_URL}/api/admin/analytics`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/analytics`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['admin-stats'],
@@ -234,7 +234,7 @@ export async function getAdminActivity(limit: number = 10) {
     const token = await getAuthToken()
     if (!token) return []
 
-    const response = await fetch(`${API_URL}/api/admin/activity?limit=${limit}`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/activity?limit=${limit}`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['admin-activity'],
@@ -260,7 +260,7 @@ export async function getComprehensiveAnalytics(period: number = 30) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/admin/analytics?period=${period}`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/analytics?period=${period}`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['admin-comprehensive-analytics'],
@@ -286,7 +286,7 @@ export async function getRevenueChartData(period: string = 'daily', days: number
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/admin/analytics/revenue-chart?period=${period}&days=${days}`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/analytics/revenue-chart?period=${period}&days=${days}`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['admin-revenue-chart'],

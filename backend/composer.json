@@ -4,7 +4,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.3",
         "dompdf/dompdf": "^2.0",
         "firebase/php-jwt": "^6.9",
         "guzzlehttp/guzzle": "^7.8",
@@ -41,6 +41,10 @@
     "scripts": {
         "start": "php -S localhost:8000 -t public",
         "test": "phpunit"
+    },
+    "suggest": {
+        "open-telemetry/sdk": "^1.0 - Required for full OpenTelemetry SDK tracing support",
+        "open-telemetry/exporter-otlp": "^1.0 - Required for OTLP trace export via the SDK"
     },
     "config": {
         "process-timeout": 0,

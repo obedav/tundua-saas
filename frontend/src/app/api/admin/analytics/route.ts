@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const period = searchParams.get('period') || '30';
 
-    const response = await fetch(`${API_URL}/api/admin/analytics?period=${period}`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/analytics?period=${period}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',

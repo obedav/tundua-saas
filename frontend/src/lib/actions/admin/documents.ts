@@ -33,7 +33,7 @@ export async function getPendingDocuments() {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/admin/documents/pending`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/documents/pending`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['admin-pending-documents'],
@@ -72,7 +72,7 @@ export async function reviewDocumentAction(
       return { success: false, error: 'Status is required' }
     }
 
-    const response = await fetch(`${API_URL}/api/admin/documents/${id}/review`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/documents/${id}/review`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

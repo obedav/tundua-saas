@@ -27,7 +27,7 @@ export async function getDashboardStats() {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/dashboard/stats`, {
+    const response = await fetch(`${API_URL}/api/v1/dashboard/stats`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['dashboard-stats'],
@@ -54,7 +54,7 @@ export async function getDashboardOverview() {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/dashboard/overview`, {
+    const response = await fetch(`${API_URL}/api/v1/dashboard/overview`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['dashboard-overview'],

@@ -63,7 +63,7 @@ export async function trackAIUsage(data: AIUsageData): Promise<void> {
     };
 
     // Send to backend asynchronously (don't block the response)
-    fetch(`${API_URL}/api/ai/usage`, {
+    fetch(`${API_URL}/api/v1/ai/usage`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export async function getUserAIUsageStats(
 ): Promise<AIUsageStats | null> {
   try {
     const response = await fetch(
-      `${API_URL}/api/ai/usage/stats?period=${period}`,
+      `${API_URL}/api/v1/ai/usage/stats?period=${period}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -144,7 +144,7 @@ export async function checkAIQuota(
   resetAt: string;
 }> {
   try {
-    const response = await fetch(`${API_URL}/api/ai/usage/quota`, {
+    const response = await fetch(`${API_URL}/api/v1/ai/usage/quota`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

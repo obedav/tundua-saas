@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 
     const searchParams = request.nextUrl.searchParams;
     const queryString = searchParams.toString();
-    const url = `${API_URL}/api/admin/users${queryString ? `?${queryString}` : ''}`;
+    const url = `${API_URL}/api/v1/admin/users${queryString ? `?${queryString}` : ''}`;
 
     const response = await fetch(url, {
       headers: {

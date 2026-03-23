@@ -22,7 +22,7 @@ export async function POST(
 
     const { id } = await params
 
-    const response = await fetch(`${API_URL}/api/applications/${id}/submit`, {
+    const response = await fetch(`${API_URL}/api/v1/applications/${id}/submit`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

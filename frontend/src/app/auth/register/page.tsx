@@ -142,7 +142,7 @@ export default function RegisterPage() {
 
   const handleSocialSignup = async (provider: 'google' | 'microsoft' | 'apple') => {
     if (provider === 'google') {
-      window.location.href = `${process.env['NEXT_PUBLIC_API_URL']}/api/auth/google?user_type=student`;
+      window.location.href = `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/auth/google?user_type=student`;
     } else {
       toast.info(`${provider.charAt(0).toUpperCase() + provider.slice(1)} signup coming soon!`);
     }

@@ -36,7 +36,7 @@ export async function getKnowledgeBaseArticles(params?: {
   try {
     const token = await getAuthToken()
 
-    const url = new URL(`${API_URL}/api/knowledge-base`)
+    const url = new URL(`${API_URL}/api/v1/knowledge-base`)
     if (params?.category) url.searchParams.set('category', params.category)
     if (params?.search) url.searchParams.set('search', params.search)
     if (params?.limit) url.searchParams.set('limit', String(params.limit))
@@ -76,7 +76,7 @@ export async function getKnowledgeBaseArticle(id: number | string) {
       headers['Authorization'] = `Bearer ${token}`
     }
 
-    const response = await fetch(`${API_URL}/api/knowledge-base/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/knowledge-base/${id}`, {
       headers,
       next: {
         tags: [`kb-article-${id}`],
@@ -101,7 +101,7 @@ export async function getPopularArticles(params?: { limit?: number }) {
   try {
     const token = await getAuthToken()
 
-    const url = new URL(`${API_URL}/api/knowledge-base/popular`)
+    const url = new URL(`${API_URL}/api/v1/knowledge-base/popular`)
     if (params?.limit) url.searchParams.set('limit', String(params.limit))
 
     const headers: HeadersInit = {}
@@ -134,7 +134,7 @@ export async function getFeaturedArticles(params?: { limit?: number }) {
   try {
     const token = await getAuthToken()
 
-    const url = new URL(`${API_URL}/api/knowledge-base/featured`)
+    const url = new URL(`${API_URL}/api/v1/knowledge-base/featured`)
     if (params?.limit) url.searchParams.set('limit', String(params.limit))
 
     const headers: HeadersInit = {}
@@ -172,7 +172,7 @@ export async function getKnowledgeBaseCategories() {
       headers['Authorization'] = `Bearer ${token}`
     }
 
-    const response = await fetch(`${API_URL}/api/knowledge-base/categories`, {
+    const response = await fetch(`${API_URL}/api/v1/knowledge-base/categories`, {
       headers,
       next: {
         revalidate: 3600, // Cache for 1 hour
@@ -202,7 +202,7 @@ export async function markArticleHelpfulAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/knowledge-base/${id}/feedback`, {
+    const response = await fetch(`${API_URL}/api/v1/knowledge-base/${id}/feedback`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

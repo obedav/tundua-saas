@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     const queryString = searchParams.toString()
 
     const response = await fetch(
-      `${API_URL}/api/applications${queryString ? `?${queryString}` : ''}`,
+      `${API_URL}/api/v1/applications${queryString ? `?${queryString}` : ''}`,
       {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
 
-    const response = await fetch(`${API_URL}/api/applications`, {
+    const response = await fetch(`${API_URL}/api/v1/applications`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

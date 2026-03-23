@@ -33,7 +33,7 @@ export async function getUserNotifications(params?: { unread?: boolean; limit?: 
     const token = await getAuthToken()
     if (!token) return null
 
-    const url = new URL(`${API_URL}/api/notifications`)
+    const url = new URL(`${API_URL}/api/v1/notifications`)
     if (params?.unread !== undefined) {
       url.searchParams.set('unread', String(params.unread))
     }
@@ -71,7 +71,7 @@ export async function markNotificationReadAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/notifications/${id}/read`, {
+    const response = await fetch(`${API_URL}/api/v1/notifications/${id}/read`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -104,7 +104,7 @@ export async function markAllNotificationsReadAction(): Promise<ActionResponse> 
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/notifications/read-all`, {
+    const response = await fetch(`${API_URL}/api/v1/notifications/read-all`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -139,7 +139,7 @@ export async function deleteNotificationAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/notifications/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/notifications/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -170,7 +170,7 @@ export async function getUnreadNotificationsCount() {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/notifications/unread-count`, {
+    const response = await fetch(`${API_URL}/api/v1/notifications/unread-count`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['unread-count'],

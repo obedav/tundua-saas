@@ -38,7 +38,7 @@ export async function getAllApplications(params?: {
     const token = await getAuthToken()
     if (!token) return null
 
-    const url = new URL(`${API_URL}/api/admin/applications`)
+    const url = new URL(`${API_URL}/api/v1/admin/applications`)
     if (params?.status) url.searchParams.set('status', params.status)
     if (params?.search) url.searchParams.set('search', params.search)
     if (params?.page) url.searchParams.set('page', String(params.page))
@@ -70,7 +70,7 @@ export async function getAdminApplication(id: number) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/admin/applications/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/applications/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: [`application-${id}`, 'admin-applications'],
@@ -106,9 +106,9 @@ export async function updateApplicationStatusAction(
     }
 
     console.log(`[Server Action] Updating application ${id} status to ${status}`)
-    console.log(`[Server Action] Backend URL: ${API_URL}/api/admin/applications/${id}/status`)
+    console.log(`[Server Action] Backend URL: ${API_URL}/api/v1/admin/applications/${id}/status`)
 
-    const response = await fetch(`${API_URL}/api/admin/applications/${id}/status`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/applications/${id}/status`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -187,7 +187,7 @@ export async function addAdminNotesAction(
       return { success: false, error: 'Notes are required' }
     }
 
-    const response = await fetch(`${API_URL}/api/admin/applications/${id}/notes`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/applications/${id}/notes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

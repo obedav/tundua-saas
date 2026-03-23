@@ -31,7 +31,7 @@ export async function getServiceTiers() {
       headers['Authorization'] = `Bearer ${token}`
     }
 
-    const response = await fetch(`${API_URL}/api/service-tiers`, {
+    const response = await fetch(`${API_URL}/api/v1/service-tiers`, {
       headers,
       next: {
         tags: ['service-tiers'],
@@ -62,7 +62,7 @@ export async function getAddonServices() {
       headers['Authorization'] = `Bearer ${token}`
     }
 
-    const response = await fetch(`${API_URL}/api/addon-services`, {
+    const response = await fetch(`${API_URL}/api/v1/addon-services`, {
       headers,
       next: {
         tags: ['addon-services'],

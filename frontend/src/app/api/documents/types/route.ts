@@ -6,7 +6,7 @@ const API_URL = clientEnv.NEXT_PUBLIC_API_URL;
 // This endpoint is public - no authentication required
 export async function GET(_request: NextRequest) {
   try {
-    const url = `${API_URL}/api/documents/types`;
+    const url = `${API_URL}/api/v1/documents/types`;
 
     const response = await fetch(url, {
       method: 'GET',

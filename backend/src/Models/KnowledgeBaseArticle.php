@@ -179,6 +179,60 @@ class KnowledgeBaseArticle extends Model
     }
 
     /**
+     * Get published slugs for sitemap
+     */
+    public static function getPublishedSlugs(): array
+    {
+        try {
+            return self::where('is_published', true)
+                ->select(['slug', 'updated_at'])
+                ->orderBy('updated_at', 'DESC')
+                ->get()
+                ->toArray();
+        } catch (\Exception $e) {
+            error_log("Error getting published slugs: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Get all articles for admin (includes unpublished)
+     */
+    public static function getAllArticlesAdmin(?string $category = null, ?string $search = null, ?string $status = null, int $limit = 50): array
+    {
+        try {
+            $query = self::query();
+
+            if ($category) {
+                $query->where('category', $category);
+            }
+
+            if ($status === 'published') {
+                $query->where('is_published', true);
+            } elseif ($status === 'draft') {
+                $query->where('is_published', false);
+            }
+
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'LIKE', "%{$search}%")
+                      ->orWhere('content', 'LIKE', "%{$search}%")
+                      ->orWhere('excerpt', 'LIKE', "%{$search}%");
+                });
+            }
+
+            return $query
+                ->orderBy('updated_at', 'DESC')
+                ->limit($limit)
+                ->get()
+                ->toArray();
+        } catch (\Exception $e) {
+            error_log("Error getting admin articles: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
      * Get all categories
      */
     public static function getCategories(): array

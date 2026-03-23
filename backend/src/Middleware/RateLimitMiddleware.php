@@ -5,28 +5,31 @@ namespace Tundua\Middleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Tundua\RateLimit\FileRateLimitStorage;
+use Tundua\RateLimit\RateLimitStorageInterface;
+use Tundua\RateLimit\RedisRateLimitStorage;
 
 /**
  * Rate Limiting Middleware
  *
- * Prevents brute force attacks and API abuse by limiting requests per IP/user
+ * Prevents brute force attacks and API abuse by limiting requests per IP/user.
  *
  * Features:
  * - Configurable limits per endpoint
  * - IP-based and user-based rate limiting
- * - File-based storage (can be upgraded to Redis)
+ * - Redis as primary storage with file-based fallback (strategy pattern)
+ * - Auto-detects Redis availability via REDIS_HOST env var + extension check
  * - Custom limit headers in response
  */
 class RateLimitMiddleware
 {
-    private string $storageDir;
+    private RateLimitStorageInterface $storage;
     private int $defaultMaxRequests;
     private int $defaultWindowMinutes;
     private array $endpointLimits;
 
     public function __construct()
     {
-        $this->storageDir = __DIR__ . '/../../storage/rate_limits';
         $this->defaultMaxRequests = (int)($_ENV['RATE_LIMIT_MAX_REQUESTS'] ?? 100);
         $this->defaultWindowMinutes = (int)($_ENV['RATE_LIMIT_WINDOW_MINUTES'] ?? 15);
 
@@ -44,10 +47,8 @@ class RateLimitMiddleware
             '/api/payments/stripe/create-checkout' => ['max' => 10, 'window' => 15],
         ];
 
-        // Ensure storage directory exists
-        if (!is_dir($this->storageDir)) {
-            mkdir($this->storageDir, 0755, true);
-        }
+        // Auto-detect storage backend
+        $this->storage = $this->createStorage();
     }
 
     /**
@@ -67,23 +68,83 @@ class RateLimitMiddleware
         $limits = $this->getLimitsForEndpoint($endpoint);
         $maxRequests = $limits['max'];
         $windowMinutes = $limits['window'];
+        $windowSeconds = $windowMinutes * 60;
 
-        // Check rate limit
-        $rateLimitData = $this->checkRateLimit($identifier, $endpoint, $maxRequests, $windowMinutes);
+        // Build a storage key: identifier:endpoint_hash
+        $key = $this->buildStorageKey($identifier, $endpoint);
+
+        // Check current state
+        $state = $this->storage->get($key, $windowSeconds);
+
+        $current = $state['count'];
+        $remaining = max(0, $maxRequests - $current);
+        $exceeded = $current >= $maxRequests;
+
+        $rateLimitData = [
+            'exceeded' => $exceeded,
+            'current' => $current,
+            'limit' => $maxRequests,
+            'remaining' => $remaining,
+            'reset' => $state['reset'],
+        ];
 
         // If rate limit exceeded, return 429
-        if ($rateLimitData['exceeded']) {
+        if ($exceeded) {
             return $this->rateLimitExceededResponse($rateLimitData);
         }
 
-        // Record this request
-        $this->recordRequest($identifier, $endpoint, $windowMinutes);
+        // Record this request (atomic increment)
+        $updated = $this->storage->hit($key, $windowSeconds);
+
+        // Refresh data after the hit
+        $rateLimitData['current'] = $updated['count'];
+        $rateLimitData['remaining'] = max(0, $maxRequests - $updated['count']);
+        $rateLimitData['reset'] = $updated['reset'];
 
         // Continue with request and add rate limit headers
         $response = $handler->handle($request);
 
         return $this->addRateLimitHeaders($response, $rateLimitData);
     }
+
+    // ------------------------------------------------------------------
+    //  Storage factory
+    // ------------------------------------------------------------------
+
+    /**
+     * Create the appropriate storage backend.
+     *
+     * Redis is preferred when:
+     *   1. The REDIS_HOST env var is set, AND
+     *   2. The PHP redis extension is loaded.
+     *
+     * Falls back to file-based storage otherwise.
+     */
+    private function createStorage(): RateLimitStorageInterface
+    {
+        $redisHost = $_ENV['REDIS_HOST'] ?? null;
+
+        if ($redisHost && extension_loaded('redis')) {
+            try {
+                $port = (int)($_ENV['REDIS_PORT'] ?? 6379);
+                $password = $_ENV['REDIS_PASSWORD'] ?? null;
+                $prefix = $_ENV['REDIS_PREFIX'] ?? 'tundua:';
+
+                return new RedisRateLimitStorage($redisHost, $port, $password, $prefix);
+            } catch (\Exception $e) {
+                // Redis connection failed — fall through to file storage
+                error_log('[RateLimitMiddleware] Redis unavailable, falling back to file storage: ' . $e->getMessage());
+            }
+        }
+
+        $storageDir = __DIR__ . '/../../storage/rate_limits';
+
+        return new FileRateLimitStorage($storageDir);
+    }
+
+    // ------------------------------------------------------------------
+    //  Configuration helpers
+    // ------------------------------------------------------------------
 
     /**
      * Check if rate limiting is enabled
@@ -138,111 +199,22 @@ class RateLimitMiddleware
 
         return [
             'max' => $this->defaultMaxRequests,
-            'window' => $this->defaultWindowMinutes
+            'window' => $this->defaultWindowMinutes,
         ];
     }
 
     /**
-     * Check if rate limit is exceeded
+     * Build storage key in the format identifier:endpoint_hash
      */
-    private function checkRateLimit(string $identifier, string $endpoint, int $maxRequests, int $windowMinutes): array
+    private function buildStorageKey(string $identifier, string $endpoint): string
     {
-        $key = $this->getStorageKey($identifier, $endpoint);
-        $filePath = $this->getStorageFilePath($key);
-
-        // If file doesn't exist, no requests recorded yet
-        if (!file_exists($filePath)) {
-            return [
-                'exceeded' => false,
-                'current' => 0,
-                'limit' => $maxRequests,
-                'remaining' => $maxRequests,
-                'reset' => time() + ($windowMinutes * 60)
-            ];
-        }
-
-        // Read existing data
-        $data = json_decode(file_get_contents($filePath), true);
-
-        if (!$data) {
-            return [
-                'exceeded' => false,
-                'current' => 0,
-                'limit' => $maxRequests,
-                'remaining' => $maxRequests,
-                'reset' => time() + ($windowMinutes * 60)
-            ];
-        }
-
-        // Check if window has expired
-        $now = time();
-        if ($now >= $data['reset']) {
-            // Window expired, reset
-            return [
-                'exceeded' => false,
-                'current' => 0,
-                'limit' => $maxRequests,
-                'remaining' => $maxRequests,
-                'reset' => $now + ($windowMinutes * 60)
-            ];
-        }
-
-        // Check if limit exceeded
-        $current = $data['count'];
-        $remaining = max(0, $maxRequests - $current);
-        $exceeded = $current >= $maxRequests;
-
-        return [
-            'exceeded' => $exceeded,
-            'current' => $current,
-            'limit' => $maxRequests,
-            'remaining' => $remaining,
-            'reset' => $data['reset']
-        ];
+        $endpointHash = md5($endpoint);
+        return "{$identifier}:{$endpointHash}";
     }
 
-    /**
-     * Record a request
-     */
-    private function recordRequest(string $identifier, string $endpoint, int $windowMinutes): void
-    {
-        $key = $this->getStorageKey($identifier, $endpoint);
-        $filePath = $this->getStorageFilePath($key);
-
-        $data = [
-            'count' => 1,
-            'reset' => time() + ($windowMinutes * 60),
-            'first_request' => time()
-        ];
-
-        if (file_exists($filePath)) {
-            $existing = json_decode(file_get_contents($filePath), true);
-
-            if ($existing && time() < $existing['reset']) {
-                $data['count'] = $existing['count'] + 1;
-                $data['reset'] = $existing['reset'];
-                $data['first_request'] = $existing['first_request'];
-            }
-        }
-
-        file_put_contents($filePath, json_encode($data));
-    }
-
-    /**
-     * Generate storage key
-     */
-    private function getStorageKey(string $identifier, string $endpoint): string
-    {
-        return md5($identifier . '_' . $endpoint);
-    }
-
-    /**
-     * Get file path for storage
-     */
-    private function getStorageFilePath(string $key): string
-    {
-        return $this->storageDir . '/' . $key . '.json';
-    }
+    // ------------------------------------------------------------------
+    //  Response helpers
+    // ------------------------------------------------------------------
 
     /**
      * Return rate limit exceeded response
@@ -251,11 +223,13 @@ class RateLimitMiddleware
     {
         $response = new \Slim\Psr7\Response();
 
+        $retryAfter = max(0, $rateLimitData['reset'] - time());
+
         $body = json_encode([
             'success' => false,
             'error' => 'Rate limit exceeded',
             'message' => 'Too many requests. Please try again later.',
-            'retry_after' => $rateLimitData['reset'] - time()
+            'retry_after' => $retryAfter,
         ]);
 
         $response->getBody()->write($body);
@@ -266,7 +240,7 @@ class RateLimitMiddleware
             ->withHeader('X-RateLimit-Limit', (string)$rateLimitData['limit'])
             ->withHeader('X-RateLimit-Remaining', '0')
             ->withHeader('X-RateLimit-Reset', (string)$rateLimitData['reset'])
-            ->withHeader('Retry-After', (string)($rateLimitData['reset'] - time()));
+            ->withHeader('Retry-After', (string)$retryAfter);
     }
 
     /**
@@ -280,31 +254,18 @@ class RateLimitMiddleware
             ->withHeader('X-RateLimit-Reset', (string)$rateLimitData['reset']);
     }
 
+    // ------------------------------------------------------------------
+    //  Cleanup (file storage only)
+    // ------------------------------------------------------------------
+
     /**
-     * Clean up old rate limit files (call periodically via cron)
+     * Clean up old rate limit files (call periodically via cron).
+     *
+     * This only applies to file-based storage. Redis keys expire
+     * automatically via native TTL.
      */
     public static function cleanup(): int
     {
-        $storageDir = __DIR__ . '/../../storage/rate_limits';
-        $deleted = 0;
-
-        if (!is_dir($storageDir)) {
-            return 0;
-        }
-
-        $files = glob($storageDir . '/*.json');
-        $now = time();
-
-        foreach ($files as $file) {
-            $data = json_decode(file_get_contents($file), true);
-
-            // Delete if reset time has passed
-            if ($data && $now >= $data['reset']) {
-                unlink($file);
-                $deleted++;
-            }
-        }
-
-        return $deleted;
+        return FileRateLimitStorage::cleanup();
     }
 }

@@ -22,7 +22,7 @@ export async function GET() {
       );
     }
 
-    const backendUrl = `${API_URL}/api/auth/me`;
+    const backendUrl = `${API_URL}/api/v1/auth/me`;
 
     const response = await fetch(backendUrl, {
       headers: {

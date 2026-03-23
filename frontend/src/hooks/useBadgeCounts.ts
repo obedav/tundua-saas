@@ -37,7 +37,7 @@ export function useBadgeCounts() {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
 
-        const response = await fetch('/api/dashboard/badge-counts', {
+        const response = await fetch('/api/v1/dashboard/badge-counts', {
           credentials: 'include',
           signal: controller.signal,
           headers: {

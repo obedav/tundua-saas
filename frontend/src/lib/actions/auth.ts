@@ -45,7 +45,7 @@ export async function loginAction(
     }
 
     // Call backend API
-    const response = await fetch(`${API_URL}/api/auth/login`, {
+    const response = await fetch(`${API_URL}/api/v1/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ export async function registerAction(
       }
     }
 
-    const response = await fetch(`${API_URL}/api/auth/register`, {
+    const response = await fetch(`${API_URL}/api/v1/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -171,7 +171,7 @@ export async function logoutAction() {
     const token = cookieStore.get('auth_token')?.value
 
     if (token) {
-      await fetch(`${API_URL}/api/auth/logout`, {
+      await fetch(`${API_URL}/api/v1/auth/logout`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -204,7 +204,7 @@ export async function getCurrentUser() {
       return null
     }
 
-    const response = await fetch(`${API_URL}/api/auth/me`, {
+    const response = await fetch(`${API_URL}/api/v1/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -253,7 +253,7 @@ export async function updateProfileAction(
       phone: formData.get('phone') as string,
     }
 
-    const response = await fetch(`${API_URL}/api/auth/me`, {
+    const response = await fetch(`${API_URL}/api/v1/auth/me`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

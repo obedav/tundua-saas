@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     // Get the form data from the request
     const formData = await request.formData();
 
-    const url = `${API_URL}/api/documents/upload`;
+    const url = `${API_URL}/api/v1/documents/upload`;
 
     const response = await fetch(url, {
       method: 'POST',

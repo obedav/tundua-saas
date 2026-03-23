@@ -22,7 +22,7 @@ export async function getAdminArticles(params?: { page?: number; per_page?: numb
     if (params?.per_page) searchParams.set('per_page', String(params.per_page));
     if (params?.category) searchParams.set('category', params.category);
 
-    const url = `${API_URL}/api/admin/knowledge-base${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
+    const url = `${API_URL}/api/v1/admin/knowledge-base${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
     const response = await fetch(url, { headers });
 
     const result = await response.json();
@@ -45,7 +45,7 @@ export async function createArticle(data: {
 }) {
   try {
     const headers = await getAuthHeaders();
-    const response = await fetch(`${API_URL}/api/admin/knowledge-base`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/knowledge-base`, {
       method: 'POST',
       headers,
       body: JSON.stringify(data),
@@ -71,7 +71,7 @@ export async function updateArticle(id: number, data: {
 }) {
   try {
     const headers = await getAuthHeaders();
-    const response = await fetch(`${API_URL}/api/admin/knowledge-base/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/knowledge-base/${id}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify(data),
@@ -88,7 +88,7 @@ export async function updateArticle(id: number, data: {
 export async function deleteArticle(id: number) {
   try {
     const headers = await getAuthHeaders();
-    const response = await fetch(`${API_URL}/api/admin/knowledge-base/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/knowledge-base/${id}`, {
       method: 'DELETE',
       headers,
     });

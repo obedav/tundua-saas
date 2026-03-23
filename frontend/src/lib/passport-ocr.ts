@@ -109,6 +109,7 @@ export async function extractPassportText(imageFile: File): Promise<string> {
       workerPath: "/tesseract/worker.min.js",
       corePath: "/tesseract/tesseract-core-simd.wasm.js",
       langPath: "/tesseract",
+      gzip: false,
     });
 
     try {

@@ -33,7 +33,7 @@ export default function UserAnalytics() {
   const fetchUserAnalytics = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/admin/analytics?period=180', {
+      const response = await fetch('/api/v1/admin/analytics?period=180', {
         credentials: 'include',
       });
 

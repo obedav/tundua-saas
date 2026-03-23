@@ -19,7 +19,7 @@ export async function GET(
       );
     }
 
-    const url = `${API_URL}/api/admin/users/${id}`;
+    const url = `${API_URL}/api/v1/admin/users/${id}`;
 
     const response = await fetch(url, {
       headers: {
@@ -77,7 +77,7 @@ export async function PUT(
     }
 
     const body = await _request.json();
-    const url = `${API_URL}/api/admin/users/${id}`;
+    const url = `${API_URL}/api/v1/admin/users/${id}`;
 
     const response = await fetch(url, {
       method: 'PUT',

@@ -17,27 +17,23 @@ const nextConfig = {
 eslint: {
     ignoreDuringBuilds: true,
   },
-  // Turbopack configuration for monorepo
-  // Note: When deploying to Vercel with rootDirectory set in vercel.json,
-  // these paths should not reference parent directory
-  // turbopack: {
-  //   root: path.join(__dirname, '..'),
-  // },
+
+  // Turbopack - stable in Next.js 15, enabled for faster dev builds
+  // Note: Turbopack is automatically used with `next dev --turbopack`
+  // No explicit config needed unless customizing resolve aliases
 
   // Output file tracing root - set to frontend directory to avoid lockfile confusion
   outputFileTracingRoot: __dirname,
 
   // Enable experimental features for Next.js 15
   experimental: {
-    // ⏸️  DISABLED: Partial Prerendering (PPR) - Only available in canary
-    // Uncomment when upgrading to Next.js canary for bleeding-edge performance
+    // Partial Prerendering (PPR) - Enable when upgrading to Next.js canary/16
+    // Combines static shell with streaming dynamic content for best TTFB
     // ppr: 'incremental',
 
-    // ⏸️  DISABLED: React Compiler - Only available in Next.js canary
-    // Uncomment when React 19 compiler is stable
+    // React Compiler - Enable when stable (eliminates manual useMemo/useCallback)
+    // Expected stable in React 19.x / Next.js 16
     // reactCompiler: true,
-
-    // ✅ Instrumentation enabled by default in Next.js 15 (no longer needs explicit config)
 
     // ✅ Server Actions enabled by default in Next.js 15
     serverActions: {

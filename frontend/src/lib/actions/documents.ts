@@ -45,7 +45,7 @@ export async function uploadDocumentAction(
       return { success: false, error: 'No file provided' }
     }
 
-    const response = await fetch(`${API_URL}/api/documents/upload`, {
+    const response = await fetch(`${API_URL}/api/v1/documents/upload`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -85,7 +85,7 @@ export async function getApplicationDocuments(applicationId: number) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/documents/application/${applicationId}`, {
+    const response = await fetch(`${API_URL}/api/v1/documents/application/${applicationId}`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: [`documents-${applicationId}`, 'documents'],
@@ -116,7 +116,7 @@ export async function deleteDocumentAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/documents/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/documents/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -156,7 +156,7 @@ export async function downloadDocumentAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/documents/${id}/download`, {
+    const response = await fetch(`${API_URL}/api/v1/documents/${id}/download`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -191,7 +191,7 @@ export async function getDocumentTypes() {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/documents/types`, {
+    const response = await fetch(`${API_URL}/api/v1/documents/types`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         revalidate: 3600, // Cache for 1 hour (rarely changes)

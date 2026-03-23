@@ -19,7 +19,7 @@ export async function GET(
       );
     }
 
-    const url = `${API_URL}/api/admin/applications/${id}`;
+    const url = `${API_URL}/api/v1/admin/applications/${id}`;
 
     const response = await fetch(url, {
       headers: {

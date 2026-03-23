@@ -20,7 +20,7 @@ export async function POST(
     }
 
     const body = await request.json();
-    const url = `${API_URL}/api/admin/users/${id}/suspend`;
+    const url = `${API_URL}/api/v1/admin/users/${id}/suspend`;
 
     const response = await fetch(url, {
       method: 'POST',

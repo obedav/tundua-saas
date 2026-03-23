@@ -22,7 +22,7 @@ export async function GET(
 
     const { id } = await params
 
-    const response = await fetch(`${API_URL}/api/applications/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/applications/${id}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export async function PUT(
     const { id } = await params
     const body = await _request.json()
 
-    const response = await fetch(`${API_URL}/api/applications/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/applications/${id}`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -97,7 +97,7 @@ export async function DELETE(
 
     const { id } = await params
 
-    const response = await fetch(`${API_URL}/api/applications/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/applications/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,

@@ -32,7 +32,7 @@ export default function RevenueAnalytics() {
   const fetchRevenueData = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/admin/analytics?period=' + timeRange, {
+      const response = await fetch('/api/v1/admin/analytics?period=' + timeRange, {
         credentials: 'include',
       });
 

@@ -35,7 +35,7 @@ export function middleware(_request: NextRequest) {
       img-src 'self' blob: data: https:;
       font-src 'self' data:;
       worker-src 'self' blob:;
-      connect-src 'self' ${apiUrl} ${appUrl} https://www.google-analytics.com https://*.pusher.com wss://*.pusher.com https://sockjs.pusher.com;
+      connect-src 'self' blob: data: ${apiUrl} ${appUrl} https://www.google-analytics.com https://*.pusher.com wss://*.pusher.com https://sockjs.pusher.com;
       object-src 'none';
       base-uri 'self';
       form-action 'self';
@@ -94,6 +94,19 @@ export function middleware(_request: NextRequest) {
    * Legacy header, but still good for older browsers
    */
   response.headers.set('X-XSS-Protection', '1; mode=block');
+
+  /**
+   * Cross-Origin-Opener-Policy (2026 standard)
+   * Prevents cross-origin documents from sharing a browsing context
+   */
+  response.headers.set('Cross-Origin-Opener-Policy', 'same-origin');
+
+  /**
+   * Cross-Origin-Embedder-Policy (2026 standard)
+   * Prevents loading cross-origin resources without explicit permission
+   * Use 'credentialless' instead of 'require-corp' for better compatibility
+   */
+  response.headers.set('Cross-Origin-Embedder-Policy', 'credentialless');
 
   return response;
 }

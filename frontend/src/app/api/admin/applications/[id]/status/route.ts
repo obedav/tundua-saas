@@ -21,7 +21,7 @@ export async function PUT(
 
     const body = await request.json();
 
-    const url = `${API_URL}/api/admin/applications/${id}/status`;
+    const url = `${API_URL}/api/v1/admin/applications/${id}/status`;
 
     const response = await fetch(url, {
       method: 'PUT',

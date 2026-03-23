@@ -20,7 +20,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const url = `${API_URL}/api/admin/documents/${id}/review`;
+    const url = `${API_URL}/api/v1/admin/documents/${id}/review`;
 
     const response = await fetch(url, {
       method: 'PUT',

@@ -33,7 +33,7 @@ export async function getUserAddOns(status?: string) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const url = new URL(`${API_URL}/api/addons/purchased`)
+    const url = new URL(`${API_URL}/api/v1/addons/purchased`)
     if (status) url.searchParams.set('status', status)
 
     const response = await fetch(url.toString(), {
@@ -75,7 +75,7 @@ export async function purchaseAddOnAction(
       return { success: false, error: 'Add-on service and application are required' }
     }
 
-    const response = await fetch(`${API_URL}/api/addons/purchase`, {
+    const response = await fetch(`${API_URL}/api/v1/addons/purchase`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ export async function getAddOnOrder(id: number) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/addons/orders/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/addons/orders/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: [`addon-order-${id}`],
@@ -141,7 +141,7 @@ export async function getApplicationAddOns(applicationId: number) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/addons/application/${applicationId}`, {
+    const response = await fetch(`${API_URL}/api/v1/addons/application/${applicationId}`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: [`application-addons-${applicationId}`],

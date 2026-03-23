@@ -38,7 +38,7 @@ export async function initializePaystackAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/payments/paystack/initialize`, {
+    const response = await fetch(`${API_URL}/api/v1/payments/paystack/initialize`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export async function verifyPaystackAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/payments/paystack/verify/${reference}`, {
+    const response = await fetch(`${API_URL}/api/v1/payments/paystack/verify/${reference}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -110,7 +110,7 @@ export async function createStripeCheckoutAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/payments/stripe/create-checkout`, {
+    const response = await fetch(`${API_URL}/api/v1/payments/stripe/create-checkout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ export async function initiateMpesaPaymentAction(
       return { success: false, error: 'Application ID and phone number are required' }
     }
 
-    const response = await fetch(`${API_URL}/api/payments/mpesa/initiate`, {
+    const response = await fetch(`${API_URL}/api/v1/payments/mpesa/initiate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -189,7 +189,7 @@ export async function getPaymentStatus(id: number) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/payments/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/payments/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: [`payment-${id}`],
@@ -215,7 +215,7 @@ export async function getUserPayments(status?: string) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const url = new URL(`${API_URL}/api/payments/history`)
+    const url = new URL(`${API_URL}/api/v1/payments/history`)
     if (status) url.searchParams.set('status', status)
 
     const response = await fetch(url.toString(), {
@@ -260,7 +260,7 @@ export async function requestRefundAction(
       return { success: false, error: 'Application ID and reason are required' }
     }
 
-    const response = await fetch(`${API_URL}/api/refunds`, {
+    const response = await fetch(`${API_URL}/api/v1/refunds`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -298,7 +298,7 @@ export async function getUserRefunds() {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/refunds/user`, {
+    const response = await fetch(`${API_URL}/api/v1/refunds/user`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['refunds'],
@@ -324,7 +324,7 @@ export async function getRefund(id: number) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/refunds/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/refunds/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: [`refund-${id}`],
@@ -362,7 +362,7 @@ export async function signRefundAgreementAction(
       return { success: false, error: 'Signature is required' }
     }
 
-    const response = await fetch(`${API_URL}/api/refunds/${id}/sign`, {
+    const response = await fetch(`${API_URL}/api/v1/refunds/${id}/sign`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -400,7 +400,7 @@ export async function downloadRefundAgreementAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/refunds/${id}/agreement`, {
+    const response = await fetch(`${API_URL}/api/v1/refunds/${id}/agreement`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -19,7 +19,7 @@ export async function GET(
       );
     }
 
-    const url = `${API_URL}/api/documents/${id}`;
+    const url = `${API_URL}/api/v1/documents/${id}`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -63,7 +63,7 @@ export async function DELETE(
       );
     }
 
-    const url = `${API_URL}/api/documents/${id}`;
+    const url = `${API_URL}/api/v1/documents/${id}`;
 
     const response = await fetch(url, {
       method: 'DELETE',

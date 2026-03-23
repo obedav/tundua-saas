@@ -48,7 +48,7 @@ export default function LoginForm() {
 
 
   const handleSocialLogin = async (_provider: 'google') => {
-    window.location.href = `${process.env['NEXT_PUBLIC_API_URL']}/api/auth/google?user_type=student`;
+    window.location.href = `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/auth/google?user_type=student`;
   };
 
   const onSubmit = async (data: LoginFormData) => {

@@ -33,7 +33,7 @@ export async function getUserReferrals() {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/referrals`, {
+    const response = await fetch(`${API_URL}/api/v1/referrals`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['referrals'],
@@ -71,7 +71,7 @@ export async function createReferralAction(
       return { success: false, error: 'Email is required' }
     }
 
-    const response = await fetch(`${API_URL}/api/referrals`, {
+    const response = await fetch(`${API_URL}/api/v1/referrals`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ export async function claimReferralRewardAction(
       return { success: false, error: 'Not authenticated' }
     }
 
-    const response = await fetch(`${API_URL}/api/referrals/${id}/claim`, {
+    const response = await fetch(`${API_URL}/api/v1/referrals/${id}/claim`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,

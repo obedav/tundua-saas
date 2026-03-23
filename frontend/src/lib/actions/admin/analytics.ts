@@ -26,7 +26,7 @@ export async function getAnalytics() {
     const token = await getAuthToken()
     if (!token) return null
 
-    const response = await fetch(`${API_URL}/api/admin/analytics`, {
+    const response = await fetch(`${API_URL}/api/v1/admin/analytics`, {
       headers: { Authorization: `Bearer ${token}` },
       next: {
         tags: ['admin-analytics'],
@@ -52,7 +52,7 @@ export async function getAdminActivity(params?: { limit?: number }) {
     const token = await getAuthToken()
     if (!token) return null
 
-    const url = new URL(`${API_URL}/api/admin/activity`)
+    const url = new URL(`${API_URL}/api/v1/admin/activity`)
     if (params?.limit) {
       url.searchParams.set('limit', String(params.limit))
     }
