@@ -126,7 +126,7 @@ By signing below, I acknowledge that I have read, understood, and agree to these
       formData.append('file', pdfBlob, `refund-agreement-${applicationRef}.pdf`);
       formData.append('application_ref', applicationRef);
 
-      const response = await fetch('/api/v1/refunds/upload-agreement', {
+      const response = await fetch('/api/refunds/upload-agreement', {
         method: 'POST',
         body: formData,
       });

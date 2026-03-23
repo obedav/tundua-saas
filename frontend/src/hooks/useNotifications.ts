@@ -20,7 +20,7 @@ export function useNotifications() {
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch('/api/v1/notifications', {
+      const response = await fetch('/api/notifications', {
         credentials: 'include',
       });
 
@@ -47,7 +47,7 @@ export function useNotifications() {
 
   const markAsRead = async (notificationId: string) => {
     try {
-      await fetch(`/api/v1/notifications/${notificationId}/read`, {
+      await fetch(`/api/notifications/${notificationId}/read`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -65,7 +65,7 @@ export function useNotifications() {
 
   const markAllAsRead = async () => {
     try {
-      await fetch('/api/v1/notifications/read-all', {
+      await fetch('/api/notifications/read-all', {
         method: 'POST',
         credentials: 'include',
       });
@@ -79,7 +79,7 @@ export function useNotifications() {
 
   const deleteNotification = async (notificationId: string) => {
     try {
-      await fetch(`/api/v1/notifications/${notificationId}`, {
+      await fetch(`/api/notifications/${notificationId}`, {
         method: 'DELETE',
         credentials: 'include',
       });

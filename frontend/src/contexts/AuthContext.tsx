@@ -64,7 +64,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const checkAuth = useCallback(async () => {
     console.log('🔐 AuthContext: Checking authentication...');
     try {
-      const response = await fetch('/api/v1/auth/me', {
+      const response = await fetch('/api/auth/me', {
         credentials: 'include', // Include cookies
       });
 
