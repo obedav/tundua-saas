@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckCircle, Circle, Clock } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface ProgressStep {
   id: number;
@@ -16,9 +17,10 @@ interface SmartProgressTrackerProps {
 }
 
 export default function SmartProgressTracker({
-  applicationId: _applicationId,
+  applicationId,
   applicationStatus = "draft",
 }: SmartProgressTrackerProps) {
+  const router = useRouter();
   // Generate steps based on application status
   const getSteps = (): ProgressStep[] => {
     const statusMap: Record<string, number> = {
@@ -147,7 +149,18 @@ export default function SmartProgressTracker({
 
                   {step.status === "current" && (
                     <div className="mt-3">
-                      <button className="text-sm bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
+                      <button
+                        onClick={() => {
+                          if (applicationStatus === "draft" && applicationId) {
+                            router.push(`/dashboard/applications/new?id=${applicationId}`);
+                          } else if (applicationId) {
+                            router.push(`/dashboard/applications/${applicationId}`);
+                          } else {
+                            router.push("/dashboard/applications/new");
+                          }
+                        }}
+                        className="text-sm bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
+                      >
                         Continue
                       </button>
                     </div>
