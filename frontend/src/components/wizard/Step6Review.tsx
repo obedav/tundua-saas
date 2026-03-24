@@ -311,7 +311,11 @@ export default function Step6Review({ data, onBack, onSubmit, isSubmitting }: Pr
         <p className="text-sm text-yellow-900 dark:text-yellow-300 flex items-start gap-3">
           <AlertCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
           <span>
-            <strong>Important:</strong> By submitting this application, you agree to our Terms of Service and understand that payment will be required to process your application. You can review and make changes before payment.
+            <strong>Important:</strong> By submitting this application, you agree to our Terms of Service.{' '}
+            {(data.total_amount || data.base_price || 0) > 0
+              ? 'Payment will be required to process your application. You can review and make changes before payment.'
+              : 'Your free application will be submitted for review.'
+            }
           </span>
         </p>
       </div>
@@ -347,7 +351,10 @@ export default function Step6Review({ data, onBack, onSubmit, isSubmitting }: Pr
       </div>
 
       <p className="text-sm text-center text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
-        🎉 After submission, you&apos;ll be redirected to complete the payment to finalize your application.
+        {(data.total_amount || data.base_price || 0) > 0
+          ? "After submission, you'll be redirected to complete payment."
+          : "Your application will be submitted for review immediately."
+        }
       </p>
     </div>
   );

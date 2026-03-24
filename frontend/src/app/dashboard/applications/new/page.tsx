@@ -207,10 +207,16 @@ export default function NewApplicationPage() {
         await apiClient.submitApplication(applicationId);
       }
 
-      toast.success("Application submitted! Redirecting to payment...");
+      // Free tier: skip payment, go to dashboard
+      const isFree = !formData.total_amount || formData.total_amount === 0 || formData.base_price === 0;
 
-      // Redirect to payment page
-      router.push(`/dashboard/applications/${finalApplicationId}/payment`);
+      if (isFree) {
+        toast.success("Application submitted successfully!");
+        router.push("/dashboard/applications");
+      } else {
+        toast.success("Application submitted! Redirecting to payment...");
+        router.push(`/dashboard/applications/${finalApplicationId}/payment`);
+      }
     } catch (error: any) {
       console.error("Submit error:", error);
       toast.error(
