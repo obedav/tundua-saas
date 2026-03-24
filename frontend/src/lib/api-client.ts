@@ -28,7 +28,8 @@ class ApiClient {
         if (
           config.url?.includes('/api/v1/admin/') ||
           config.url?.includes('/api/v1/applications') ||
-          config.url?.includes('/api/v1/documents/')
+          config.url?.includes('/api/v1/documents/') ||
+          config.url?.includes('/api/v1/payments/')
         ) {
           // Use relative URL to hit Next.js API routes (which are at /api/, not /api/v1/)
           config.baseURL = '';

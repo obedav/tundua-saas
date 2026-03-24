@@ -325,7 +325,7 @@ export default async function ApplicationDetailPage({
               </Link>
             )}
 
-            {application.payment_status === "pending" && (
+            {application.payment_status === "pending" && parseFloat(application.total_amount) > 0 && (
               <Link
                 href={`/dashboard/applications/${application.id}/payment`}
                 className="block w-full mt-6 bg-green-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"

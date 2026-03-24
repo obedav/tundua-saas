@@ -265,7 +265,15 @@ class Application extends Model
                 return false;
             }
 
-            $application->status = 'payment_pending';
+            $isFree = !$application->total_amount || floatval($application->total_amount) == 0;
+
+            if ($isFree) {
+                $application->status = 'submitted';
+                $application->payment_status = 'paid';
+            } else {
+                $application->status = 'payment_pending';
+            }
+
             $application->submitted_at = \Carbon\Carbon::now();
             $application->completion_percentage = 100;
             $application->save();
