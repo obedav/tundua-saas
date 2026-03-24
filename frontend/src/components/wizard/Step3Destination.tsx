@@ -14,7 +14,7 @@ const schema = z.object({
   program_type: z.string().min(1, "Program type is required"),
   intended_major: z.string().min(2, "Intended major is required"),
   intake_season: z.string().min(1, "Intake season is required"),
-  intake_year: z.coerce.number().min(2024).max(2030),
+  intake_year: z.coerce.number().min(2026).max(2030),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -206,7 +206,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
             </div>
             <select
               {...register("destination_country")}
-              className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white dark:bg-gray-700 dark:text-white disabled:opacity-50"
+              className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white disabled:opacity-50"
               disabled={loadingCountries}
             >
               <option value="">
@@ -333,7 +333,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
                         value={customUniversity}
                         onChange={(e) => setCustomUniversity(e.target.value)}
                         placeholder="Enter university name"
-                        className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
+                        className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 dark:bg-gray-700 dark:text-white"
                         onKeyPress={(e) => {
                           if (e.key === "Enter") {
                             e.preventDefault();
@@ -381,7 +381,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
             </div>
             <select
               {...register("program_type")}
-              className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white dark:bg-gray-700 dark:text-white"
+              className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white"
             >
               <option value="">Select program type</option>
               <option value="undergraduate">Undergraduate (Bachelor&apos;s)</option>
@@ -409,7 +409,7 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
             <input
               type="text"
               {...register("intended_major")}
-              className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
+              className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 dark:bg-gray-700 dark:text-white"
               placeholder="e.g., Computer Science, MBA, Data Science"
             />
           </div>
@@ -432,13 +432,15 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
               </div>
               <select
                 {...register("intake_season")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white dark:bg-gray-700 dark:text-white"
+                className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white"
               >
                 <option value="">Select intake</option>
-                <option value="Spring 2025">Spring 2025</option>
-                <option value="Fall 2025">Fall 2025</option>
-                <option value="Spring 2026">Spring 2026</option>
+                <option value="Summer 2026">Summer 2026</option>
                 <option value="Fall 2026">Fall 2026</option>
+                <option value="Spring 2027">Spring 2027</option>
+                <option value="Summer 2027">Summer 2027</option>
+                <option value="Fall 2027">Fall 2027</option>
+                <option value="Spring 2028">Spring 2028</option>
               </select>
             </div>
             {errors.intake_season && (
@@ -459,9 +461,9 @@ export default function Step3Destination({ data, updateData, onNext }: Props) {
               <input
                 type="number"
                 {...register("intake_year")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
-                placeholder="2025"
-                min="2024"
+                className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 dark:bg-gray-700 dark:text-white"
+                placeholder="2027"
+                min="2026"
                 max="2030"
               />
             </div>

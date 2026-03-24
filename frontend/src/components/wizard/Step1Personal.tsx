@@ -32,7 +32,7 @@ interface Props {
 }
 
 /** Reusable input classes */
-const inputClass = "block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white";
+const inputClass = "block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm hover:border-primary-400 dark:bg-gray-700 dark:text-white";
 const selectClass = `${inputClass} bg-white dark:bg-gray-700`;
 const iconClass = "h-4 w-4 text-gray-400 group-focus-within:text-primary-500 transition-colors";
 

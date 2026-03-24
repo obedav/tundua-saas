@@ -220,7 +220,7 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
               </div>
               <select
                 {...register("highest_education")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white dark:bg-gray-700 dark:text-white"
+                className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white"
               >
                 <option value="">Select education level</option>
                 <option value="High School">High School</option>
@@ -262,7 +262,7 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
               <input
                 type="text"
                 {...register("field_of_study")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
+                className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 dark:bg-gray-700 dark:text-white"
                 placeholder={isHighSchool ? "e.g., General Studies (optional)" : "e.g., Computer Science, Business Administration"}
               />
             </div>
@@ -285,7 +285,7 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
               <input
                 type="text"
                 {...register("institution_name")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
+                className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 dark:bg-gray-700 dark:text-white"
                 placeholder={isHighSchool ? "e.g., Lincoln High School" : "e.g., University of California"}
               />
             </div>
@@ -307,26 +307,40 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Start Date */}
               <div className="group space-y-2">
-                <label htmlFor="institution_start_date" className="block text-sm font-semibold text-gray-900 dark:text-white">
+                <label className="block text-sm font-semibold text-gray-900 dark:text-white">
                   Start Date <span className="text-red-500">*</span>
                 </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                    <Calendar className="h-5 w-5 text-gray-400 group-focus-within:text-primary-500 transition-colors" />
-                  </div>
-                  <input
-                    type="month"
-                    {...register("institution_start_date")}
-                    min="1980-01"
-                    max="2035-12"
-                    className="block w-full pl-10 pr-4 py-3.5 border-2 border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm hover:border-primary-300 bg-white dark:bg-gray-700 dark:text-white font-medium"
-                    placeholder="Select month and year"
-                  />
+                <input type="hidden" {...register("institution_start_date")} />
+                <div className="flex gap-2">
+                  <select
+                    className="flex-1 py-3 px-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white font-medium"
+                    value={watch("institution_start_date")?.split("-")[1] || ""}
+                    onChange={(e) => {
+                      const year = watch("institution_start_date")?.split("-")[0] || "";
+                      setValue("institution_start_date", year && e.target.value ? `${year}-${e.target.value}` : "");
+                    }}
+                  >
+                    <option value="">Month</option>
+                    {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m, i) => (
+                      <option key={m} value={String(i + 1).padStart(2, "0")}>{m}</option>
+                    ))}
+                  </select>
+                  <select
+                    className="flex-1 py-3 px-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white font-medium"
+                    value={watch("institution_start_date")?.split("-")[0] || ""}
+                    onChange={(e) => {
+                      const month = watch("institution_start_date")?.split("-")[1] || "";
+                      setValue("institution_start_date", e.target.value && month ? `${e.target.value}-${month}` : "");
+                    }}
+                  >
+                    <option value="">Year</option>
+                    {Array.from({ length: 46 }, (_, i) => 1990 + i).map(y => (
+                      <option key={y} value={y}>{y}</option>
+                    ))}
+                  </select>
                 </div>
                 {errors.institution_start_date && (
-                  <p className="text-sm text-red-600 flex items-center gap-1">
-                    <span className="text-red-500">⚠</span> {errors.institution_start_date.message}
-                  </p>
+                  <p className="text-xs text-red-600">{errors.institution_start_date.message}</p>
                 )}
                 <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
                   <Info className="h-3 w-3" />
@@ -336,27 +350,42 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
 
               {/* End Date */}
               <div className="group space-y-2">
-                <label htmlFor="institution_end_date" className="block text-sm font-semibold text-gray-900 dark:text-white">
+                <label className="block text-sm font-semibold text-gray-900 dark:text-white">
                   End Date <span className="text-red-500">*</span>
                 </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                    <Calendar className="h-5 w-5 text-gray-400 group-focus-within:text-primary-500 transition-colors" />
-                  </div>
-                  <input
-                    type="month"
-                    {...register("institution_end_date")}
-                    min="1980-01"
-                    max="2035-12"
+                <input type="hidden" {...register("institution_end_date")} />
+                <div className="flex gap-2">
+                  <select
                     disabled={isCurrentlyStudying}
-                    className="block w-full pl-10 pr-4 py-3.5 border-2 border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm hover:border-primary-300 bg-white dark:bg-gray-700 dark:text-white font-medium disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
-                    placeholder="Select month and year"
-                  />
+                    className="flex-1 py-3 px-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white font-medium disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
+                    value={watch("institution_end_date")?.split("-")[1] || ""}
+                    onChange={(e) => {
+                      const year = watch("institution_end_date")?.split("-")[0] || "";
+                      setValue("institution_end_date", year && e.target.value ? `${year}-${e.target.value}` : "");
+                    }}
+                  >
+                    <option value="">Month</option>
+                    {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m, i) => (
+                      <option key={m} value={String(i + 1).padStart(2, "0")}>{m}</option>
+                    ))}
+                  </select>
+                  <select
+                    disabled={isCurrentlyStudying}
+                    className="flex-1 py-3 px-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white font-medium disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
+                    value={watch("institution_end_date")?.split("-")[0] || ""}
+                    onChange={(e) => {
+                      const month = watch("institution_end_date")?.split("-")[1] || "";
+                      setValue("institution_end_date", e.target.value && month ? `${e.target.value}-${month}` : "");
+                    }}
+                  >
+                    <option value="">Year</option>
+                    {Array.from({ length: 46 }, (_, i) => 1990 + i).map(y => (
+                      <option key={y} value={y}>{y}</option>
+                    ))}
+                  </select>
                 </div>
                 {errors.institution_end_date && !isCurrentlyStudying && (
-                  <p className="text-sm text-red-600 flex items-center gap-1">
-                    <span className="text-red-500">⚠</span> {errors.institution_end_date.message}
-                  </p>
+                  <p className="text-xs text-red-600">{errors.institution_end_date.message}</p>
                 )}
                 <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
                   <Info className="h-3 w-3" />
@@ -475,7 +504,7 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
               <input
                 type="number"
                 {...register("graduation_year")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
+                className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 dark:bg-gray-700 dark:text-white"
                 placeholder="2024"
                 min="1990"
                 max="2030"
@@ -502,7 +531,7 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
                 type="number"
                 step="0.01"
                 {...register("gpa")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
+                className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 dark:bg-gray-700 dark:text-white"
                 placeholder={isHighSchool ? "e.g., 3.5 (optional)" : "e.g., 3.5"}
                 min="0"
                 max="4.0"
@@ -544,7 +573,7 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
               </div>
               <select
                 {...register("english_test_type")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 bg-white dark:bg-gray-700 dark:text-white"
+                className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white"
               >
                 <option value="">Select test</option>
                 <option value="TOEFL">TOEFL</option>
@@ -568,7 +597,7 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
               <input
                 type="text"
                 {...register("english_test_score")}
-                className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-gray-400 dark:bg-gray-700 dark:text-white"
+                className="block w-full pl-10 pr-4 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all sm:text-sm hover:border-primary-400 dark:bg-gray-700 dark:text-white"
                 placeholder="e.g., 100, 7.5"
               />
             </div>
