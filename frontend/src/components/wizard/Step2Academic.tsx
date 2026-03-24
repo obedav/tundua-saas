@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -145,6 +145,12 @@ const getDocumentRequirements = (educationLevel: string) => {
 export default function Step2Academic({ data, updateData, onNext }: Props) {
   const [isCurrentlyStudying, setIsCurrentlyStudying] = React.useState(false);
 
+  // Date picker state — separate month/year for reliable selection
+  const [startMonth, setStartMonth] = useState(data.institution_start_date?.split("-")[1] || "");
+  const [startYear, setStartYear] = useState(data.institution_start_date?.split("-")[0] || "");
+  const [endMonth, setEndMonth] = useState(data.institution_end_date?.split("-")[1] || "");
+  const [endYear, setEndYear] = useState(data.institution_end_date?.split("-")[0] || "");
+
   const {
     register,
     handleSubmit,
@@ -182,14 +188,33 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
     }
   }, [isHighSchool, errors.field_of_study, errors.gpa, clearErrors]);
 
+  // Sync date selects → hidden form fields
+  const syncStartDate = useCallback((m: string, y: string) => {
+    setStartMonth(m);
+    setStartYear(y);
+    if (m && y) {
+      setValue("institution_start_date", `${y}-${m}`, { shouldValidate: true });
+    }
+  }, [setValue]);
+
+  const syncEndDate = useCallback((m: string, y: string) => {
+    setEndMonth(m);
+    setEndYear(y);
+    if (m && y) {
+      setValue("institution_end_date", `${y}-${m}`, { shouldValidate: true });
+    }
+  }, [setValue]);
+
   // Handle "Currently Studying" toggle
   const handleCurrentlyStudyingChange = (checked: boolean) => {
     setIsCurrentlyStudying(checked);
     if (checked) {
-      // Set end date to "Present" or a future date
       const futureDate = new Date();
       futureDate.setFullYear(futureDate.getFullYear() + 2);
-      const formattedDate = `${futureDate.getFullYear()}-${String(futureDate.getMonth() + 1).padStart(2, '0')}`;
+      const m = String(futureDate.getMonth() + 1).padStart(2, '0');
+      const y = String(futureDate.getFullYear());
+      syncEndDate(m, y);
+      const formattedDate = `${y}-${m}`;
       setValue("institution_end_date", formattedDate);
     }
   };
@@ -314,11 +339,8 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
                 <div className="flex gap-2">
                   <select
                     className="flex-1 py-3 px-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white font-medium"
-                    value={watch("institution_start_date")?.split("-")[1] || ""}
-                    onChange={(e) => {
-                      const year = watch("institution_start_date")?.split("-")[0] || "";
-                      setValue("institution_start_date", year && e.target.value ? `${year}-${e.target.value}` : "");
-                    }}
+                    value={startMonth}
+                    onChange={(e) => syncStartDate(e.target.value, startYear)}
                   >
                     <option value="">Month</option>
                     {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m, i) => (
@@ -327,15 +349,12 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
                   </select>
                   <select
                     className="flex-1 py-3 px-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white font-medium"
-                    value={watch("institution_start_date")?.split("-")[0] || ""}
-                    onChange={(e) => {
-                      const month = watch("institution_start_date")?.split("-")[1] || "";
-                      setValue("institution_start_date", e.target.value && month ? `${e.target.value}-${month}` : "");
-                    }}
+                    value={startYear}
+                    onChange={(e) => syncStartDate(startMonth, e.target.value)}
                   >
                     <option value="">Year</option>
                     {Array.from({ length: 46 }, (_, i) => 1990 + i).map(y => (
-                      <option key={y} value={y}>{y}</option>
+                      <option key={y} value={String(y)}>{y}</option>
                     ))}
                   </select>
                 </div>
@@ -358,11 +377,8 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
                   <select
                     disabled={isCurrentlyStudying}
                     className="flex-1 py-3 px-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white font-medium disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
-                    value={watch("institution_end_date")?.split("-")[1] || ""}
-                    onChange={(e) => {
-                      const year = watch("institution_end_date")?.split("-")[0] || "";
-                      setValue("institution_end_date", year && e.target.value ? `${year}-${e.target.value}` : "");
-                    }}
+                    value={endMonth}
+                    onChange={(e) => syncEndDate(e.target.value, endYear)}
                   >
                     <option value="">Month</option>
                     {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m, i) => (
@@ -372,15 +388,12 @@ export default function Step2Academic({ data, updateData, onNext }: Props) {
                   <select
                     disabled={isCurrentlyStudying}
                     className="flex-1 py-3 px-3 border-2 border-gray-400 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm hover:border-primary-400 bg-white dark:bg-gray-700 dark:text-white font-medium disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
-                    value={watch("institution_end_date")?.split("-")[0] || ""}
-                    onChange={(e) => {
-                      const month = watch("institution_end_date")?.split("-")[1] || "";
-                      setValue("institution_end_date", e.target.value && month ? `${e.target.value}-${month}` : "");
-                    }}
+                    value={endYear}
+                    onChange={(e) => syncEndDate(endMonth, e.target.value)}
                   >
                     <option value="">Year</option>
                     {Array.from({ length: 46 }, (_, i) => 1990 + i).map(y => (
-                      <option key={y} value={y}>{y}</option>
+                      <option key={y} value={String(y)}>{y}</option>
                     ))}
                   </select>
                 </div>
