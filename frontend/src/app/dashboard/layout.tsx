@@ -364,7 +364,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <nav className="flex-1 px-3 py-2 space-y-6 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
               <Link
                 href="/dashboard/applications/new"
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg hover:scale-105 transition-all ${
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 shadow-md shadow-primary-500/20 hover:shadow-lg hover:scale-105 transition-all ${
                   sidebarCollapsed ? 'lg:justify-center lg:px-2' : ''
                 }`}
                 onClick={() => setSidebarOpen(false)}
