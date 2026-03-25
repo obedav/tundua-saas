@@ -22,13 +22,26 @@ class EmailService
     {
         try {
             // Server settings
+            $host = $_ENV['MAIL_HOST'] ?? 'smtp.gmail.com';
+            $username = $_ENV['MAIL_USERNAME'] ?? '';
+            $password = $_ENV['MAIL_PASSWORD'] ?? '';
+            $encryption = $_ENV['MAIL_ENCRYPTION'] ?? 'tls';
+
             $this->mailer->isSMTP();
-            $this->mailer->Host = $_ENV['MAIL_HOST'] ?? 'smtp.gmail.com';
-            $this->mailer->SMTPAuth = true;
-            $this->mailer->Username = $_ENV['MAIL_USERNAME'] ?? '';
-            $this->mailer->Password = $_ENV['MAIL_PASSWORD'] ?? '';
-            $this->mailer->SMTPSecure = $_ENV['MAIL_ENCRYPTION'] ?? 'tls';
+            $this->mailer->Host = $host;
             $this->mailer->Port = (int)($_ENV['MAIL_PORT'] ?? 587);
+
+            // Only enable auth if credentials are provided
+            if (!empty($username) && !empty($password)) {
+                $this->mailer->SMTPAuth = true;
+                $this->mailer->Username = $username;
+                $this->mailer->Password = $password;
+                $this->mailer->SMTPSecure = $encryption === 'ssl' ? PHPMailer::ENCRYPTION_SMTPS : ($encryption === 'tls' ? PHPMailer::ENCRYPTION_STARTTLS : '');
+            } else {
+                $this->mailer->SMTPAuth = false;
+                $this->mailer->SMTPSecure = '';
+                $this->mailer->SMTPAutoTLS = false;
+            }
 
             // Timeout settings (important for preventing hangs)
             $this->mailer->Timeout = 30; // 30 seconds connection timeout

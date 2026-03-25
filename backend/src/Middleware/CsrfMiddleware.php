@@ -20,8 +20,15 @@ class CsrfMiddleware
      * Endpoints exempt from CSRF checks (webhooks use their own signature verification)
      */
     private array $exemptPaths = [
-        '/api/payments/paystack/webhook',
-        '/api/payments/stripe/webhook',
+        '/api/v1/auth/login',
+        '/api/v1/auth/register',
+        '/api/v1/auth/forgot-password',
+        '/api/v1/auth/reset-password',
+        '/api/v1/auth/resend-verification',
+        '/api/v1/auth/refresh',
+        '/api/v1/auth/google',
+        '/api/v1/payments/paystack/webhook',
+        '/api/v1/payments/stripe/webhook',
     ];
 
     public function __invoke(Request $request, RequestHandler $handler): Response

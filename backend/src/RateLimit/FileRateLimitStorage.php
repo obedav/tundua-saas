@@ -120,6 +120,8 @@ class FileRateLimitStorage implements RateLimitStorageInterface
 
     private function filePath(string $key): string
     {
-        return $this->storageDir . '/' . $key . '.json';
+        // Sanitize key for Windows compatibility (colons from IPv6 addresses)
+        $safeKey = str_replace([':', '\\', '/'], '_', $key);
+        return $this->storageDir . '/' . $safeKey . '.json';
     }
 }

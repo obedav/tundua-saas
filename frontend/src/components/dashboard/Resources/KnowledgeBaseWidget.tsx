@@ -181,7 +181,7 @@ export default function KnowledgeBaseWidget() {
       <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
         <div className="grid grid-cols-2 gap-3">
           <a
-            href="/dashboard/help/contact"
+            href="/dashboard/support"
             className="text-center py-2 px-4 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors"
           >
             Contact Support

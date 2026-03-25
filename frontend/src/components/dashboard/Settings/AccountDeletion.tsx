@@ -144,7 +144,7 @@ export default function AccountDeletion() {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="/dashboard/help/contact"
+              href="/dashboard/support"
               className="flex-1 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-center"
             >
               Contact Support First
