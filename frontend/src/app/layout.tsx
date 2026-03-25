@@ -51,21 +51,14 @@ export const metadata: Metadata = {
     title: "Tundua - Study Abroad Application Platform",
     description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance from $9.99.",
     siteName: "Tundua",
-    images: [
-      {
-        url: '/og-image.png', // TODO: Create this image (1200x630px)
-        width: 1200,
-        height: 630,
-        alt: 'Tundua Study Abroad Platform',
-      },
-    ],
+    // OG image auto-generated from src/app/opengraph-image.tsx
   },
   twitter: {
     card: 'summary_large_image',
     title: "Tundua - Study Abroad Application Platform",
     description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance from $9.99.",
-    images: ['/twitter-image.png'], // TODO: Create this image (1200x600px)
-    creator: '@tundua', // TODO: Replace with your Twitter handle
+    // Twitter image auto-generated from src/app/twitter-image.tsx
+    creator: '@tundua',
   },
   robots: {
     index: true,
@@ -78,11 +71,7 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
-  },
+  // Icons auto-generated from src/app/icon.tsx and src/app/apple-icon.tsx
   manifest: '/site.webmanifest',
 };
 

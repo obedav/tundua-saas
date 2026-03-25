@@ -8,6 +8,9 @@ import PublicPageBackground from "@/components/PublicPageBackground";
 export const metadata: Metadata = {
   title: "Blog | Tundua",
   description: "Read the latest articles, guides, and tips about studying abroad, application processes, and more.",
+  alternates: {
+    canonical: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/blog`,
+  },
 };
 
 interface Article {

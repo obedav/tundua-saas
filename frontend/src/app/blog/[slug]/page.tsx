@@ -5,6 +5,7 @@ import { ArrowLeft, Clock, Eye, ThumbsUp, ThumbsDown, Tag } from "lucide-react";
 import { getKnowledgeBaseArticle } from "@/lib/actions/knowledge-base";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
+import { BreadcrumbStructuredData, BlogPostStructuredData } from "@/components/StructuredData";
 
 interface Article {
   id: number;
@@ -26,6 +27,7 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
   try {
     const { slug } = await params;
     const data = await getKnowledgeBaseArticle(slug);
@@ -38,6 +40,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return {
       title: `${article.title} | Tundua Blog`,
       description: article.excerpt || article.title,
+      alternates: { canonical: `${appUrl}/blog/${slug}` },
+      openGraph: {
+        title: article.title,
+        description: article.excerpt || article.title,
+        type: "article",
+        publishedTime: article.created_at,
+        modifiedTime: article.updated_at,
+      },
     };
   } catch {
     return { title: "Blog | Tundua" };
@@ -63,6 +73,23 @@ export default async function BlogArticlePage({ params }: PageProps) {
     <div className="min-h-screen">
       <PublicPageBackground />
       <PublicNavbar />
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Blog", url: "/blog" },
+          { name: article.title, url: `/blog/${article.slug}` },
+        ]}
+      />
+      <BlogPostStructuredData
+        article={{
+          title: article.title,
+          slug: article.slug,
+          excerpt: article.excerpt,
+          category: article.category,
+          updated_at: article.updated_at,
+          published_at: article.created_at,
+        }}
+      />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Back Link */}

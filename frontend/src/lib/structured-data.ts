@@ -28,7 +28,10 @@ export function getOrganizationSchema(): Organization {
     email: 'support@tundua.com',
     address: {
       '@type': 'PostalAddress',
-      addressCountry: 'US', // TODO: Update with real address
+      streetAddress: '2 Akinwale Street, off Yaya Abatan Road',
+      addressLocality: 'Ogba',
+      addressRegion: 'Lagos',
+      addressCountry: 'NG',
     } as any,
     sameAs: [
       'https://x.com/tundua',
