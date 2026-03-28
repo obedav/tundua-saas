@@ -1,12 +1,11 @@
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { PostHogProvider } from "@/providers/PostHogProvider";
 import { Toaster } from "sonner";
-import { GoogleAnalytics } from '@next/third-parties/google';
-import { GA_MEASUREMENT_ID } from "@/lib/analytics";
 import { GlobalStructuredData } from "@/components/StructuredData";
 import { WebVitalsReporter } from "@/components/WebVitalsReporter";
 import { SkipLinks } from "@/components/accessibility/SkipLink";
@@ -82,6 +81,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-15M99B1B4W"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-15M99B1B4W');
+          `}
+        </Script>
+      </head>
       <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
         <SkipLinks />
         <GlobalStructuredData />
@@ -92,7 +105,6 @@ export default function RootLayout({
             <Toaster position="top-right" richColors />
           </Providers>
         </PostHogProvider>
-        {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
       </body>
     </html>
   );
