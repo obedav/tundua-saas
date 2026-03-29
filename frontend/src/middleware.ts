@@ -8,6 +8,11 @@ import type { NextRequest } from 'next/server';
  * Adds critical security headers to protect against common attacks.
  */
 export function middleware(_request: NextRequest) {
+  // Redirect malformed URLs like /& to homepage
+  if (_request.nextUrl.pathname === '/&' || _request.nextUrl.pathname.startsWith('/&')) {
+    return NextResponse.redirect(new URL('/', _request.url), 301);
+  }
+
   const response = NextResponse.next();
 
   // ============================================================================
