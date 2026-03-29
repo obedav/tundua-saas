@@ -32,10 +32,10 @@ export function middleware(_request: NextRequest) {
       default-src 'self';
       script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: https://www.googletagmanager.com https://www.google-analytics.com https://js.pusher.com;
       style-src 'self' 'unsafe-inline';
-      img-src 'self' blob: data: https:;
+      img-src 'self' blob: data: https: https://www.google-analytics.com https://www.googletagmanager.com;
       font-src 'self' data:;
       worker-src 'self' blob:;
-      connect-src 'self' blob: data: ${apiUrl} ${appUrl} https://www.google-analytics.com https://*.pusher.com wss://*.pusher.com https://sockjs.pusher.com;
+      connect-src 'self' blob: data: ${apiUrl} ${appUrl} https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://*.pusher.com wss://*.pusher.com https://sockjs.pusher.com;
       object-src 'none';
       base-uri 'self';
       form-action 'self';

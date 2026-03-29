@@ -81,7 +81,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
+      <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-15M99B1B4W"
           strategy="afterInteractive"
@@ -94,8 +94,6 @@ export default function RootLayout({
             gtag('config', 'G-15M99B1B4W');
           `}
         </Script>
-      </head>
-      <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
         <SkipLinks />
         <GlobalStructuredData />
         <WebVitalsReporter />
