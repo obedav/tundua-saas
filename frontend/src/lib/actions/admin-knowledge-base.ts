@@ -38,6 +38,7 @@ export async function createArticle(data: {
   slug?: string;
   content: string;
   excerpt?: string;
+  featured_image?: string | null;
   category: string;
   tags?: string[];
   is_published?: boolean;
@@ -64,6 +65,7 @@ export async function updateArticle(id: number, data: {
   slug?: string;
   content?: string;
   excerpt?: string;
+  featured_image?: string | null;
   category?: string;
   tags?: string[];
   is_published?: boolean;
@@ -82,6 +84,23 @@ export async function updateArticle(id: number, data: {
   } catch (error) {
     console.error('Failed to update article:', error);
     return { success: false, error: 'Failed to update article' };
+  }
+}
+
+export async function uploadBlogImage(imageUrl: string) {
+  try {
+    const headers = await getAuthHeaders();
+    const response = await fetch(`${API_URL}/api/v1/admin/knowledge-base/upload-image`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ image_url: imageUrl }),
+    });
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Failed to upload image:', error);
+    return { success: false, error: 'Failed to upload image' };
   }
 }
 

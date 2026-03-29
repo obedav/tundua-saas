@@ -487,6 +487,7 @@ function registerRoutes($app, array $controllers)
             $group->post('', [$knowledgeBaseController, 'createArticle']);
             $group->put('/{id}', [$knowledgeBaseController, 'updateArticle']);
             $group->delete('/{id}', [$knowledgeBaseController, 'deleteArticle']);
+            $group->post('/upload-image', [$knowledgeBaseController, 'downloadImage']);
         })->add(new AdminMiddleware())->add(new AuthMiddleware());
 
         // ====================================================================

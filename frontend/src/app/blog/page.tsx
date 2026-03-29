@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { BookOpen, Search, ArrowRight, Clock, Eye, Tag } from "lucide-react";
 import { getKnowledgeBaseArticles, getKnowledgeBaseCategories, getFeaturedArticles } from "@/lib/actions/knowledge-base";
 import PublicNavbar from "@/components/PublicNavbar";
@@ -18,6 +19,7 @@ interface Article {
   title: string;
   slug: string;
   excerpt?: string;
+  featured_image?: string | null;
   category: string;
   view_count: number;
   is_featured: boolean;
@@ -123,6 +125,20 @@ export default async function BlogPage({
                   href={`/blog/${article.slug}`}
                   className="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all"
                 >
+                  {article.featured_image ? (
+                    <div className="relative aspect-video">
+                      <Image
+                        src={`${process.env['NEXT_PUBLIC_API_URL'] || ''}${article.featured_image}`}
+                        alt={article.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="aspect-video bg-gradient-to-br from-primary-100 to-purple-100 flex items-center justify-center">
+                      <BookOpen className="w-10 h-10 text-primary-300" />
+                    </div>
+                  )}
                   <div className="p-6">
                     <span className="inline-block px-3 py-1 bg-primary-50 text-primary-700 text-xs font-medium rounded-full mb-3">
                       {article.category}
@@ -204,7 +220,18 @@ export default async function BlogPage({
                         </span>
                       </div>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-primary-600 flex-shrink-0 mt-1 transition-colors" />
+                    {article.featured_image ? (
+                      <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                        <Image
+                          src={`${process.env['NEXT_PUBLIC_API_URL'] || ''}${article.featured_image}`}
+                          alt={article.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-primary-600 flex-shrink-0 mt-1 transition-colors" />
+                    )}
                   </div>
                 </Link>
               ))}

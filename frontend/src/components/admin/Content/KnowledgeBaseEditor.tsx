@@ -14,12 +14,14 @@ import {
   Save,
   X,
   Loader2,
+  Image,
 } from "lucide-react";
 import {
   getAdminArticles,
   createArticle,
   updateArticle,
   deleteArticle,
+  uploadBlogImage,
 } from "@/lib/actions/admin-knowledge-base";
 import type { KnowledgeBaseArticle } from "@/types/api";
 
@@ -31,6 +33,7 @@ interface EditorState {
   slug: string;
   content: string;
   excerpt: string;
+  featured_image: string | null;
   category: string;
   tags: string[];
   is_published: boolean;
@@ -42,6 +45,7 @@ const emptyEditor: EditorState = {
   slug: "",
   content: "",
   excerpt: "",
+  featured_image: null,
   category: "",
   tags: [],
   is_published: false,
@@ -73,6 +77,8 @@ export default function KnowledgeBaseEditor() {
   // Editor
   const [editor, setEditor] = useState<EditorState>(emptyEditor);
   const [tagInput, setTagInput] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   // Delete confirmation
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
@@ -132,6 +138,7 @@ export default function KnowledgeBaseEditor() {
       slug: article.slug,
       content: article.content,
       excerpt: article.excerpt || "",
+      featured_image: article.featured_image || null,
       category: article.category || "",
       tags: article.tags || [],
       is_published: article.is_published,
@@ -155,6 +162,7 @@ export default function KnowledgeBaseEditor() {
       slug: editor.slug || undefined,
       content: editor.content,
       excerpt: editor.excerpt,
+      featured_image: editor.featured_image,
       category: editor.category || "General",
       tags: editor.tags,
       is_published: publish !== undefined ? publish : editor.is_published,
@@ -229,6 +237,28 @@ export default function KnowledgeBaseEditor() {
     } catch {
       setError("An unexpected error occurred");
     }
+  };
+
+  const handleImageDownload = async () => {
+    if (!imageUrl.trim()) return;
+    setUploadingImage(true);
+    try {
+      const result = await uploadBlogImage(imageUrl.trim());
+      if (result.success && result.image_url) {
+        setEditor({ ...editor, featured_image: result.image_url });
+        setImageUrl("");
+      } else {
+        setError(result.error || "Failed to upload image");
+      }
+    } catch {
+      setError("Failed to upload image");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setEditor({ ...editor, featured_image: null });
   };
 
   const handleAddTag = () => {
@@ -697,6 +727,62 @@ export default function KnowledgeBaseEditor() {
                     </button>
                   </span>
                 ))}
+              </div>
+            )}
+          </div>
+
+          {/* Featured Image */}
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Featured Image
+            </label>
+            {editor.featured_image ? (
+              <div className="space-y-2">
+                <div className="relative aspect-video rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
+                  <img
+                    src={`${process.env['NEXT_PUBLIC_API_URL'] || ''}${editor.featured_image}`}
+                    alt="Featured"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <button
+                  onClick={handleRemoveImage}
+                  className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+                >
+                  <X className="h-3.5 w-3.5" />
+                  Remove
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-gray-400 dark:text-gray-500 mb-2">
+                  <Image className="h-8 w-8" />
+                  <span className="text-xs">No image set</span>
+                </div>
+                <input
+                  type="text"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  placeholder="Paste image URL (Unsplash, etc.)"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <button
+                  onClick={handleImageDownload}
+                  disabled={uploadingImage || !imageUrl.trim()}
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                >
+                  {uploadingImage ? (
+                    <>
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      Downloading...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-3.5 w-3.5" />
+                      Download &amp; Save
+                    </>
+                  )}
+                </button>
               </div>
             )}
           </div>

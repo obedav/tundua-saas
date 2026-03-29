@@ -233,6 +233,7 @@ export interface KnowledgeBaseArticle {
   slug: string;
   content: string;
   excerpt: string;
+  featured_image: string | null;
   category: string;
   tags: string[];
   author_id: number | null;

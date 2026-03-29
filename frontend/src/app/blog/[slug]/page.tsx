@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Clock, Eye, ThumbsUp, ThumbsDown, Tag } from "lucide-react";
 import { getKnowledgeBaseArticle } from "@/lib/actions/knowledge-base";
@@ -13,6 +14,7 @@ interface Article {
   slug: string;
   content: string;
   excerpt?: string;
+  featured_image?: string | null;
   category: string;
   tags?: string[];
   view_count: number;
@@ -37,6 +39,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       return { title: "Article Not Found | Tundua Blog" };
     }
 
+    const apiUrl = process.env['NEXT_PUBLIC_API_URL'] || '';
+    const ogImages = article.featured_image
+      ? [{ url: `${apiUrl}${article.featured_image}` }]
+      : undefined;
+
     return {
       title: `${article.title} | Tundua Blog`,
       description: article.excerpt || article.title,
@@ -47,6 +54,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         type: "article",
         publishedTime: article.created_at,
         modifiedTime: article.updated_at,
+        ...(ogImages ? { images: ogImages } : {}),
       },
     };
   } catch {
@@ -134,6 +142,19 @@ export default async function BlogArticlePage({ params }: PageProps) {
               </span>
             </div>
           </div>
+
+          {/* Featured Image */}
+          {article.featured_image && (
+            <div className="relative aspect-video rounded-xl overflow-hidden mb-8">
+              <Image
+                src={`${process.env['NEXT_PUBLIC_API_URL'] || ''}${article.featured_image}`}
+                alt={article.title}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          )}
 
           {/* Divider */}
           <hr className="border-gray-200 mb-8" />

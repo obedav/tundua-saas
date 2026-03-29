@@ -13,6 +13,7 @@ class KnowledgeBaseArticle extends Model
         'slug',
         'content',
         'excerpt',
+        'featured_image',
         'category',
         'tags',
         'author_id',

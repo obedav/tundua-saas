@@ -251,6 +251,7 @@ class KnowledgeBaseController
             $article->slug = $slug;
             $article->content = $data['content'] ?? '';
             $article->excerpt = $data['excerpt'] ?? '';
+            $article->featured_image = $data['featured_image'] ?? null;
             $article->category = $data['category'] ?? 'General';
             $article->tags = isset($data['tags']) ? (is_array($data['tags']) ? $data['tags'] : json_decode($data['tags'], true)) : [];
             $article->is_published = $isPublished;
@@ -317,6 +318,9 @@ class KnowledgeBaseController
             }
             if (isset($data['excerpt'])) {
                 $article->excerpt = $data['excerpt'];
+            }
+            if (isset($data['featured_image'])) {
+                $article->featured_image = $data['featured_image'];
             }
             if (isset($data['category'])) {
                 $article->category = $data['category'];
@@ -424,6 +428,106 @@ class KnowledgeBaseController
         }
 
         return $slug;
+    }
+
+    /**
+     * Download an image from URL and store locally
+     * POST /api/admin/knowledge-base/upload-image
+     */
+    public function downloadImage(Request $request, Response $response): Response
+    {
+        try {
+            $data = $request->getParsedBody();
+
+            if (empty($data['image_url'])) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'image_url is required'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            $imageUrl = $data['image_url'];
+
+            // Download image with timeout and user agent
+            $context = stream_context_create([
+                'http' => [
+                    'timeout' => 30,
+                    'user_agent' => 'Mozilla/5.0 (compatible; Tundua/1.0)',
+                ],
+                'ssl' => [
+                    'verify_peer' => true,
+                    'verify_peer_name' => true,
+                ],
+            ]);
+
+            $imageContent = @file_get_contents($imageUrl, false, $context);
+
+            if ($imageContent === false) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Failed to download image from URL'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            // Validate size (<= 5MB)
+            if (strlen($imageContent) > 5 * 1024 * 1024) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Image exceeds maximum size of 5MB'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            // Validate content type using finfo
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($imageContent);
+
+            $allowedTypes = [
+                'image/jpeg' => 'jpg',
+                'image/png'  => 'png',
+                'image/webp' => 'webp',
+                'image/gif'  => 'gif',
+            ];
+
+            if (!isset($allowedTypes[$mimeType])) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Invalid image type. Allowed: jpg, png, webp, gif'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            $extension = $allowedTypes[$mimeType];
+
+            // Ensure storage directory exists
+            $storageDir = dirname(__DIR__, 2) . '/storage/blog-images';
+            if (!is_dir($storageDir)) {
+                mkdir($storageDir, 0755, true);
+            }
+
+            // Generate unique filename and save
+            $filename = uniqid('blog_') . '_' . time() . '.' . $extension;
+            $filePath = $storageDir . '/' . $filename;
+
+            file_put_contents($filePath, $imageContent);
+            chmod($filePath, 0644);
+
+            $response->getBody()->write(json_encode([
+                'success' => true,
+                'image_url' => '/storage/blog-images/' . $filename
+            ]));
+            return $response->withHeader('Content-Type', 'application/json');
+
+        } catch (\Exception $e) {
+            error_log("Error downloading image: " . $e->getMessage());
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error' => 'Internal server error'
+            ]));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
     }
 
     /**
