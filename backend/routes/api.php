@@ -485,9 +485,9 @@ function registerRoutes($app, array $controllers)
         $v1->group('/admin/knowledge-base', function ($group) use ($knowledgeBaseController) {
             $group->get('', [$knowledgeBaseController, 'getAllArticles']);
             $group->post('', [$knowledgeBaseController, 'createArticle']);
+            $group->post('/upload-image', [$knowledgeBaseController, 'downloadImage']);
             $group->put('/{id}', [$knowledgeBaseController, 'updateArticle']);
             $group->delete('/{id}', [$knowledgeBaseController, 'deleteArticle']);
-            $group->post('/upload-image', [$knowledgeBaseController, 'downloadImage']);
         })->add(new AdminMiddleware())->add(new AuthMiddleware());
 
         // ====================================================================

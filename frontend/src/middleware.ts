@@ -110,8 +110,11 @@ export function middleware(_request: NextRequest) {
    * Cross-Origin-Embedder-Policy (2026 standard)
    * Prevents loading cross-origin resources without explicit permission
    * Use 'credentialless' instead of 'require-corp' for better compatibility
+   * Skip for dashboard/admin pages that need to load images from api.tundua.com
    */
-  response.headers.set('Cross-Origin-Embedder-Policy', 'credentialless');
+  if (!_request.nextUrl.pathname.startsWith('/dashboard')) {
+    response.headers.set('Cross-Origin-Embedder-Policy', 'credentialless');
+  }
 
   return response;
 }

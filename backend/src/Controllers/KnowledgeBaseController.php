@@ -262,7 +262,7 @@ class KnowledgeBaseController
             $article->not_helpful_count = 0;
 
             if ($isPublished) {
-                $article->published_at = now();
+                $article->published_at = date('Y-m-d H:i:s');
             }
 
             $article->save();
@@ -278,7 +278,7 @@ class KnowledgeBaseController
             error_log("Error creating article: " . $e->getMessage());
             $response->getBody()->write(json_encode([
                 'success' => false,
-                'error' => 'Internal server error'
+                'error' => 'Create error: ' . $e->getMessage()
             ]));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
@@ -337,7 +337,7 @@ class KnowledgeBaseController
 
                 // Set published_at on first publish
                 if (!$wasPublished && $article->is_published && !$article->published_at) {
-                    $article->published_at = now();
+                    $article->published_at = date('Y-m-d H:i:s');
                 }
             }
 
@@ -354,7 +354,7 @@ class KnowledgeBaseController
             error_log("Error updating article: " . $e->getMessage());
             $response->getBody()->write(json_encode([
                 'success' => false,
-                'error' => 'Internal server error'
+                'error' => 'Update error: ' . $e->getMessage()
             ]));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
@@ -449,24 +449,31 @@ class KnowledgeBaseController
 
             $imageUrl = $data['image_url'];
 
-            // Download image with timeout and user agent
-            $context = stream_context_create([
-                'http' => [
-                    'timeout' => 30,
-                    'user_agent' => 'Mozilla/5.0 (compatible; Tundua/1.0)',
-                ],
-                'ssl' => [
-                    'verify_peer' => true,
-                    'verify_peer_name' => true,
-                ],
-            ]);
-
-            $imageContent = @file_get_contents($imageUrl, false, $context);
-
-            if ($imageContent === false) {
+            // Download image using cURL
+            if (!function_exists('curl_init')) {
                 $response->getBody()->write(json_encode([
                     'success' => false,
-                    'error' => 'Failed to download image from URL'
+                    'error' => 'cURL is not available on this server'
+                ]));
+                return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+            }
+
+            $ch = curl_init($imageUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+            $imageContent = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $curlError = curl_error($ch);
+            curl_close($ch);
+
+            if ($imageContent === false || $httpCode !== 200) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Failed to download image. HTTP ' . $httpCode . ($curlError ? ': ' . $curlError : '')
                 ]));
                 return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
             }
