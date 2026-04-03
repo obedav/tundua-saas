@@ -19,6 +19,7 @@ const clientEnvSchema = z.object({
   NEXT_PUBLIC_PUSHER_KEY: z.string().optional().describe('Pusher API Key for real-time features'),
   NEXT_PUBLIC_PUSHER_CLUSTER: z.string().optional().describe('Pusher cluster region'),
   NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional().describe('Google Analytics Measurement ID'),
+  NEXT_PUBLIC_WHATSAPP_NUMBER: z.string().optional().describe('WhatsApp number for chat button (e.g. 2348012345678)'),
 });
 
 /**

@@ -7,6 +7,8 @@ import { getKnowledgeBaseArticle, getRelatedArticles } from "@/lib/actions/knowl
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
 import { BreadcrumbStructuredData, BlogPostStructuredData, FAQStructuredData } from "@/components/StructuredData";
+import { BlogCTA } from "@/components/BlogCTA";
+import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { clientEnv } from "@/lib/env";
 
 // ISR: Revalidate every 30 minutes so content stays fresh
@@ -233,11 +235,17 @@ export default async function BlogArticlePage({ params }: PageProps) {
           {/* Divider */}
           <hr className="border-gray-200 mb-8" />
 
+          {/* CTA - Top of article */}
+          <BlogCTA variant="inline" />
+
           {/* Article Content */}
           <div
             className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
+
+          {/* CTA - Bottom of article */}
+          <BlogCTA variant="banner" />
 
           {/* FAQ Section - renders visually + powers FAQ schema */}
           {faqs.length > 0 && (
@@ -339,10 +347,16 @@ export default async function BlogArticlePage({ params }: PageProps) {
         {/* CTA */}
         <div className="mt-8 text-center">
           <p className="text-gray-600 mb-4">Have questions about studying abroad?</p>
-          <div className="flex justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              href="/apply"
+              className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
+            >
+              Apply Now
+            </Link>
             <Link
               href="/contact"
-              className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
+              className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
             >
               Contact Us
             </Link>
@@ -355,6 +369,8 @@ export default async function BlogArticlePage({ params }: PageProps) {
           </div>
         </div>
       </main>
+
+      <WhatsAppFloat />
 
       {/* Footer */}
       <footer className="bg-white/50 backdrop-blur-sm border-t border-gray-200/60 py-8 mt-12">
