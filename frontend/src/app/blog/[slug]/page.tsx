@@ -2,11 +2,45 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Clock, Eye, ThumbsUp, ThumbsDown, Tag } from "lucide-react";
-import { getKnowledgeBaseArticle } from "@/lib/actions/knowledge-base";
+import { ArrowLeft, Clock, Eye, ThumbsUp, ThumbsDown, Tag, BookOpen, ArrowRight } from "lucide-react";
+import { getKnowledgeBaseArticle, getRelatedArticles } from "@/lib/actions/knowledge-base";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
-import { BreadcrumbStructuredData, BlogPostStructuredData } from "@/components/StructuredData";
+import { BreadcrumbStructuredData, BlogPostStructuredData, FAQStructuredData } from "@/components/StructuredData";
+import { clientEnv } from "@/lib/env";
+
+// ISR: Revalidate every 30 minutes so content stays fresh
+export const revalidate = 1800;
+
+// Allow new slugs not in generateStaticParams to be rendered on-demand
+export const dynamicParams = true;
+
+/**
+ * Pre-render all published blog articles at build time.
+ * This is CRITICAL for SEO: Googlebot gets real HTML instead of
+ * hitting the API at crawl time (which can fail and cause soft 404s).
+ */
+export async function generateStaticParams() {
+  try {
+    const response = await fetch(
+      `${clientEnv.NEXT_PUBLIC_API_URL}/api/v1/knowledge-base/slugs`,
+      { next: { revalidate: 3600 } }
+    );
+
+    if (!response.ok) return [];
+
+    const data = await response.json();
+    if (data?.success && data?.slugs) {
+      return data.slugs.map((item: { slug: string }) => ({
+        slug: item.slug,
+      }));
+    }
+  } catch {
+    console.error('Failed to fetch slugs for static generation');
+  }
+
+  return [];
+}
 
 interface Article {
   id: number;
@@ -20,12 +54,34 @@ interface Article {
   view_count: number;
   helpful_count: number;
   not_helpful_count: number;
+  metadata?: Record<string, unknown> | null;
   created_at: string;
   updated_at: string;
 }
 
+interface RelatedArticle {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  featured_image?: string | null;
+  category: string;
+  created_at: string;
+}
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+function getReadingTime(html: string): number {
+  const text = html.replace(/<[^>]*>/g, "");
+  const words = text.split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 200));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -45,7 +101,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       : undefined;
 
     return {
-      title: `${article.title} | Tundua Blog`,
+      title: article.title,
       description: article.excerpt || article.title,
       alternates: { canonical: `${appUrl}/blog/${slug}` },
       openGraph: {
@@ -77,6 +133,16 @@ export default async function BlogArticlePage({ params }: PageProps) {
     notFound();
   }
 
+  // Fetch related articles for internal linking
+  const relatedArticles: RelatedArticle[] = await getRelatedArticles(article.category, article.slug, 4);
+
+  // Extract FAQs from article metadata
+  const faqs: FAQ[] = Array.isArray(article.metadata?.['faqs'])
+    ? (article.metadata['faqs'] as FAQ[])
+    : [];
+
+  const readingTime = getReadingTime(article.content);
+
   return (
     <div className="min-h-screen">
       <PublicPageBackground />
@@ -98,6 +164,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
           published_at: article.created_at,
         }}
       />
+      {faqs.length > 0 && <FAQStructuredData faqs={faqs} />}
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Back Link */}
@@ -123,8 +190,11 @@ export default async function BlogArticlePage({ params }: PageProps) {
               {article.title}
             </h1>
 
+            {/* Featured Snippet Block - direct answer for Google Position #0 */}
             {article.excerpt && (
-              <p className="text-lg text-gray-600 mb-4">{article.excerpt}</p>
+              <p className="text-lg text-gray-700 bg-primary-50/50 border-l-4 border-primary-500 pl-4 py-3 rounded-r-lg mb-4">
+                {article.excerpt}
+              </p>
             )}
 
             <div className="flex items-center gap-6 text-sm text-gray-500">
@@ -139,6 +209,10 @@ export default async function BlogArticlePage({ params }: PageProps) {
               <span className="flex items-center gap-1.5">
                 <Eye className="w-4 h-4" />
                 {article.view_count} views
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="w-4 h-4" />
+                {readingTime} min read
               </span>
             </div>
           </div>
@@ -164,6 +238,30 @@ export default async function BlogArticlePage({ params }: PageProps) {
             className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
+
+          {/* FAQ Section - renders visually + powers FAQ schema */}
+          {faqs.length > 0 && (
+            <section className="mt-10 pt-8 border-t border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+              <div className="space-y-4">
+                {faqs.map((faq, index) => (
+                  <details
+                    key={index}
+                    className="group bg-gray-50 rounded-xl border border-gray-200 overflow-hidden"
+                    {...(index === 0 ? { open: true } : {})}
+                  >
+                    <summary className="flex items-center justify-between cursor-pointer p-5 font-semibold text-gray-900 hover:bg-gray-100 transition-colors">
+                      {faq.question}
+                      <ArrowRight className="w-5 h-5 text-gray-400 group-open:rotate-90 transition-transform flex-shrink-0 ml-2" />
+                    </summary>
+                    <div className="px-5 pb-5 text-gray-700 leading-relaxed">
+                      {faq.answer}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (
@@ -196,6 +294,47 @@ export default async function BlogArticlePage({ params }: PageProps) {
             </div>
           </div>
         </article>
+
+        {/* Internal Linking - Related Articles */}
+        {relatedArticles.length > 0 && (
+          <section className="mt-10">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {relatedArticles.map((related) => (
+                <Link
+                  key={related.id}
+                  href={`/blog/${related.slug}`}
+                  className="group bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md hover:border-primary-200 transition-all"
+                >
+                  <div className="flex items-start gap-4">
+                    {related.featured_image ? (
+                      <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                        <Image
+                          src={`${process.env['NEXT_PUBLIC_API_URL'] || ''}${related.featured_image}`}
+                          alt={related.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-primary-100 to-purple-100 flex items-center justify-center flex-shrink-0">
+                        <BookOpen className="w-6 h-6 text-primary-400" />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2 mb-1">
+                        {related.title}
+                      </h3>
+                      {related.excerpt && (
+                        <p className="text-sm text-gray-500 line-clamp-2">{related.excerpt}</p>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* CTA */}
         <div className="mt-8 text-center">

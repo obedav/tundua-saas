@@ -1,17 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import Script from "next/script";
 import { BookOpen, Search, ArrowRight, Clock, Eye, Tag } from "lucide-react";
 import { getKnowledgeBaseArticles, getKnowledgeBaseCategories, getFeaturedArticles } from "@/lib/actions/knowledge-base";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
+import { BreadcrumbStructuredData } from "@/components/StructuredData";
 
 export const metadata: Metadata = {
-  title: "Blog | Tundua",
-  description: "Read the latest articles, guides, and tips about studying abroad, application processes, and more.",
+  title: "Study Abroad Blog - Guides, Tips & University Rankings (2026)",
+  description: "Expert guides on studying abroad from Nigeria. Cheapest UK universities, visa requirements, application tips, and budget guides for international students.",
   alternates: {
     canonical: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/blog`,
   },
+  keywords: [
+    "study abroad blog",
+    "cheapest universities UK",
+    "study in UK from Nigeria",
+    "international student guides",
+    "university application tips",
+    "study abroad budget guide",
+  ],
 };
 
 interface Article {
@@ -61,10 +71,44 @@ export default async function BlogPage({
     // API unavailable — page renders with empty state
   }
 
+  const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
+
+  // CollectionPage schema for blog listing
+  const collectionSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Tundua Blog - Study Abroad Guides & Tips',
+    description: 'Expert guides on studying abroad from Nigeria. Cheapest UK universities, visa requirements, and budget guides.',
+    url: `${appUrl}/blog`,
+    isPartOf: { '@id': `${appUrl}#website` },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: articles.length,
+      itemListElement: articles.slice(0, 10).map((a, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `${appUrl}/blog/${a.slug}`,
+        name: a.title,
+      })),
+    },
+  });
+
   return (
     <div className="min-h-screen">
       <PublicPageBackground />
       <PublicNavbar />
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Blog", url: "/blog" },
+        ]}
+      />
+      <Script
+        id="structured-data-collection"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: collectionSchema }}
+        strategy="afterInteractive"
+      />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero */}

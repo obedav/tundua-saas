@@ -190,6 +190,21 @@ export async function getKnowledgeBaseCategories() {
 }
 
 /**
+ * Get related articles in the same category (for internal linking)
+ */
+export async function getRelatedArticles(category: string, excludeSlug: string, limit: number = 4) {
+  try {
+    const data = await getKnowledgeBaseArticles({ category, limit: limit + 1 })
+    const articles = data?.data?.articles || data?.articles || []
+    return articles
+      .filter((a: { slug: string }) => a.slug !== excludeSlug)
+      .slice(0, limit)
+  } catch {
+    return []
+  }
+}
+
+/**
  * Mark article as helpful/not helpful
  */
 export async function markArticleHelpfulAction(

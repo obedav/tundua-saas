@@ -59,6 +59,17 @@ export const metadata: Metadata = {
     "university eligibility checker",
     "study overseas support",
     "international student application help",
+    // Destination & visa specific
+    "Study Visa to Canada from Nigeria",
+    "Canada student visa requirements 2026",
+    "Canada student visa fees",
+    "Canada student visa application process",
+    // UK universities
+    "UK universities",
+    "cheap universities in UK",
+    "cheapest universities in the UK for international students",
+    // Brand
+    "Tundua",
   ],
   authors: [{ name: "Tundua" }],
   creator: "Tundua",
