@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Clock, Eye, ThumbsUp, ThumbsDown, Tag, BookOpen, ArrowRight } from "lucide-react";
-import { getKnowledgeBaseArticle, getRelatedArticles } from "@/lib/actions/knowledge-base";
+import { getKnowledgeBaseArticle, getRelatedArticles, getPopularArticles } from "@/lib/actions/knowledge-base";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
 import { BreadcrumbStructuredData, BlogPostStructuredData, FAQStructuredData } from "@/components/StructuredData";
@@ -86,6 +86,24 @@ function getReadingTime(html: string): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
+/**
+ * Split HTML content roughly in half at a safe tag boundary (</p>, </ul>, </h2>, etc.)
+ * so we can inject a mid-article CTA without breaking markup.
+ */
+function splitContentAtMidpoint(html: string): [string, string] {
+  const mid = Math.floor(html.length / 2);
+  // Find the nearest closing block tag after the midpoint
+  const tagPattern = /<\/(p|ul|ol|h[2-6]|div|table|blockquote)>/gi;
+  let match: RegExpExecArray | null;
+  while ((match = tagPattern.exec(html)) !== null) {
+    if (match.index >= mid) {
+      const splitAt = match.index + match[0].length;
+      return [html.slice(0, splitAt), html.slice(splitAt)];
+    }
+  }
+  return [html, ""];
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
   try {
@@ -135,8 +153,15 @@ export default async function BlogArticlePage({ params }: PageProps) {
     notFound();
   }
 
-  // Fetch related articles for internal linking
-  const relatedArticles: RelatedArticle[] = await getRelatedArticles(article.category, article.slug, 4);
+  // Fetch related + popular articles for internal linking
+  const [relatedRaw, popularData] = await Promise.all([
+    getRelatedArticles(article.category, article.slug, 4),
+    getPopularArticles({ limit: 6 }),
+  ]);
+  const relatedArticles: RelatedArticle[] = relatedRaw || [];
+  const popularArticles: RelatedArticle[] = (popularData?.data?.articles || popularData?.articles || [])
+    .filter((a: RelatedArticle) => a.slug !== article.slug)
+    .slice(0, 4);
 
   // Extract FAQs from article metadata
   const faqs: FAQ[] = Array.isArray(article.metadata?.['faqs'])
@@ -144,6 +169,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
     : [];
 
   const readingTime = getReadingTime(article.content);
+  const [contentFirstHalf, contentSecondHalf] = splitContentAtMidpoint(article.content);
 
   return (
     <div className="min-h-screen">
@@ -238,11 +264,22 @@ export default async function BlogArticlePage({ params }: PageProps) {
           {/* CTA - Top of article */}
           <BlogCTA variant="inline" />
 
-          {/* Article Content */}
+          {/* Article Content - First Half */}
           <div
             className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline"
-            dangerouslySetInnerHTML={{ __html: article.content }}
+            dangerouslySetInnerHTML={{ __html: contentFirstHalf }}
           />
+
+          {/* CTA - Mid article (highest conversion point) */}
+          {contentSecondHalf && <BlogCTA variant="mid" />}
+
+          {/* Article Content - Second Half */}
+          {contentSecondHalf && (
+            <div
+              className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline"
+              dangerouslySetInnerHTML={{ __html: contentSecondHalf }}
+            />
+          )}
 
           {/* CTA - Bottom of article */}
           <BlogCTA variant="banner" />
@@ -341,6 +378,28 @@ export default async function BlogArticlePage({ params }: PageProps) {
                 </Link>
               ))}
             </div>
+          </section>
+        )}
+
+        {/* Popular Articles - cross-category internal linking */}
+        {popularArticles.length > 0 && (
+          <section className="mt-8">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Popular Guides</h2>
+            <ul className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
+              {popularArticles.map((pop) => (
+                <li key={pop.id}>
+                  <Link
+                    href={`/blog/${pop.slug}`}
+                    className="flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <ArrowRight className="w-4 h-4 text-primary-500 flex-shrink-0" />
+                    <span className="text-gray-900 font-medium hover:text-primary-600 transition-colors line-clamp-1">
+                      {pop.title}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
 
