@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
-import { BookOpen, Search, ArrowRight, Clock, Eye, Tag } from "lucide-react";
-import { getKnowledgeBaseArticles, getKnowledgeBaseCategories, getFeaturedArticles } from "@/lib/actions/knowledge-base";
+import { BookOpen, Search, ArrowRight, Clock, Eye, Tag, TrendingUp } from "lucide-react";
+import { getKnowledgeBaseArticles, getKnowledgeBaseCategories, getFeaturedArticles, getPopularArticles } from "@/lib/actions/knowledge-base";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
 import { BreadcrumbStructuredData } from "@/components/StructuredData";
 
 export const metadata: Metadata = {
-  title: "Study Abroad Blog - Guides, Tips & University Rankings (2026)",
-  description: "Expert guides on studying abroad from Nigeria. Cheapest UK universities, visa requirements, application tips, and budget guides for international students.",
+  title: "Study Abroad Blog - Guides, Tips & Rankings (2026)",
+  description: "Expert guides on studying abroad from Nigeria. Cheapest UK universities, visa requirements, application tips, and budget guides.",
   alternates: {
     canonical: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/blog`,
   },
@@ -47,12 +47,14 @@ export default async function BlogPage({
   let articles: Article[] = [];
   let categories: string[] = [];
   let featured: Article[] = [];
+  let popular: Article[] = [];
 
   try {
-    const [articlesData, categoriesData, featuredData] = await Promise.allSettled([
+    const [articlesData, categoriesData, featuredData, popularData] = await Promise.allSettled([
       getKnowledgeBaseArticles({ category: params.category, search: params.search, limit: 50 }),
       getKnowledgeBaseCategories(),
       getFeaturedArticles({ limit: 3 }),
+      getPopularArticles({ limit: 3 }),
     ]);
 
     if (articlesData.status === "fulfilled" && articlesData.value) {
@@ -66,6 +68,10 @@ export default async function BlogPage({
     if (featuredData.status === "fulfilled" && featuredData.value) {
       const d = featuredData.value;
       featured = d?.data?.articles || d?.articles || [];
+    }
+    if (popularData.status === "fulfilled" && popularData.value) {
+      const d = popularData.value;
+      popular = d?.data?.articles || d?.articles || [];
     }
   } catch {
     // API unavailable — page renders with empty state
@@ -112,7 +118,7 @@ export default async function BlogPage({
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-purple-500 rounded-full mb-4">
             <BookOpen className="h-8 w-8 text-white" />
           </div>
@@ -121,6 +127,32 @@ export default async function BlogPage({
             Guides, tips, and insights to help you navigate your study abroad journey.
           </p>
         </div>
+
+        {/* High-intent quick links — points users straight at the most-read articles */}
+        {!params.category && !params.search && popular.length > 0 && (
+          <div className="mb-10 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-5 md:p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <TrendingUp className="w-5 h-5 text-amber-600" />
+              <h2 className="text-sm font-bold uppercase tracking-wider text-amber-700">
+                Most Read by Nigerian Students
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+              {popular.slice(0, 3).map((article) => (
+                <Link
+                  key={article.id}
+                  href={`/blog/${article.slug}`}
+                  className="group flex items-start gap-2 p-3 bg-white rounded-lg border border-amber-200 hover:border-amber-400 hover:shadow-sm transition-all"
+                >
+                  <ArrowRight className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5 group-hover:translate-x-0.5 transition-transform" />
+                  <span className="text-sm font-semibold text-gray-900 group-hover:text-amber-700 line-clamp-2">
+                    {article.title}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Search & Filter */}
         <div className="flex flex-col sm:flex-row gap-4 mb-10">

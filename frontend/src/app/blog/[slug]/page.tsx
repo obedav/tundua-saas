@@ -9,6 +9,10 @@ import PublicPageBackground from "@/components/PublicPageBackground";
 import { BreadcrumbStructuredData, BlogPostStructuredData, FAQStructuredData } from "@/components/StructuredData";
 import { BlogCTA } from "@/components/BlogCTA";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
+import { InlineLeadForm } from "@/components/InlineLeadForm";
+import { ExitIntentPopup } from "@/components/ExitIntentPopup";
+import { EligibilityQuiz } from "@/components/EligibilityQuiz";
+import { StickyMobileCTA } from "@/components/StickyMobileCTA";
 import { clientEnv } from "@/lib/env";
 
 // ISR: Revalidate every 30 minutes so content stays fresh
@@ -187,9 +191,12 @@ export default async function BlogArticlePage({ params }: PageProps) {
           title: article.title,
           slug: article.slug,
           excerpt: article.excerpt,
+          content: article.content,
           category: article.category,
           updated_at: article.updated_at,
           published_at: article.created_at,
+          featured_image: article.featured_image,
+          api_url: process.env['NEXT_PUBLIC_API_URL'] || '',
         }}
       />
       {faqs.length > 0 && <FAQStructuredData faqs={faqs} />}
@@ -261,8 +268,11 @@ export default async function BlogArticlePage({ params }: PageProps) {
           {/* Divider */}
           <hr className="border-gray-200 mb-8" />
 
-          {/* CTA - Top of article */}
-          <BlogCTA variant="inline" />
+          {/* Eligibility Quiz - 30s interactive lead capture (highest converting element) */}
+          <EligibilityQuiz />
+
+          {/* Inline Lead Form - captures leads directly inside the blog */}
+          <InlineLeadForm />
 
           {/* Article Content - First Half */}
           <div
@@ -430,6 +440,8 @@ export default async function BlogArticlePage({ params }: PageProps) {
       </main>
 
       <WhatsAppFloat />
+      <StickyMobileCTA />
+      <ExitIntentPopup />
 
       {/* Footer */}
       <footer className="bg-white/50 backdrop-blur-sm border-t border-gray-200/60 py-8 mt-12">

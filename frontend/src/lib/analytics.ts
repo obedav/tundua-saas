@@ -181,6 +181,71 @@ export const setCustomDimension = (dimension: string, value: string) => {
   window.gtag('set', dimension, value);
 };
 
+// Lead generation tracking - GA4 recommended key events
+export const trackLeadFormSubmit = (source: string) => {
+  if (!isGALoaded()) {
+    console.log('[Analytics - Dev] Lead:', { source });
+    return;
+  }
+
+  // GA4 recommended "generate_lead" event - can be marked as a key event in GA4 admin
+  window.gtag('event', 'generate_lead', {
+    event_category: 'Lead',
+    event_label: source,
+    currency: 'NGN',
+    value: 1,
+  });
+};
+
+export const trackLeadFormView = (source: string) => {
+  event({
+    action: 'lead_form_view',
+    category: 'Lead',
+    label: source,
+  });
+};
+
+// CTA click tracking — these are the GA4 key events that should be marked
+// as conversions in the GA4 admin (Admin → Events → mark as key event).
+export const trackApplyClick = (source: string) => {
+  if (!isGALoaded()) {
+    console.log('[Analytics - Dev] Apply click:', { source });
+    return;
+  }
+
+  window.gtag('event', 'apply_click', {
+    event_category: 'CTA',
+    event_label: source,
+    value: 1,
+  });
+};
+
+export const trackWhatsAppClick = (source: string) => {
+  if (!isGALoaded()) {
+    console.log('[Analytics - Dev] WhatsApp click:', { source });
+    return;
+  }
+
+  window.gtag('event', 'whatsapp_click', {
+    event_category: 'CTA',
+    event_label: source,
+    value: 1,
+  });
+};
+
+export const trackEligibilityCheck = (budget: string, course: string) => {
+  if (!isGALoaded()) {
+    console.log('[Analytics - Dev] Eligibility check:', { budget, course });
+    return;
+  }
+
+  window.gtag('event', 'eligibility_check', {
+    event_category: 'Lead',
+    event_label: `${budget} | ${course}`,
+    value: 1,
+  });
+};
+
 // Declare gtag on window object for TypeScript
 declare global {
   interface Window {

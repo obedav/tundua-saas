@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
+import { trackLeadFormSubmit } from "@/lib/analytics";
 
 interface FormData {
   name: string;
@@ -71,6 +72,7 @@ export function ApplyForm() {
 
       if (response.ok) {
         setSubmitted(true);
+        trackLeadFormSubmit("apply-page");
       } else {
         const data = await response.json().catch(() => null);
         setError(data?.message || "Something went wrong. Please try again.");

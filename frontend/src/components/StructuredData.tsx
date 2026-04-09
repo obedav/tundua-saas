@@ -141,6 +141,8 @@ export function BlogPostStructuredData({
     published_at?: string;
     updated_at?: string;
     author_name?: string;
+    featured_image?: string | null;
+    api_url?: string;
   };
 }) {
   const schema = {

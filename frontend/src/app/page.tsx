@@ -25,6 +25,7 @@ import {
   FloatingElement,
   CardHover,
 } from "@/components/animations/PageAnimations";
+import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -1766,6 +1767,7 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+      <ExitIntentPopup />
     </div>
   );
 }

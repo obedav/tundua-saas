@@ -135,14 +135,34 @@ export function getBlogPostSchema(article: {
   published_at?: string;
   updated_at?: string;
   author_name?: string;
+  featured_image?: string | null;
+  api_url?: string;
 }): BlogPosting {
+  // Calculate word count from raw content (strip tags first) for richer schema signals
+  const wordCount = article.content
+    ? article.content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length
+    : undefined;
+
+  // Resolve absolute image URL — Google requires absolute URLs in structured data
+  let imageUrl: string | undefined;
+  if (article.featured_image) {
+    if (article.featured_image.startsWith('http')) {
+      imageUrl = article.featured_image;
+    } else if (article.api_url) {
+      imageUrl = `${article.api_url}${article.featured_image}`;
+    }
+  }
+
   return {
     '@type': 'BlogPosting',
     headline: article.title,
     url: `${APP_URL}/blog/${article.slug}`,
     description: article.excerpt || '',
+    inLanguage: 'en-NG',
     datePublished: article.published_at || article.updated_at || new Date().toISOString(),
     dateModified: article.updated_at || new Date().toISOString(),
+    ...(imageUrl ? { image: imageUrl } : {}),
+    ...(wordCount ? { wordCount } : {}),
     author: {
       '@type': 'Organization',
       '@id': `${APP_URL}#organization`,
@@ -162,7 +182,7 @@ export function getBlogPostSchema(article: {
       '@id': `${APP_URL}/blog/${article.slug}`,
     },
     ...(article.category ? { articleSection: article.category } : {}),
-  };
+  } as BlogPosting;
 }
 
 /**

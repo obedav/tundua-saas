@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { ArrowRight, GraduationCap, CheckCircle, MessageCircle, Clock, Shield, Users, Star, Quote } from "lucide-react";
+import { ArrowRight, GraduationCap, CheckCircle, MessageCircle, Clock, Shield, Users, Star, Quote, FileText } from "lucide-react";
+import { TrackedApplyLink, TrackedWhatsAppLink } from "./TrackedCTA";
 
 interface BlogCTAProps {
   variant: "inline" | "mid" | "banner";
@@ -33,13 +33,14 @@ export function BlogCTA({ variant }: BlogCTAProps) {
             <p className="text-sm text-gray-600 mb-3">
               Let Tundua help you choose the cheapest university, prepare your documents, and secure admission without mistakes.
             </p>
-            <Link
+            <TrackedApplyLink
               href="/apply"
+              source="blog-cta-inline"
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors"
             >
               Apply to UK universities now — takes less than 2 minutes
               <ArrowRight className="w-4 h-4" />
-            </Link>
+            </TrackedApplyLink>
           </div>
         </div>
       </div>
@@ -48,47 +49,76 @@ export function BlogCTA({ variant }: BlogCTAProps) {
 
   if (variant === "mid") {
     return (
-      <div className="my-10 bg-amber-50 border border-amber-200 rounded-xl p-6 md:p-8">
-        <div className="flex items-start gap-3 mb-4">
-          <Star className="w-6 h-6 text-amber-500 flex-shrink-0 mt-0.5" />
-          <p className="font-bold text-gray-900 text-lg">
-            Not sure which of these universities you qualify for?
-          </p>
+      <div className="my-10 space-y-4">
+        {/* Lead Magnet - Free PDF */}
+        <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-xl p-6 md:p-8">
+          <div className="flex items-start gap-3 mb-3">
+            <FileText className="w-6 h-6 text-purple-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-bold text-gray-900 text-lg">
+                Free Download: 2026 UK University Fees Guide for Nigerians
+              </p>
+              <p className="text-sm text-gray-600 mt-1">
+                Compare tuition fees, living costs, and scholarship options across 50+ UK universities — all in one PDF.
+              </p>
+            </div>
+          </div>
+          <div className="ml-9">
+            <TrackedApplyLink
+              href="/apply?lead_magnet=uk-fees-guide"
+              source="blog-cta-lead-magnet"
+              className="inline-flex items-center justify-center gap-2 bg-purple-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-sm"
+            >
+              Download Free Guide
+              <ArrowRight className="w-4 h-4" />
+            </TrackedApplyLink>
+            <p className="text-xs text-gray-400 mt-2">Drop your WhatsApp number on the next page and we&apos;ll send the PDF instantly.</p>
+          </div>
         </div>
-        <p className="text-gray-700 mb-4 ml-9">
-          Most students apply to the wrong schools and get rejected. Don&apos;t waste money on applications that won&apos;t work.
-        </p>
-        <ul className="space-y-2 ml-9 mb-5">
-          <li className="flex items-center gap-2 text-sm text-gray-700">
-            <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-            Choose the right universities for your budget
-          </li>
-          <li className="flex items-center gap-2 text-sm text-gray-700">
-            <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-            Avoid costly application mistakes
-          </li>
-          <li className="flex items-center gap-2 text-sm text-gray-700">
-            <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-            Secure admission faster with expert review
-          </li>
-        </ul>
-        <div className="flex flex-col sm:flex-row gap-3 ml-9">
-          <Link
-            href="/apply"
-            className="inline-flex items-center justify-center gap-2 bg-primary-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-primary-700 transition-colors text-sm"
-          >
-            Get Free Guidance
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-lg font-semibold transition-colors text-sm"
-          >
-            <MessageCircle className="w-4 h-4" />
-            Chat with an Advisor Now
-          </a>
+
+        {/* Original mid CTA */}
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 md:p-8">
+          <div className="flex items-start gap-3 mb-4">
+            <Star className="w-6 h-6 text-amber-500 flex-shrink-0 mt-0.5" />
+            <p className="font-bold text-gray-900 text-lg">
+              Not sure which of these universities you qualify for?
+            </p>
+          </div>
+          <p className="text-gray-700 mb-4 ml-9">
+            Most students apply to the wrong schools and get rejected. Don&apos;t waste money on applications that won&apos;t work.
+          </p>
+          <ul className="space-y-2 ml-9 mb-5">
+            <li className="flex items-center gap-2 text-sm text-gray-700">
+              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+              Choose the right universities for your budget
+            </li>
+            <li className="flex items-center gap-2 text-sm text-gray-700">
+              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+              Avoid costly application mistakes
+            </li>
+            <li className="flex items-center gap-2 text-sm text-gray-700">
+              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+              Secure admission faster with expert review
+            </li>
+          </ul>
+          <div className="flex flex-col sm:flex-row gap-3 ml-9">
+            <TrackedApplyLink
+              href="/apply"
+              source="blog-cta-mid"
+              className="inline-flex items-center justify-center gap-2 bg-primary-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-primary-700 transition-colors text-sm"
+            >
+              Get Free Guidance
+              <ArrowRight className="w-4 h-4" />
+            </TrackedApplyLink>
+            <TrackedWhatsAppLink
+              href={WHATSAPP_URL}
+              source="blog-cta-mid"
+              className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-lg font-semibold transition-colors text-sm"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Chat with an Advisor Now
+            </TrackedWhatsAppLink>
+          </div>
         </div>
       </div>
     );
@@ -168,22 +198,22 @@ export function BlogCTA({ variant }: BlogCTAProps) {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
-            <Link
+            <TrackedApplyLink
               href="/apply"
+              source="blog-cta-banner"
               className="inline-flex items-center justify-center gap-2 bg-white text-primary-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
             >
               Apply Now — It&apos;s Free to Start
               <ArrowRight className="w-4 h-4" />
-            </Link>
-            <a
+            </TrackedApplyLink>
+            <TrackedWhatsAppLink
               href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              source="blog-cta-banner"
               className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               <MessageCircle className="w-4 h-4" />
               Get Instant Answers on WhatsApp
-            </a>
+            </TrackedWhatsAppLink>
           </div>
 
           {/* Urgency */}

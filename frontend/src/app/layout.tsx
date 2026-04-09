@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     default: "Tundua - Study Abroad Application Platform",
     template: "%s | Tundua" // Page titles will be "Page Name | Tundua"
   },
-  description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance. Professional counseling, document review, and application management from $9.99.",
+  description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance. Professional counseling and application management from $9.99.",
   keywords: [
     // Core service
     "study abroad",
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: process.env['NEXT_PUBLIC_APP_URL'],
+    url: process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com',
     title: "Tundua - Study Abroad Application Platform",
     description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance from $9.99.",
     siteName: "Tundua",
