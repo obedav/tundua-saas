@@ -1,7 +1,11 @@
 // Google Analytics 4 tracking utility
 import { clientEnv } from '@/lib/env';
 
-export const GA_MEASUREMENT_ID = clientEnv.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+// Hardcoded fallback matches the gtag <Script> in layout.tsx, so events still
+// fire when NEXT_PUBLIC_GA_MEASUREMENT_ID is not set in the environment.
+// Keep this in sync with frontend/src/app/layout.tsx.
+export const GA_MEASUREMENT_ID =
+  clientEnv.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-15M99B1B4W';
 
 // Types for GA events
 export interface GAEvent {
@@ -12,9 +16,13 @@ export interface GAEvent {
   userId?: string | number;
 }
 
-// Check if GA is loaded
+// Check if GA is loaded.
+// We only require window.gtag — the measurement ID is configured by the gtag
+// <Script> in layout.tsx, so event() calls don't need to know it themselves.
+// Requiring an env-var check here was silently no-opping every track* call in
+// production whenever NEXT_PUBLIC_GA_MEASUREMENT_ID was missing.
 export const isGALoaded = (): boolean => {
-  return typeof window !== 'undefined' && typeof window.gtag !== 'undefined' && !!GA_MEASUREMENT_ID;
+  return typeof window !== 'undefined' && typeof window.gtag === 'function';
 };
 
 // Page view tracking
