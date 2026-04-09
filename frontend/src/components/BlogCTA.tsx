@@ -23,7 +23,7 @@ const TESTIMONIALS = [
 export function BlogCTA({ variant }: BlogCTAProps) {
   if (variant === "inline") {
     return (
-      <div className="my-8 bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-xl p-6">
+      <div className="my-8 bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-xl p-4 sm:p-6">
         <div className="flex items-start gap-3">
           <GraduationCap className="w-6 h-6 text-primary-600 flex-shrink-0 mt-0.5" />
           <div>
@@ -51,7 +51,7 @@ export function BlogCTA({ variant }: BlogCTAProps) {
     return (
       <div className="my-10 space-y-4">
         {/* Lead Magnet - Free PDF */}
-        <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-xl p-6 md:p-8">
+        <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-xl p-4 sm:p-6 md:p-8">
           <div className="flex items-start gap-3 mb-3">
             <FileText className="w-6 h-6 text-purple-600 flex-shrink-0 mt-0.5" />
             <div>
@@ -63,7 +63,7 @@ export function BlogCTA({ variant }: BlogCTAProps) {
               </p>
             </div>
           </div>
-          <div className="ml-9">
+          <div className="ml-0 sm:ml-9">
             <TrackedApplyLink
               href="/apply?lead_magnet=uk-fees-guide"
               source="blog-cta-lead-magnet"
@@ -77,17 +77,17 @@ export function BlogCTA({ variant }: BlogCTAProps) {
         </div>
 
         {/* Original mid CTA */}
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 md:p-8">
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 sm:p-6 md:p-8">
           <div className="flex items-start gap-3 mb-4">
             <Star className="w-6 h-6 text-amber-500 flex-shrink-0 mt-0.5" />
             <p className="font-bold text-gray-900 text-lg">
               Not sure which of these universities you qualify for?
             </p>
           </div>
-          <p className="text-gray-700 mb-4 ml-9">
+          <p className="text-gray-700 mb-4 ml-0 sm:ml-9">
             Most students apply to the wrong schools and get rejected. Don&apos;t waste money on applications that won&apos;t work.
           </p>
-          <ul className="space-y-2 ml-9 mb-5">
+          <ul className="space-y-2 ml-0 sm:ml-9 mb-5">
             <li className="flex items-center gap-2 text-sm text-gray-700">
               <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
               Choose the right universities for your budget
@@ -101,7 +101,7 @@ export function BlogCTA({ variant }: BlogCTAProps) {
               Secure admission faster with expert review
             </li>
           </ul>
-          <div className="flex flex-col sm:flex-row gap-3 ml-9">
+          <div className="flex flex-col sm:flex-row gap-3 ml-0 sm:ml-9">
             <TrackedApplyLink
               href="/apply"
               source="blog-cta-mid"

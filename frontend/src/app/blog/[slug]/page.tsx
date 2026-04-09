@@ -183,17 +183,17 @@ export default async function BlogArticlePage({ params }: PageProps) {
       />
       {faqs.length > 0 && <FAQStructuredData faqs={faqs} />}
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Back Link */}
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-primary-600 mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-primary-600 mb-6 sm:mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Blog
         </Link>
 
-        <article className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+        <article className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-8 md:p-12">
           {/* Article Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
@@ -203,18 +203,18 @@ export default async function BlogArticlePage({ params }: PageProps) {
               </span>
             </div>
 
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight break-words">
               {article.title}
             </h1>
 
             {/* Featured Snippet Block - direct answer for Google Position #0 */}
             {article.excerpt && (
-              <p className="text-lg text-gray-700 bg-primary-50/50 border-l-4 border-primary-500 pl-4 py-3 rounded-r-lg mb-4">
+              <p className="text-base sm:text-lg text-gray-700 bg-primary-50/50 border-l-4 border-primary-500 pl-3 sm:pl-4 py-3 rounded-r-lg mb-4">
                 {article.excerpt}
               </p>
             )}
 
-            <div className="flex items-center gap-6 text-sm text-gray-500">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500">
               <span className="flex items-center gap-1.5">
                 <Clock className="w-4 h-4" />
                 {new Date(article.created_at).toLocaleDateString("en-US", {
@@ -263,8 +263,12 @@ export default async function BlogArticlePage({ params }: PageProps) {
               dangerouslySetInnerHTML, the orphan closing divs close the parent
               <article> early and push everything after them outside the article
               element — visually appearing as duplicated content after the footer. */}
+          {/* overflow-x-auto: catches any wide tables/preformatted blocks in the CMS HTML
+              so they scroll horizontally instead of forcing the whole article wider on mobile.
+              prose-img:max-w-full + prose-table:block: keeps embedded images from busting out
+              and forces tables to allow horizontal scroll inside their own container. */}
           <div
-            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline"
+            className="prose prose-base sm:prose-lg max-w-none overflow-x-auto prose-headings:text-gray-900 prose-headings:break-words prose-p:text-gray-700 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline prose-img:max-w-full prose-img:h-auto"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
 

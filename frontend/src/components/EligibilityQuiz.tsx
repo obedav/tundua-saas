@@ -60,7 +60,7 @@ Can you send me a free shortlist of UK universities I qualify for?`;
   };
 
   return (
-    <div className="my-8 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 border-2 border-amber-200 rounded-2xl p-6 md:p-8 shadow-sm">
+    <div className="my-8 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 border-2 border-amber-200 rounded-2xl p-4 sm:p-6 md:p-8 shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <Sparkles className="w-5 h-5 text-amber-600" />
         <span className="text-xs font-bold uppercase tracking-wider text-amber-700">

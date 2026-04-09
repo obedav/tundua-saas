@@ -58,7 +58,7 @@ export function InlineLeadForm() {
   }
 
   return (
-    <div className="my-8 bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-xl p-6">
+    <div className="my-8 bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-xl p-4 sm:p-6">
       <div className="flex items-start gap-3 mb-4">
         <GraduationCap className="w-6 h-6 text-primary-600 flex-shrink-0 mt-0.5" />
         <div>
@@ -71,7 +71,7 @@ export function InlineLeadForm() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 ml-9">
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 ml-0 sm:ml-9">
         <input
           type="text"
           value={name}
@@ -99,10 +99,10 @@ export function InlineLeadForm() {
       </form>
 
       {error && (
-        <p className="text-sm text-red-600 mt-2 ml-9">{error}</p>
+        <p className="text-sm text-red-600 mt-2 ml-0 sm:ml-9">{error}</p>
       )}
 
-      <p className="text-xs text-gray-400 mt-2 ml-9">
+      <p className="text-xs text-gray-400 mt-2 ml-0 sm:ml-9">
         No spam. We&apos;ll only message you about your university options.
       </p>
     </div>

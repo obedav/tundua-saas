@@ -122,7 +122,7 @@ export default async function BlogPage({
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-purple-500 rounded-full mb-4">
             <BookOpen className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Tundua Blog</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Tundua Blog</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Guides, tips, and insights to help you navigate your study abroad journey.
           </p>
