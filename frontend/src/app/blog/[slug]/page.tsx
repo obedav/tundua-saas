@@ -90,23 +90,6 @@ function getReadingTime(html: string): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
-/**
- * Split HTML content roughly in half at a safe tag boundary (</p>, </ul>, </h2>, etc.)
- * so we can inject a mid-article CTA without breaking markup.
- */
-function splitContentAtMidpoint(html: string): [string, string] {
-  const mid = Math.floor(html.length / 2);
-  // Find the nearest closing block tag after the midpoint
-  const tagPattern = /<\/(p|ul|ol|h[2-6]|div|table|blockquote)>/gi;
-  let match: RegExpExecArray | null;
-  while ((match = tagPattern.exec(html)) !== null) {
-    if (match.index >= mid) {
-      const splitAt = match.index + match[0].length;
-      return [html.slice(0, splitAt), html.slice(splitAt)];
-    }
-  }
-  return [html, ""];
-}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
@@ -173,7 +156,6 @@ export default async function BlogArticlePage({ params }: PageProps) {
     : [];
 
   const readingTime = getReadingTime(article.content);
-  const [contentFirstHalf, contentSecondHalf] = splitContentAtMidpoint(article.content);
 
   return (
     <div className="min-h-screen">
@@ -273,27 +255,26 @@ export default async function BlogArticlePage({ params }: PageProps) {
               feel pushy and dilute attention. */}
           <EligibilityQuiz />
 
-          {/* Article Content - First Half */}
+          {/* Article Content - rendered as a single block.
+              We deliberately do NOT split the HTML to inject a mid-article CTA.
+              Splitting at arbitrary tag boundaries can land inside nested wrapper
+              divs (e.g. step cards, info boxes, article-level wrappers), producing
+              unmatched closing tags. When that broken HTML is injected via
+              dangerouslySetInnerHTML, the orphan closing divs close the parent
+              <article> early and push everything after them outside the article
+              element — visually appearing as duplicated content after the footer. */}
           <div
             className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline"
-            dangerouslySetInnerHTML={{ __html: contentFirstHalf }}
+            dangerouslySetInnerHTML={{ __html: article.content }}
           />
 
-          {/* CTA - Mid article (highest conversion point) */}
-          {contentSecondHalf && <BlogCTA variant="mid" />}
-
-          {/* Article Content - Second Half */}
-          {contentSecondHalf && (
-            <div
-              className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline"
-              dangerouslySetInnerHTML={{ __html: contentSecondHalf }}
-            />
-          )}
+          {/* Post-content CTA — lead magnet + advisor card */}
+          <BlogCTA variant="mid" />
 
           {/* Inline Lead Form - second-chance capture for users who skipped the quiz at the top */}
           <InlineLeadForm />
 
-          {/* CTA - Bottom of article (testimonials + pricing + main CTA) */}
+          {/* Bottom CTA (testimonials + pricing + main CTA) */}
           <BlogCTA variant="banner" />
 
           {/* FAQ Section - renders visually + powers FAQ schema */}
