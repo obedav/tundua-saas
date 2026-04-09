@@ -268,11 +268,10 @@ export default async function BlogArticlePage({ params }: PageProps) {
           {/* Divider */}
           <hr className="border-gray-200 mb-8" />
 
-          {/* Eligibility Quiz - 30s interactive lead capture (highest converting element) */}
+          {/* Eligibility Quiz - 30s interactive lead capture (highest converting element).
+              Single CTA above the fold — no competing form here, since two stacked forms
+              feel pushy and dilute attention. */}
           <EligibilityQuiz />
-
-          {/* Inline Lead Form - captures leads directly inside the blog */}
-          <InlineLeadForm />
 
           {/* Article Content - First Half */}
           <div
@@ -291,7 +290,10 @@ export default async function BlogArticlePage({ params }: PageProps) {
             />
           )}
 
-          {/* CTA - Bottom of article */}
+          {/* Inline Lead Form - second-chance capture for users who skipped the quiz at the top */}
+          <InlineLeadForm />
+
+          {/* CTA - Bottom of article (testimonials + pricing + main CTA) */}
           <BlogCTA variant="banner" />
 
           {/* FAQ Section - renders visually + powers FAQ schema */}
@@ -413,29 +415,16 @@ export default async function BlogArticlePage({ params }: PageProps) {
           </section>
         )}
 
-        {/* CTA */}
-        <div className="mt-8 text-center">
-          <p className="text-gray-600 mb-4">Have questions about studying abroad?</p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/apply"
-              className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
-            >
-              Apply Now
-            </Link>
-            <Link
-              href="/contact"
-              className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
-            >
-              Contact Us
-            </Link>
-            <Link
-              href="/blog"
-              className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
-            >
-              More Articles
-            </Link>
-          </div>
+        {/* Footer nav — quiet secondary links only. The main CTA already lives in
+            the BlogCTA banner above; duplicating Apply Now here just creates noise. */}
+        <div className="mt-10 text-center">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-primary-600 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Browse more guides
+          </Link>
         </div>
       </main>
 

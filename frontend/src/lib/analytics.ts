@@ -213,9 +213,19 @@ export const trackApplyClick = (source: string) => {
     return;
   }
 
+  // Custom event — descriptive name for our own analysis
   window.gtag('event', 'apply_click', {
     event_category: 'CTA',
     event_label: source,
+    value: 1,
+  });
+
+  // GA4 recommended Lead Gen event — clicking "Apply" means the lead is now
+  // "working" through the funnel. Lights up the GA4 Lead Gen funnel report.
+  window.gtag('event', 'working_lead', {
+    event_category: 'Lead',
+    event_label: source,
+    currency: 'NGN',
     value: 1,
   });
 };
@@ -226,9 +236,19 @@ export const trackWhatsAppClick = (source: string) => {
     return;
   }
 
+  // Custom event for our own analysis
   window.gtag('event', 'whatsapp_click', {
     event_category: 'CTA',
     event_label: source,
+    value: 1,
+  });
+
+  // GA4 recommended Lead Gen event — opening WhatsApp is a real lead handoff,
+  // so we count it as generate_lead. Marks the lead as captured in GA4 funnel.
+  window.gtag('event', 'generate_lead', {
+    event_category: 'Lead',
+    event_label: `whatsapp:${source}`,
+    currency: 'NGN',
     value: 1,
   });
 };
@@ -239,9 +259,20 @@ export const trackEligibilityCheck = (budget: string, course: string) => {
     return;
   }
 
+  // Custom event with the answers as label
   window.gtag('event', 'eligibility_check', {
     event_category: 'Lead',
     event_label: `${budget} | ${course}`,
+    value: 1,
+  });
+
+  // GA4 recommended Lead Gen event — completing the quiz means we now know
+  // their budget and course, so the lead is qualified. Lights up GA4's
+  // qualify_lead funnel stage.
+  window.gtag('event', 'qualify_lead', {
+    event_category: 'Lead',
+    event_label: `${budget} | ${course}`,
+    currency: 'NGN',
     value: 1,
   });
 };
