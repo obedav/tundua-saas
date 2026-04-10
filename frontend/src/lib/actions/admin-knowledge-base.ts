@@ -43,6 +43,7 @@ export async function createArticle(data: {
   tags?: string[];
   is_published?: boolean;
   is_featured?: boolean;
+  metadata?: Record<string, unknown>;
 }) {
   try {
     const headers = await getAuthHeaders();
@@ -70,6 +71,7 @@ export async function updateArticle(id: number, data: {
   tags?: string[];
   is_published?: boolean;
   is_featured?: boolean;
+  metadata?: Record<string, unknown>;
 }) {
   try {
     const headers = await getAuthHeaders();

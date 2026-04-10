@@ -27,6 +27,11 @@ import type { KnowledgeBaseArticle } from "@/types/api";
 
 type ViewMode = "list" | "editor";
 
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
 interface EditorState {
   id?: number;
   title: string;
@@ -36,6 +41,7 @@ interface EditorState {
   featured_image: string | null;
   category: string;
   tags: string[];
+  faqs: FAQ[];
   is_published: boolean;
   is_featured: boolean;
 }
@@ -48,6 +54,7 @@ const emptyEditor: EditorState = {
   featured_image: null,
   category: "",
   tags: [],
+  faqs: [],
   is_published: false,
   is_featured: false,
 };
@@ -132,6 +139,9 @@ export default function KnowledgeBaseEditor() {
   };
 
   const handleEdit = (article: KnowledgeBaseArticle) => {
+    const existingFaqs = Array.isArray(article.metadata?.['faqs'])
+      ? (article.metadata['faqs'] as FAQ[])
+      : [];
     setEditor({
       id: article.id,
       title: article.title,
@@ -141,6 +151,7 @@ export default function KnowledgeBaseEditor() {
       featured_image: article.featured_image || null,
       category: article.category || "",
       tags: article.tags || [],
+      faqs: existingFaqs,
       is_published: article.is_published,
       is_featured: article.is_featured,
     });
@@ -157,6 +168,11 @@ export default function KnowledgeBaseEditor() {
     setSaving(true);
     setError(null);
 
+    // Filter out empty FAQ entries before saving
+    const cleanFaqs = editor.faqs.filter(
+      (f) => f.question.trim() && f.answer.trim()
+    );
+
     const data = {
       title: editor.title,
       slug: editor.slug || undefined,
@@ -167,6 +183,7 @@ export default function KnowledgeBaseEditor() {
       tags: editor.tags,
       is_published: publish !== undefined ? publish : editor.is_published,
       is_featured: editor.is_featured,
+      metadata: cleanFaqs.length > 0 ? { faqs: cleanFaqs } : undefined,
     };
 
     try {
@@ -785,6 +802,72 @@ export default function KnowledgeBaseEditor() {
                 </button>
               </div>
             )}
+          </div>
+
+          {/* FAQs — powers FAQ rich snippets in Google search */}
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                FAQs
+              </h3>
+              <span className="text-xs text-gray-400">{editor.faqs.length} items</span>
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Add Q&amp;A pairs to generate FAQ rich snippets in Google search results.
+            </p>
+
+            {editor.faqs.map((faq, index) => (
+              <div key={index} className="space-y-2 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <div className="flex items-start justify-between gap-2">
+                  <span className="text-xs font-bold text-gray-500 mt-2">Q{index + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = editor.faqs.filter((_, i) => i !== index);
+                      setEditor({ ...editor, faqs: updated });
+                    }}
+                    className="text-xs text-red-500 hover:text-red-700 flex-shrink-0"
+                  >
+                    Remove
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Question"
+                  value={faq.question}
+                  onChange={(e) => {
+                    const updated = [...editor.faqs];
+                    updated[index] = { question: e.target.value, answer: faq.answer };
+                    setEditor({ ...editor, faqs: updated });
+                  }}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                />
+                <textarea
+                  placeholder="Answer"
+                  value={faq.answer}
+                  rows={3}
+                  onChange={(e) => {
+                    const updated = [...editor.faqs];
+                    updated[index] = { question: faq.question, answer: e.target.value };
+                    setEditor({ ...editor, faqs: updated });
+                  }}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                />
+              </div>
+            ))}
+
+            <button
+              type="button"
+              onClick={() =>
+                setEditor({
+                  ...editor,
+                  faqs: [...editor.faqs, { question: "", answer: "" }],
+                })
+              }
+              className="w-full py-2 text-sm font-medium text-primary-600 border border-dashed border-primary-300 dark:border-primary-700 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
+            >
+              + Add FAQ
+            </button>
           </div>
 
           {/* Publish Settings */}
