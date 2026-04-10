@@ -157,6 +157,13 @@ export default async function BlogArticlePage({ params }: PageProps) {
 
   const readingTime = getReadingTime(article.content);
 
+  // Derive country from article category for the eligibility quiz
+  const categoryLower = article.category.toLowerCase();
+  const quizCountry: "uk" | "canada" | "australia" =
+    categoryLower.includes("canada") ? "canada" :
+    categoryLower.includes("australia") ? "australia" :
+    "uk";
+
   return (
     <div className="min-h-screen">
       <PublicPageBackground />
@@ -253,7 +260,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
           {/* Eligibility Quiz - 30s interactive lead capture (highest converting element).
               Single CTA above the fold — no competing form here, since two stacked forms
               feel pushy and dilute attention. */}
-          <EligibilityQuiz />
+          <EligibilityQuiz country={quizCountry} />
 
           {/* Article Content - rendered as a single block.
               We deliberately do NOT split the HTML to inject a mid-article CTA.

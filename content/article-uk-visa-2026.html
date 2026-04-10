@@ -1,0 +1,497 @@
+<style>
+  :root {
+    --color-bg-primary: #ffffff; --color-bg-secondary: #f9fafb; --color-bg-tertiary: #f3f4f6;
+    --color-text-primary: #111827; --color-text-secondary: #4b5563; --color-text-tertiary: #6b7280;
+    --color-text-muted: #9ca3af; --color-border-primary: #e5e7eb; --color-border-secondary: #d1d5db;
+    --color-accent: #0284c7; --color-accent-hover: #0369a1;
+    --color-success: #059669; --color-success-bg: #d1fae5;
+    --color-warning: #d97706; --color-warning-bg: #fef3c7;
+    --color-error: #dc2626; --color-error-bg: #fee2e2;
+    --color-info: #0284c7; --color-info-bg: #e0f2fe;
+    --accent-dark: #075985; --accent-light: #e0f2fe; --accent-mid: #0ea5e9;
+    --gray-700: #374151; --gray-600: #4b5563; --gray-500: #6b7280;
+    --gray-100: #f3f4f6; --gray-50: #f9fafb;
+  }
+
+  .tsv-article { font-family: 'Georgia', serif; color: var(--color-text-primary); line-height: 1.85; font-size: 17px; max-width: 780px; margin: 0 auto; }
+  .tsv-article .intro-lead { font-size: 20px; font-weight: 400; color: var(--color-text-secondary); border-left: 4px solid var(--color-accent); padding-left: 20px; margin: 32px 0 28px; line-height: 1.7; font-style: italic; }
+  .tsv-article h2 { font-family: 'Georgia', serif; font-size: 26px; font-weight: 700; color: var(--color-text-primary); margin: 52px 0 18px; padding-bottom: 10px; border-bottom: 2px solid var(--color-border-primary); }
+  .tsv-article p { margin: 0 0 20px; color: var(--color-text-secondary); }
+  .tsv-article strong { color: var(--color-text-primary); font-weight: 600; }
+  .tsv-article ul { margin: 0 0 20px 20px; color: var(--color-text-secondary); }
+  .tsv-article ul li { margin-bottom: 8px; }
+
+  .tsv-hero-banner { background: linear-gradient(135deg, var(--accent-dark) 0%, #0c4a6e 55%, #082f49 100%); border-radius: 16px; padding: 52px 44px; margin: 0 0 44px; position: relative; overflow: hidden; }
+  .tsv-hero-banner::before { content: '📄'; position: absolute; right: 40px; top: 50%; transform: translateY(-50%); font-size: 100px; opacity: 0.1; }
+  .tsv-hero-banner h1 { font-family: 'Georgia', serif; font-size: 34px; font-weight: 900; color: #fff; line-height: 1.3; margin: 0 0 16px; max-width: 560px; position: relative; z-index: 1; }
+  .tsv-hero-banner .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .tsv-hero-banner .hero-badge { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22); color: #bae6fd; font-family: system-ui, sans-serif; font-size: 12px; font-weight: 500; padding: 5px 13px; border-radius: 20px; }
+
+  .tsv-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0 44px; }
+  .tsv-stat-card { background: var(--color-bg-primary); border: 1px solid var(--color-border-primary); border-top: 3px solid var(--color-accent); border-radius: 12px; padding: 22px 20px; text-align: center; box-shadow: 0 2px 8px rgba(2,132,199,0.07); }
+  .tsv-stat-card .stat-num { font-size: 27px; font-weight: 800; color: var(--color-accent); font-family: system-ui, sans-serif; line-height: 1; margin-bottom: 6px; }
+  .tsv-stat-card .stat-label { font-size: 13px; color: var(--color-text-tertiary); font-family: system-ui, sans-serif; font-weight: 500; }
+
+  .tsv-callout { border-radius: 10px; padding: 18px 22px; margin: 24px 0; display: flex; gap: 14px; align-items: flex-start; }
+  .tsv-callout.info    { background: var(--color-info-bg);    border-left: 4px solid var(--color-info); }
+  .tsv-callout.warning { background: var(--color-warning-bg); border-left: 4px solid var(--color-warning); }
+  .tsv-callout.success { background: var(--color-success-bg); border-left: 4px solid var(--color-success); }
+  .tsv-callout.danger  { background: var(--color-error-bg);   border-left: 4px solid var(--color-error); }
+  .tsv-callout .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .tsv-callout .callout-body { font-family: system-ui, sans-serif; font-size: 14.5px; color: var(--gray-700); line-height: 1.7; }
+  .tsv-callout .callout-body strong { display: block; margin-bottom: 4px; font-size: 14.5px; color: var(--color-text-primary); }
+
+  .tsv-fee-box { background: var(--color-bg-primary); border-radius: 16px; overflow: hidden; border: 1px solid var(--color-border-primary); margin: 28px 0 36px; box-shadow: 0 4px 16px rgba(2,132,199,0.08); }
+  .tsv-fee-box .fee-header { background: var(--color-accent); padding: 16px 28px; color: #fff; font-family: system-ui, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.6px; text-transform: uppercase; }
+  .tsv-fee-table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; }
+  .tsv-fee-table tr { border-bottom: 1px solid var(--color-border-primary); }
+  .tsv-fee-table tr:nth-child(even) { background: var(--gray-50); }
+  .tsv-fee-table td { padding: 14px 28px; font-size: 15px; color: var(--gray-700); }
+  .tsv-fee-table td:last-child { text-align: right; font-weight: 600; color: var(--color-text-primary); }
+
+  .tsv-steps { display: flex; flex-direction: column; margin: 28px 0 36px; }
+  .tsv-step  { display: flex; gap: 22px; align-items: flex-start; padding-bottom: 28px; }
+  .tsv-step:last-child { padding-bottom: 0; }
+  .tsv-step .step-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .tsv-step .step-num { width: 38px; height: 38px; border-radius: 50%; background: var(--color-accent); color: #fff; font-family: system-ui, sans-serif; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(2,132,199,0.3); }
+  .tsv-step .step-line { width: 2px; flex: 1; background: var(--color-border-primary); margin-top: 6px; min-height: 20px; }
+  .tsv-step:last-child .step-line { display: none; }
+  .tsv-step .step-body { padding-top: 6px; flex: 1; }
+  .tsv-step .step-body h4 { font-family: system-ui, sans-serif; font-size: 15.5px; font-weight: 700; color: var(--color-text-primary); margin: 0 0 7px; }
+  .tsv-step .step-body p { font-size: 14.5px; color: var(--color-text-secondary); margin: 0; line-height: 1.7; font-family: system-ui, sans-serif; }
+
+  .tsv-cta { background: linear-gradient(135deg, var(--accent-dark) 0%, #0c4a6e 60%, #082f49 100%); border-radius: 20px; padding: 52px 44px; text-align: center; margin: 52px 0 36px; position: relative; overflow: hidden; }
+  .tsv-cta::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(14,165,233,0.2) 0%, transparent 70%); border-radius: 50%; }
+  .tsv-cta .cta-tag { display: inline-block; background: rgba(14,165,233,0.18); border: 1px solid rgba(14,165,233,0.35); color: #7dd3fc; font-family: system-ui, sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; position: relative; z-index: 1; }
+  .tsv-cta h2 { font-family: 'Georgia', serif; font-size: 29px; color: #fff; margin: 0 0 16px; border: none; padding: 0; line-height: 1.35; position: relative; z-index: 1; }
+  .tsv-cta p { font-family: system-ui, sans-serif; font-size: 15.5px; color: #93c5fd; max-width: 520px; margin: 0 auto 30px; line-height: 1.75; position: relative; z-index: 1; }
+  .tsv-cta .cta-features { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 34px; position: relative; z-index: 1; }
+  .tsv-cta .cta-feature { display: flex; align-items: center; gap: 8px; font-family: system-ui, sans-serif; font-size: 13.5px; color: #bae6fd; }
+  .tsv-cta .cta-feature .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-mid); flex-shrink: 0; }
+  .tsv-cta .cta-btn { display: inline-block; background: var(--color-accent); color: #fff; font-family: system-ui, sans-serif; font-size: 15.5px; font-weight: 700; padding: 15px 42px; border-radius: 50px; text-decoration: none; box-shadow: 0 6px 20px rgba(2,132,199,0.45); position: relative; z-index: 1; }
+  .tsv-cta .cta-sub { display: block; margin-top: 14px; font-family: system-ui, sans-serif; font-size: 13px; color: #64748b; position: relative; z-index: 1; }
+
+  .tsv-footer-note { background: var(--color-bg-secondary); border-top: 2px solid var(--color-border-primary); border-radius: 0 0 10px 10px; padding: 18px 24px; font-family: system-ui, sans-serif; font-size: 13px; color: var(--color-text-muted); text-align: center; margin-top: 52px; }
+
+  @media (max-width: 600px) {
+    .tsv-hero-banner { padding: 32px 22px; }
+    .tsv-hero-banner h1 { font-size: 24px; }
+    .tsv-stat-row { grid-template-columns: 1fr 1fr; }
+    .tsv-cta { padding: 34px 22px; }
+    .tsv-cta h2 { font-size: 22px; }
+    .tsv-fee-table td { padding: 10px 14px; font-size: 13.5px; }
+    .tsv-fee-box .fee-header { padding: 12px 16px; font-size: 12.5px; }
+  }
+</style>
+
+<div class="tsv-article">
+
+  <div class="tsv-hero-banner">
+    <h1>UK Student Visa Requirements for Nigerians (2026 Step-by-Step Guide)</h1>
+    <div class="hero-meta">
+      <span class="hero-badge">📄 Visa Guide</span>
+      <span class="hero-badge">📅 Updated 2026</span>
+      <span class="hero-badge">🇳🇬 For Nigerians</span>
+      <span class="hero-badge">⏱ 18 min read</span>
+    </div>
+  </div>
+
+  <div class="tsv-stat-row">
+    <div class="tsv-stat-card">
+      <div class="stat-num">&pound;524</div>
+      <div class="stat-label">Visa application fee</div>
+    </div>
+    <div class="tsv-stat-card">
+      <div class="stat-num">3&ndash;6 wks</div>
+      <div class="stat-label">Standard processing</div>
+    </div>
+    <div class="tsv-stat-card">
+      <div class="stat-num">20 hrs/wk</div>
+      <div class="stat-label">Work allowed during term</div>
+    </div>
+  </div>
+
+  <p class="intro-lead">The UK Student Visa is the single document that stands between your university offer and your life in the UK. This guide walks Nigerian students through every requirement, every document, every fee, and every common mistake &mdash; step by step, with 2026 figures verified against UKVI and VFS Global sources.</p>
+
+  <p>The UK Student Visa (formerly known as Tier 4 General) allows you to live and study in the UK for the duration of your course. As a Nigerian citizen, you must apply for this visa if your course is longer than 6 months. The application is submitted online, followed by a biometrics appointment at a VFS Global centre in Nigeria.</p>
+
+  <p>Getting it right the first time matters. A refusal stays on your immigration record, makes future applications harder, and means you lose the non-refundable visa fee and IHS payment. This guide is designed to ensure you submit a complete, error-free application.</p>
+
+  <h2>Who Needs a UK Student Visa?</h2>
+
+  <p>As a Nigerian passport holder, you need a Student Visa for any course in the UK that lasts <strong>longer than 6 months</strong>. This includes:</p>
+
+  <ul>
+    <li>Full-time undergraduate degrees (typically 3 years)</li>
+    <li>Postgraduate taught programmes &mdash; Masters, PGDip, PGCert (typically 1 year)</li>
+    <li>Postgraduate research &mdash; PhD, MPhil (typically 3&ndash;4 years)</li>
+    <li>Foundation year programmes</li>
+    <li>Pre-sessional English courses linked to a main degree programme</li>
+  </ul>
+
+  <p>For courses of <strong>6 months or less</strong> (such as a standalone English language course), you would apply for a Short-term Study Visa instead, which has different requirements and does not permit work.</p>
+
+  <h2>Complete Document Checklist</h2>
+
+  <p>Before you begin your online application, gather every document below. Missing even one can cause delays or refusal.</p>
+
+  <div class="tsv-steps">
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">1</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Valid Nigerian Passport</h4>
+        <p>Must be valid for the entire duration of your course. UKVI recommends at least 6 months beyond your course end date. If your passport expires soon, renew it before applying. You will also need at least one blank page for the visa vignette sticker.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">2</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>CAS (Confirmation of Acceptance for Studies)</h4>
+        <p>Your university issues this after you accept your offer and pay the required tuition deposit. The CAS is a unique reference number &mdash; not a physical document. It contains your personal details, course information, tuition fees, and any conditions. Your CAS is valid for 6 months from the date of issue. You cannot apply for a visa without it. For universities with the lowest deposits, see our <a href="/blog/uk-universities-with-low-tuition-deposit-for-international-students-2026">low deposit guide</a>.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">3</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Proof of Funds (Bank Statement)</h4>
+        <p>A bank statement or bank letter showing you hold enough money to cover outstanding tuition + living costs for up to 9 months. The money must have been in the account for at least 28 consecutive days, with the final day falling within 31 days of your visa application. See the Financial Requirements section below for exact amounts.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">4</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>English Language Test Certificate</h4>
+        <p>IELTS Academic (UKVI-approved) is the most common choice for Nigerian students. Your test must be from an approved test centre and taken within 2 years of your visa application date. See the English Language Requirements section for minimum scores.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">5</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Tuberculosis (TB) Test Certificate</h4>
+        <p>Mandatory for all Nigerian applicants. Must be from a Home Office-approved IOM clinic in Nigeria (Lagos or Abuja). Costs $95 USD. The certificate is valid for 6 months. Book early &mdash; appointment slots fill quickly during peak intake season (June&ndash;August).</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">6</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Academic Qualifications</h4>
+        <p>Original certificates and transcripts from your Nigerian institution (WAEC/NECO results, university degree certificate, academic transcripts). These should match what you declared on your university application and what appears on your CAS.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">7</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Passport-Sized Photographs</h4>
+        <p>Two recent passport photographs meeting UK visa photo specifications (45mm x 35mm, white background, no glasses). These are taken at the biometrics appointment, but having spares is prudent.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">8</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Previous Immigration History</h4>
+        <p>If you have previously been refused a visa to any country (UK, US, Canada, Schengen, etc.), you must declare this. Failure to disclose is grounds for automatic refusal. Being honest about previous refusals does not automatically disqualify you &mdash; but lying about them does.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>English Language Requirements</h2>
+
+  <p>UKVI requires you to demonstrate English language proficiency at a minimum level. The most widely accepted test is <strong>IELTS Academic (UKVI)</strong>, but alternatives are accepted.</p>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">📝 Minimum IELTS Scores by Programme Level</div>
+    <table class="tsv-fee-table">
+      <tr><td>Foundation / Pre-sessional</td><td>Overall 4.0&ndash;5.0</td></tr>
+      <tr><td>Undergraduate (most programmes)</td><td>Overall 5.5&ndash;6.0 (no band below 5.5)</td></tr>
+      <tr><td>Postgraduate Taught (Masters)</td><td>Overall 6.0&ndash;6.5 (no band below 5.5&ndash;6.0)</td></tr>
+      <tr><td>MBA</td><td>Overall 6.5&ndash;7.0</td></tr>
+      <tr><td>Medicine, Law, Education</td><td>Overall 7.0+ (no band below 6.5)</td></tr>
+    </table>
+  </div>
+
+  <p><strong>IELTS cost in Nigeria:</strong> ₦266,000&ndash;₦298,000 per sitting (2026). Results are available within 13 days and valid for 2 years.</p>
+
+  <p><strong>Alternative accepted tests:</strong></p>
+  <ul>
+    <li><strong>PTE Academic (UKVI)</strong> &mdash; computer-based, results in 2&ndash;5 days</li>
+    <li><strong>TOEFL iBT</strong> &mdash; accepted by many universities but check your specific institution</li>
+    <li><strong>Cambridge C1 Advanced / C2 Proficiency</strong> &mdash; lifetime validity</li>
+    <li><strong>Trinity ISE</strong> &mdash; less common but UKVI-approved</li>
+  </ul>
+
+  <div class="tsv-callout info">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body">
+      <strong>MOI (Medium of Instruction) exemption</strong>
+      Some universities accept a letter from your previous institution confirming that your degree was taught entirely in English. This can exempt you from IELTS for the university&rsquo;s own admission requirement, but UKVI may still require an approved test for the visa itself. Check with both your university and the visa requirements &mdash; they are separate.
+    </div>
+  </div>
+
+  <h2>Financial Requirements (Proof of Funds)</h2>
+
+  <p>This is the section that causes the most visa refusals for Nigerian students. UKVI requires you to demonstrate you can afford both your tuition and your living costs in the UK.</p>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">🏦 How Much You Need to Show (2026)</div>
+    <table class="tsv-fee-table">
+      <tr><td>Outstanding tuition fees (tuition minus deposit paid)</td><td>Varies</td></tr>
+      <tr><td>Monthly maintenance &mdash; outside London</td><td>&pound;1,171/month</td></tr>
+      <tr><td>Monthly maintenance &mdash; London</td><td>&pound;1,534/month</td></tr>
+      <tr><td>Months required</td><td>Up to 9 months</td></tr>
+      <tr><td>Total maintenance (outside London)</td><td>&pound;10,539</td></tr>
+      <tr><td>Total maintenance (London)</td><td>&pound;13,806</td></tr>
+    </table>
+  </div>
+
+  <p><strong>Example calculation:</strong> Your tuition is &pound;13,000. You paid a &pound;2,000 deposit. You are studying outside London.</p>
+  <p>Outstanding tuition: &pound;13,000 &minus; &pound;2,000 = &pound;11,000<br>
+  Maintenance (9 months): 9 &times; &pound;1,171 = &pound;10,539<br>
+  <strong>Total required in bank: &pound;21,539</strong> (~₦43,000,000)</p>
+
+  <div class="tsv-callout danger">
+    <span class="callout-icon">🚨</span>
+    <div class="callout-body">
+      <strong>The 28-day rule &mdash; most common reason for refusal</strong>
+      The required funds must be in your bank account for at least 28 consecutive days, with the end date of this period falling within 31 days of your visa application submission. If you deposit money and apply too soon, or if money moves in and out during the 28-day window, your application will be refused. Plan this 6+ weeks in advance. For a complete breakdown of costs, see our <a href="/blog/cost-of-studying-in-the-uk-for-nigerians-complete-2026-budget-guide">UK cost guide for Nigerians</a>.
+    </div>
+  </div>
+
+  <p><strong>Whose account is accepted?</strong></p>
+  <ul>
+    <li><strong>Your own account</strong> &mdash; in your name, at a regulated bank</li>
+    <li><strong>Your parent&rsquo;s or legal guardian&rsquo;s account</strong> &mdash; you must provide your birth certificate (or equivalent) and a signed letter from the parent confirming the relationship, that the money is available for your studies, and their consent</li>
+    <li><strong>NOT accepted:</strong> accounts belonging to siblings, uncles, aunts, friends, or sponsors. Joint accounts are only accepted if you are a named account holder.</li>
+  </ul>
+
+  <h2>TB Test in Nigeria</h2>
+
+  <p>Nigeria is classified as a high-risk TB country by the UK Government. All Nigerian visa applicants staying in the UK for more than 6 months <strong>must</strong> provide a tuberculosis test certificate from an approved IOM clinic.</p>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">🏥 TB Test Details</div>
+    <table class="tsv-fee-table">
+      <tr><td>Approved provider</td><td>International Organization for Migration (IOM)</td></tr>
+      <tr><td>Locations in Nigeria</td><td>Lagos &amp; Abuja</td></tr>
+      <tr><td>Cost (age 11+)</td><td>$95 USD (~₦155,000)</td></tr>
+      <tr><td>Cost (under 11)</td><td>$46 USD</td></tr>
+      <tr><td>Certificate validity</td><td>6 months from date of issue</td></tr>
+      <tr><td>Results turnaround</td><td>Same day (if chest X-ray is clear)</td></tr>
+    </table>
+  </div>
+
+  <p><strong>What to bring:</strong> your valid passport, one passport photograph, and the test fee in USD or Naira equivalent. No appointment is needed for the initial screening, but book early during peak season (June&ndash;August) as queues can be very long.</p>
+
+  <p><strong>If your X-ray shows abnormalities:</strong> you will be referred for sputum testing, which takes 6&ndash;8 weeks. This is why you should get your TB test <strong>as early as possible</strong> &mdash; if additional testing is needed, it can delay your entire visa timeline.</p>
+
+  <h2>Step-by-Step Visa Application Process</h2>
+
+  <p>Here is the exact sequence from accepting your university offer to receiving your visa decision:</p>
+
+  <div class="tsv-steps">
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">1</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Accept Your University Offer</h4>
+        <p>Accept the unconditional offer from your chosen university. If you hold a conditional offer, ensure all conditions (grades, English test, documents) are met first. The university will then issue an unconditional offer letter.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">2</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Pay the Tuition Deposit</h4>
+        <p>Pay the required tuition deposit (&pound;1,000&ndash;&pound;5,000 depending on the university). This confirms your place and triggers the release of your CAS. Some universities accept bank transfers; others require online card payment. Keep the payment receipt &mdash; you may need it for your visa application.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">3</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Receive Your CAS</h4>
+        <p>The university issues your CAS reference number (typically within 1&ndash;3 weeks of deposit payment). Check every detail on the CAS: your name, date of birth, course title, tuition amount, and any conditions. Errors on the CAS can cause visa refusal. If anything is wrong, contact the university immediately to get it corrected before applying.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">4</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Get Your TB Test</h4>
+        <p>Visit an IOM-approved clinic in Lagos or Abuja. $95 fee. Get this done early in the process &mdash; the certificate is valid for 6 months, and if sputum testing is needed, it adds 6&ndash;8 weeks.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">5</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Ensure Proof of Funds is Ready</h4>
+        <p>Confirm the required amount has been in your (or your parent&rsquo;s) bank account for at least 28 consecutive days. Request an official bank statement or bank letter dated within 31 days of your intended visa application date. The statement must be on the bank&rsquo;s official letterhead and show the account holder&rsquo;s name, account number, date, and closing balance.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">6</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Complete the Online Application (GOV.UK)</h4>
+        <p>Go to <strong>gov.uk/student-visa</strong> and fill in the online application form. You will need your CAS reference number, passport details, and financial information. Pay the visa application fee (&pound;524) and the Immigration Health Surcharge (&pound;776/year) during this step. Save your application reference number.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">7</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Book and Attend Biometrics Appointment</h4>
+        <p>After submitting the online form, book a biometrics appointment at a VFS Global centre in Nigeria. Locations: <strong>Lagos, Abuja, Benin, Port Harcourt</strong>. At the appointment, your fingerprints and photograph will be taken, and you will submit your passport and supporting documents. Bring all original documents plus photocopies.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">8</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Wait for a Decision</h4>
+        <p>Standard processing: 3&ndash;6 weeks. Priority (&pound;500): approximately 5 working days. Super Priority (&pound;1,000): next working day. You can track your application status online through the VFS Global tracking portal. Do not make travel arrangements until you have received your visa.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>Visa Fees and Processing Times</h2>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">💳 Complete Visa Fee Breakdown 2026</div>
+    <table class="tsv-fee-table">
+      <tr><td>Student Visa application (outside UK)</td><td>&pound;524</td></tr>
+      <tr><td>Student Visa application (from 8 April 2026)</td><td>&pound;558</td></tr>
+      <tr><td>Immigration Health Surcharge (per year)</td><td>&pound;776</td></tr>
+      <tr><td>IHS for 1-year Masters</td><td>&pound;776</td></tr>
+      <tr><td>IHS for 3-year degree</td><td>&pound;2,328</td></tr>
+      <tr><td>TB test</td><td>$95 (~&pound;75)</td></tr>
+      <tr><td>Priority processing (optional)</td><td>+&pound;500</td></tr>
+      <tr><td>Super Priority (optional)</td><td>+&pound;1,000</td></tr>
+    </table>
+  </div>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">⏱ Processing Times</div>
+    <table class="tsv-fee-table">
+      <tr><td>Standard</td><td>3&ndash;6 weeks</td></tr>
+      <tr><td>Priority (&pound;500)</td><td>~5 working days</td></tr>
+      <tr><td>Super Priority (&pound;1,000)</td><td>Next working day</td></tr>
+    </table>
+  </div>
+
+  <div class="tsv-callout warning">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-body">
+      <strong>Peak season warning</strong>
+      Processing times are significantly longer during peak intake season (June&ndash;September). Standard processing that normally takes 3 weeks can stretch to 6+ weeks. If your course starts in September, submit your application no later than early July. Consider priority processing if you are applying after mid-July.
+    </div>
+  </div>
+
+  <h2>After Your Visa Is Approved</h2>
+
+  <p>Congratulations &mdash; but there are still important steps before and after you land in the UK.</p>
+
+  <ul>
+    <li><strong>Visa vignette:</strong> Your passport will be returned with a 90-day entry vignette (sticker). This is your temporary visa &mdash; you must enter the UK within this 90-day window. If your course starts later, contact the university to adjust your CAS dates before applying.</li>
+    <li><strong>Collect your BRP:</strong> Within 10 days of arriving in the UK, you must collect your Biometric Residence Permit (BRP) from the Post Office branch specified in your decision letter. This is your actual visa document for the duration of your stay.</li>
+    <li><strong>Police registration:</strong> Nigerian nationals are required to register with the local police within 7 days of arrival. The fee is <strong>&pound;34</strong>. Your university will normally help you with this during Welcome Week.</li>
+    <li><strong>Open a UK bank account:</strong> You will need a UK bank account for everyday spending. <strong>Monzo</strong> and <strong>Starling</strong> allow you to open an account with just your passport and BRP &mdash; no proof of address needed. Traditional banks (Barclays, Lloyds, HSBC) require a university letter and proof of address, which can take weeks.</li>
+    <li><strong>Register with a GP:</strong> The NHS is available to you because you paid the IHS. Register with a local GP (doctor) near your accommodation as soon as possible.</li>
+  </ul>
+
+  <h2>Common Mistakes That Get Nigerian Students Refused</h2>
+
+  <p>These are the top reasons Nigerian student visa applications are refused. Every one of them is avoidable.</p>
+
+  <div class="tsv-callout danger">
+    <span class="callout-icon">🚨</span>
+    <div class="callout-body">
+      <strong>Top 5 reasons for visa refusal (Nigerian applicants)</strong>
+      <br><br>
+      <strong>1. 28-day rule not met.</strong> Money was deposited too recently, or funds moved in and out during the 28-day window. This is the single most common refusal reason.<br><br>
+      <strong>2. Wrong IELTS type.</strong> Submitting IELTS General Training instead of IELTS Academic, or using a test centre that is not UKVI-approved. Always book &ldquo;IELTS for UKVI&rdquo; Academic.<br><br>
+      <strong>3. Missing TB certificate.</strong> Forgetting the TB test entirely, or submitting an expired certificate (older than 6 months). Always check the expiry date before your visa appointment.<br><br>
+      <strong>4. Inconsistent information.</strong> Differences between what you wrote on the application form, what appears on your CAS, and what your documents show. Even small name spelling differences (e.g. &ldquo;Mohammed&rdquo; vs &ldquo;Muhammad&rdquo;) can trigger a refusal. Ensure perfect consistency.<br><br>
+      <strong>5. Undisclosed previous refusals.</strong> Failing to declare a previous visa refusal to any country. UKVI can check, and dishonesty is treated more severely than the refusal itself.
+    </div>
+  </div>
+
+  <h2>Work Rights on a Student Visa</h2>
+
+  <p>One of the major benefits of the UK Student Visa is the right to work while studying:</p>
+
+  <ul>
+    <li><strong>During term time:</strong> up to 20 hours per week</li>
+    <li><strong>During official holidays:</strong> full-time (no hourly limit)</li>
+    <li><strong>Dissertation/research period:</strong> full-time, if you have completed all taught modules</li>
+    <li><strong>Cannot be self-employed</strong> or work as a professional sportsperson</li>
+  </ul>
+
+  <p>At the 2026 National Living Wage of approximately <strong>&pound;12/hour</strong>, working 20 hours per week during term earns you roughly <strong>&pound;960/month</strong> &mdash; enough to cover most living expenses outside London.</p>
+
+  <div class="tsv-callout success">
+    <span class="callout-icon">🎓</span>
+    <div class="callout-body">
+      <strong>Graduate Route Visa &mdash; 2 years of post-study work</strong>
+      After completing your degree, you can switch to the Graduate Route visa without needing a job offer. This gives you <strong>2 years</strong> (3 years for PhD graduates) to live and work in the UK with no restrictions on job type or salary. This is one of the most generous post-study work schemes in the world and a major reason Nigerian students choose the UK over other destinations.
+    </div>
+  </div>
+
+  <div class="tsv-cta">
+    <span class="cta-tag">🇳🇬 For Nigerian Students</span>
+    <h2>Need Help With Your UK Visa Application?</h2>
+    <p>Don&rsquo;t risk a refusal. Tundua helps Nigerian students prepare complete, error-free visa applications &mdash; from CAS to biometrics.</p>
+    <div class="cta-features">
+      <span class="cta-feature"><span class="dot"></span> Document review included</span>
+      <span class="cta-feature"><span class="dot"></span> 95% approval rate</span>
+      <span class="cta-feature"><span class="dot"></span> Free initial consultation</span>
+    </div>
+    <a href="/apply" class="cta-btn">Start Your Visa Application &rarr;</a>
+    <span class="cta-sub">Takes less than 2 minutes. No commitment required.</span>
+  </div>
+
+  <h2>Final Thoughts</h2>
+
+  <p>The UK Student Visa process is straightforward if you follow the steps in order and prepare every document correctly. The biggest risks for Nigerian applicants are financial evidence errors (the 28-day rule) and missing the TB test deadline. Start your preparation at least 3&ndash;4 months before your course begins, and leave at least 6 weeks between your biometrics appointment and your intended travel date.</p>
+
+  <p>For a full breakdown of every cost involved, see our <a href="/blog/cost-of-studying-in-the-uk-for-nigerians-complete-2026-budget-guide">complete UK cost guide for Nigerians</a>. To find universities with the lowest upfront deposits, check our <a href="/blog/uk-universities-with-low-tuition-deposit-for-international-students-2026">low deposit university guide</a>.</p>
+
+  <div class="tsv-footer-note">
+    Last updated: April 2026 &nbsp;|&nbsp; Visa fees, IHS rates, and maintenance requirements are subject to change. Always confirm current requirements on GOV.UK before applying. &nbsp;|&nbsp; This guide does not constitute immigration advice.
+  </div>
+
+</div>
+
+<!--
+=== CMS METADATA ===
+
+TITLE: UK Student Visa Requirements for Nigerians (2026 Step-by-Step Guide)
+
+SLUG: uk-student-visa-requirements-nigerians-2026-step-by-step-guide
+
+EXCERPT: Complete 2026 guide for Nigerian students: UK Student Visa requirements, document checklist, proof of funds (£1,171/month), IELTS scores, TB test ($95), step-by-step application process via VFS Global, visa fees (£524), processing times, work rights (20 hrs/week), and the 5 most common mistakes that get applications refused.
+
+CATEGORY: UK / Student Visa
+
+TAGS: UK student visa, UK visa requirements Nigeria, UK student visa 2026, proof of funds UK, IHS fee, IELTS for UK visa, TB test Nigeria, VFS Global Nigeria, Graduate Route visa
+
+FAQS:
+[
+  {
+    "question": "How much does a UK student visa cost from Nigeria in 2026?",
+    "answer": "The UK Student Visa application fee is £524 (increasing to £558 from 8 April 2026). You must also pay the Immigration Health Surcharge (IHS) of £776 per year of study, plus a TB test fee of $95 USD (~₦155,000). For a 1-year Masters, the total visa-related cost is approximately £1,375."
+  },
+  {
+    "question": "How much money do I need in my bank for a UK student visa?",
+    "answer": "You need to show your outstanding tuition fees (tuition minus deposit paid) plus £1,171 per month for up to 9 months (£10,539) if studying outside London, or £1,534 per month (£13,806) if in London. This money must be held for at least 28 consecutive days before you apply."
+  },
+  {
+    "question": "How long does UK student visa processing take from Nigeria?",
+    "answer": "Standard processing takes 3–6 weeks. Priority processing (£500 extra) takes approximately 5 working days. Super Priority (£1,000 extra) provides a decision by the next working day. During peak season (June–September), standard processing can take up to 6+ weeks."
+  },
+  {
+    "question": "What IELTS score do I need for a UK student visa?",
+    "answer": "Most undergraduate programmes require IELTS Academic overall 5.5–6.0 with no band below 5.5. Postgraduate programmes typically require overall 6.0–6.5. Medicine, Law, and Education programmes often require 7.0+. The IELTS UKVI test costs ₦266,000–₦298,000 in Nigeria."
+  },
+  {
+    "question": "Can I work on a UK student visa?",
+    "answer": "Yes. UK student visa holders can work up to 20 hours per week during term time and full-time during official holidays. At the 2026 National Living Wage of approximately £12/hour, 20 hours per week earns roughly £960/month. After graduating, the Graduate Route visa allows 2 years of unrestricted work (3 years for PhD)."
+  },
+  {
+    "question": "What happens if my UK student visa is refused?",
+    "answer": "A refusal stays on your immigration record and makes future applications harder. You lose the non-refundable visa fee and IHS payment. However, you can reapply immediately if you fix the issue that caused the refusal. The most common reasons are insufficient proof of funds (28-day rule not met), wrong IELTS type, missing TB certificate, and undisclosed previous refusals."
+  }
+]
+-->

@@ -1,0 +1,466 @@
+<style>
+  :root {
+    --color-bg-primary: #ffffff; --color-bg-secondary: #f9fafb; --color-bg-tertiary: #f3f4f6;
+    --color-text-primary: #111827; --color-text-secondary: #4b5563; --color-text-tertiary: #6b7280;
+    --color-text-muted: #9ca3af; --color-border-primary: #e5e7eb; --color-border-secondary: #d1d5db;
+    --color-accent: #0284c7; --color-accent-hover: #0369a1;
+    --color-success: #059669; --color-success-bg: #d1fae5;
+    --color-warning: #d97706; --color-warning-bg: #fef3c7;
+    --color-error: #dc2626; --color-error-bg: #fee2e2;
+    --color-info: #0284c7; --color-info-bg: #e0f2fe;
+    --accent-dark: #075985; --accent-light: #e0f2fe; --accent-mid: #0ea5e9;
+    --gray-700: #374151; --gray-600: #4b5563; --gray-500: #6b7280;
+    --gray-100: #f3f4f6; --gray-50: #f9fafb;
+  }
+
+  .tsv-article { font-family: 'Georgia', serif; color: var(--color-text-primary); line-height: 1.85; font-size: 17px; max-width: 780px; margin: 0 auto; }
+  .tsv-article .intro-lead { font-size: 20px; font-weight: 400; color: var(--color-text-secondary); border-left: 4px solid var(--color-accent); padding-left: 20px; margin: 32px 0 28px; line-height: 1.7; font-style: italic; }
+  .tsv-article h2 { font-family: 'Georgia', serif; font-size: 26px; font-weight: 700; color: var(--color-text-primary); margin: 52px 0 18px; padding-bottom: 10px; border-bottom: 2px solid var(--color-border-primary); }
+  .tsv-article p { margin: 0 0 20px; color: var(--color-text-secondary); }
+  .tsv-article strong { color: var(--color-text-primary); font-weight: 600; }
+  .tsv-article ul { margin: 0 0 20px 20px; color: var(--color-text-secondary); }
+  .tsv-article ul li { margin-bottom: 8px; }
+
+  .tsv-hero-banner { background: linear-gradient(135deg, var(--accent-dark) 0%, #0c4a6e 55%, #082f49 100%); border-radius: 16px; padding: 52px 44px; margin: 0 0 44px; position: relative; overflow: hidden; }
+  .tsv-hero-banner::before { content: '💰'; position: absolute; right: 40px; top: 50%; transform: translateY(-50%); font-size: 100px; opacity: 0.1; }
+  .tsv-hero-banner h1 { font-family: 'Georgia', serif; font-size: 34px; font-weight: 900; color: #fff; line-height: 1.3; margin: 0 0 16px; max-width: 560px; position: relative; z-index: 1; }
+  .tsv-hero-banner .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .tsv-hero-banner .hero-badge { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22); color: #bae6fd; font-family: system-ui, sans-serif; font-size: 12px; font-weight: 500; padding: 5px 13px; border-radius: 20px; }
+
+  .tsv-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0 44px; }
+  .tsv-stat-card { background: var(--color-bg-primary); border: 1px solid var(--color-border-primary); border-top: 3px solid var(--color-accent); border-radius: 12px; padding: 22px 20px; text-align: center; box-shadow: 0 2px 8px rgba(2,132,199,0.07); }
+  .tsv-stat-card .stat-num { font-size: 27px; font-weight: 800; color: var(--color-accent); font-family: system-ui, sans-serif; line-height: 1; margin-bottom: 6px; }
+  .tsv-stat-card .stat-label { font-size: 13px; color: var(--color-text-tertiary); font-family: system-ui, sans-serif; font-weight: 500; }
+
+  .tsv-callout { border-radius: 10px; padding: 18px 22px; margin: 24px 0; display: flex; gap: 14px; align-items: flex-start; }
+  .tsv-callout.info    { background: var(--color-info-bg);    border-left: 4px solid var(--color-info); }
+  .tsv-callout.warning { background: var(--color-warning-bg); border-left: 4px solid var(--color-warning); }
+  .tsv-callout.success { background: var(--color-success-bg); border-left: 4px solid var(--color-success); }
+  .tsv-callout.danger  { background: var(--color-error-bg);   border-left: 4px solid var(--color-error); }
+  .tsv-callout .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .tsv-callout .callout-body { font-family: system-ui, sans-serif; font-size: 14.5px; color: var(--gray-700); line-height: 1.7; }
+  .tsv-callout .callout-body strong { display: block; margin-bottom: 4px; font-size: 14.5px; color: var(--color-text-primary); }
+
+  .tsv-fee-box { background: var(--color-bg-primary); border-radius: 16px; overflow: hidden; border: 1px solid var(--color-border-primary); margin: 28px 0 36px; box-shadow: 0 4px 16px rgba(2,132,199,0.08); }
+  .tsv-fee-box .fee-header { background: var(--color-accent); padding: 16px 28px; color: #fff; font-family: system-ui, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.6px; text-transform: uppercase; }
+  .tsv-fee-table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; }
+  .tsv-fee-table tr { border-bottom: 1px solid var(--color-border-primary); }
+  .tsv-fee-table tr:nth-child(even) { background: var(--gray-50); }
+  .tsv-fee-table td { padding: 14px 28px; font-size: 15px; color: var(--gray-700); }
+  .tsv-fee-table td:last-child { text-align: right; font-weight: 600; color: var(--color-text-primary); }
+
+  .tsv-steps { display: flex; flex-direction: column; margin: 28px 0 36px; }
+  .tsv-step  { display: flex; gap: 22px; align-items: flex-start; padding-bottom: 28px; }
+  .tsv-step:last-child { padding-bottom: 0; }
+  .tsv-step .step-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .tsv-step .step-num { width: 38px; height: 38px; border-radius: 50%; background: var(--color-accent); color: #fff; font-family: system-ui, sans-serif; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(2,132,199,0.3); }
+  .tsv-step .step-line { width: 2px; flex: 1; background: var(--color-border-primary); margin-top: 6px; min-height: 20px; }
+  .tsv-step:last-child .step-line { display: none; }
+  .tsv-step .step-body { padding-top: 6px; flex: 1; }
+  .tsv-step .step-body h4 { font-family: system-ui, sans-serif; font-size: 15.5px; font-weight: 700; color: var(--color-text-primary); margin: 0 0 7px; }
+  .tsv-step .step-body p { font-size: 14.5px; color: var(--color-text-secondary); margin: 0; line-height: 1.7; font-family: system-ui, sans-serif; }
+
+  .tsv-deposit-card { background: var(--color-bg-primary); border: 1px solid var(--color-border-primary); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: border-color 0.15s; margin-bottom: 16px; }
+  .tsv-deposit-card:hover { border-color: var(--color-accent); }
+  .tsv-deposit-card .dep-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 22px; background: var(--color-bg-secondary); border-bottom: 1px solid var(--color-border-primary); flex-wrap: wrap; gap: 10px; }
+  .tsv-deposit-card .dep-name { font-family: system-ui, sans-serif; font-size: 16px; font-weight: 700; color: var(--color-text-primary); }
+  .tsv-deposit-card .dep-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tsv-deposit-card .dep-badge { font-family: system-ui, sans-serif; font-size: 12.5px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+  .tsv-deposit-card .dep-badge.deposit { background: var(--accent-light); color: var(--accent-dark); }
+  .tsv-deposit-card .dep-badge.tuition { background: var(--gray-100); color: var(--gray-600); }
+  .tsv-deposit-card .dep-body { padding: 18px 22px; }
+  .tsv-deposit-card .dep-body p { font-family: system-ui, sans-serif; font-size: 14.5px; color: var(--color-text-secondary); margin: 0 0 10px; line-height: 1.7; }
+  .tsv-deposit-card .dep-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tsv-deposit-card .dep-tag { background: var(--gray-100); color: var(--gray-600); font-family: system-ui, sans-serif; font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 6px; }
+  .tsv-deposit-card .dep-tag.highlight { background: var(--color-success-bg); color: var(--color-success); }
+
+  .tsv-cta { background: linear-gradient(135deg, var(--accent-dark) 0%, #0c4a6e 60%, #082f49 100%); border-radius: 20px; padding: 52px 44px; text-align: center; margin: 52px 0 36px; position: relative; overflow: hidden; }
+  .tsv-cta::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(14,165,233,0.2) 0%, transparent 70%); border-radius: 50%; }
+  .tsv-cta .cta-tag { display: inline-block; background: rgba(14,165,233,0.18); border: 1px solid rgba(14,165,233,0.35); color: #7dd3fc; font-family: system-ui, sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; position: relative; z-index: 1; }
+  .tsv-cta h2 { font-family: 'Georgia', serif; font-size: 29px; color: #fff; margin: 0 0 16px; border: none; padding: 0; line-height: 1.35; position: relative; z-index: 1; }
+  .tsv-cta p { font-family: system-ui, sans-serif; font-size: 15.5px; color: #93c5fd; max-width: 520px; margin: 0 auto 30px; line-height: 1.75; position: relative; z-index: 1; }
+  .tsv-cta .cta-features { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 34px; position: relative; z-index: 1; }
+  .tsv-cta .cta-feature { display: flex; align-items: center; gap: 8px; font-family: system-ui, sans-serif; font-size: 13.5px; color: #bae6fd; }
+  .tsv-cta .cta-feature .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-mid); flex-shrink: 0; }
+  .tsv-cta .cta-btn { display: inline-block; background: var(--color-accent); color: #fff; font-family: system-ui, sans-serif; font-size: 15.5px; font-weight: 700; padding: 15px 42px; border-radius: 50px; text-decoration: none; box-shadow: 0 6px 20px rgba(2,132,199,0.45); position: relative; z-index: 1; }
+  .tsv-cta .cta-sub { display: block; margin-top: 14px; font-family: system-ui, sans-serif; font-size: 13px; color: #64748b; position: relative; z-index: 1; }
+
+  .tsv-footer-note { background: var(--color-bg-secondary); border-top: 2px solid var(--color-border-primary); border-radius: 0 0 10px 10px; padding: 18px 24px; font-family: system-ui, sans-serif; font-size: 13px; color: var(--color-text-muted); text-align: center; margin-top: 52px; }
+
+  @media (max-width: 600px) {
+    .tsv-hero-banner { padding: 32px 22px; }
+    .tsv-hero-banner h1 { font-size: 24px; }
+    .tsv-stat-row { grid-template-columns: 1fr 1fr; }
+    .tsv-cta { padding: 34px 22px; }
+    .tsv-cta h2 { font-size: 22px; }
+    .tsv-fee-table td { padding: 10px 14px; font-size: 13.5px; }
+    .tsv-fee-box .fee-header { padding: 12px 16px; font-size: 12.5px; }
+  }
+</style>
+
+<div class="tsv-article">
+
+  <div class="tsv-hero-banner">
+    <h1>How Much Does It Cost to Study in the UK from Nigeria? (2026 Complete Budget Guide)</h1>
+    <div class="hero-meta">
+      <span class="hero-badge">💰 Budget Guide</span>
+      <span class="hero-badge">📅 Updated 2026</span>
+      <span class="hero-badge">🇳🇬 For Nigerians</span>
+      <span class="hero-badge">⏱ 15 min read</span>
+    </div>
+  </div>
+
+  <div class="tsv-stat-row">
+    <div class="tsv-stat-card">
+      <div class="stat-num">₦8M–₦15M</div>
+      <div class="stat-label">Realistic first-year total</div>
+    </div>
+    <div class="tsv-stat-card">
+      <div class="stat-num">£11,823</div>
+      <div class="stat-label">Lowest annual tuition</div>
+    </div>
+    <div class="tsv-stat-card">
+      <div class="stat-num">£1,171/mo</div>
+      <div class="stat-label">UKVI maintenance requirement</div>
+    </div>
+  </div>
+
+  <p class="intro-lead">How much does it truly cost a Nigerian student to study in the UK in 2026 &mdash; from the first naira spent on IELTS registration to the day you land at Heathrow? This guide breaks down every cost: tuition, visa fees, Immigration Health Surcharge, proof of funds, living expenses by city, flights, and every hidden fee most guides leave out.</p>
+
+  <p>Planning a UK education from Nigeria is not just about tuition. The tuition fee is the number everyone asks about, but it accounts for only about 50&ndash;60% of the real first-year cost. Visa fees, the Immigration Health Surcharge, proof of funds, IELTS registration, TB testing, flights, accommodation deposits, and living expenses all add up &mdash; and most of these must be paid <strong>before you leave Nigeria</strong>.</p>
+
+  <p>This guide gives you the complete picture. Every figure is based on verified 2026 data from UKVI, UK universities, and the British Council. Where we reference Naira amounts, we use an indicative rate of £1 ≈ ₦2,000 &mdash; always check the current CBN or parallel rate before making financial plans.</p>
+
+  <h2>Tuition Fees &mdash; The Biggest Single Cost</h2>
+
+  <p>Tuition is the largest expense and varies dramatically by university, program level, and subject. UK universities set their own fees for international students, and there is no government cap. Here is what to expect in 2026:</p>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">📊 Tuition Fees by Program Type &mdash; International Students 2026</div>
+    <table class="tsv-fee-table">
+      <tr><td>Undergraduate (Arts, Humanities, Business)</td><td>£11,000 &ndash; £20,000/yr</td></tr>
+      <tr><td>Undergraduate (Science, Engineering)</td><td>£14,000 &ndash; £28,000/yr</td></tr>
+      <tr><td>Undergraduate (Medicine, Dentistry)</td><td>£25,000 &ndash; £58,000/yr</td></tr>
+      <tr><td>Postgraduate Taught (Masters)</td><td>£12,000 &ndash; £35,000/yr</td></tr>
+      <tr><td>MBA</td><td>£15,000 &ndash; £60,000/yr</td></tr>
+      <tr><td>Postgraduate Research (PhD)</td><td>£14,000 &ndash; £30,000/yr</td></tr>
+    </table>
+  </div>
+
+  <p>The most affordable universities for Nigerian students &mdash; with tuition starting from just £11,823/year &mdash; include the <strong>University of Suffolk</strong>, <strong>University of Cumbria</strong>, <strong>Wrexham University</strong>, and <strong>University of Bolton</strong>. For a detailed breakdown of the cheapest options, see our guide to <a href="/blog/cheapest-universities-in-uk-for-international-students">the 10 cheapest UK universities for international students</a>.</p>
+
+  <div class="tsv-callout info">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body">
+      <strong>Pro tip: target post-92 universities</strong>
+      Post-92 universities (former polytechnics) consistently offer the lowest international tuition in the UK. They are fully accredited, UKVI-approved, and issue CAS letters. Names like Suffolk, Cumbria, Bolton, Bedfordshire, and Staffordshire regularly appear in the £11,000&ndash;£14,000 range.
+    </div>
+  </div>
+
+  <h2>Visa &amp; Immigration Costs</h2>
+
+  <p>Every Nigerian student needs a UK Student Visa (formerly Tier 4 General). Here is the complete fee breakdown for 2026:</p>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">🛂 Visa &amp; Immigration Fees 2026</div>
+    <table class="tsv-fee-table">
+      <tr><td>Student Visa application fee</td><td>£524</td></tr>
+      <tr><td>Immigration Health Surcharge (IHS) &mdash; per year</td><td>£776</td></tr>
+      <tr><td>IHS for a 1-year Masters</td><td>£776</td></tr>
+      <tr><td>IHS for a 3-year Bachelors</td><td>£2,328</td></tr>
+      <tr><td>TB test (IOM Nigeria &mdash; Lagos/Abuja)</td><td>$95 (~₦155,000)</td></tr>
+      <tr><td>Priority processing (optional)</td><td>+£500</td></tr>
+      <tr><td>Super Priority processing (optional)</td><td>+£1,000</td></tr>
+      <tr><td>Biometric Residence Permit (BRP)</td><td>Included in visa fee</td></tr>
+    </table>
+  </div>
+
+  <p><strong>Total visa cost for a 1-year Masters:</strong> £524 (visa) + £776 (IHS) + ~£75 (TB test) = <strong>£1,375</strong> (~₦2,750,000). For a 3-year undergraduate degree, the IHS alone rises to £2,328, bringing the visa total to approximately <strong>£2,927</strong> (~₦5,854,000).</p>
+
+  <div class="tsv-callout warning">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-body">
+      <strong>Visa fee increase from 8 April 2026</strong>
+      The UK Government has confirmed that student visa application fees increase from £524 to £558 for applications submitted on or after 8 April 2026. If you are close to this date, submit your application before the deadline to save £34.
+    </div>
+  </div>
+
+  <h2>Proof of Funds (Maintenance Requirement)</h2>
+
+  <p>Before UKVI will approve your student visa, you must prove you can financially support yourself in the UK. This is separate from paying tuition &mdash; it is money that must sit in your bank account (or your parent&rsquo;s account) for <strong>28 consecutive days</strong> before you apply.</p>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">🏦 Maintenance Requirement 2026</div>
+    <table class="tsv-fee-table">
+      <tr><td>Monthly maintenance &mdash; outside London</td><td>£1,171</td></tr>
+      <tr><td>Monthly maintenance &mdash; London</td><td>£1,534</td></tr>
+      <tr><td>Number of months required</td><td>Up to 9 months</td></tr>
+      <tr><td>Total maintenance (outside London, 9 months)</td><td>£10,539</td></tr>
+      <tr><td>Total maintenance (London, 9 months)</td><td>£13,806</td></tr>
+    </table>
+  </div>
+
+  <p><strong>What you actually need in your bank:</strong> outstanding tuition fees (tuition minus any deposit already paid) <strong>plus</strong> the maintenance amount above. For example, if your tuition is £13,000 and you paid a £2,000 deposit, you need £11,000 + £10,539 = <strong>£21,539</strong> (~₦43,000,000) held for 28 days.</p>
+
+  <div class="tsv-callout danger">
+    <span class="callout-icon">🚨</span>
+    <div class="callout-body">
+      <strong>The 28-day rule is the #1 reason Nigerian visa applications are refused</strong>
+      The money must be in your account for at least 28 consecutive days, with the final day falling within 31 days of your visa application date. Moving money in and out, or depositing it less than 28 days before applying, will result in an automatic refusal. Plan your proof of funds timeline at least 6 weeks before you intend to submit your visa application.
+    </div>
+  </div>
+
+  <p>You can use either your own bank account or your parent&rsquo;s/legal guardian&rsquo;s account. If using a parent&rsquo;s account, you must also provide your birth certificate and a signed letter from the parent confirming the relationship and their consent. Accounts belonging to siblings, uncles, aunts, or sponsors are <strong>not accepted</strong>.</p>
+
+  <h2>Living Costs in the UK</h2>
+
+  <p>Your actual living costs depend heavily on where you study. London is the most expensive, followed by cities like Edinburgh and Bristol. Northern England, Wales, and smaller towns are significantly cheaper.</p>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">🏠 Monthly Living Costs &mdash; Student Budget 2026</div>
+    <table class="tsv-fee-table">
+      <tr><td><strong>Expense</strong></td><td><strong>London</strong></td></tr>
+      <tr><td>Accommodation (halls/shared)</td><td>£700 &ndash; £1,200/mo</td></tr>
+      <tr><td>Food &amp; groceries</td><td>£200 &ndash; £350/mo</td></tr>
+      <tr><td>Transport (Oyster/bus pass)</td><td>£80 &ndash; £150/mo</td></tr>
+      <tr><td>Mobile phone</td><td>£10 &ndash; £25/mo</td></tr>
+      <tr><td>Books &amp; supplies</td><td>£20 &ndash; £50/mo</td></tr>
+      <tr><td>Personal &amp; social</td><td>£100 &ndash; £200/mo</td></tr>
+      <tr><td><strong>Total London estimate</strong></td><td><strong>£1,110 &ndash; £1,975/mo</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">🏠 Monthly Living Costs &mdash; Outside London 2026</div>
+    <table class="tsv-fee-table">
+      <tr><td>Accommodation (halls/shared)</td><td>£400 &ndash; £700/mo</td></tr>
+      <tr><td>Food &amp; groceries</td><td>£150 &ndash; £280/mo</td></tr>
+      <tr><td>Transport</td><td>£30 &ndash; £70/mo</td></tr>
+      <tr><td>Mobile phone</td><td>£10 &ndash; £20/mo</td></tr>
+      <tr><td>Books &amp; supplies</td><td>£15 &ndash; £40/mo</td></tr>
+      <tr><td>Personal &amp; social</td><td>£80 &ndash; £150/mo</td></tr>
+      <tr><td><strong>Total outside London estimate</strong></td><td><strong>£685 &ndash; £1,260/mo</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="tsv-callout success">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body">
+      <strong>Wales and Northern England are the most affordable</strong>
+      Universities like Wrexham (Wales), Cumbria (Lake District), and Teesside (North East England) combine the lowest tuition fees with the lowest living costs in the UK. A Nigerian student studying at Wrexham could spend 30&ndash;40% less annually than a student at a London university.
+    </div>
+  </div>
+
+  <h2>Application Costs Before You Leave Nigeria</h2>
+
+  <p>These are the costs you will pay in Nigeria before you even receive a visa decision. Most Nigerian students underestimate this category.</p>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">🇳🇬 Pre-Departure Costs (Paid in Nigeria)</div>
+    <table class="tsv-fee-table">
+      <tr><td>IELTS Academic exam</td><td>₦266,000 &ndash; ₦298,000</td></tr>
+      <tr><td>UCAS application fee</td><td>~£28 (~₦56,000)</td></tr>
+      <tr><td>TB test (IOM Lagos/Abuja)</td><td>$95 (~₦155,000)</td></tr>
+      <tr><td>Document notarisation/translation</td><td>₦20,000 &ndash; ₦50,000</td></tr>
+      <tr><td>Visa application fee</td><td>£524 (~₦1,048,000)</td></tr>
+      <tr><td>IHS (1-year Masters)</td><td>£776 (~₦1,552,000)</td></tr>
+      <tr><td>Tuition deposit (CAS)</td><td>£1,000 &ndash; £5,000</td></tr>
+      <tr><td>Flight (Lagos &rarr; London, one-way)</td><td>₦800,000 &ndash; ₦2,000,000</td></tr>
+      <tr><td>Accommodation deposit (if required)</td><td>£200 &ndash; £500</td></tr>
+      <tr><td><strong>Estimated total pre-departure</strong></td><td><strong>₦6,000,000 &ndash; ₦15,000,000+</strong></td></tr>
+    </table>
+  </div>
+
+  <p>The wide range depends primarily on your choice of university (which determines tuition deposit size) and your flight booking timing. Book flights 2&ndash;3 months in advance for the best rates.</p>
+
+  <p>For universities with the lowest tuition deposits &mdash; some as low as £1,000 &mdash; see our detailed guide: <a href="/blog/uk-universities-with-low-tuition-deposit-for-international-students-2026">UK universities with low tuition deposit for international students</a>.</p>
+
+  <h2>Complete First-Year Budget Breakdown</h2>
+
+  <p>Here is the full picture, combining every cost into three realistic scenarios. These represent what a Nigerian student will actually spend from application to completing the first year of study.</p>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">📊 Total First-Year Cost &mdash; Three Scenarios</div>
+    <table class="tsv-fee-table">
+      <tr><td><strong>Cost category</strong></td><td><strong>Budget (Outside London)</strong></td></tr>
+      <tr><td>Tuition (cheapest universities)</td><td>£11,823</td></tr>
+      <tr><td>Visa application</td><td>£524</td></tr>
+      <tr><td>IHS (1 year)</td><td>£776</td></tr>
+      <tr><td>TB test</td><td>£75</td></tr>
+      <tr><td>IELTS</td><td>£150</td></tr>
+      <tr><td>UCAS fee</td><td>£28</td></tr>
+      <tr><td>Flight</td><td>£500</td></tr>
+      <tr><td>Living costs (9 months &times; £800)</td><td>£7,200</td></tr>
+      <tr><td>Books, supplies, misc</td><td>£300</td></tr>
+      <tr><td><strong>TOTAL (Budget scenario)</strong></td><td><strong>£21,376 (~₦42,750,000)</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">📊 Mid-Range Scenario (Regional City)</div>
+    <table class="tsv-fee-table">
+      <tr><td>Tuition (mid-range university)</td><td>£16,000</td></tr>
+      <tr><td>Visa + IHS + TB + IELTS + UCAS</td><td>£1,553</td></tr>
+      <tr><td>Flight</td><td>£700</td></tr>
+      <tr><td>Living costs (9 months &times; £1,000)</td><td>£9,000</td></tr>
+      <tr><td>Books, supplies, misc</td><td>£500</td></tr>
+      <tr><td><strong>TOTAL (Mid-range scenario)</strong></td><td><strong>£27,753 (~₦55,500,000)</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">📊 London Scenario</div>
+    <table class="tsv-fee-table">
+      <tr><td>Tuition (London university)</td><td>£20,000</td></tr>
+      <tr><td>Visa + IHS + TB + IELTS + UCAS</td><td>£1,553</td></tr>
+      <tr><td>Flight</td><td>£800</td></tr>
+      <tr><td>Living costs (9 months &times; £1,500)</td><td>£13,500</td></tr>
+      <tr><td>Books, supplies, misc</td><td>£600</td></tr>
+      <tr><td><strong>TOTAL (London scenario)</strong></td><td><strong>£36,453 (~₦72,900,000)</strong></td></tr>
+    </table>
+  </div>
+
+  <h2>How to Reduce Your Costs</h2>
+
+  <p>There are several proven strategies Nigerian students use to reduce the total cost of studying in the UK:</p>
+
+  <ul>
+    <li><strong>Choose universities with low deposits and tuition.</strong> Universities like Suffolk (£11,823/yr, £1,000 deposit) and Wrexham (£12,450/yr, £1,000 deposit) can save you £5,000&ndash;£10,000 per year compared to mid-range institutions.</li>
+    <li><strong>Apply for scholarships early.</strong> Many UK universities offer international scholarships worth £2,000&ndash;£5,000. Teesside University&rsquo;s £3,000 scholarship can offset the entire deposit. Chevening, Commonwealth, and GREAT scholarships cover full fees for qualified applicants.</li>
+    <li><strong>Study outside London.</strong> Living costs in Wales, Northern England, and Scotland can be 30&ndash;40% lower than London. The UKVI maintenance requirement is also lower (£1,171/month vs £1,534/month).</li>
+    <li><strong>Work part-time.</strong> UK student visa holders can work up to 20 hours per week during term and full-time during holidays. At the 2026 National Living Wage of approximately £12/hour, working 20 hours/week would earn you roughly £960/month &mdash; enough to cover most of your living expenses.</li>
+    <li><strong>Choose a 1-year Masters over a 3-year Bachelors.</strong> If you already have a Nigerian degree, a UK Masters takes just 12 months. You save 2 years of tuition + living costs + IHS, and still qualify for the 2-year Graduate Route work visa.</li>
+    <li><strong>Book flights during off-peak periods.</strong> Avoid August and September &mdash; prices spike during peak intake season. Booking in June for a September start can save ₦200,000&ndash;₦500,000.</li>
+  </ul>
+
+  <h2>Hidden Costs Most Guides Don&rsquo;t Mention</h2>
+
+  <p>These smaller costs catch many Nigerian students off guard:</p>
+
+  <ul>
+    <li><strong>Accommodation deposit:</strong> Most university halls require a £200&ndash;£500 deposit before arrival, on top of rent.</li>
+    <li><strong>Warm clothing:</strong> If you have never lived in a cold climate, budget £150&ndash;£300 for a winter coat, boots, and layers. UK winters are cold, wet, and long.</li>
+    <li><strong>UK SIM card and bank setup:</strong> Free to open, but you may need a small float (£50&ndash;£100) for initial expenses before your bank card arrives.</li>
+    <li><strong>Council Tax:</strong> Full-time students are exempt, but you must register for the exemption. Failure to register can result in bills of £100+/month.</li>
+    <li><strong>TV Licence:</strong> £169.50/year if you watch live TV or use BBC iPlayer. Many students skip this legally by not watching live broadcasts.</li>
+    <li><strong>Police registration:</strong> Some nationalities (including Nigerian) must register with local police within 7 days of arrival. The fee is £34.</li>
+    <li><strong>Graduation ceremony:</strong> Optional but costs £30&ndash;£50 for gown hire. Photography packages can add another £50&ndash;£100.</li>
+  </ul>
+
+  <h2>Your Financial Timeline</h2>
+
+  <p>Here is the order in which costs hit your wallet, so you can plan your savings and payments:</p>
+
+  <div class="tsv-steps">
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">1</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>6&ndash;12 Months Before: IELTS + Research</h4>
+        <p>Pay for IELTS (₦266,000&ndash;₦298,000). Start researching universities and shortlisting affordable options. This is also when to begin building your proof of funds &mdash; the earlier you start saving, the easier the 28-day window becomes.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">2</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>4&ndash;6 Months Before: Apply + UCAS</h4>
+        <p>Submit your UCAS application (£28). Apply to 3&ndash;5 universities simultaneously. Wait for offers. Do not pay any deposit until you have compared all offers.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">3</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>3&ndash;4 Months Before: Accept Offer + Pay Deposit</h4>
+        <p>Accept your preferred offer. Pay the tuition deposit (£1,000&ndash;£5,000) to receive your CAS. Ensure your proof of funds has been in your account for at least 28 days by this point.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">4</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>2&ndash;3 Months Before: TB Test + Visa Application</h4>
+        <p>Get your TB test at an IOM clinic ($95). Complete the online visa application (£524). Pay the IHS (£776+ depending on course length). Book your biometrics appointment at VFS Global (Lagos, Abuja, Benin, or Port Harcourt).</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">5</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>1&ndash;2 Months Before: Visa Decision + Flights</h4>
+        <p>Standard processing takes 3&ndash;6 weeks. Once approved, book your flight (₦800,000&ndash;₦2,000,000). Book early for the best rates. Sort accommodation and pay any required deposit.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">6</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Arrival Week: Final Setup Costs</h4>
+        <p>Collect your BRP from the Post Office within 10 days. Open a UK bank account (Monzo and Starling are fastest for international students). Pay remaining tuition (deposit is deducted). Register with local police (£34) if required.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-cta">
+    <span class="cta-tag">🇳🇬 For Nigerian Students</span>
+    <h2>Plan Your UK Budget With Expert Help</h2>
+    <p>Not sure which university fits your budget? Overwhelmed by the visa costs? Tundua helps Nigerian students find affordable universities, prepare documents, and secure admission &mdash; step by step.</p>
+    <div class="cta-features">
+      <span class="cta-feature"><span class="dot"></span> 500+ students helped</span>
+      <span class="cta-feature"><span class="dot"></span> Universities from £11,823/yr</span>
+      <span class="cta-feature"><span class="dot"></span> Free initial consultation</span>
+    </div>
+    <a href="/apply" class="cta-btn">Get Your Free Budget Plan &rarr;</a>
+    <span class="cta-sub">Takes less than 2 minutes. No commitment required.</span>
+  </div>
+
+  <h2>Final Thoughts</h2>
+
+  <p>The true cost of studying in the UK from Nigeria in 2026 ranges from approximately <strong>₦42 million</strong> (budget scenario at the cheapest universities outside London) to <strong>₦73 million+</strong> (London university). The most common range for Nigerian students targeting affordable post-92 universities is <strong>₦45&ndash;₦55 million</strong> for the first year.</p>
+
+  <p>These numbers are significant, but they represent an investment in a globally recognised qualification, a 2-year post-study work visa (Graduate Route), and a potential pathway to a UK career. The key is to plan early, choose your university strategically, and ensure your proof of funds timeline is airtight.</p>
+
+  <p>Start by choosing an affordable university from our <a href="/blog/cheapest-universities-in-uk-for-international-students">cheapest UK universities guide</a>, then check deposit requirements in our <a href="/blog/uk-universities-with-low-tuition-deposit-for-international-students-2026">low deposit guide</a>. Once you have a target, work backwards from your intake date using the financial timeline above to ensure every cost is covered on time.</p>
+
+  <div class="tsv-footer-note">
+    Last updated: April 2026 &nbsp;|&nbsp; Exchange rates, tuition fees, and visa fees are subject to change. Always confirm amounts directly with the university and UKVI. &nbsp;|&nbsp; This guide does not constitute financial or immigration advice.
+  </div>
+
+</div>
+
+<!--
+=== CMS METADATA ===
+
+TITLE: How Much Does It Cost to Study in the UK from Nigeria? (2026 Complete Budget Guide)
+
+SLUG: how-much-does-it-cost-to-study-in-uk-from-nigeria-2026
+
+EXCERPT: How much does it truly cost a Nigerian student to study in the UK in 2026? This complete budget guide breaks down tuition fees, visa costs (£524), IHS (£776/year), proof of funds (£1,171/month), living expenses by city, flights, and every hidden fee — with three realistic budget scenarios from ₦42M to ₦73M.
+
+CATEGORY: UK / Cost of Studying in the UK for Nigerians
+
+TAGS: cost of studying in UK, UK tuition fees 2026, Nigerian students UK, UK student visa cost, study abroad budget, proof of funds UK, IHS fee, UK living costs
+
+FAQS (add to article metadata):
+[
+  {
+    "question": "How much does it cost in total for a Nigerian student to study in the UK in 2026?",
+    "answer": "The total first-year cost ranges from approximately ₦42 million (budget scenario at the cheapest universities outside London) to ₦73 million+ (London university). The most common range for Nigerian students is ₦45–55 million for the first year, covering tuition, visa fees, IHS, living costs, flights, and all pre-departure expenses."
+  },
+  {
+    "question": "What is the cheapest UK tuition fee for international students in 2026?",
+    "answer": "The cheapest UK tuition for international students in 2026 starts from £11,823/year at the University of Suffolk. Other affordable options include the University of Cumbria (from £12,000/year), Wrexham University (from £12,450/year), and the University of Bolton (from £12,500/year)."
+  },
+  {
+    "question": "How much money do I need in my bank account for a UK student visa in 2026?",
+    "answer": "You need your outstanding tuition fees plus £1,171 per month for up to 9 months (£10,539 total) if studying outside London, or £1,534 per month (£13,806 total) if studying in London. This money must be held for at least 28 consecutive days before your visa application date."
+  },
+  {
+    "question": "How much is the UK student visa fee from Nigeria in 2026?",
+    "answer": "The UK student visa application fee is £524 (increasing to £558 from 8 April 2026). You must also pay the Immigration Health Surcharge (IHS) of £776 per year of study. For a 1-year Masters, total visa-related costs are approximately £1,375."
+  },
+  {
+    "question": "Can I work while studying in the UK to cover my living costs?",
+    "answer": "Yes. UK student visa holders can work up to 20 hours per week during term time and full-time during holidays. At the 2026 National Living Wage of approximately £12/hour, working 20 hours per week would earn you roughly £960/month — enough to cover most living expenses outside London."
+  },
+  {
+    "question": "What hidden costs do Nigerian students face when studying in the UK?",
+    "answer": "Common hidden costs include: accommodation deposit (£200–£500), winter clothing (£150–£300), police registration (£34), UK SIM card and bank setup costs (£50–£100), and optional items like a TV licence (£169.50/year). Planning for these can prevent financial stress in your first weeks."
+  }
+]
+-->

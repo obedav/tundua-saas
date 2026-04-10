@@ -1,0 +1,436 @@
+<style>
+  :root {
+    --color-bg-primary: #ffffff; --color-bg-secondary: #f9fafb; --color-bg-tertiary: #f3f4f6;
+    --color-text-primary: #111827; --color-text-secondary: #4b5563; --color-text-tertiary: #6b7280;
+    --color-text-muted: #9ca3af; --color-border-primary: #e5e7eb; --color-border-secondary: #d1d5db;
+    --color-accent: #0284c7; --color-accent-hover: #0369a1;
+    --color-success: #059669; --color-success-bg: #d1fae5;
+    --color-warning: #d97706; --color-warning-bg: #fef3c7;
+    --color-error: #dc2626; --color-error-bg: #fee2e2;
+    --color-info: #0284c7; --color-info-bg: #e0f2fe;
+    --accent-dark: #075985; --accent-light: #e0f2fe; --accent-mid: #0ea5e9;
+    --gray-700: #374151; --gray-600: #4b5563; --gray-500: #6b7280;
+    --gray-100: #f3f4f6; --gray-50: #f9fafb;
+  }
+  .tsv-article { font-family: 'Georgia', serif; color: var(--color-text-primary); line-height: 1.85; font-size: 17px; max-width: 780px; margin: 0 auto; }
+  .tsv-article .intro-lead { font-size: 20px; font-weight: 400; color: var(--color-text-secondary); border-left: 4px solid var(--color-accent); padding-left: 20px; margin: 32px 0 28px; line-height: 1.7; font-style: italic; }
+  .tsv-article h2 { font-family: 'Georgia', serif; font-size: 26px; font-weight: 700; color: var(--color-text-primary); margin: 52px 0 18px; padding-bottom: 10px; border-bottom: 2px solid var(--color-border-primary); }
+  .tsv-article p { margin: 0 0 20px; color: var(--color-text-secondary); }
+  .tsv-article strong { color: var(--color-text-primary); font-weight: 600; }
+  .tsv-article ul { margin: 0 0 20px 20px; color: var(--color-text-secondary); }
+  .tsv-article ul li { margin-bottom: 8px; }
+  .tsv-hero-banner { background: linear-gradient(135deg, var(--accent-dark) 0%, #0c4a6e 55%, #082f49 100%); border-radius: 16px; padding: 52px 44px; margin: 0 0 44px; position: relative; overflow: hidden; }
+  .tsv-hero-banner::before { content: '🇦🇺'; position: absolute; right: 40px; top: 50%; transform: translateY(-50%); font-size: 100px; opacity: 0.1; }
+  .tsv-hero-banner h1 { font-family: 'Georgia', serif; font-size: 34px; font-weight: 900; color: #fff; line-height: 1.3; margin: 0 0 16px; max-width: 560px; position: relative; z-index: 1; }
+  .tsv-hero-banner .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .tsv-hero-banner .hero-badge { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22); color: #bae6fd; font-family: system-ui, sans-serif; font-size: 12px; font-weight: 500; padding: 5px 13px; border-radius: 20px; }
+  .tsv-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0 44px; }
+  .tsv-stat-card { background: var(--color-bg-primary); border: 1px solid var(--color-border-primary); border-top: 3px solid var(--color-accent); border-radius: 12px; padding: 22px 20px; text-align: center; box-shadow: 0 2px 8px rgba(2,132,199,0.07); }
+  .tsv-stat-card .stat-num { font-size: 27px; font-weight: 800; color: var(--color-accent); font-family: system-ui, sans-serif; line-height: 1; margin-bottom: 6px; }
+  .tsv-stat-card .stat-label { font-size: 13px; color: var(--color-text-tertiary); font-family: system-ui, sans-serif; font-weight: 500; }
+  .tsv-deposit-card { background: var(--color-bg-primary); border: 1px solid var(--color-border-primary); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: border-color 0.15s; margin-bottom: 16px; }
+  .tsv-deposit-card:hover { border-color: var(--color-accent); }
+  .tsv-deposit-card .dep-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 22px; background: var(--color-bg-secondary); border-bottom: 1px solid var(--color-border-primary); flex-wrap: wrap; gap: 10px; }
+  .tsv-deposit-card .dep-name { font-family: system-ui, sans-serif; font-size: 16px; font-weight: 700; color: var(--color-text-primary); }
+  .tsv-deposit-card .dep-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tsv-deposit-card .dep-badge { font-family: system-ui, sans-serif; font-size: 12.5px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+  .tsv-deposit-card .dep-badge.deposit { background: var(--accent-light); color: var(--accent-dark); }
+  .tsv-deposit-card .dep-badge.tuition { background: var(--gray-100); color: var(--gray-600); }
+  .tsv-deposit-card .dep-body { padding: 18px 22px; }
+  .tsv-deposit-card .dep-body p { font-family: system-ui, sans-serif; font-size: 14.5px; color: var(--color-text-secondary); margin: 0 0 10px; line-height: 1.7; }
+  .tsv-deposit-card .dep-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tsv-deposit-card .dep-tag { background: var(--gray-100); color: var(--gray-600); font-family: system-ui, sans-serif; font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 6px; }
+  .tsv-deposit-card .dep-tag.highlight { background: var(--color-success-bg); color: var(--color-success); }
+  .tsv-callout { border-radius: 10px; padding: 18px 22px; margin: 24px 0; display: flex; gap: 14px; align-items: flex-start; }
+  .tsv-callout.info { background: var(--color-info-bg); border-left: 4px solid var(--color-info); }
+  .tsv-callout.warning { background: var(--color-warning-bg); border-left: 4px solid var(--color-warning); }
+  .tsv-callout.success { background: var(--color-success-bg); border-left: 4px solid var(--color-success); }
+  .tsv-callout.danger { background: var(--color-error-bg); border-left: 4px solid var(--color-error); }
+  .tsv-callout .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .tsv-callout .callout-body { font-family: system-ui, sans-serif; font-size: 14.5px; color: var(--gray-700); line-height: 1.7; }
+  .tsv-callout .callout-body strong { display: block; margin-bottom: 4px; font-size: 14.5px; color: var(--color-text-primary); }
+  .tsv-fee-box { background: var(--color-bg-primary); border-radius: 16px; overflow: hidden; border: 1px solid var(--color-border-primary); margin: 28px 0 36px; box-shadow: 0 4px 16px rgba(2,132,199,0.08); }
+  .tsv-fee-box .fee-header { background: var(--color-accent); padding: 16px 28px; color: #fff; font-family: system-ui, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.6px; text-transform: uppercase; }
+  .tsv-fee-table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; }
+  .tsv-fee-table tr { border-bottom: 1px solid var(--color-border-primary); }
+  .tsv-fee-table tr:nth-child(even) { background: var(--gray-50); }
+  .tsv-fee-table td { padding: 14px 28px; font-size: 15px; color: var(--gray-700); }
+  .tsv-fee-table td:last-child { text-align: right; font-weight: 600; color: var(--color-text-primary); }
+  .tsv-cta { background: linear-gradient(135deg, var(--accent-dark) 0%, #0c4a6e 60%, #082f49 100%); border-radius: 20px; padding: 52px 44px; text-align: center; margin: 52px 0 36px; position: relative; overflow: hidden; }
+  .tsv-cta::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(14,165,233,0.2) 0%, transparent 70%); border-radius: 50%; }
+  .tsv-cta .cta-tag { display: inline-block; background: rgba(14,165,233,0.18); border: 1px solid rgba(14,165,233,0.35); color: #7dd3fc; font-family: system-ui, sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; position: relative; z-index: 1; }
+  .tsv-cta h2 { font-family: 'Georgia', serif; font-size: 29px; color: #fff; margin: 0 0 16px; border: none; padding: 0; line-height: 1.35; position: relative; z-index: 1; }
+  .tsv-cta p { font-family: system-ui, sans-serif; font-size: 15.5px; color: #93c5fd; max-width: 520px; margin: 0 auto 30px; line-height: 1.75; position: relative; z-index: 1; }
+  .tsv-cta .cta-btn { display: inline-block; background: var(--color-accent); color: #fff; font-family: system-ui, sans-serif; font-size: 15.5px; font-weight: 700; padding: 15px 42px; border-radius: 50px; text-decoration: none; box-shadow: 0 6px 20px rgba(2,132,199,0.45); position: relative; z-index: 1; }
+  .tsv-cta .cta-sub { display: block; margin-top: 14px; font-family: system-ui, sans-serif; font-size: 13px; color: #64748b; position: relative; z-index: 1; }
+  .tsv-footer-note { background: var(--color-bg-secondary); border-top: 2px solid var(--color-border-primary); border-radius: 0 0 10px 10px; padding: 18px 24px; font-family: system-ui, sans-serif; font-size: 13px; color: var(--color-text-muted); text-align: center; margin-top: 52px; }
+  @media (max-width: 600px) {
+    .tsv-hero-banner { padding: 32px 22px; }
+    .tsv-hero-banner h1 { font-size: 24px; }
+    .tsv-stat-row { grid-template-columns: 1fr 1fr; }
+    .tsv-cta { padding: 34px 22px; }
+    .tsv-cta h2 { font-size: 22px; }
+    .tsv-fee-table td { padding: 10px 14px; font-size: 13.5px; }
+    .tsv-fee-box .fee-header { padding: 12px 16px; font-size: 12.5px; }
+  }
+</style>
+
+<div class="tsv-article">
+
+  <div class="tsv-hero-banner">
+    <h1>Australia Universities with Low Tuition for International Students (2026)</h1>
+    <div class="hero-meta">
+      <span class="hero-badge">💰 Tuition Guide</span>
+      <span class="hero-badge">📅 Updated 2026</span>
+      <span class="hero-badge">🇳🇬 For Nigerians</span>
+      <span class="hero-badge">🇦🇺 Australia</span>
+    </div>
+  </div>
+
+  <div class="tsv-stat-row">
+    <div class="tsv-stat-card">
+      <div class="stat-num">AUD $14,000</div>
+      <div class="stat-label">Lowest annual tuition</div>
+    </div>
+    <div class="tsv-stat-card">
+      <div class="stat-num">AUD $2,000</div>
+      <div class="stat-label">Student visa fee</div>
+    </div>
+    <div class="tsv-stat-card">
+      <div class="stat-num">48 hrs/fortnight</div>
+      <div class="stat-label">Work rights during study</div>
+    </div>
+  </div>
+
+  <p class="intro-lead">Australia combines world-class universities, a strong economy, and one of the most generous post-study work visas in the world. For Nigerian students, the main barrier is cost &mdash; but not all Australian universities are expensive. This guide reveals which ones offer the lowest tuition in 2026, how the Confirmation of Enrolment (CoE) system works, and the full cost of studying in Australia from Nigeria.</p>
+
+  <p>Australia&rsquo;s education system is globally respected &mdash; 7 Australian universities sit in the world&rsquo;s top 100 (QS 2026). But the affordable options are not the famous ones. The universities on this list are regionally focused, fully accredited, and offer tuition starting from AUD $14,000 &mdash; a fraction of what the Group of Eight research universities charge.</p>
+
+  <h2>How the CoE and Deposits Work in Australia</h2>
+
+  <p>Australia uses a <strong>Confirmation of Enrolment (CoE)</strong> system, similar in function to the UK&rsquo;s CAS. Here&rsquo;s how it works:</p>
+
+  <ul>
+    <li><strong>You receive an offer</strong> from an Australian university (conditional or unconditional).</li>
+    <li><strong>You accept and pay a deposit</strong> &mdash; typically first semester tuition fees or a portion (AUD $5,000&ndash;$15,000 depending on the university). Some universities offer reduced upfront deposits for students from specific countries.</li>
+    <li><strong>The university issues your CoE</strong> &mdash; an electronic confirmation with a unique ID that you need for your Student Visa (Subclass 500) application.</li>
+    <li><strong>You apply for the Student Visa</strong> using the CoE, proof of funds, OSHC, and other documents.</li>
+  </ul>
+
+  <div class="tsv-callout warning">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-body">
+      <strong>Australian deposits are typically higher than UK deposits</strong>
+      While UK universities may ask for just &pound;1,000&ndash;&pound;2,000, Australian universities often require first-semester fees upfront (AUD $10,000&ndash;$15,000). Some offer payment plans or reduced initial deposits &mdash; always ask the international admissions office before assuming the full semester is due immediately.
+    </div>
+  </div>
+
+  <h2>Australian Universities with the Lowest Tuition for International Students (2026)</h2>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">University of Wollongong</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">From AUD $14,000/yr</span>
+        <span class="dep-badge tuition">New South Wales</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>The University of Wollongong offers some of the lowest tuition fees in Australia for select programmes, starting from approximately AUD $14,000/year. Located about 80km south of Sydney, Wollongong has significantly lower living costs than Sydney while remaining accessible. Strong in IT, Engineering, and Commerce.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">IT</span>
+        <span class="dep-tag">Engineering</span>
+        <span class="dep-tag">Commerce</span>
+        <span class="dep-tag highlight">&#10003; Lowest Tuition Available</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">University of the Sunshine Coast</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">AUD $24,000&ndash;$29,000/yr</span>
+        <span class="dep-badge tuition">Queensland</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>Located on Queensland&rsquo;s Sunshine Coast, this university offers a relaxed lifestyle with affordable tuition and living costs. The Sunshine Coast is one of the fastest-growing regions in Australia with strong local employment. As a regional university, graduates may qualify for additional post-study visa time.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">Business</span>
+        <span class="dep-tag">Health</span>
+        <span class="dep-tag">Education</span>
+        <span class="dep-tag highlight">&#10003; Regional Visa Bonus</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">University of Southern Queensland (UniSQ)</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">~AUD $24,000/yr</span>
+        <span class="dep-badge tuition">Queensland</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>UniSQ is one of the most affordable universities in Australia with a strong reputation for online and flexible learning. Based in Toowoomba (inland Queensland), living costs are among the lowest in Australia. Strong in Engineering, IT, and Nursing &mdash; and as a regional university, graduates qualify for extended post-study work rights.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">Engineering</span>
+        <span class="dep-tag">IT</span>
+        <span class="dep-tag">Nursing</span>
+        <span class="dep-tag highlight">&#10003; Regional + Extended PGWV</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">Victoria University (Melbourne)</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">AUD $24,000&ndash;$30,000/yr</span>
+        <span class="dep-badge tuition">Victoria</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>One of the most affordable options in Melbourne. Victoria University uses a unique &ldquo;Block Model&rdquo; where you study one subject at a time (4 weeks per block) instead of juggling multiple units &mdash; proven to improve pass rates. Located in western Melbourne with good public transport links. Popular with international students for Business, IT, and Sport Science.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">Business</span>
+        <span class="dep-tag">IT</span>
+        <span class="dep-tag">Sport Science</span>
+        <span class="dep-tag highlight">&#10003; Melbourne Location</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">Federation University</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">AUD $24,000&ndash;$28,000/yr</span>
+        <span class="dep-badge tuition">Victoria</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>Based in Ballarat, about 110km from Melbourne. Federation University is a regional institution with very low living costs &mdash; rent in Ballarat is roughly half of Melbourne prices. As a designated regional university, graduates may qualify for an additional year on their post-study work visa. Strong in IT, Business, and Education.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">IT</span>
+        <span class="dep-tag">Business</span>
+        <span class="dep-tag">Education</span>
+        <span class="dep-tag highlight">&#10003; Very Low Living Costs</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">Charles Darwin University</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">UG AUD $27,096 / PG $29,352</span>
+        <span class="dep-badge tuition">Northern Territory</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>Australia&rsquo;s most northern university, located in Darwin (Northern Territory). CDU has a tropical climate year-round and a small, supportive international student community. The Northern Territory offers some of the most accessible pathways to Australian permanent residency due to its regional status and skill shortages.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">IT</span>
+        <span class="dep-tag">Engineering</span>
+        <span class="dep-tag">Education</span>
+        <span class="dep-tag highlight">&#10003; Strong PR Pathway</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">University of Tasmania</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">AUD $25,000&ndash;$33,000/yr</span>
+        <span class="dep-badge tuition">Tasmania</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>UTas is a well-ranked university on the island state of Tasmania. Hobart (the capital) has some of the lowest living costs of any Australian state capital. Tasmania&rsquo;s regional status means graduates may qualify for extended post-study work rights and more favourable PR pathways. Strong in Marine Science, IT, and Business.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">Marine Science</span>
+        <span class="dep-tag">IT</span>
+        <span class="dep-tag">Business</span>
+        <span class="dep-tag highlight">&#10003; Regional + Low Cost of Living</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">Western Sydney University</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">AUD $26,000&ndash;$32,000/yr</span>
+        <span class="dep-badge tuition">New South Wales</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>Located in Greater Western Sydney, one of Australia&rsquo;s fastest-growing economic regions. WSU is more affordable than central Sydney universities while still offering a Sydney-area degree. Strong Nursing programme (highly employable in Australia), plus IT and Business. Good scholarship availability for international students.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">Nursing</span>
+        <span class="dep-tag">IT</span>
+        <span class="dep-tag">Business</span>
+        <span class="dep-tag highlight">&#10003; Sydney Area + Nursing</span>
+      </div>
+    </div>
+  </div>
+
+  <h2>Student Visa (Subclass 500) Costs</h2>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">🛂 Australia Student Visa Fees 2026</div>
+    <table class="tsv-fee-table">
+      <tr><td>Student Visa (Subclass 500) application</td><td>AUD $2,000</td></tr>
+      <tr><td>OSHC (Overseas Student Health Cover, per year)</td><td>AUD $500&ndash;$700</td></tr>
+      <tr><td>Medical examination</td><td>AUD $300&ndash;$400</td></tr>
+      <tr><td>IELTS Academic / PTE Academic</td><td>₦266,000&ndash;₦298,000</td></tr>
+      <tr><td>Police clearance (Nigeria)</td><td>₦10,000&ndash;₦20,000</td></tr>
+      <tr><td>Flight (Lagos &rarr; Sydney, one-way)</td><td>₦1,500,000&ndash;₦3,000,000</td></tr>
+    </table>
+  </div>
+
+  <div class="tsv-callout danger">
+    <span class="callout-icon">🚨</span>
+    <div class="callout-body">
+      <strong>The Genuine Student (GS) test is critical</strong>
+      Australia replaced the GTE (Genuine Temporary Entrant) with the Genuine Student test in 2024. You must demonstrate genuine intention to study &mdash; not use the student visa as a migration pathway. The Department of Home Affairs assesses your study history, ties to Nigeria, choice of course and provider, and your financial situation. A weak GS response is one of the most common refusal reasons for Nigerian applicants. Be specific about why you chose this course at this university and how it connects to your career plan in Nigeria.
+    </div>
+  </div>
+
+  <p><strong>Proof of funds requirement:</strong> You must show access to at least <strong>AUD $29,710/year</strong> for living expenses, <strong>plus</strong> tuition fees for the first year, <strong>plus</strong> return airfare. For example, if tuition is AUD $24,000: total required = AUD $24,000 + $29,710 + ~$2,500 (airfare) = <strong>AUD $56,210</strong> (~₦60,000,000).</p>
+
+  <h2>Living Costs in Australia by City</h2>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">🏠 Monthly Living Costs by City (2026 Estimates)</div>
+    <table class="tsv-fee-table">
+      <tr><td><strong>City/Region</strong></td><td><strong>Monthly estimate</strong></td></tr>
+      <tr><td>Sydney</td><td>AUD $2,200&ndash;$3,000</td></tr>
+      <tr><td>Melbourne</td><td>AUD $1,800&ndash;$2,600</td></tr>
+      <tr><td>Brisbane</td><td>AUD $1,600&ndash;$2,200</td></tr>
+      <tr><td>Adelaide</td><td>AUD $1,400&ndash;$1,900</td></tr>
+      <tr><td>Hobart (Tasmania)</td><td>AUD $1,300&ndash;$1,800</td></tr>
+      <tr><td>Regional (Toowoomba, Ballarat, Darwin)</td><td>AUD $1,100&ndash;$1,600</td></tr>
+    </table>
+  </div>
+
+  <p><strong>Regional Australia is where the savings are.</strong> Students at universities in Toowoomba (UniSQ), Ballarat (Federation), or Darwin (CDU) can spend 40&ndash;50% less on living costs compared to Sydney. Plus, regional graduates may qualify for an extra 1&ndash;2 years on their post-study work visa.</p>
+
+  <h2>Complete First-Year Budget</h2>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">📊 Budget Scenario &mdash; Regional Australia</div>
+    <table class="tsv-fee-table">
+      <tr><td>Tuition (UniSQ / Federation)</td><td>AUD $24,000</td></tr>
+      <tr><td>Student Visa</td><td>AUD $2,000</td></tr>
+      <tr><td>OSHC (1 year)</td><td>AUD $600</td></tr>
+      <tr><td>Medical exam</td><td>AUD $350</td></tr>
+      <tr><td>IELTS</td><td>AUD $300</td></tr>
+      <tr><td>Flight</td><td>AUD $2,000</td></tr>
+      <tr><td>Living costs (12 months &times; AUD $1,300)</td><td>AUD $15,600</td></tr>
+      <tr><td>Books, setup, misc</td><td>AUD $1,000</td></tr>
+      <tr><td><strong>TOTAL (Regional)</strong></td><td><strong>AUD $45,850 (~₦49,000,000)</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">📊 Budget Scenario &mdash; Melbourne (Victoria University)</div>
+    <table class="tsv-fee-table">
+      <tr><td>Tuition</td><td>AUD $27,000</td></tr>
+      <tr><td>Visa + OSHC + medical + IELTS</td><td>AUD $3,250</td></tr>
+      <tr><td>Flight</td><td>AUD $2,000</td></tr>
+      <tr><td>Living costs (12 months &times; AUD $2,000)</td><td>AUD $24,000</td></tr>
+      <tr><td>Books, setup, misc</td><td>AUD $1,200</td></tr>
+      <tr><td><strong>TOTAL (Melbourne)</strong></td><td><strong>AUD $57,450 (~₦61,500,000)</strong></td></tr>
+    </table>
+  </div>
+
+  <h2>How to Reduce Your Costs in Australia</h2>
+
+  <ul>
+    <li><strong>Choose a regional university.</strong> Tuition and living costs are both lower, and you qualify for extended post-study work rights (up to 4 years total for a Masters graduate at a regional university vs 3 years at a metropolitan one).</li>
+    <li><strong>Apply for scholarships.</strong> The Destination Australia programme provides up to AUD $15,000/year for students at regional universities. Many universities also offer their own international scholarships worth AUD $3,000&ndash;$10,000.</li>
+    <li><strong>Work part-time.</strong> Student visa holders can work up to 48 hours per fortnight during study periods and unlimited hours during scheduled breaks. At AUD $23.23/hour (national minimum wage 2026), working 24 hours/week earns approximately AUD $2,230/month &mdash; enough to cover most living expenses.</li>
+    <li><strong>Share accommodation.</strong> Sharing a house with 2&ndash;3 other students is the norm in Australia and cuts rent by 40&ndash;60% compared to solo renting.</li>
+    <li><strong>Consider TAFE + university pathway.</strong> Some TAFE (Technical and Further Education) colleges offer diploma-to-degree pathways at lower cost. You complete a 1&ndash;2 year diploma (AUD $10,000&ndash;$18,000/year), then credit-transfer into the second or third year of a university degree.</li>
+  </ul>
+
+  <h2>Australia vs UK &mdash; Quick Comparison for Nigerian Students</h2>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">⚖️ Australia vs UK &mdash; Side by Side</div>
+    <table class="tsv-fee-table">
+      <tr><td>Lowest tuition</td><td>AU: AUD $14,000 / UK: &pound;11,823</td></tr>
+      <tr><td>Visa fee</td><td>AU: AUD $2,000 / UK: &pound;524 + &pound;776 IHS</td></tr>
+      <tr><td>Healthcare</td><td>AU: OSHC (paid) / UK: NHS via IHS (paid)</td></tr>
+      <tr><td>Work during study</td><td>AU: 48 hrs/fortnight / UK: 20 hrs/week</td></tr>
+      <tr><td>Post-study work</td><td>AU: 2&ndash;4 yrs (Subclass 485) / UK: 2 yrs (Graduate Route)</td></tr>
+      <tr><td>Masters duration</td><td>AU: 1.5&ndash;2 years / UK: 1 year</td></tr>
+      <tr><td>Path to PR</td><td>AU: possible (skilled migration) / UK: complex</td></tr>
+      <tr><td>Minimum wage</td><td>AU: AUD $23.23/hr / UK: ~&pound;12/hr</td></tr>
+      <tr><td>Weather</td><td>AU: warm/hot / UK: cold/wet</td></tr>
+      <tr><td>Proof of funds</td><td>AU: AUD $29,710/yr / UK: &pound;10,539 (9 months)</td></tr>
+    </table>
+  </div>
+
+  <p><strong>Australia is the stronger choice if:</strong> you want higher part-time wages, longer post-study work rights, warmer weather, and are comfortable with higher upfront visa costs. <strong>The UK is better if:</strong> you want a shorter Masters (1 year), lower visa costs, and the lowest possible tuition at post-92 universities. For a detailed UK comparison, see our <a href="/blog/uk-universities-with-low-tuition-deposit-for-international-students-2026">UK low deposit guide</a> and <a href="/blog/cheapest-universities-in-uk-for-international-students">cheapest UK universities</a>.</p>
+
+  <div class="tsv-cta">
+    <span class="cta-tag">🇳🇬 For Nigerian Students</span>
+    <h2>Not Sure &mdash; Australia, UK, or Canada?</h2>
+    <p>Let Tundua help you compare all three countries based on your budget, course, and career goals. We work with universities across the UK, Canada, and Australia.</p>
+    <a href="/apply" class="cta-btn">Get Free Guidance &rarr;</a>
+    <span class="cta-sub">Takes less than 2 minutes. No commitment required.</span>
+  </div>
+
+  <div class="tsv-footer-note">
+    Last updated: April 2026 &nbsp;|&nbsp; Tuition fees, visa costs, and living expense requirements are subject to change. Always confirm directly with the university and the Australian Department of Home Affairs. &nbsp;|&nbsp; This guide does not constitute immigration or financial advice.
+  </div>
+
+</div>
+
+<!--
+=== CMS METADATA ===
+
+TITLE: Australia Universities with Low Tuition for International Students (2026)
+
+SLUG: australia-universities-low-tuition-international-students-2026
+
+EXCERPT: Discover the cheapest Australian universities for international students in 2026 — with tuition starting from AUD $14,000/year at the University of Wollongong. This guide covers 8 affordable universities, Student Visa Subclass 500 costs (AUD $2,000), the Genuine Student test, living costs by city, work rights (48 hrs/fortnight), and an Australia vs UK comparison for Nigerian students.
+
+CATEGORY: Australia / Study Abroad
+
+TAGS: cheapest universities Australia, Australia tuition fees 2026, study in Australia from Nigeria, Australian student visa, Subclass 500, low tuition Australia, OSHC, post-study work visa Australia
+
+FAQS:
+[
+  {
+    "question": "What is the cheapest Australian university for international students in 2026?",
+    "answer": "The University of Wollongong offers some of the lowest tuition fees in Australia, starting from approximately AUD $14,000/year for select programmes. Other affordable options include the University of Southern Queensland (~AUD $24,000/year), the University of the Sunshine Coast (AUD $24,000–$29,000/year), and Victoria University in Melbourne (AUD $24,000–$30,000/year)."
+  },
+  {
+    "question": "How much does an Australian student visa cost in 2026?",
+    "answer": "The Student Visa (Subclass 500) application fee is AUD $2,000 (increased from AUD $1,600 in July 2025). You must also pay for Overseas Student Health Cover (OSHC) at approximately AUD $500–$700/year, and a medical examination costing AUD $300–$400."
+  },
+  {
+    "question": "How much money do I need to show for an Australian student visa?",
+    "answer": "You must demonstrate access to at least AUD $29,710 per year for living expenses, plus your first year's tuition fees, plus return airfare (~AUD $2,500). For a course with AUD $24,000 tuition, the total is approximately AUD $56,210 (~₦60,000,000)."
+  },
+  {
+    "question": "Can I work while studying in Australia?",
+    "answer": "Yes. Student visa holders can work up to 48 hours per fortnight during study periods and unlimited hours during scheduled breaks. At the Australian national minimum wage of AUD $23.23/hour (2026), working 24 hours per week earns approximately AUD $2,230/month."
+  },
+  {
+    "question": "Can I stay in Australia after graduation?",
+    "answer": "Yes. The Temporary Graduate Visa (Subclass 485) allows 2–4 years of post-study work depending on your qualification level and whether you studied at a regional university. Graduates from regional universities receive an additional 1–2 years. After gaining work experience, you may be eligible for permanent residency through skilled migration."
+  },
+  {
+    "question": "What is the Genuine Student test for an Australian visa?",
+    "answer": "The Genuine Student (GS) test replaced the GTE in 2024. You must demonstrate genuine intention to study in Australia — not use the student visa primarily as a migration pathway. The Department of Home Affairs assesses your study history, ties to Nigeria, choice of course, and financial situation. Be specific about why this course connects to your career plan."
+  }
+]
+-->

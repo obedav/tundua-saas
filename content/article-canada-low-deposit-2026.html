@@ -1,0 +1,440 @@
+<style>
+  :root {
+    --color-bg-primary: #ffffff; --color-bg-secondary: #f9fafb; --color-bg-tertiary: #f3f4f6;
+    --color-text-primary: #111827; --color-text-secondary: #4b5563; --color-text-tertiary: #6b7280;
+    --color-text-muted: #9ca3af; --color-border-primary: #e5e7eb; --color-border-secondary: #d1d5db;
+    --color-accent: #0284c7; --color-accent-hover: #0369a1;
+    --color-success: #059669; --color-success-bg: #d1fae5;
+    --color-warning: #d97706; --color-warning-bg: #fef3c7;
+    --color-error: #dc2626; --color-error-bg: #fee2e2;
+    --color-info: #0284c7; --color-info-bg: #e0f2fe;
+    --accent-dark: #075985; --accent-light: #e0f2fe; --accent-mid: #0ea5e9;
+    --gray-700: #374151; --gray-600: #4b5563; --gray-500: #6b7280;
+    --gray-100: #f3f4f6; --gray-50: #f9fafb;
+  }
+  .tsv-article { font-family: 'Georgia', serif; color: var(--color-text-primary); line-height: 1.85; font-size: 17px; max-width: 780px; margin: 0 auto; }
+  .tsv-article .intro-lead { font-size: 20px; font-weight: 400; color: var(--color-text-secondary); border-left: 4px solid var(--color-accent); padding-left: 20px; margin: 32px 0 28px; line-height: 1.7; font-style: italic; }
+  .tsv-article h2 { font-family: 'Georgia', serif; font-size: 26px; font-weight: 700; color: var(--color-text-primary); margin: 52px 0 18px; padding-bottom: 10px; border-bottom: 2px solid var(--color-border-primary); }
+  .tsv-article p { margin: 0 0 20px; color: var(--color-text-secondary); }
+  .tsv-article strong { color: var(--color-text-primary); font-weight: 600; }
+  .tsv-article ul { margin: 0 0 20px 20px; color: var(--color-text-secondary); }
+  .tsv-article ul li { margin-bottom: 8px; }
+  .tsv-hero-banner { background: linear-gradient(135deg, var(--accent-dark) 0%, #0c4a6e 55%, #082f49 100%); border-radius: 16px; padding: 52px 44px; margin: 0 0 44px; position: relative; overflow: hidden; }
+  .tsv-hero-banner::before { content: '🇨🇦'; position: absolute; right: 40px; top: 50%; transform: translateY(-50%); font-size: 100px; opacity: 0.1; }
+  .tsv-hero-banner h1 { font-family: 'Georgia', serif; font-size: 34px; font-weight: 900; color: #fff; line-height: 1.3; margin: 0 0 16px; max-width: 560px; position: relative; z-index: 1; }
+  .tsv-hero-banner .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .tsv-hero-banner .hero-badge { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22); color: #bae6fd; font-family: system-ui, sans-serif; font-size: 12px; font-weight: 500; padding: 5px 13px; border-radius: 20px; }
+  .tsv-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0 44px; }
+  .tsv-stat-card { background: var(--color-bg-primary); border: 1px solid var(--color-border-primary); border-top: 3px solid var(--color-accent); border-radius: 12px; padding: 22px 20px; text-align: center; box-shadow: 0 2px 8px rgba(2,132,199,0.07); }
+  .tsv-stat-card .stat-num { font-size: 27px; font-weight: 800; color: var(--color-accent); font-family: system-ui, sans-serif; line-height: 1; margin-bottom: 6px; }
+  .tsv-stat-card .stat-label { font-size: 13px; color: var(--color-text-tertiary); font-family: system-ui, sans-serif; font-weight: 500; }
+  .tsv-deposit-card { background: var(--color-bg-primary); border: 1px solid var(--color-border-primary); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: border-color 0.15s; margin-bottom: 16px; }
+  .tsv-deposit-card:hover { border-color: var(--color-accent); }
+  .tsv-deposit-card .dep-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 22px; background: var(--color-bg-secondary); border-bottom: 1px solid var(--color-border-primary); flex-wrap: wrap; gap: 10px; }
+  .tsv-deposit-card .dep-name { font-family: system-ui, sans-serif; font-size: 16px; font-weight: 700; color: var(--color-text-primary); }
+  .tsv-deposit-card .dep-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tsv-deposit-card .dep-badge { font-family: system-ui, sans-serif; font-size: 12.5px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+  .tsv-deposit-card .dep-badge.deposit { background: var(--accent-light); color: var(--accent-dark); }
+  .tsv-deposit-card .dep-badge.tuition { background: var(--gray-100); color: var(--gray-600); }
+  .tsv-deposit-card .dep-body { padding: 18px 22px; }
+  .tsv-deposit-card .dep-body p { font-family: system-ui, sans-serif; font-size: 14.5px; color: var(--color-text-secondary); margin: 0 0 10px; line-height: 1.7; }
+  .tsv-deposit-card .dep-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tsv-deposit-card .dep-tag { background: var(--gray-100); color: var(--gray-600); font-family: system-ui, sans-serif; font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 6px; }
+  .tsv-deposit-card .dep-tag.highlight { background: var(--color-success-bg); color: var(--color-success); }
+  .tsv-callout { border-radius: 10px; padding: 18px 22px; margin: 24px 0; display: flex; gap: 14px; align-items: flex-start; }
+  .tsv-callout.info { background: var(--color-info-bg); border-left: 4px solid var(--color-info); }
+  .tsv-callout.warning { background: var(--color-warning-bg); border-left: 4px solid var(--color-warning); }
+  .tsv-callout.success { background: var(--color-success-bg); border-left: 4px solid var(--color-success); }
+  .tsv-callout.danger { background: var(--color-error-bg); border-left: 4px solid var(--color-error); }
+  .tsv-callout .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .tsv-callout .callout-body { font-family: system-ui, sans-serif; font-size: 14.5px; color: var(--gray-700); line-height: 1.7; }
+  .tsv-callout .callout-body strong { display: block; margin-bottom: 4px; font-size: 14.5px; color: var(--color-text-primary); }
+  .tsv-fee-box { background: var(--color-bg-primary); border-radius: 16px; overflow: hidden; border: 1px solid var(--color-border-primary); margin: 28px 0 36px; box-shadow: 0 4px 16px rgba(2,132,199,0.08); }
+  .tsv-fee-box .fee-header { background: var(--color-accent); padding: 16px 28px; color: #fff; font-family: system-ui, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.6px; text-transform: uppercase; }
+  .tsv-fee-table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; }
+  .tsv-fee-table tr { border-bottom: 1px solid var(--color-border-primary); }
+  .tsv-fee-table tr:nth-child(even) { background: var(--gray-50); }
+  .tsv-fee-table td { padding: 14px 28px; font-size: 15px; color: var(--gray-700); }
+  .tsv-fee-table td:last-child { text-align: right; font-weight: 600; color: var(--color-text-primary); }
+  .tsv-steps { display: flex; flex-direction: column; margin: 28px 0 36px; }
+  .tsv-step { display: flex; gap: 22px; align-items: flex-start; padding-bottom: 28px; }
+  .tsv-step:last-child { padding-bottom: 0; }
+  .tsv-step .step-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .tsv-step .step-num { width: 38px; height: 38px; border-radius: 50%; background: var(--color-accent); color: #fff; font-family: system-ui, sans-serif; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(2,132,199,0.3); }
+  .tsv-step .step-line { width: 2px; flex: 1; background: var(--color-border-primary); margin-top: 6px; min-height: 20px; }
+  .tsv-step:last-child .step-line { display: none; }
+  .tsv-step .step-body { padding-top: 6px; flex: 1; }
+  .tsv-step .step-body h4 { font-family: system-ui, sans-serif; font-size: 15.5px; font-weight: 700; color: var(--color-text-primary); margin: 0 0 7px; }
+  .tsv-step .step-body p { font-size: 14.5px; color: var(--color-text-secondary); margin: 0; line-height: 1.7; font-family: system-ui, sans-serif; }
+  .tsv-cta { background: linear-gradient(135deg, var(--accent-dark) 0%, #0c4a6e 60%, #082f49 100%); border-radius: 20px; padding: 52px 44px; text-align: center; margin: 52px 0 36px; position: relative; overflow: hidden; }
+  .tsv-cta::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(14,165,233,0.2) 0%, transparent 70%); border-radius: 50%; }
+  .tsv-cta .cta-tag { display: inline-block; background: rgba(14,165,233,0.18); border: 1px solid rgba(14,165,233,0.35); color: #7dd3fc; font-family: system-ui, sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; position: relative; z-index: 1; }
+  .tsv-cta h2 { font-family: 'Georgia', serif; font-size: 29px; color: #fff; margin: 0 0 16px; border: none; padding: 0; line-height: 1.35; position: relative; z-index: 1; }
+  .tsv-cta p { font-family: system-ui, sans-serif; font-size: 15.5px; color: #93c5fd; max-width: 520px; margin: 0 auto 30px; line-height: 1.75; position: relative; z-index: 1; }
+  .tsv-cta .cta-btn { display: inline-block; background: var(--color-accent); color: #fff; font-family: system-ui, sans-serif; font-size: 15.5px; font-weight: 700; padding: 15px 42px; border-radius: 50px; text-decoration: none; box-shadow: 0 6px 20px rgba(2,132,199,0.45); position: relative; z-index: 1; }
+  .tsv-cta .cta-sub { display: block; margin-top: 14px; font-family: system-ui, sans-serif; font-size: 13px; color: #64748b; position: relative; z-index: 1; }
+  .tsv-footer-note { background: var(--color-bg-secondary); border-top: 2px solid var(--color-border-primary); border-radius: 0 0 10px 10px; padding: 18px 24px; font-family: system-ui, sans-serif; font-size: 13px; color: var(--color-text-muted); text-align: center; margin-top: 52px; }
+  @media (max-width: 600px) {
+    .tsv-hero-banner { padding: 32px 22px; }
+    .tsv-hero-banner h1 { font-size: 24px; }
+    .tsv-stat-row { grid-template-columns: 1fr 1fr; }
+    .tsv-cta { padding: 34px 22px; }
+    .tsv-cta h2 { font-size: 22px; }
+    .tsv-fee-table td { padding: 10px 14px; font-size: 13.5px; }
+    .tsv-fee-box .fee-header { padding: 12px 16px; font-size: 12.5px; }
+  }
+</style>
+
+<div class="tsv-article">
+
+  <div class="tsv-hero-banner">
+    <h1>Canada Universities with Low Tuition Deposit for International Students (2026)</h1>
+    <div class="hero-meta">
+      <span class="hero-badge">💳 Deposit Guide</span>
+      <span class="hero-badge">📅 Updated 2026</span>
+      <span class="hero-badge">🇳🇬 For Nigerians</span>
+      <span class="hero-badge">🇨🇦 Canada</span>
+    </div>
+  </div>
+
+  <div class="tsv-stat-row">
+    <div class="tsv-stat-card">
+      <div class="stat-num">CAD $5,565</div>
+      <div class="stat-label">Lowest annual tuition</div>
+    </div>
+    <div class="tsv-stat-card">
+      <div class="stat-num">CAD $150</div>
+      <div class="stat-label">Study permit fee</div>
+    </div>
+    <div class="tsv-stat-card">
+      <div class="stat-num">3yr PGWP</div>
+      <div class="stat-label">Post-graduation work permit</div>
+    </div>
+  </div>
+
+  <p class="intro-lead">Canada offers some of the most affordable pathways to international education &mdash; but its system works differently from the UK. There is no &ldquo;CAS&rdquo; and no standardised deposit. Instead, each university sets its own deposit policy, and your Letter of Acceptance (LOA) from a Designated Learning Institution (DLI) is what you need for your study permit. This guide shows you which Canadian universities cost the least upfront in 2026.</p>
+
+  <p>For Nigerian students comparing the UK and Canada, the biggest differences are: Canada&rsquo;s tuition can be significantly lower at specific universities, the post-graduation work permit (PGWP) lasts up to 3 years (vs 2 in the UK), and Canada offers a clearer pathway to permanent residency. The trade-off is that average tuition across all Canadian universities (CAD $41,746/year) is actually higher than average UK tuition &mdash; so choosing the right university matters enormously.</p>
+
+  <h2>How University Deposits and the LOA Work in Canada</h2>
+
+  <p>Unlike the UK, where every university issues a standardised CAS after deposit payment, Canada&rsquo;s process varies by institution:</p>
+
+  <div class="tsv-steps">
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">1</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Apply and Receive an Offer</h4>
+        <p>Apply directly to a Designated Learning Institution (DLI). If accepted, you receive a conditional or unconditional offer letter.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">2</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Pay a Tuition Deposit (CAD $500&ndash;$5,000)</h4>
+        <p>Most universities require a tuition deposit to confirm your acceptance and issue the official Letter of Acceptance (LOA). Deposit amounts vary widely &mdash; some are as low as CAD $500, others require full first-semester tuition upfront. The deposit is deducted from your first tuition payment.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">3</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Receive Your Letter of Acceptance (LOA)</h4>
+        <p>The LOA is your key document for the study permit application &mdash; equivalent to the UK&rsquo;s CAS. It contains your student ID, programme details, and confirms the DLI has accepted you.</p>
+      </div>
+    </div>
+    <div class="tsv-step">
+      <div class="step-left"><div class="step-num">4</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>Apply for a Study Permit</h4>
+        <p>Submit your study permit application online with your LOA, proof of funds, passport, and other documents. The study permit allows you to study and work in Canada.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-callout info">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body">
+      <strong>DLI status is critical</strong>
+      Only Designated Learning Institutions (DLIs) can issue LOAs that are valid for study permit applications. Always verify your university&rsquo;s DLI status on the Immigration, Refugees and Citizenship Canada (IRCC) website before paying any deposit.
+    </div>
+  </div>
+
+  <h2>Canadian Universities with the Lowest Tuition for International Students (2026)</h2>
+
+  <p>These universities offer the most affordable tuition in Canada for international students. All are DLI-approved and accept Nigerian applicants.</p>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">Brandon University</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">Tuition: ~CAD $5,565/yr</span>
+        <span class="dep-badge tuition">Manitoba</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>Brandon University in Manitoba offers by far the lowest international tuition in Canada. At approximately CAD $5,565/year, it costs less than many Nigerian private universities. Brandon is a small city with very low living costs &mdash; rent averages CAD $600&ndash;$800/month for a one-bedroom apartment. The university is strong in Arts, Sciences, and Education.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">Arts</span>
+        <span class="dep-tag">Science</span>
+        <span class="dep-tag">Education</span>
+        <span class="dep-tag highlight">&#10003; Lowest Tuition in Canada</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">Universit&eacute; de Moncton</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">Tuition: ~CAD $8,500/yr</span>
+        <span class="dep-badge tuition">New Brunswick</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>The only francophone university outside Quebec in Canada. If you speak French or are willing to study in French, Moncton offers exceptional value. New Brunswick also has one of the most accessible Provincial Nominee Programs (PNPs) for post-graduation permanent residency. Living costs are among the lowest in Canada.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">French-language</span>
+        <span class="dep-tag">Arts</span>
+        <span class="dep-tag">Science</span>
+        <span class="dep-tag highlight">&#10003; Strong PR Pathway</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">University of Manitoba</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">Tuition: ~CAD $18,100/yr</span>
+        <span class="dep-badge tuition">Manitoba</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>A major research university with a full range of programmes. Manitoba is one of the most affordable provinces for international students &mdash; Winnipeg&rsquo;s cost of living is significantly lower than Toronto or Vancouver. The Manitoba Provincial Nominee Program (MPNP) offers graduates a fast track to permanent residency.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">Engineering</span>
+        <span class="dep-tag">Science</span>
+        <span class="dep-tag">Business</span>
+        <span class="dep-tag highlight">&#10003; Fast PR Pathway</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">University of Northern British Columbia (UNBC)</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">Tuition: ~CAD $19,000/yr</span>
+        <span class="dep-badge tuition">British Columbia</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>Located in Prince George, BC &mdash; a small city surrounded by nature. UNBC is ranked as one of the top small universities in Canada. It specialises in Environmental Science, Nursing, and Indigenous Studies. Living costs are lower than Vancouver, and the smaller campus means more personalised attention.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">Environmental Science</span>
+        <span class="dep-tag">Nursing</span>
+        <span class="dep-tag">Education</span>
+        <span class="dep-tag highlight">&#10003; Top Small University</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">Memorial University of Newfoundland</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">Tuition: ~CAD $20,000/yr</span>
+        <span class="dep-badge tuition">Newfoundland &amp; Labrador</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>Memorial (MUN) is one of Canada&rsquo;s most affordable comprehensive universities. St. John&rsquo;s, Newfoundland has the lowest average rent of any Canadian city with a university. MUN has a strong Engineering programme and a growing international student community. The Atlantic Immigration Program offers excellent PR pathways.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">Engineering</span>
+        <span class="dep-tag">Business</span>
+        <span class="dep-tag">Science</span>
+        <span class="dep-tag highlight">&#10003; Lowest Living Costs</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">University of Saskatchewan</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">Tuition: ~CAD $22,000/yr</span>
+        <span class="dep-badge tuition">Saskatchewan</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>A research-intensive university in Saskatoon with strong Agriculture, Engineering, and Science faculties. Saskatchewan&rsquo;s Provincial Nominee Program is one of the fastest paths to Canadian PR. Living costs in Saskatoon are 30&ndash;40% lower than Toronto.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">Agriculture</span>
+        <span class="dep-tag">Science</span>
+        <span class="dep-tag">Engineering</span>
+        <span class="dep-tag highlight">&#10003; Fast PR via SINP</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tsv-deposit-card">
+    <div class="dep-header">
+      <span class="dep-name">Simon Fraser University (SFU)</span>
+      <div class="dep-badges">
+        <span class="dep-badge deposit">Tuition: ~CAD $29,000/yr</span>
+        <span class="dep-badge tuition">British Columbia</span>
+      </div>
+    </div>
+    <div class="dep-body">
+      <p>Higher tuition than the others on this list, but SFU is consistently ranked in the top 15 Canadian universities and offers strong co-op (internship) programmes. Co-op students earn CAD $15,000&ndash;$25,000 during work terms, which significantly offsets tuition. Located in the Vancouver metro area with excellent career prospects.</p>
+      <div class="dep-tags">
+        <span class="dep-tag">Computing</span>
+        <span class="dep-tag">Business</span>
+        <span class="dep-tag">Engineering</span>
+        <span class="dep-tag highlight">&#10003; Top Co-op Programme</span>
+      </div>
+    </div>
+  </div>
+
+  <h2>Study Permit Costs and Requirements</h2>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">🛂 Canada Study Permit Fees 2026</div>
+    <table class="tsv-fee-table">
+      <tr><td>Study permit application</td><td>CAD $150</td></tr>
+      <tr><td>Biometrics (one-time, valid 10 years)</td><td>CAD $85</td></tr>
+      <tr><td>Medical examination</td><td>CAD $200&ndash;$300</td></tr>
+      <tr><td>IELTS Academic</td><td>₦266,000&ndash;₦298,000</td></tr>
+      <tr><td>Flight (Lagos &rarr; Toronto, one-way)</td><td>₦1,200,000&ndash;₦2,500,000</td></tr>
+    </table>
+  </div>
+
+  <p><strong>Proof of funds requirement:</strong> You must show evidence of at least <strong>CAD $22,895/year</strong> for living expenses (as of September 2025), <strong>plus</strong> your first year&rsquo;s tuition. For example, if tuition is CAD $20,000, you need to show access to CAD $20,000 + $22,895 = <strong>CAD $42,895</strong> (~₦50,000,000 at current rates).</p>
+
+  <div class="tsv-callout warning">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-body">
+      <strong>GIC may be required for Nigerian applicants</strong>
+      Some Nigerian students are required to purchase a Guaranteed Investment Certificate (GIC) of CAD $20,635 from a participating Canadian bank as part of their proof of funds. The GIC funds are released to you in monthly instalments after you arrive in Canada. Check the current requirements for your specific situation on the IRCC website.
+    </div>
+  </div>
+
+  <h2>Living Costs in Canada by Province</h2>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">🏠 Monthly Living Costs by Province (2026 Estimates)</div>
+    <table class="tsv-fee-table">
+      <tr><td><strong>Province</strong></td><td><strong>Monthly estimate</strong></td></tr>
+      <tr><td>Manitoba (Winnipeg, Brandon)</td><td>CAD $1,000&ndash;$1,400</td></tr>
+      <tr><td>Saskatchewan (Saskatoon, Regina)</td><td>CAD $1,000&ndash;$1,400</td></tr>
+      <tr><td>Newfoundland (St. John&rsquo;s)</td><td>CAD $900&ndash;$1,300</td></tr>
+      <tr><td>New Brunswick (Moncton, Fredericton)</td><td>CAD $900&ndash;$1,300</td></tr>
+      <tr><td>Ontario (Toronto)</td><td>CAD $1,800&ndash;$2,500</td></tr>
+      <tr><td>British Columbia (Vancouver)</td><td>CAD $1,800&ndash;$2,500</td></tr>
+    </table>
+  </div>
+
+  <p>The most affordable provinces for Nigerian students are <strong>Manitoba, Saskatchewan, Newfoundland, and New Brunswick</strong>. Living costs in these provinces can be 40&ndash;60% lower than Toronto or Vancouver, which dramatically reduces your total annual budget.</p>
+
+  <h2>Complete First-Year Budget</h2>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">📊 Budget Scenario &mdash; Affordable Province (Manitoba/Newfoundland)</div>
+    <table class="tsv-fee-table">
+      <tr><td>Tuition (Brandon/Memorial)</td><td>CAD $5,565&ndash;$20,000</td></tr>
+      <tr><td>Study permit + biometrics</td><td>CAD $235</td></tr>
+      <tr><td>Medical exam</td><td>CAD $250</td></tr>
+      <tr><td>IELTS</td><td>CAD $250</td></tr>
+      <tr><td>Flight</td><td>CAD $1,200</td></tr>
+      <tr><td>Living costs (12 months &times; CAD $1,100)</td><td>CAD $13,200</td></tr>
+      <tr><td>Books &amp; supplies</td><td>CAD $500</td></tr>
+      <tr><td><strong>TOTAL (lowest)</strong></td><td><strong>CAD $21,200 (~₦25,000,000)</strong></td></tr>
+      <tr><td><strong>TOTAL (mid-range)</strong></td><td><strong>CAD $35,635 (~₦42,000,000)</strong></td></tr>
+    </table>
+  </div>
+
+  <h2>How to Reduce Your Costs in Canada</h2>
+
+  <ul>
+    <li><strong>Co-op programmes:</strong> Universities like SFU, Waterloo, and UBC offer co-operative education where you alternate between study and paid work terms. Co-op earnings of CAD $15,000&ndash;$25,000 per work term can significantly offset tuition.</li>
+    <li><strong>Work on campus and off campus:</strong> Study permit holders can work up to 20 hours/week during term and full-time during scheduled breaks. At CAD $15&ndash;$17/hour (minimum wage varies by province), this adds CAD $1,200&ndash;$1,400/month.</li>
+    <li><strong>Target provinces with fast PR pathways:</strong> Manitoba (MPNP), Saskatchewan (SINP), New Brunswick (NBPNP), and Atlantic provinces have Provincial Nominee Programs specifically for international graduates. PR means you switch to domestic tuition rates if you continue studying, and opens the door to Canadian citizenship.</li>
+    <li><strong>Apply for scholarships:</strong> Many Canadian universities offer entrance scholarships for international students (CAD $2,000&ndash;$10,000). The Vanier Canada Graduate Scholarship covers CAD $50,000/year for PhD students. Apply early &mdash; most deadlines are 6&ndash;9 months before intake.</li>
+    <li><strong>Choose smaller cities:</strong> Brandon, St. John&rsquo;s, Moncton, and Saskatoon have the lowest living costs in Canada. Rent alone can be CAD $500&ndash;$800/month vs CAD $1,500&ndash;$2,500 in Toronto or Vancouver.</li>
+  </ul>
+
+  <h2>Canada vs UK &mdash; Quick Comparison for Nigerian Students</h2>
+
+  <div class="tsv-fee-box">
+    <div class="fee-header">⚖️ Canada vs UK &mdash; Side by Side</div>
+    <table class="tsv-fee-table">
+      <tr><td>Lowest tuition</td><td>Canada: CAD $5,565 / UK: &pound;11,823</td></tr>
+      <tr><td>Average tuition</td><td>Canada: CAD $41,746 / UK: &pound;16,000&ndash;20,000</td></tr>
+      <tr><td>Visa/permit fee</td><td>Canada: CAD $235 / UK: &pound;524 + &pound;776 IHS</td></tr>
+      <tr><td>Post-study work</td><td>Canada: 1&ndash;3 yr PGWP / UK: 2 yr Graduate Route</td></tr>
+      <tr><td>Path to PR</td><td>Canada: clear (Express Entry/PNP) / UK: complex</td></tr>
+      <tr><td>Work during study</td><td>Canada: 20 hrs/wk / UK: 20 hrs/wk</td></tr>
+      <tr><td>Masters duration</td><td>Canada: 1&ndash;2 years / UK: 1 year</td></tr>
+      <tr><td>Healthcare</td><td>Canada: provincial (varies) / UK: NHS via IHS</td></tr>
+    </table>
+  </div>
+
+  <p>For Nigerian students, Canada is the stronger choice if you want a clear path to permanent residency and are willing to study for 2 years. The UK is better if you want a shorter Masters (1 year) and lower average tuition at targeted affordable universities. For a detailed UK comparison, see our <a href="/blog/uk-universities-with-low-tuition-deposit-for-international-students-2026">UK low deposit guide</a>.</p>
+
+  <p>Already considering Canada? Check our <a href="/blog/blogstudy-visa-canada-from-nigeria">complete Canada study visa guide for Nigerians</a> for the full application process.</p>
+
+  <div class="tsv-cta">
+    <span class="cta-tag">🇳🇬 For Nigerian Students</span>
+    <h2>Not Sure &mdash; Canada or UK?</h2>
+    <p>Let Tundua help you compare options based on your budget, course choice, and long-term goals. We work with universities in both countries.</p>
+    <a href="/apply" class="cta-btn">Get Free Guidance &rarr;</a>
+    <span class="cta-sub">Takes less than 2 minutes. No commitment required.</span>
+  </div>
+
+  <div class="tsv-footer-note">
+    Last updated: April 2026 &nbsp;|&nbsp; Tuition fees, study permit costs, and proof of funds requirements are subject to change. Always confirm directly with the university and IRCC. &nbsp;|&nbsp; This guide does not constitute immigration or financial advice.
+  </div>
+
+</div>
+
+<!--
+=== CMS METADATA ===
+
+TITLE: Canada Universities with Low Tuition Deposit for International Students (2026)
+
+SLUG: canada-universities-low-tuition-deposit-international-students-2026
+
+EXCERPT: Discover the cheapest Canadian universities for international students in 2026 — with real tuition fees starting from CAD $5,565/year at Brandon University. This guide covers 7 affordable universities, study permit costs (CAD $150), proof of funds requirements (CAD $22,895), living costs by province, and a Canada vs UK comparison built for Nigerian students.
+
+CATEGORY: Canada / Study Abroad
+
+TAGS: cheapest universities Canada, Canada tuition fees 2026, study in Canada from Nigeria, Canadian study permit, low deposit universities Canada, PGWP Canada, Brandon University tuition
+
+FAQS:
+[
+  {
+    "question": "What is the cheapest Canadian university for international students in 2026?",
+    "answer": "Brandon University in Manitoba offers the lowest international tuition in Canada at approximately CAD $5,565 per year. Other affordable options include Université de Moncton (~CAD $8,500/year for French-language programmes) and the University of Manitoba (~CAD $18,100/year)."
+  },
+  {
+    "question": "How much does a Canadian study permit cost?",
+    "answer": "The study permit application fee is CAD $150, plus CAD $85 for biometrics (one-time fee, valid for 10 years). Additional costs include a medical examination (CAD $200–$300) and IELTS (₦266,000–₦298,000 in Nigeria). Total permit-related costs are approximately CAD $485–$635."
+  },
+  {
+    "question": "How much money do I need in my bank for a Canadian study permit?",
+    "answer": "You must show evidence of at least CAD $22,895 per year for living expenses plus your first year's tuition fees. For example, if tuition is CAD $20,000, you need approximately CAD $42,895 total. Some Nigerian applicants may also need a Guaranteed Investment Certificate (GIC) of CAD $20,635."
+  },
+  {
+    "question": "Can I work while studying in Canada?",
+    "answer": "Yes. Study permit holders can work up to 20 hours per week during academic terms and full-time during scheduled breaks (e.g., summer holidays). At Canadian minimum wages of CAD $15–$17/hour, this can earn approximately CAD $1,200–$1,400 per month."
+  },
+  {
+    "question": "Can I stay in Canada after graduation?",
+    "answer": "Yes. The Post-Graduation Work Permit (PGWP) allows you to work in Canada for 1–3 years after completing your programme (duration depends on programme length). After gaining Canadian work experience, you can apply for permanent residency through Express Entry or Provincial Nominee Programs."
+  },
+  {
+    "question": "Is Canada cheaper than the UK for Nigerian students?",
+    "answer": "It depends on the university. Canada's cheapest option (Brandon University at CAD $5,565/year) is significantly cheaper than the UK's cheapest (University of Suffolk at £11,823/year). However, Canada's average international tuition (CAD $41,746) is higher than the UK average. Canada's major advantage is the clearer path to permanent residency."
+  }
+]
+-->

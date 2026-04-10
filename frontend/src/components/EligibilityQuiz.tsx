@@ -22,9 +22,18 @@ const COURSES = [
 
 interface EligibilityQuizProps {
   source?: string;
+  /** Country context — changes quiz copy to match the article destination */
+  country?: "uk" | "canada" | "australia";
 }
 
-export function EligibilityQuiz({ source = "blog-eligibility-quiz" }: EligibilityQuizProps) {
+const COUNTRY_LABELS: Record<string, string> = {
+  uk: "UK",
+  canada: "Canadian",
+  australia: "Australian",
+};
+
+export function EligibilityQuiz({ source = "blog-eligibility-quiz", country = "uk" }: EligibilityQuizProps) {
+  const countryLabel = COUNTRY_LABELS[country] || "UK";
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [budget, setBudget] = useState<typeof BUDGETS[number] | null>(null);
   const [course, setCourse] = useState<typeof COURSES[number] | null>(null);
@@ -46,10 +55,11 @@ export function EligibilityQuiz({ source = "blog-eligibility-quiz" }: Eligibilit
     const message = `Hi Tundua, I just used your eligibility check on the blog.
 
 📊 My situation:
+• Destination: ${countryLabel}
 • Budget: ${budget?.label}
 • Course: ${course?.label}
 
-Can you send me a free shortlist of UK universities I qualify for?`;
+Can you send me a free shortlist of ${countryLabel} universities I qualify for?`;
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   };
 
@@ -71,10 +81,10 @@ Can you send me a free shortlist of UK universities I qualify for?`;
       {step === 1 && (
         <div>
           <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
-            Which UK universities can you actually afford?
+            Which {countryLabel} universities can you actually afford?
           </h3>
           <p className="text-sm text-gray-600 mb-5">
-            Answer 2 quick questions and we&apos;ll match you to schools that fit your budget.
+            Answer 2 quick questions and we&apos;ll match you to {countryLabel.toLowerCase()} schools that fit your budget.
           </p>
           <p className="text-sm font-semibold text-gray-900 mb-3">
             Step 1 of 2 — How much can you pay upfront?
@@ -121,10 +131,10 @@ Can you send me a free shortlist of UK universities I qualify for?`;
             <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" />
             <div>
               <h3 className="text-xl font-bold text-gray-900 mb-1">
-                Good news — you qualify for several UK universities
+                Good news — you qualify for several {countryLabel} universities
               </h3>
               <p className="text-sm text-gray-700">
-                Based on your budget ({budget.short}) and course choice ({course.label}), we have a personalised shortlist ready.
+                Based on your budget ({budget.short}) and course choice ({course.label}), we have a personalised {countryLabel.toLowerCase()} shortlist ready.
               </p>
             </div>
           </div>
