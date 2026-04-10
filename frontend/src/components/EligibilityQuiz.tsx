@@ -6,13 +6,29 @@ import { trackEligibilityCheck, trackWhatsAppClick } from "@/lib/analytics";
 
 const WHATSAPP_NUMBER = process.env['NEXT_PUBLIC_WHATSAPP_NUMBER'] || "2348000000000";
 
-const BUDGETS = [
-  { id: "low", label: "Under ₦2M upfront", short: "Under ₦2M" },
-  { id: "mid", label: "₦2M – ₦5M upfront", short: "₦2M–₦5M" },
-  { id: "high", label: "Over ₦5M upfront", short: "Over ₦5M" },
-];
+type BudgetOption = { id: string; label: string; short: string };
+type CourseOption = { id: string; label: string };
 
-const COURSES = [
+// Country-specific budget tiers — reflects real upfront costs in each destination
+const BUDGETS_BY_COUNTRY: Record<string, BudgetOption[]> = {
+  uk: [
+    { id: "low", label: "Under ₦2M upfront", short: "Under ₦2M" },
+    { id: "mid", label: "₦2M – ₦5M upfront", short: "₦2M–₦5M" },
+    { id: "high", label: "Over ₦5M upfront", short: "Over ₦5M" },
+  ],
+  canada: [
+    { id: "low", label: "Under ₦5M upfront", short: "Under ₦5M" },
+    { id: "mid", label: "₦5M – ₦15M upfront", short: "₦5M–₦15M" },
+    { id: "high", label: "Over ₦15M upfront", short: "Over ₦15M" },
+  ],
+  australia: [
+    { id: "low", label: "Under ₦10M upfront", short: "Under ₦10M" },
+    { id: "mid", label: "₦10M – ₦20M upfront", short: "₦10M–₦20M" },
+    { id: "high", label: "Over ₦20M upfront", short: "Over ₦20M" },
+  ],
+};
+
+const COURSES: CourseOption[] = [
   { id: "business", label: "Business / MBA" },
   { id: "computing", label: "Computing / IT" },
   { id: "nursing", label: "Nursing / Health" },
@@ -22,7 +38,7 @@ const COURSES = [
 
 interface EligibilityQuizProps {
   source?: string;
-  /** Country context — changes quiz copy to match the article destination */
+  /** Country context — changes quiz copy and budget tiers to match the article destination */
   country?: "uk" | "canada" | "australia";
 }
 
@@ -34,11 +50,12 @@ const COUNTRY_LABELS: Record<string, string> = {
 
 export function EligibilityQuiz({ source = "blog-eligibility-quiz", country = "uk" }: EligibilityQuizProps) {
   const countryLabel = COUNTRY_LABELS[country] || "UK";
+  const budgets = (BUDGETS_BY_COUNTRY[country] ?? BUDGETS_BY_COUNTRY['uk']) as BudgetOption[];
   const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [budget, setBudget] = useState<typeof BUDGETS[number] | null>(null);
-  const [course, setCourse] = useState<typeof COURSES[number] | null>(null);
+  const [budget, setBudget] = useState<BudgetOption | null>(null);
+  const [course, setCourse] = useState<CourseOption | null>(null);
 
-  const handleBudget = (b: typeof BUDGETS[number]) => {
+  const handleBudget = (b: BudgetOption) => {
     setBudget(b);
     setStep(2);
   };
@@ -90,7 +107,7 @@ Can you send me a free shortlist of ${countryLabel} universities I qualify for?`
             Step 1 of 2 — How much can you pay upfront?
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-            {BUDGETS.map((b) => (
+            {budgets.map((b) => (
               <button
                 key={b.id}
                 onClick={() => handleBudget(b)}
@@ -141,7 +158,7 @@ Can you send me a free shortlist of ${countryLabel} universities I qualify for?`
 
           <div className="bg-white rounded-xl border border-amber-200 p-4 mb-4">
             <p className="text-sm text-gray-700 leading-relaxed">
-              <strong>Next step:</strong> Tap below to get your free shortlist on WhatsApp. We&apos;ll send 3–5 universities you qualify for, deposit amounts, and exact next steps — usually within 24 hours.
+              <strong>Next step:</strong> Tap below to get your free shortlist on WhatsApp. We&apos;ll send 3–5 universities you qualify for, {country === "australia" ? "tuition fees, CoE costs," : country === "canada" ? "tuition fees, permit costs," : "deposit amounts,"} and exact next steps — usually within 24 hours.
             </p>
           </div>
 
