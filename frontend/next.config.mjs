@@ -137,14 +137,13 @@ eslint: {
       { source: '/about.html', destination: '/about', permanent: true },
       { source: '/contact.html', destination: '/contact', permanent: true },
       { source: '/how-it-works.html', destination: '/about', permanent: true },
-      { source: '/questionnaire.html', destination: '/dashboard/applications/new', permanent: true },
-      // Old services pages
-      { source: '/services/course-selection.html', destination: '/dashboard/applications/new', permanent: true },
-      { source: '/services/visa-application.html', destination: '/dashboard/applications/new', permanent: true },
-      { source: '/services/career-counselling.html', destination: '/dashboard/applications/new', permanent: true },
-      { source: '/services/:slug*.html', destination: '/dashboard/applications/new', permanent: true },
-      // Catch-all for any other .html pages
-      { source: '/:path*.html', destination: '/', permanent: true },
+      { source: '/questionnaire.html', destination: '/apply', permanent: true },
+      // Old services pages — redirect to public /apply (robots-allowed) instead of
+      // /dashboard/* which is disallowed in robots.ts and breaks redirect validation.
+      { source: '/services/course-selection.html', destination: '/apply', permanent: true },
+      { source: '/services/visa-application.html', destination: '/apply', permanent: true },
+      { source: '/services/career-counselling.html', destination: '/apply', permanent: true },
+      { source: '/services/:slug*.html', destination: '/apply', permanent: true },
     ];
   },
 
