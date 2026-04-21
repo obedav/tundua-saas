@@ -11,9 +11,14 @@
 
 import { useEffect } from 'react';
 import { reportWebVitals } from '@/lib/web-vitals';
+import { captureUtmFromUrl } from '@/lib/utm';
 
 export function WebVitalsReporter() {
   useEffect(() => {
+    // Capture UTMs from the landing URL before any link clicks change it.
+    // Piggybacks on this component because it already mounts once per session in the root layout.
+    captureUtmFromUrl();
+
     // Dynamically import web-vitals library (reduces initial bundle)
     import('web-vitals').then(({ onCLS, onFID, onFCP, onLCP, onTTFB, onINP }) => {
       // Report Core Web Vitals

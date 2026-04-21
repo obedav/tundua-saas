@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckCircle, MessageCircle, Sparkles, ArrowRight } from "lucide-react";
-import { trackEligibilityCheck, trackWhatsAppClick } from "@/lib/analytics";
+import { trackEligibilityCheck, trackFormStep, trackWhatsAppClick } from "@/lib/analytics";
 
 const WHATSAPP_NUMBER = process.env['NEXT_PUBLIC_WHATSAPP_NUMBER'] || "2348000000000";
 
@@ -55,14 +55,22 @@ export function EligibilityQuiz({ source = "blog-eligibility-quiz", country = "u
   const [budget, setBudget] = useState<BudgetOption | null>(null);
   const [course, setCourse] = useState<CourseOption | null>(null);
 
+  // Fire a "viewed" signal once per mount. Combined with the per-step events below,
+  // this gives a clean view → step1 → step2 → step3 funnel in GA4.
+  useEffect(() => {
+    trackFormStep(source, 0, "viewed");
+  }, [source]);
+
   const handleBudget = (b: BudgetOption) => {
     setBudget(b);
     setStep(2);
+    trackFormStep(source, 1, `budget:${b.id}`);
   };
 
   const handleCourse = (c: typeof COURSES[number]) => {
     setCourse(c);
     setStep(3);
+    trackFormStep(source, 2, `course:${c.id}`);
     if (budget) {
       trackEligibilityCheck(budget.id, c.id);
     }

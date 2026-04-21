@@ -26,6 +26,7 @@ import {
   CardHover,
 } from "@/components/animations/PageAnimations";
 import { ExitIntentPopup } from "@/components/ExitIntentPopup";
+import { trackApplyClick } from "@/lib/analytics";
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -768,7 +769,8 @@ export default function HomePage() {
                   <MagneticButton strength={0.2}>
                     <PulseGlow>
                       <Link
-                        href="/auth/register"
+                        href="/apply"
+                        onClick={() => trackApplyClick('home-hero')}
                         className="group bg-gradient-to-r from-blue-600 to-teal-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl hover:shadow-teal-500/30 transition-all inline-flex items-center justify-center gap-2"
                       >
                         Start Free Application
@@ -1538,7 +1540,8 @@ export default function HomePage() {
                   </a>
                 ) : (
                   <Link
-                    href="/auth/register"
+                    href={plan.isFree ? '/apply' : '/auth/register'}
+                    onClick={() => trackApplyClick(plan.isFree ? 'pricing-free' : 'pricing-paid')}
                     className={`block w-full text-center px-6 py-4 rounded-full font-semibold transition-all ${
                       plan.highlighted
                         ? 'bg-white text-teal-600 hover:bg-blue-50'
@@ -1638,7 +1641,8 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/auth/register"
+              href="/apply"
+              onClick={() => trackApplyClick('home-bottom-cta')}
               className="group bg-white text-teal-600 dark:bg-gradient-to-r dark:from-blue-500 dark:to-teal-500 dark:text-white px-10 py-5 rounded-full text-lg font-bold hover:bg-blue-50 dark:hover:from-blue-400 dark:hover:to-teal-400 transition-all shadow-xl hover:shadow-2xl dark:shadow-blue-500/25 dark:hover:shadow-blue-500/40 inline-flex items-center justify-center gap-2"
             >
               Start Your Application Now

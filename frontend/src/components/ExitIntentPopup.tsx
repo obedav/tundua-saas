@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { X, Send, CheckCircle, GraduationCap } from "lucide-react";
 import { trackLeadFormSubmit } from "@/lib/analytics";
+import { formatUtmForMessage } from "@/lib/utm";
 
 export function ExitIntentPopup() {
   const [show, setShow] = useState(false);
@@ -53,6 +54,7 @@ export function ExitIntentPopup() {
     setError("");
 
     try {
+      const utmLine = formatUtmForMessage();
       const response = await fetch(
         `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/contact`,
         {
@@ -62,7 +64,7 @@ export function ExitIntentPopup() {
             name,
             email: `${phone.replace(/\s+/g, "")}@whatsapp.lead`,
             subject: "exit-intent-lead",
-            message: `WhatsApp: ${phone}\nSource: Exit intent popup`,
+            message: `WhatsApp: ${phone}\nSource: Exit intent popup${utmLine ? `\nAttribution: ${utmLine}` : ""}`,
           }),
         }
       );

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Send, CheckCircle, GraduationCap } from "lucide-react";
 import { trackLeadFormSubmit } from "@/lib/analytics";
+import { formatUtmForMessage } from "@/lib/utm";
 
 export function InlineLeadForm() {
   const [name, setName] = useState("");
@@ -17,6 +18,7 @@ export function InlineLeadForm() {
     setError("");
 
     try {
+      const utmLine = formatUtmForMessage();
       const response = await fetch(
         `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/contact`,
         {
@@ -26,7 +28,7 @@ export function InlineLeadForm() {
             name,
             email: `${phone.replace(/\s+/g, "")}@whatsapp.lead`,
             subject: "blog-inline-lead",
-            message: `WhatsApp: ${phone}\nSource: Blog inline lead form`,
+            message: `WhatsApp: ${phone}\nSource: Blog inline lead form${utmLine ? `\nAttribution: ${utmLine}` : ""}`,
           }),
         }
       );

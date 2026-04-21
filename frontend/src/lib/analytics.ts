@@ -189,6 +189,16 @@ export const setCustomDimension = (dimension: string, value: string) => {
   window.gtag('set', dimension, value);
 };
 
+// Estimated pipeline value (NGN) per conversion stage.
+// Feeds GA4 / Meta / Google Ads so their bidders can optimize on *real* lead value
+// instead of treating every conversion as worth ₦1. Tune with CRM data as it matures.
+const LEAD_VALUE_NGN = {
+  working: 5000,    // apply_click — lead entered the funnel
+  qualified: 15000, // completed eligibility quiz — budget + course known
+  submitted: 50000, // submitted contact/lead form — contactable lead
+  whatsapp: 20000,  // opened WhatsApp — hot hand-raiser
+} as const;
+
 // Lead generation tracking - GA4 recommended key events
 export const trackLeadFormSubmit = (source: string) => {
   if (!isGALoaded()) {
@@ -201,7 +211,7 @@ export const trackLeadFormSubmit = (source: string) => {
     event_category: 'Lead',
     event_label: source,
     currency: 'NGN',
-    value: 1,
+    value: LEAD_VALUE_NGN.submitted,
   });
 };
 
@@ -225,7 +235,8 @@ export const trackApplyClick = (source: string) => {
   window.gtag('event', 'apply_click', {
     event_category: 'CTA',
     event_label: source,
-    value: 1,
+    currency: 'NGN',
+    value: LEAD_VALUE_NGN.working,
   });
 
   // GA4 recommended Lead Gen event — clicking "Apply" means the lead is now
@@ -234,7 +245,7 @@ export const trackApplyClick = (source: string) => {
     event_category: 'Lead',
     event_label: source,
     currency: 'NGN',
-    value: 1,
+    value: LEAD_VALUE_NGN.working,
   });
 };
 
@@ -248,7 +259,8 @@ export const trackWhatsAppClick = (source: string) => {
   window.gtag('event', 'whatsapp_click', {
     event_category: 'CTA',
     event_label: source,
-    value: 1,
+    currency: 'NGN',
+    value: LEAD_VALUE_NGN.whatsapp,
   });
 
   // GA4 recommended Lead Gen event — opening WhatsApp is a real lead handoff,
@@ -257,7 +269,7 @@ export const trackWhatsAppClick = (source: string) => {
     event_category: 'Lead',
     event_label: `whatsapp:${source}`,
     currency: 'NGN',
-    value: 1,
+    value: LEAD_VALUE_NGN.whatsapp,
   });
 };
 
@@ -271,7 +283,8 @@ export const trackEligibilityCheck = (budget: string, course: string) => {
   window.gtag('event', 'eligibility_check', {
     event_category: 'Lead',
     event_label: `${budget} | ${course}`,
-    value: 1,
+    currency: 'NGN',
+    value: LEAD_VALUE_NGN.qualified,
   });
 
   // GA4 recommended Lead Gen event — completing the quiz means we now know
@@ -281,7 +294,24 @@ export const trackEligibilityCheck = (budget: string, course: string) => {
     event_category: 'Lead',
     event_label: `${budget} | ${course}`,
     currency: 'NGN',
-    value: 1,
+    value: LEAD_VALUE_NGN.qualified,
+  });
+};
+
+// Per-step form tracking — diagnose WHERE users drop off.
+// Fire this from multi-step forms (EligibilityQuiz, ApplyForm) at each step.
+export const trackFormStep = (formName: string, step: number, stepLabel: string) => {
+  if (!isGALoaded()) {
+    console.log('[Analytics - Dev] Form step:', { formName, step, stepLabel });
+    return;
+  }
+
+  window.gtag('event', 'form_step_completed', {
+    event_category: 'Form',
+    event_label: `${formName}:step-${step}:${stepLabel}`,
+    form_name: formName,
+    step_number: step,
+    step_label: stepLabel,
   });
 };
 
