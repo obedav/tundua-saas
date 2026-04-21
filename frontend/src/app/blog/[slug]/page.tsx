@@ -14,6 +14,7 @@ import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 import { EligibilityQuiz } from "@/components/EligibilityQuiz";
 import { StickyMobileCTA } from "@/components/StickyMobileCTA";
 import { clientEnv } from "@/lib/env";
+import { rewriteCtaLinks } from "@/lib/article-html";
 
 // ISR: Revalidate every 30 minutes so content stays fresh
 export const revalidate = 1800;
@@ -276,7 +277,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
               and forces tables to allow horizontal scroll inside their own container. */}
           <div
             className="prose prose-base sm:prose-lg max-w-none overflow-x-auto prose-headings:text-gray-900 prose-headings:break-words prose-p:text-gray-700 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline prose-img:max-w-full prose-img:h-auto"
-            dangerouslySetInnerHTML={{ __html: article.content }}
+            dangerouslySetInnerHTML={{ __html: rewriteCtaLinks(article.content) }}
           />
 
           {/* Post-content CTA — lead magnet + advisor card */}
