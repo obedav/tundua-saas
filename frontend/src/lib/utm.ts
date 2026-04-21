@@ -71,6 +71,18 @@ export function getUtmParams(): UtmParams {
   }
 }
 
+/** Return a clean JSON-shaped payload ready to post to /api/v1/leads. Empty when no UTMs. */
+export function getUtmPayload(): UtmParams {
+  const utm = getUtmParams();
+  const out: UtmParams = {};
+  for (const key of UTM_KEYS) {
+    if (utm[key]) out[key] = utm[key];
+  }
+  if (utm.landing_page) out.landing_page = utm.landing_page;
+  if (utm.referrer) out.referrer = utm.referrer;
+  return out;
+}
+
 /** Format UTMs as a short readable string for embedding in lead messages / CRM notes. */
 export function formatUtmForMessage(utm: UtmParams = getUtmParams()): string {
   const parts: string[] = [];

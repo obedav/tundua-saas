@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Send, CheckCircle, GraduationCap } from "lucide-react";
 import { trackLeadFormSubmit } from "@/lib/analytics";
-import { formatUtmForMessage } from "@/lib/utm";
+import { getUtmPayload } from "@/lib/utm";
 
 export function InlineLeadForm() {
   const [name, setName] = useState("");
@@ -18,17 +18,18 @@ export function InlineLeadForm() {
     setError("");
 
     try {
-      const utmLine = formatUtmForMessage();
       const response = await fetch(
-        `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/contact`,
+        `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/leads`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name,
             email: `${phone.replace(/\s+/g, "")}@whatsapp.lead`,
-            subject: "blog-inline-lead",
-            message: `WhatsApp: ${phone}\nSource: Blog inline lead form${utmLine ? `\nAttribution: ${utmLine}` : ""}`,
+            phone,
+            source: "blog-inline-lead",
+            message: "Submitted via blog inline WhatsApp capture form.",
+            utm: getUtmPayload(),
           }),
         }
       );
@@ -37,11 +38,13 @@ export function InlineLeadForm() {
         setSubmitted(true);
         trackLeadFormSubmit("blog-inline-lead");
       } else {
-        setError("Something went wrong. Please try again.");
+        const data = await response.json().catch(() => null);
+        setError(data?.error || "Something went wrong. Please try again.");
       }
     } catch {
-      setSubmitted(true);
-      trackLeadFormSubmit("blog-inline-lead");
+      // Real network/CORS failure — tell the user. Do NOT fake success or fire
+      // trackLeadFormSubmit; that's what put ghost leads in GA4 with ₦0 revenue.
+      setError("Network error. Please try again or message us on WhatsApp.");
     } finally {
       setLoading(false);
     }

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { X, Send, CheckCircle, GraduationCap } from "lucide-react";
 import { trackLeadFormSubmit } from "@/lib/analytics";
-import { formatUtmForMessage } from "@/lib/utm";
+import { getUtmPayload } from "@/lib/utm";
 
 export function ExitIntentPopup() {
   const [show, setShow] = useState(false);
@@ -54,17 +54,18 @@ export function ExitIntentPopup() {
     setError("");
 
     try {
-      const utmLine = formatUtmForMessage();
       const response = await fetch(
-        `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/contact`,
+        `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/leads`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name,
             email: `${phone.replace(/\s+/g, "")}@whatsapp.lead`,
-            subject: "exit-intent-lead",
-            message: `WhatsApp: ${phone}\nSource: Exit intent popup${utmLine ? `\nAttribution: ${utmLine}` : ""}`,
+            phone,
+            source: "exit-intent-popup",
+            message: "Submitted via exit-intent popup.",
+            utm: getUtmPayload(),
           }),
         }
       );
@@ -74,12 +75,12 @@ export function ExitIntentPopup() {
         sessionStorage.setItem("exit_popup_dismissed", "1");
         trackLeadFormSubmit("exit-intent-popup");
       } else {
-        setError("Something went wrong. Please try again.");
+        const data = await response.json().catch(() => null);
+        setError(data?.error || "Something went wrong. Please try again.");
       }
     } catch {
-      setSubmitted(true);
-      sessionStorage.setItem("exit_popup_dismissed", "1");
-      trackLeadFormSubmit("exit-intent-popup");
+      // Show real errors — don't fake success. Ghost leads in GA4 came from here.
+      setError("Network error. Please try again or WhatsApp us directly.");
     } finally {
       setLoading(false);
     }

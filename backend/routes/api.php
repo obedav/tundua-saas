@@ -40,6 +40,7 @@ function registerRoutes($app, array $controllers)
     $pusherController = $controllers['pusher'];
     $partnerController = $controllers['partner'];
     $twoFactorController = $controllers['twoFactor'];
+    $leadController = $controllers['lead'];
 
     // ========================================================================
     // API ROOT (unversioned)
@@ -199,7 +200,8 @@ function registerRoutes($app, array $controllers)
         $userController, $notificationController, $activityController,
         $dashboardController, $addonOrderController, $referralController,
         $knowledgeBaseController, $universityController, $aiUsageController,
-        $pusherController, $partnerController, $twoFactorController
+        $pusherController, $partnerController, $twoFactorController,
+        $leadController
     ) {
 
         // ====================================================================
@@ -258,6 +260,13 @@ function registerRoutes($app, array $controllers)
         // ====================================================================
 
         $v1->post('/pusher/auth', [$pusherController, 'auth'])->add(new AuthMiddleware());
+
+        // ====================================================================
+        // PUBLIC LEAD CAPTURE (apply form, blog inline form, exit-intent popup)
+        // ====================================================================
+        // No auth — this is the top-of-funnel entry point. Rate limiting is
+        // applied centrally in RateLimitMiddleware's $endpointLimits.
+        $v1->post('/leads', [$leadController, 'create']);
 
         // ====================================================================
         // SERVICE CONFIGURATION ROUTES (PUBLIC)

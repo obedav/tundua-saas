@@ -473,4 +473,90 @@ class EmailService
 
         return $this->send($email, $subject, $body);
     }
+
+    /**
+     * Notify the admin inbox that a new lead arrived from a public funnel form.
+     *
+     * Fired from LeadController::create() right after the row is inserted.
+     * Uses LEAD_NOTIFICATION_EMAIL env var, falling back to MAIL_FROM_ADDRESS so
+     * we never silently drop notifications when the env is not fully configured.
+     */
+    public function sendLeadNotification(array $lead): bool
+    {
+        $to = $_ENV['LEAD_NOTIFICATION_EMAIL']
+            ?? $_ENV['MAIL_FROM_ADDRESS']
+            ?? 'hello@tundua.com';
+
+        $name    = htmlspecialchars((string)($lead['name']    ?? ''), ENT_QUOTES, 'UTF-8');
+        $email   = htmlspecialchars((string)($lead['email']   ?? ''), ENT_QUOTES, 'UTF-8');
+        $phone   = htmlspecialchars((string)($lead['phone']   ?? '—'), ENT_QUOTES, 'UTF-8');
+        $country = htmlspecialchars((string)($lead['country'] ?? '—'), ENT_QUOTES, 'UTF-8');
+        $budget  = htmlspecialchars((string)($lead['budget']  ?? '—'), ENT_QUOTES, 'UTF-8');
+        $source  = htmlspecialchars((string)($lead['source']  ?? 'unknown'), ENT_QUOTES, 'UTF-8');
+        $message = nl2br(htmlspecialchars((string)($lead['message'] ?? ''), ENT_QUOTES, 'UTF-8'));
+
+        // Compact attribution block — one line per set value. Skips empties so the
+        // email stays readable for organic leads with no UTMs.
+        $attributionRows = '';
+        $attrKeys = [
+            'utm_source'   => 'UTM source',
+            'utm_medium'   => 'UTM medium',
+            'utm_campaign' => 'UTM campaign',
+            'utm_term'     => 'UTM term',
+            'utm_content'  => 'UTM content',
+            'gclid'        => 'Google click id',
+            'fbclid'       => 'Meta click id',
+            'landing_page' => 'Landing page',
+            'referrer'     => 'Referrer',
+        ];
+        foreach ($attrKeys as $key => $label) {
+            if (!empty($lead[$key])) {
+                $val = htmlspecialchars((string)$lead[$key], ENT_QUOTES, 'UTF-8');
+                $attributionRows .= "<tr><td style='padding:4px 12px;color:#6b7280;'>{$label}</td><td style='padding:4px 12px;'>{$val}</td></tr>";
+            }
+        }
+
+        $subject = "New lead: {$name} ({$source})";
+
+        // WhatsApp deep-link in the admin email so whoever is on lead duty can
+        // reply in one tap from their phone. Strip non-digits from the phone.
+        $phoneDigits = preg_replace('/\D+/', '', (string)($lead['phone'] ?? ''));
+        $waLink = $phoneDigits ? "https://wa.me/{$phoneDigits}" : null;
+        $waButton = $waLink
+            ? "<a href='{$waLink}' style='display:inline-block;background:#25D366;color:white;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;'>Reply on WhatsApp</a>"
+            : '';
+
+        $body = "
+        <!DOCTYPE html>
+        <html>
+        <body style='font-family:Arial,sans-serif;line-height:1.5;color:#111827;background:#f9fafb;margin:0;padding:0;'>
+          <div style='max-width:600px;margin:24px auto;background:white;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;'>
+            <div style='background:linear-gradient(135deg,#0ea5e9,#0284c7);color:white;padding:20px 24px;'>
+              <h2 style='margin:0;'>New lead from {$source}</h2>
+              <p style='margin:4px 0 0;opacity:0.9;font-size:14px;'>Reply within 24 hours for the best conversion rate.</p>
+            </div>
+            <div style='padding:20px 24px;'>
+              <table style='width:100%;border-collapse:collapse;font-size:14px;'>
+                <tr><td style='padding:6px 0;color:#6b7280;width:140px;'>Name</td><td style='padding:6px 0;font-weight:600;'>{$name}</td></tr>
+                <tr><td style='padding:6px 0;color:#6b7280;'>Email</td><td style='padding:6px 0;'><a href='mailto:{$email}'>{$email}</a></td></tr>
+                <tr><td style='padding:6px 0;color:#6b7280;'>Phone</td><td style='padding:6px 0;'>{$phone}</td></tr>
+                <tr><td style='padding:6px 0;color:#6b7280;'>Country</td><td style='padding:6px 0;'>{$country}</td></tr>
+                <tr><td style='padding:6px 0;color:#6b7280;'>Budget</td><td style='padding:6px 0;'>{$budget}</td></tr>
+              </table>
+
+              <h3 style='margin:20px 0 6px;font-size:14px;color:#374151;'>Message</h3>
+              <div style='background:#f3f4f6;border-radius:8px;padding:12px 14px;font-size:14px;white-space:pre-wrap;'>{$message}</div>
+
+              " . ($attributionRows ? "<h3 style='margin:20px 0 6px;font-size:14px;color:#374151;'>Attribution</h3>
+              <table style='width:100%;border-collapse:collapse;font-size:13px;background:#f9fafb;border-radius:8px;'>{$attributionRows}</table>" : "") . "
+
+              <div style='margin-top:24px;'>{$waButton}</div>
+            </div>
+          </div>
+        </body>
+        </html>
+        ";
+
+        return $this->send($to, $subject, $body);
+    }
 }

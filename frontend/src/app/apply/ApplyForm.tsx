@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
 import { trackLeadFormSubmit } from "@/lib/analytics";
+import { getUtmPayload } from "@/lib/utm";
 
 interface FormData {
   name: string;
@@ -57,15 +58,19 @@ export function ApplyForm() {
 
     try {
       const response = await fetch(
-        `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/contact`,
+        `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/leads`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name: formData.name,
             email: formData.email,
-            subject: "apply",
-            message: `Phone: ${formData.phone}\nCountry: ${formData.country}\nBudget: ${formData.budget}\n\n${formData.message}`,
+            phone: formData.phone,
+            country: formData.country,
+            budget: formData.budget,
+            message: formData.message,
+            source: "apply-page",
+            utm: getUtmPayload(),
           }),
         }
       );
@@ -75,10 +80,10 @@ export function ApplyForm() {
         trackLeadFormSubmit("apply-page");
       } else {
         const data = await response.json().catch(() => null);
-        setError(data?.message || "Something went wrong. Please try again.");
+        setError(data?.error || data?.message || "Something went wrong. Please try again.");
       }
     } catch {
-      setSubmitted(true);
+      setError("Network error. Please check your connection and try again, or reach us on WhatsApp.");
     } finally {
       setLoading(false);
     }

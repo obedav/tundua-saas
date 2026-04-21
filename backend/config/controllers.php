@@ -28,6 +28,7 @@ use Tundua\Controllers\AIUsageController;
 use Tundua\Controllers\PusherController;
 use Tundua\Controllers\PartnerController;
 use Tundua\Controllers\TwoFactorController;
+use Tundua\Controllers\LeadController;
 
 // Initialize Google OAuth Controller only if the package is installed
 $googleOAuthController = null;
@@ -61,4 +62,5 @@ return [
     'pusher'        => new PusherController(),
     'partner'       => new PartnerController(),
     'twoFactor'     => new TwoFactorController(),
+    'lead'          => new LeadController(),
 ];
