@@ -444,6 +444,7 @@ function registerRoutes($app, array $controllers)
             $group->post('', [$refundController, 'create']);
             $group->get('/user', [$refundController, 'getUserRefunds']);
             $group->get('/{id}', [$refundController, 'getById']);
+            $group->get('/{id}/agreement', [$refundController, 'downloadAgreement']);
             $group->post('/upload-agreement', [$refundController, 'uploadAgreement']);
         })->add(new AuthMiddleware());
 

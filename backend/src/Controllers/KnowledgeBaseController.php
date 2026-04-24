@@ -508,13 +508,13 @@ class KnowledgeBaseController
 
             $extension = $allowedTypes[$mimeType];
 
-            // Ensure storage directory exists
-            $storageDir = dirname(__DIR__, 2) . '/storage/blog-images';
+            // Blog images are public content — save under public/uploads so Apache
+            // serves them directly. The private storage/ dir is outside the web root.
+            $storageDir = dirname(__DIR__, 2) . '/public/uploads/blog-images';
             if (!is_dir($storageDir)) {
                 mkdir($storageDir, 0755, true);
             }
 
-            // Generate unique filename and save
             $filename = uniqid('blog_') . '_' . time() . '.' . $extension;
             $filePath = $storageDir . '/' . $filename;
 
@@ -523,7 +523,7 @@ class KnowledgeBaseController
 
             $response->getBody()->write(json_encode([
                 'success' => true,
-                'image_url' => '/storage/blog-images/' . $filename
+                'image_url' => '/uploads/blog-images/' . $filename
             ]));
             return $response->withHeader('Content-Type', 'application/json');
 

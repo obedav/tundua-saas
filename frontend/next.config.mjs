@@ -78,11 +78,22 @@ eslint: {
         port: '8000',
         pathname: '/storage/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: '/uploads/**',
+      },
       // Production - API server (document storage)
       {
         protocol: 'https',
         hostname: 'api.tundua.com',
         pathname: '/storage/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.tundua.com',
+        pathname: '/uploads/**',
       },
       // Production - Main domain
       {

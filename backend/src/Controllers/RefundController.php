@@ -108,6 +108,72 @@ class RefundController
     }
 
     /**
+     * Download signed refund agreement PDF (authenticated, owner-only).
+     * Agreements are stored in the private storage/ directory and streamed
+     * through this endpoint — never exposed via a public URL.
+     *
+     * GET /api/v1/refunds/{id}/agreement
+     */
+    public function downloadAgreement(Request $request, Response $response, array $args): Response
+    {
+        $refundId = $args['id'] ?? null;
+        $userId = $request->getAttribute('user_id');
+
+        try {
+            $stmt = $this->getDb()->prepare(
+                "SELECT agreement_pdf_url FROM refunds WHERE id = ? AND user_id = ?"
+            );
+            $stmt->execute([$refundId, $userId]);
+            $refund = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            if (!$refund || empty($refund['agreement_pdf_url'])) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Refund agreement not found or access denied'
+                ]));
+                return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+            }
+
+            // Resolve stored URL (/storage/refund-agreements/foo.pdf) to a disk path
+            // inside the private storage dir. Path-traversal defence: the resolved
+            // real path must live inside the expected directory.
+            $filename = basename($refund['agreement_pdf_url']);
+            $storageDir = realpath(__DIR__ . '/../../storage/refund-agreements');
+            if ($storageDir === false) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Agreement file not available'
+                ]));
+                return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+            }
+            $filePath = $storageDir . DIRECTORY_SEPARATOR . $filename;
+            $realFilePath = realpath($filePath);
+
+            if ($realFilePath === false
+                || strpos($realFilePath, $storageDir) !== 0
+                || !is_file($realFilePath)) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Agreement file not found'
+                ]));
+                return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+            }
+
+            $response->getBody()->write(file_get_contents($realFilePath));
+            return $response
+                ->withHeader('Content-Type', 'application/pdf')
+                ->withHeader('Content-Disposition', 'attachment; filename="refund-agreement-' . $refundId . '.pdf"')
+                ->withHeader('Content-Length', (string) filesize($realFilePath));
+        } catch (\Exception $e) {
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error' => 'Failed to download agreement'
+            ]));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
+    }
+
+    /**
      * Create refund request
      * POST /api/refunds
      */
