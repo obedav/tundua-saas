@@ -18,7 +18,6 @@ vi.mock("@/lib/api-client", () => ({
   apiClient: {
     initializePaystack: vi.fn(),
     verifyPaystack: vi.fn(),
-    createStripeCheckout: vi.fn(),
     getPaymentStatus: vi.fn(),
     requestRefund: vi.fn(),
   },
@@ -30,25 +29,6 @@ describe("Payment Flow Tests", () => {
   });
 
   describe("Payment Initialization", () => {
-    it("should initialize Stripe checkout successfully", async () => {
-      const mockCheckout = mockAxiosResponse({
-        success: true,
-        checkout_url: "https://checkout.stripe.com/test_session",
-        session_id: "cs_test_12345",
-      });
-
-      vi.mocked(apiClient.createStripeCheckout).mockResolvedValue(mockCheckout);
-
-      const result = await apiClient.createStripeCheckout(
-        1,
-        "https://example.com/success",
-        "https://example.com/cancel"
-      );
-
-      expect(result.data.success).toBe(true);
-      expect(result.data.checkout_url).toContain("stripe.com");
-    });
-
     it("should initialize Paystack payment successfully", async () => {
       const mockPaystackResponse = mockAxiosResponse({
         success: true,

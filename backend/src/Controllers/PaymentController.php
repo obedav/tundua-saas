@@ -6,10 +6,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Tundua\Database\Database;
 use Yabacon\Paystack;
-use Stripe\Stripe;
-use Stripe\Checkout\Session as StripeSession;
-use Stripe\Webhook as StripeWebhook;
 use Tundua\Services\PricingService;
+use Tundua\Services\Ga4Service;
 
 class PaymentController
 {
@@ -67,29 +65,6 @@ class PaymentController
             'currency' => $currency,
             'error' => $isValid ? null : 'Payment amount mismatch - possible tampering detected'
         ];
-    }
-
-    /**
-     * Convert amount between currencies
-     */
-    private function convertCurrency(float $amount, string $fromCurrency, string $toCurrency): float
-    {
-        if ($fromCurrency === $toCurrency) {
-            return $amount;
-        }
-
-        $exchangeRate = PricingService::getExchangeRate(); // NGN to USD rate
-
-        if ($fromCurrency === 'NGN' && $toCurrency === 'USD') {
-            return round($amount / $exchangeRate, 2);
-        }
-
-        if ($fromCurrency === 'USD' && $toCurrency === 'NGN') {
-            return round($amount * $exchangeRate, 2);
-        }
-
-        // Unsupported conversion
-        return $amount;
     }
 
     public function __construct()
@@ -374,9 +349,12 @@ class PaymentController
 
                 // Only update application if payment was actually updated
                 if ($stmt->rowCount() > 0) {
-                    // Get application_id
+                    // Fetch the full payment record once — used for both the
+                    // application update and the GA4 server-side track.
                     $stmt = $this->getDb()->prepare("
-                        SELECT application_id FROM payments WHERE provider_transaction_id = ?
+                        SELECT application_id, amount, currency
+                        FROM payments
+                        WHERE provider_transaction_id = ?
                     ");
                     $stmt->execute([$reference]);
                     $payment = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -388,202 +366,18 @@ class PaymentController
                             WHERE id = ? AND payment_status != 'paid'
                         ");
                         $stmt->execute([$payment['application_id']]);
+
+                        // Fire GA4 purchase event server-side. Idempotency above
+                        // ensures this only fires on the *first* completion, so a
+                        // Paystack webhook retry won't double-record revenue.
+                        // GA4 also dedupes by transaction_id with the browser-side
+                        // event, so if both fire only one is counted.
+                        Ga4Service::trackPurchase(
+                            $reference,
+                            (float) $payment['amount'],
+                            $payment['currency'] ?? 'NGN'
+                        );
                     }
-                }
-            }
-
-            $response->getBody()->write(json_encode(['success' => true]));
-            return $response->withHeader('Content-Type', 'application/json');
-        } catch (\Exception $e) {
-            $response->getBody()->write(json_encode([
-                'success' => false,
-                'error' => $e->getMessage()
-            ]));
-            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
-        }
-    }
-
-    /**
-     * Create Stripe checkout session
-     * POST /api/payments/stripe/create-checkout
-     */
-    public function createStripeCheckout(Request $request, Response $response): Response
-    {
-        $data = $request->getParsedBody();
-        $applicationId = $data['application_id'] ?? null;
-        $successUrl = $data['success_url'] ?? null;
-        $cancelUrl = $data['cancel_url'] ?? null;
-
-        if (!$applicationId || !$successUrl || !$cancelUrl) {
-            $response->getBody()->write(json_encode([
-                'success' => false,
-                'error' => 'Missing required parameters'
-            ]));
-            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-        }
-
-        try {
-            // Get application details
-            $stmt = $this->getDb()->prepare("
-                SELECT * FROM applications WHERE id = ?
-            ");
-            $stmt->execute([$applicationId]);
-            $application = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-            if (!$application) {
-                $response->getBody()->write(json_encode([
-                    'success' => false,
-                    'error' => 'Application not found'
-                ]));
-                return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
-            }
-
-            // Validate payment amount server-side to prevent manipulation
-            $validation = $this->validatePaymentAmount($application);
-            if (!$validation['valid']) {
-                error_log("Stripe payment validation failed for application {$applicationId}: " . json_encode($validation));
-                $response->getBody()->write(json_encode([
-                    'success' => false,
-                    'error' => $validation['error'] ?? 'Payment validation failed'
-                ]));
-                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-            }
-
-            // Get validated amount and convert to USD for Stripe
-            $originalAmount = $validation['expected'];
-            $originalCurrency = $validation['currency'];
-
-            // Stripe charges in USD - convert if necessary
-            $stripeAmount = $this->convertCurrency($originalAmount, $originalCurrency, 'USD');
-            $stripeAmountCents = (int)($stripeAmount * 100);
-
-            // Create payment record (store in USD since that's what Stripe charges)
-            $transactionId = 'STRIPE-' . strtoupper(uniqid());
-            $stmt = $this->getDb()->prepare("
-                INSERT INTO payments (
-                    transaction_id, application_id, user_id, amount, currency,
-                    payment_method, status, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
-            ");
-            $stmt->execute([
-                $transactionId,
-                $applicationId,
-                $application['user_id'],
-                $stripeAmount,
-                'USD',
-                'stripe',
-                'pending'
-            ]);
-            $paymentId = $this->getDb()->lastInsertId();
-
-            // Initialize Stripe
-            Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
-
-            $session = StripeSession::create([
-                'payment_method_types' => ['card'],
-                'line_items' => [[
-                    'price_data' => [
-                        'currency' => 'usd',
-                        'product_data' => [
-                            'name' => 'Study Abroad Application - ' . $application['reference_number'],
-                            'description' => ($application['service_tier_name'] ?? 'Application Fee') .
-                                ' (Converted from ' . $originalCurrency . ' ' . number_format($originalAmount, 2) . ')',
-                        ],
-                        'unit_amount' => $stripeAmountCents,
-                    ],
-                    'quantity' => 1,
-                ]],
-                'mode' => 'payment',
-                'success_url' => $successUrl . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => $cancelUrl,
-                'metadata' => [
-                    'application_id' => $applicationId,
-                    'payment_id' => $paymentId,
-                    'transaction_id' => $transactionId,
-                ],
-            ]);
-
-            // Update payment with Stripe session info
-            $stmt = $this->getDb()->prepare("
-                UPDATE payments
-                SET stripe_session_id = ?,
-                    provider_transaction_id = ?,
-                    provider_metadata = ?
-                WHERE id = ?
-            ");
-            $stmt->execute([
-                $session->id,
-                $session->id,
-                json_encode($session),
-                $paymentId
-            ]);
-
-            $response->getBody()->write(json_encode([
-                'success' => true,
-                'data' => [
-                    'session_id' => $session->id,
-                    'url' => $session->url,
-                    'payment_id' => $paymentId
-                ]
-            ]));
-            return $response->withHeader('Content-Type', 'application/json');
-        } catch (\Exception $e) {
-            $response->getBody()->write(json_encode([
-                'success' => false,
-                'error' => $e->getMessage()
-            ]));
-            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
-        }
-    }
-
-    /**
-     * Stripe webhook handler
-     * POST /api/payments/stripe/webhook
-     */
-    public function stripeWebhook(Request $request, Response $response): Response
-    {
-        try {
-            $payload = $request->getBody()->getContents();
-            $sigHeader = $request->getHeaderLine('stripe-signature');
-
-            Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
-
-            $event = StripeWebhook::constructEvent(
-                $payload,
-                $sigHeader,
-                $_ENV['STRIPE_WEBHOOK_SECRET']
-            );
-
-            if ($event->type === 'checkout.session.completed') {
-                $session = $event->data->object;
-
-                // Update payment status
-                $stmt = $this->getDb()->prepare("
-                    UPDATE payments
-                    SET status = 'completed',
-                        paid_at = NOW(),
-                        stripe_payment_intent = ?
-                    WHERE stripe_session_id = ?
-                ");
-                $stmt->execute([
-                    $session->payment_intent,
-                    $session->id
-                ]);
-
-                // Update application
-                $stmt = $this->getDb()->prepare("
-                    SELECT application_id FROM payments WHERE stripe_session_id = ?
-                ");
-                $stmt->execute([$session->id]);
-                $payment = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-                if ($payment) {
-                    $stmt = $this->getDb()->prepare("
-                        UPDATE applications
-                        SET payment_status = 'paid', status = 'submitted', submitted_at = NOW()
-                        WHERE id = ?
-                    ");
-                    $stmt->execute([$payment['application_id']]);
                 }
             }
 
@@ -720,19 +514,17 @@ class PaymentController
 
     /**
      * Get user's saved payment methods
-     * Note: Payment methods are managed by Paystack/Stripe, not stored locally
+     * Note: Payment methods are managed by Paystack, not stored locally
      * This endpoint returns an empty array as we don't store card details
      *
      * GET /api/payments/methods
      */
     public function getPaymentMethods(Request $request, Response $response): Response
     {
-        // We don't store payment methods locally - Paystack/Stripe handle this
-        // Return empty array with explanation
         $response->getBody()->write(json_encode([
             'success' => true,
             'data' => [],
-            'message' => 'Payment methods are securely managed by our payment providers (Paystack/Stripe). Add a payment method during checkout.'
+            'message' => 'Payment methods are securely managed by Paystack. Add a payment method during checkout.'
         ]));
         return $response->withHeader('Content-Type', 'application/json');
     }

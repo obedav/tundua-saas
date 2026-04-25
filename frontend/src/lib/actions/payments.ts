@@ -3,7 +3,7 @@
 /**
  * Server Actions for Payments & Refunds
  *
- * Handles payment processing via Paystack, Stripe, and M-Pesa
+ * Handles payment processing via Paystack and M-Pesa
  * Also includes refund management
  */
 
@@ -92,46 +92,6 @@ export async function verifyPaystackAction(
     return { success: true, data: result }
   } catch (error) {
     console.error('Verify Paystack error:', error)
-    return { success: false, error: 'An unexpected error occurred' }
-  }
-}
-
-/**
- * Create Stripe checkout session
- */
-export async function createStripeCheckoutAction(
-  applicationId: number,
-  successUrl: string,
-  cancelUrl: string
-): Promise<ActionResponse<{ sessionId: string; url: string }>> {
-  try {
-    const token = await getAuthToken()
-    if (!token) {
-      return { success: false, error: 'Not authenticated' }
-    }
-
-    const response = await fetch(`${API_URL}/api/v1/payments/stripe/create-checkout`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        application_id: applicationId,
-        success_url: successUrl,
-        cancel_url: cancelUrl,
-      }),
-    })
-
-    if (!response.ok) {
-      const error = await response.json()
-      return { success: false, error: error.message || 'Failed to create checkout session' }
-    }
-
-    const result = await response.json()
-    return { success: true, data: result }
-  } catch (error) {
-    console.error('Create Stripe checkout error:', error)
     return { success: false, error: 'An unexpected error occurred' }
   }
 }

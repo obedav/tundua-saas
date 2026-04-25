@@ -5,6 +5,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle, Loader2, XCircle, ArrowRight } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
+import { trackPaymentCompleted } from "@/lib/analytics";
 
 type VerificationStatus = "verifying" | "success" | "failed";
 
@@ -45,8 +46,16 @@ export default function PaymentSuccessPage() {
       const response = await apiClient.verifyPaystack(reference);
 
       if (response.data.success) {
-        setPaymentDetails(response.data.data);
+        const details = response.data.data;
+        setPaymentDetails(details);
         setStatus("success");
+
+        // Fire GA4 purchase event. GA4 deduplicates by transaction_id, so a page
+        // refresh / Strict-Mode double-render will not double-count revenue.
+        const amount = parseFloat(details.amount);
+        if (!Number.isNaN(amount) && amount > 0) {
+          trackPaymentCompleted(reference, amount, "NGN");
+        }
       } else {
         throw new Error("Payment verification failed");
       }

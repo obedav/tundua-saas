@@ -27,7 +27,7 @@ interface Application {
   currency: 'NGN' | 'USD';
 }
 
-type PaymentMethod = "paystack" | "stripe";
+type PaymentMethod = "paystack";
 
 export default function PaymentPage() {
   const params = useParams();
@@ -56,11 +56,7 @@ export default function PaymentPage() {
       }
 
       setApplication(app);
-
-      // Auto-select payment method based on currency
-      // NGN = Paystack, USD = Stripe
-      const currency = app.currency || 'NGN';
-      setSelectedMethod(currency === 'NGN' ? 'paystack' : 'stripe');
+      setSelectedMethod('paystack');
     } catch (error: any) {
       console.error("Error fetching application:", error);
       toast.error("Failed to load application");
@@ -102,43 +98,12 @@ export default function PaymentPage() {
     }
   };
 
-  const handleStripePayment = async () => {
-    setProcessing(true);
-    try {
-      const successUrl = `${window.location.origin}/dashboard/applications/${params['id']}/payment/success?session_id={CHECKOUT_SESSION_ID}`;
-      const cancelUrl = `${window.location.origin}/dashboard/applications/${params['id']}/payment`;
-
-      const response = await apiClient.createStripeCheckout(
-        Number(params['id']),
-        successUrl,
-        cancelUrl
-      );
-
-      if (response.data.success) {
-        const { url } = response.data.data;
-        // Redirect to Stripe checkout
-        window.location.href = url;
-      } else {
-        throw new Error("Failed to initialize payment");
-      }
-    } catch (error: any) {
-      console.error("Stripe error:", error);
-      toast.error(error.response?.data?.error || "Failed to initialize Stripe payment");
-      setProcessing(false);
-    }
-  };
-
   const handlePayment = () => {
     if (!selectedMethod) {
       toast.error("Please select a payment method");
       return;
     }
-
-    if (selectedMethod === "paystack") {
-      handlePaystackPayment();
-    } else if (selectedMethod === "stripe") {
-      handleStripePayment();
-    }
+    handlePaystackPayment();
   };
 
   if (loading) {
@@ -222,47 +187,6 @@ export default function PaymentPage() {
                 </div>
               </div>
 
-              {/* Stripe Option */}
-              <div
-                onClick={() => !processing && setSelectedMethod("stripe")}
-                className={`relative border-2 rounded-lg p-4 cursor-pointer transition-all ${
-                  selectedMethod === "stripe"
-                    ? "border-primary-600 bg-primary-50 dark:bg-primary-900/20"
-                    : "border-gray-200 dark:border-gray-700 hover:border-gray-300"
-                } ${processing ? "opacity-50 cursor-not-allowed" : ""}`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 mt-1">
-                    <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                        selectedMethod === "stripe"
-                          ? "border-primary-600 bg-primary-600"
-                          : "border-gray-300 dark:border-gray-600"
-                      }`}
-                    >
-                      {selectedMethod === "stripe" && (
-                        <Check className="h-3 w-3 text-white" />
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <CreditCard className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-                      <h3 className="font-semibold text-gray-900 dark:text-white">Stripe</h3>
-                      <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">
-                        Global
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      Pay securely with credit/debit card. Accepted worldwide.
-                    </p>
-                    <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
-                      <Check className="h-3 w-3" />
-                      <span>Secure payment via Stripe</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 

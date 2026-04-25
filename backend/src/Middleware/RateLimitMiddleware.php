@@ -44,7 +44,6 @@ class RateLimitMiddleware
             '/api/documents/upload' => ['max' => 20, 'window' => 60],
             '/api/refunds' => ['max' => 5, 'window' => 60],
             '/api/payments/paystack/initialize' => ['max' => 10, 'window' => 15],
-            '/api/payments/stripe/create-checkout' => ['max' => 10, 'window' => 15],
             // Public lead form — protect against form-spam bots while staying
             // generous enough for a real user who retries once or twice.
             '/api/v1/leads' => ['max' => 5, 'window' => 15],

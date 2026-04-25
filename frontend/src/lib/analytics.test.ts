@@ -112,14 +112,14 @@ describe('Analytics Helper', () => {
     it('should track payment initiated event', () => {
       const consoleSpy = vi.spyOn(console, 'log');
 
-      analytics.trackPaymentInitiated(789, 299, 'stripe');
+      analytics.trackPaymentInitiated(789, 299, 'paystack');
 
       expect(consoleSpy).toHaveBeenCalledWith(
         '[Analytics - Dev]',
         expect.objectContaining({
           action: 'payment_initiated',
           category: 'Payment',
-          label: 'stripe',
+          label: 'paystack',
           value: 299,
         })
       );

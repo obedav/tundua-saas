@@ -85,14 +85,8 @@ export interface PaymentTransaction {
   amount: number;
   currency: string;
   status: 'pending' | 'completed' | 'failed' | 'refunded';
-  payment_method: 'paystack' | 'stripe' | 'mpesa';
+  payment_method: 'paystack' | 'mpesa';
   created_at: string;
-}
-
-export interface CreateStripeCheckoutRequest {
-  application_id: number;
-  success_url: string;
-  cancel_url: string;
 }
 
 export interface InitiateMpesaRequest {

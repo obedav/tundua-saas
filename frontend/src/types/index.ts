@@ -139,7 +139,7 @@ export interface Payment {
   user_id: number;
   amount: number;
   currency: string;
-  payment_method: "stripe" | "mpesa" | "paypal" | "bank_transfer" | "other";
+  payment_method: "paystack" | "mpesa" | "paypal" | "bank_transfer" | "other";
   provider_transaction_id?: string;
   status: "pending" | "processing" | "completed" | "failed" | "cancelled" | "refunded";
   receipt_url?: string;

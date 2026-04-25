@@ -168,14 +168,6 @@ class ApiClient {
     return this.client.get(`/api/v1/payments/paystack/verify/${reference}`);
   }
 
-  async createStripeCheckout(applicationId: number, successUrl: string, cancelUrl: string) {
-    return this.client.post("/api/v1/payments/stripe/create-checkout", {
-      application_id: applicationId,
-      success_url: successUrl,
-      cancel_url: cancelUrl,
-    });
-  }
-
   async initiateMpesaPayment(applicationId: number, phoneNumber: string) {
     return this.client.post("/api/v1/payments/mpesa/initiate", {
       application_id: applicationId,

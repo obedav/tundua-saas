@@ -28,7 +28,6 @@ class CsrfMiddleware
         '/api/v1/auth/refresh',
         '/api/v1/auth/google',
         '/api/v1/payments/paystack/webhook',
-        '/api/v1/payments/stripe/webhook',
         // Public lead capture — unauthenticated form, no session to hijack.
         // Spam is handled by RateLimitMiddleware (5 req / 15 min per IP) +
         // input validation in LeadController.

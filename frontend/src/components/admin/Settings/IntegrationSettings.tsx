@@ -4,7 +4,7 @@ import { Plug, CheckCircle, XCircle } from "lucide-react";
 
 export default function IntegrationSettings() {
   const integrations = [
-    { name: "Stripe", status: "connected", description: "Payment processing" },
+    { name: "Paystack", status: "connected", description: "Payment processing (NGN, GHS, ZAR, KES)" },
     { name: "M-Pesa", status: "disconnected", description: "Mobile money payments (Kenya)" },
     { name: "Email (SMTP)", status: "connected", description: "Email notifications" },
     { name: "Twilio", status: "disconnected", description: "SMS & WhatsApp notifications" },

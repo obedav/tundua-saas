@@ -92,8 +92,6 @@ function registerRoutes($app, array $controllers)
                     'POST /api/v1/payments/paystack/initialize' => 'Initialize Paystack payment',
                     'GET /api/v1/payments/paystack/verify/{reference}' => 'Verify Paystack payment',
                     'POST /api/v1/payments/paystack/webhook' => 'Paystack webhook',
-                    'POST /api/v1/payments/stripe/create-checkout' => 'Create Stripe checkout',
-                    'POST /api/v1/payments/stripe/webhook' => 'Stripe webhook',
                     'GET /api/v1/payments/{id}' => 'Get payment details',
                     'GET /api/v1/payments/history' => 'Get payment history with summary'
                 ],
@@ -319,12 +317,6 @@ function registerRoutes($app, array $controllers)
             $group->post('/initialize', [$paymentController, 'initializePaystack'])->add(new AuthMiddleware());
             $group->get('/verify/{reference}', [$paymentController, 'verifyPaystack'])->add(new AuthMiddleware());
             $group->post('/webhook', [$paymentController, 'paystackWebhook']);
-        });
-
-        // Stripe Routes (Protected + Webhooks)
-        $v1->group('/payments/stripe', function ($group) use ($paymentController) {
-            $group->post('/create-checkout', [$paymentController, 'createStripeCheckout'])->add(new AuthMiddleware());
-            $group->post('/webhook', [$paymentController, 'stripeWebhook']);
         });
 
         // General Payment Routes (Protected)
