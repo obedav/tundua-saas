@@ -14,9 +14,6 @@ const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
 const nextConfig = {
   reactStrictMode: true,
   // swcMinify is now default in Next.js 15, no need to specify
-eslint: {
-    ignoreDuringBuilds: true,
-  },
 
   // Turbopack - stable in Next.js 15, enabled for faster dev builds
   // Note: Turbopack is automatically used with `next dev --turbopack`
@@ -155,6 +152,18 @@ eslint: {
       { source: '/services/visa-application.html', destination: '/apply', permanent: true },
       { source: '/services/career-counselling.html', destination: '/apply', permanent: true },
       { source: '/services/:slug*.html', destination: '/apply', permanent: true },
+      // Blog slug typo fixes — CMS slugs were saved with errors.
+      // Keep these permanently so any external links or cached Google URLs resolve correctly.
+      {
+        source: '/blog/blogstudy-visa-canada-from-nigeria',
+        destination: '/blog/study-visa-canada-from-nigeria',
+        permanent: true,
+      },
+      {
+        source: '/blog/anada-universities-low-tuition-deposit-international-students-2026',
+        destination: '/blog/canada-universities-low-tuition-deposit-international-students-2026',
+        permanent: true,
+      },
     ];
   },
 

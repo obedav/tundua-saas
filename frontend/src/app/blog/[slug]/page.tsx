@@ -62,6 +62,7 @@ interface Article {
   helpful_count: number;
   not_helpful_count: number;
   metadata?: Record<string, unknown> | null;
+  published_at?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -116,7 +117,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title: article.title,
         description: article.excerpt || article.title,
         type: "article",
-        publishedTime: article.created_at,
+        publishedTime: article.published_at ?? article.created_at,
         modifiedTime: article.updated_at,
         ...(ogImages ? { images: ogImages } : {}),
       },
@@ -184,7 +185,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
           content: article.content,
           category: article.category,
           updated_at: article.updated_at,
-          published_at: article.created_at,
+          published_at: article.published_at ?? article.created_at,
           featured_image: article.featured_image,
           api_url: process.env['NEXT_PUBLIC_API_URL'] || '',
         }}

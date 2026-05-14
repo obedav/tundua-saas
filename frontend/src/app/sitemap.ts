@@ -15,30 +15,52 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
+      lastModified: new Date('2026-05-14'),
+      changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: new Date('2026-05-14'),
       changeFrequency: 'daily',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/apply`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
+      lastModified: new Date('2026-05-14'),
+      changeFrequency: 'monthly',
       priority: 0.9,
     },
-    ...['about', 'contact', 'terms', 'privacy'].map(
-      (route) => ({
-        url: `${baseUrl}/${route}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly' as const,
-        priority: 0.8,
-      })
-    ),
+    {
+      url: `${baseUrl}/pricing`,
+      lastModified: new Date('2026-05-14'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: new Date('2026-05-14'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date('2026-05-14'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: new Date('2026-05-14'),
+      changeFrequency: 'yearly',
+      priority: 0.4,
+    },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: new Date('2026-05-14'),
+      changeFrequency: 'yearly',
+      priority: 0.4,
+    },
   ];
 
   // Fetch published blog slugs.

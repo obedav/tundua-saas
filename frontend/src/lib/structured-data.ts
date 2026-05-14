@@ -32,13 +32,13 @@ export function getOrganizationSchema(): Organization {
       addressLocality: 'Ogba',
       addressRegion: 'Lagos',
       addressCountry: 'NG',
-    } as any,
+    },
     sameAs: [
       'https://x.com/tundua',
       'https://www.instagram.com/tundua',
       'https://www.linkedin.com/company/tundua',
     ],
-  } as Organization;
+  } as unknown as Organization;
 }
 
 /**
@@ -59,11 +59,11 @@ export function getWebsiteSchema(): WebSite {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: `${APP_URL}/blog?q={search_term_string}`,
+        urlTemplate: `${APP_URL}/blog?search={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
-    } as any,
-  };
+    },
+  } as unknown as WebSite;
 }
 
 /**
@@ -176,13 +176,13 @@ export function getBlogPostSchema(article: {
         '@type': 'ImageObject',
         url: `${APP_URL}/logo.png`,
       },
-    } as any,
+    },
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': `${APP_URL}/blog/${article.slug}`,
     },
     ...(article.category ? { articleSection: article.category } : {}),
-  } as BlogPosting;
+  } as unknown as BlogPosting;
 }
 
 /**

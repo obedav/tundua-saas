@@ -7,6 +7,7 @@ import { getKnowledgeBaseArticles, getKnowledgeBaseCategories, getFeaturedArticl
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
 import { BreadcrumbStructuredData } from "@/components/StructuredData";
+import { BlogEmailCapture } from "@/components/blog/BlogEmailCapture";
 
 export const metadata: Metadata = {
   title: "Study Abroad Blog - Guides, Tips & Rankings (2026)",
@@ -205,7 +206,7 @@ export default async function BlogPage({
                     <div className="relative aspect-video">
                       <Image
                         src={`${process.env['NEXT_PUBLIC_API_URL'] || ''}${article.featured_image}`}
-                        alt={article.title}
+                        alt={`Featured image for: ${article.title}`}
                         fill
                         className="object-cover"
                       />
@@ -241,6 +242,8 @@ export default async function BlogPage({
             </div>
           </section>
         )}
+
+        <BlogEmailCapture />
 
         {/* All Articles */}
         <section>
@@ -300,7 +303,7 @@ export default async function BlogPage({
                       <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
                         <Image
                           src={`${process.env['NEXT_PUBLIC_API_URL'] || ''}${article.featured_image}`}
-                          alt={article.title}
+                          alt={`${article.title} - article thumbnail`}
                           fill
                           className="object-cover"
                         />

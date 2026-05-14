@@ -63,22 +63,22 @@ export default function NotFound() {
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Link
-              href="/dashboard"
+              href="/blog"
               className="p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-gray-700 font-medium"
             >
-              Dashboard
+              Blog
             </Link>
             <Link
-              href="/dashboard/applications"
+              href="/apply"
               className="p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-gray-700 font-medium"
             >
-              Applications
+              Apply Now
             </Link>
             <Link
-              href="/dashboard/support"
+              href="/pricing"
               className="p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-gray-700 font-medium"
             >
-              Support
+              Pricing
             </Link>
           </div>
         </div>
@@ -86,7 +86,7 @@ export default function NotFound() {
         {/* Support Text */}
         <p className="text-sm text-gray-500 mt-8">
           Still can&apos;t find what you&apos;re looking for?{' '}
-          <Link href="/dashboard/support" className="text-blue-600 hover:underline font-medium">
+          <Link href="/contact" className="text-blue-600 hover:underline font-medium">
             Contact our support team
           </Link>
         </p>

@@ -56,8 +56,10 @@ function sendToGoogleAnalytics(metric: Metric) {
 
   const rating = getRating(metric);
 
-  // Send to Google Analytics as custom event
-  window.gtag('event', metric.name, {
+  // Send as a single event so all vitals appear under one event name in GA4
+  // instead of polluting the event stream with 6 separate event types.
+  window.gtag('event', 'web_vitals', {
+    metric_name: metric.name,
     value: Math.round(
       metric.name === 'CLS' ? metric.value * 1000 : metric.value
     ),
@@ -65,7 +67,6 @@ function sendToGoogleAnalytics(metric: Metric) {
     metric_value: metric.value,
     metric_delta: metric.delta,
     metric_rating: rating,
-    // Custom params
     event_category: 'Web Vitals',
     event_label: metric.id,
     non_interaction: true,

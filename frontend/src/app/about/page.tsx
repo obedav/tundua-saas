@@ -16,6 +16,9 @@ import PublicPageBackground from "@/components/PublicPageBackground";
 export const metadata: Metadata = {
   title: "About Us | Tundua",
   description: "Learn about Tundua's mission to make studying abroad accessible to every student. Our story, values, and the team behind the platform.",
+  alternates: {
+    canonical: `${process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com'}/about`,
+  },
 };
 
 export default function AboutPage() {
@@ -43,8 +46,8 @@ export default function AboutPage() {
   ];
 
   const stats = [
-    { value: "10,000+", label: "Students Helped" },
-    { value: "50+", label: "Partner Universities" },
+    { value: "500+", label: "Students Helped" },
+    { value: "100+", label: "Partner Universities" },
     { value: "20+", label: "Countries Covered" },
     { value: "95%", label: "Success Rate" },
   ];
