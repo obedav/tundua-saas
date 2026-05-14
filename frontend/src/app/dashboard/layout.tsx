@@ -8,7 +8,7 @@ import {
   Home, FileText, Plus, User, LogOut, Menu, X, Settings, Shield,
   FolderOpen, CreditCard, Gift, BookOpen, HelpCircle,
   Compass, Globe, ChevronLeft, ChevronRight, Search, ChevronDown,
-  Moon, Sun, Monitor, FileEdit, GraduationCap, Briefcase
+  Moon, Sun, Monitor, FileEdit, GraduationCap, Briefcase, Calendar
 } from "lucide-react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/hooks/useAuth";
@@ -25,6 +25,7 @@ const navigationGroups = [
       { name: "Dashboard", href: "/dashboard", icon: Home, badgeKey: null, description: "Overview and statistics" },
       { name: "Applications", href: "/dashboard/applications", icon: FileText, badgeKey: "applications", description: "Manage your applications" },
       { name: "Documents", href: "/dashboard/documents", icon: FolderOpen, badgeKey: "documents", description: "Upload and manage documents" },
+      { name: "Deadlines", href: "/dashboard/deadlines", icon: Calendar, badgeKey: null, description: "University intake deadlines" },
     ]
   },
   {

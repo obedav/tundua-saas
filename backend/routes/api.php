@@ -41,6 +41,7 @@ function registerRoutes($app, array $controllers)
     $partnerController = $controllers['partner'];
     $twoFactorController = $controllers['twoFactor'];
     $leadController = $controllers['lead'];
+    $deadlineController = $controllers['deadline'];
 
     // ========================================================================
     // API ROOT (unversioned)
@@ -199,7 +200,7 @@ function registerRoutes($app, array $controllers)
         $dashboardController, $addonOrderController, $referralController,
         $knowledgeBaseController, $universityController, $aiUsageController,
         $pusherController, $partnerController, $twoFactorController,
-        $leadController
+        $leadController, $deadlineController
     ) {
 
         // ====================================================================
@@ -526,6 +527,20 @@ function registerRoutes($app, array $controllers)
             $group->get('', [$partnerController, 'getCommissions']);
             $group->post('', [$partnerController, 'createCommission']);
             $group->patch('/{id}', [$partnerController, 'updateCommission']);
+        })->add(new AdminMiddleware())->add(new AuthMiddleware());
+
+        // ====================================================================
+        // DEADLINES ROUTES
+        // ====================================================================
+
+        // Public: students browsing upcoming intake deadlines
+        $v1->get('/deadlines', [$deadlineController, 'index']);
+
+        // Admin CRUD
+        $v1->group('/admin/deadlines', function ($group) use ($deadlineController) {
+            $group->post('', [$deadlineController, 'store']);
+            $group->put('/{id}', [$deadlineController, 'update']);
+            $group->delete('/{id}', [$deadlineController, 'destroy']);
         })->add(new AdminMiddleware())->add(new AuthMiddleware());
     });
 

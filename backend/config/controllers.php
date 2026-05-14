@@ -29,6 +29,7 @@ use Tundua\Controllers\PusherController;
 use Tundua\Controllers\PartnerController;
 use Tundua\Controllers\TwoFactorController;
 use Tundua\Controllers\LeadController;
+use Tundua\Controllers\DeadlineController;
 
 // Initialize Google OAuth Controller only if the package is installed
 $googleOAuthController = null;
@@ -63,4 +64,5 @@ return [
     'partner'       => new PartnerController(),
     'twoFactor'     => new TwoFactorController(),
     'lead'          => new LeadController(),
+    'deadline'      => new DeadlineController(),
 ];

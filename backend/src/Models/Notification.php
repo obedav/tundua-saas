@@ -196,6 +196,11 @@ class Notification extends Model
                 'type' => 'documents_requested',
                 'title' => 'Documents Required',
                 'message' => "Additional documents are required for application {$referenceNumber}."
+            ],
+            'offer_received' => [
+                'type' => 'offer_received',
+                'title' => 'University Offer Received!',
+                'message' => "Great news! Application {$referenceNumber} has received a university offer. Log in to view next steps."
             ]
         ];
 

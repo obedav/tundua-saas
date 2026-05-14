@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { getApplication } from "@/lib/actions/applications";
 import DeleteApplicationButton from "./DeleteApplicationButton";
+import OfferNextSteps from "@/components/dashboard/Applications/OfferNextSteps";
 
 interface Application {
   id: number;
@@ -82,6 +83,7 @@ export default async function ApplicationDetailPage({
       payment_pending: { color: "bg-yellow-100 text-yellow-700", icon: AlertCircle, text: "Payment Pending" },
       under_review: { color: "bg-yellow-100 text-yellow-700", icon: AlertCircle, text: "Under Review" },
       approved: { color: "bg-green-100 text-green-700", icon: CheckCircle, text: "Approved" },
+      offer_received: { color: "bg-emerald-100 text-emerald-700", icon: CheckCircle, text: "Offer Received" },
       rejected: { color: "bg-red-100 text-red-700", icon: XCircle, text: "Rejected" },
       completed: { color: "bg-green-100 text-green-700", icon: CheckCircle, text: "Completed" },
       cancelled: { color: "bg-gray-100 text-gray-700", icon: XCircle, text: "Cancelled" },
@@ -259,6 +261,11 @@ export default async function ApplicationDetailPage({
               </div>
             </div>
           </div>
+
+          {/* Post-Offer Next Steps */}
+          {application.status === "offer_received" && (
+            <OfferNextSteps universityName={application.universities?.[0]} />
+          )}
 
           {/* Add-On Services */}
           {application.addon_services && application.addon_services.length > 0 && (

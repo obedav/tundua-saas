@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { School, Plus, Edit, Trash2, Search, Globe, X } from "lucide-react";
+import { School, Plus, Edit, Trash2, Search, Globe, X, Award } from "lucide-react";
 import { toast } from "sonner";
 
 interface University {
@@ -11,15 +11,21 @@ interface University {
   city: string;
   ranking: number;
   website: string;
+  is_edvoy_partner: boolean;
 }
 
 export default function UniversityDirectory() {
   const [universities, setUniversities] = useState<University[]>([
-    { id: 1, name: "Harvard University", country: "United States", city: "Cambridge", ranking: 1, website: "https://harvard.edu" },
-    { id: 2, name: "Stanford University", country: "United States", city: "Stanford", ranking: 2, website: "https://stanford.edu" },
-    { id: 3, name: "Oxford University", country: "United Kingdom", city: "Oxford", ranking: 3, website: "https://ox.ac.uk" },
-    { id: 4, name: "Cambridge University", country: "United Kingdom", city: "Cambridge", ranking: 4, website: "https://cam.ac.uk" },
-    { id: 5, name: "University of Toronto", country: "Canada", city: "Toronto", ranking: 18, website: "https://utoronto.ca" },
+    { id: 1, name: "Harvard University", country: "United States", city: "Cambridge", ranking: 1, website: "https://harvard.edu", is_edvoy_partner: false },
+    { id: 2, name: "Stanford University", country: "United States", city: "Stanford", ranking: 2, website: "https://stanford.edu", is_edvoy_partner: false },
+    { id: 3, name: "Oxford University", country: "United Kingdom", city: "Oxford", ranking: 3, website: "https://ox.ac.uk", is_edvoy_partner: false },
+    { id: 4, name: "Cambridge University", country: "United Kingdom", city: "Cambridge", ranking: 4, website: "https://cam.ac.uk", is_edvoy_partner: false },
+    { id: 5, name: "University of Toronto", country: "Canada", city: "Toronto", ranking: 18, website: "https://utoronto.ca", is_edvoy_partner: false },
+    { id: 6, name: "Sheffield Hallam University", country: "United Kingdom", city: "Sheffield", ranking: 801, website: "https://shu.ac.uk", is_edvoy_partner: true },
+    { id: 7, name: "London Metropolitan University", country: "United Kingdom", city: "London", ranking: 1001, website: "https://londonmet.ac.uk", is_edvoy_partner: true },
+    { id: 8, name: "University of Wolverhampton", country: "United Kingdom", city: "Wolverhampton", ranking: 901, website: "https://wlv.ac.uk", is_edvoy_partner: true },
+    { id: 9, name: "University of East London", country: "United Kingdom", city: "London", ranking: 851, website: "https://uel.ac.uk", is_edvoy_partner: true },
+    { id: 10, name: "Bangor University", country: "United Kingdom", city: "Bangor", ranking: 601, website: "https://bangor.ac.uk", is_edvoy_partner: true },
   ]);
   const [showModal, setShowModal] = useState(false);
   const [editingUniversity, setEditingUniversity] = useState<University | null>(null);
@@ -30,6 +36,7 @@ export default function UniversityDirectory() {
     city: "",
     ranking: 0,
     website: "",
+    is_edvoy_partner: false,
   });
 
   const filteredUniversities = universities.filter(
@@ -41,7 +48,7 @@ export default function UniversityDirectory() {
 
   const handleAdd = () => {
     setEditingUniversity(null);
-    setFormData({ name: "", country: "", city: "", ranking: 0, website: "" });
+    setFormData({ name: "", country: "", city: "", ranking: 0, website: "", is_edvoy_partner: false });
     setShowModal(true);
   };
 
@@ -142,6 +149,12 @@ export default function UniversityDirectory() {
                         </div>
                         <div>
                           <p className="text-sm font-medium text-gray-900">{uni.name}</p>
+                          {uni.is_edvoy_partner && (
+                            <span className="inline-flex items-center gap-1 text-xs text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-full mt-0.5">
+                              <Award className="h-3 w-3" />
+                              Edvoy Partner
+                            </span>
+                          )}
                         </div>
                       </div>
                     </td>
@@ -258,6 +271,20 @@ export default function UniversityDirectory() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                   placeholder="https://..."
                 />
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="is_edvoy_partner"
+                  checked={formData.is_edvoy_partner}
+                  onChange={(e) => setFormData({ ...formData, is_edvoy_partner: e.target.checked })}
+                  className="w-4 h-4 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                />
+                <label htmlFor="is_edvoy_partner" className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                  <Award className="h-4 w-4 text-amber-600" />
+                  Edvoy Partner University
+                </label>
               </div>
 
               <div className="flex gap-3 pt-4">

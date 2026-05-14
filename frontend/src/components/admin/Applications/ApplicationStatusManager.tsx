@@ -110,6 +110,23 @@ export default function ApplicationStatusManager({
     }
 
     if (currentStatus === "approved") {
+      statuses.push(
+        {
+          value: "offer_received",
+          label: "Mark Offer Received",
+          color: "bg-emerald-500 hover:bg-emerald-600",
+          icon: CheckCircle,
+        },
+        {
+          value: "completed",
+          label: "Mark as Completed",
+          color: "bg-green-600 hover:bg-green-700",
+          icon: CheckCircle,
+        }
+      );
+    }
+
+    if (currentStatus === "offer_received") {
       statuses.push({
         value: "completed",
         label: "Mark as Completed",

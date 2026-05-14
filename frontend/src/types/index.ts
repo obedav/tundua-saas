@@ -103,7 +103,7 @@ export interface Application {
   total_amount: number;
   currency: string;
   payment_status: "pending" | "paid" | "failed" | "refunded" | "partially_refunded";
-  status: "draft" | "submitted" | "payment_pending" | "under_review" | "documents_requested" | "in_progress" | "approved" | "rejected" | "completed" | "cancelled";
+  status: "draft" | "submitted" | "payment_pending" | "under_review" | "documents_requested" | "in_progress" | "approved" | "offer_received" | "rejected" | "completed" | "cancelled";
   current_step: number;
   completion_percentage: number;
   admin_notes?: string;
@@ -144,6 +144,19 @@ export interface Payment {
   status: "pending" | "processing" | "completed" | "failed" | "cancelled" | "refunded";
   receipt_url?: string;
   paid_at?: string;
+  created_at: string;
+}
+
+export interface Deadline {
+  id: number;
+  university_name: string;
+  country: string;
+  intake: string;
+  intake_year: number;
+  deadline_date: string;
+  program_type: "undergraduate" | "postgraduate" | "all";
+  notes?: string;
+  is_active: boolean;
   created_at: string;
 }
 

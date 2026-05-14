@@ -403,6 +403,9 @@ class Application extends Model
                 case 'approved':
                     $application->approved_at = \Carbon\Carbon::now();
                     break;
+                case 'offer_received':
+                    $application->offer_received_at = \Carbon\Carbon::now();
+                    break;
                 case 'completed':
                     $application->completed_at = \Carbon\Carbon::now();
                     break;

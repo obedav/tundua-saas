@@ -31,6 +31,7 @@ import {
   Moon,
   Sun,
   Monitor,
+  Calendar,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -112,6 +113,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { name: "Pricing Management", href: "/dashboard/admin/financial/pricing", icon: DollarSign },
         { name: "Refund Requests", href: "/dashboard/admin/financial/refunds", icon: DollarSign },
         { name: "Revenue Reports", href: "/dashboard/admin/financial/reports", icon: BarChart3 },
+        { name: "Edvoy Commissions", href: "/dashboard/admin/financial/edvoy", icon: TrendingUp },
       ],
     },
     {
@@ -143,6 +145,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { name: "Knowledge Base", href: "/dashboard/admin/content/knowledge-base", icon: BookOpen },
         { name: "Email Templates", href: "/dashboard/admin/content/email-templates", icon: Mail },
         { name: "University Directory", href: "/dashboard/admin/content/universities", icon: School },
+        { name: "Deadlines", href: "/dashboard/admin/content/deadlines", icon: Calendar },
       ],
     },
     {
