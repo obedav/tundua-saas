@@ -111,6 +111,41 @@ class DocumentController
                 return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
             }
 
+            // Validate actual file content via MIME type — extension alone can be spoofed
+            $allowedMimeTypes = [
+                'application/pdf'      => ['pdf'],
+                'image/jpeg'           => ['jpg', 'jpeg'],
+                'image/png'            => ['png'],
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => ['docx'],
+                'application/msword'   => ['doc'],
+            ];
+
+            $stream = $uploadedFile->getStream();
+            $chunk  = $stream->read(8192);
+            if ($stream->isSeekable()) {
+                $stream->rewind();
+            }
+
+            $finfo        = new \finfo(FILEINFO_MIME_TYPE);
+            $detectedMime = $finfo->buffer($chunk);
+
+            if (!array_key_exists($detectedMime, $allowedMimeTypes)) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'File content does not match an allowed type'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            // Confirm extension matches the detected MIME type (catches renamed files)
+            if (!in_array($fileExtension, $allowedMimeTypes[$detectedMime], true)) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'File extension does not match file content'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
             // Generate unique filename
             $filename = uniqid('doc_') . '_' . time() . '.' . $fileExtension;
             $filePath = $this->storagePath . '/' . $filename;
@@ -127,7 +162,7 @@ class DocumentController
                 'original_filename' => $originalFilename,
                 'file_path' => $filename, // Store relative path
                 'file_size' => $fileSize,
-                'mime_type' => $uploadedFile->getClientMediaType(),
+                'mime_type' => $detectedMime, // Server-detected, not client-provided
                 'file_extension' => $fileExtension,
                 'status' => Document::STATUS_PENDING,
             ]);

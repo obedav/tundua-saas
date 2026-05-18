@@ -408,6 +408,48 @@ class KnowledgeBaseController
     }
 
     /**
+     * Validate a remote URL for safe outbound fetch (SSRF prevention).
+     * Returns ['valid' => true, 'ip' => ..., 'host' => ..., 'port' => ...]
+     * or      ['valid' => false, 'error' => '...']
+     */
+    private function validateRemoteUrl(string $url): array
+    {
+        $parsed = parse_url($url);
+        $scheme = strtolower($parsed['scheme'] ?? '');
+        $host   = $parsed['host'] ?? '';
+
+        if (!in_array($scheme, ['http', 'https'], true) || $host === '') {
+            return ['valid' => false, 'error' => 'Invalid URL: only http and https are allowed'];
+        }
+
+        $port = $parsed['port'] ?? ($scheme === 'https' ? 443 : 80);
+
+        // Resolve to IPv4 — gethostbyname returns the input unchanged on failure
+        $ip = gethostbyname($host);
+        if ($ip === $host && !filter_var($host, FILTER_VALIDATE_IP)) {
+            return ['valid' => false, 'error' => 'Could not resolve host'];
+        }
+
+        // Block loopback and private/reserved ranges
+        $isPublicIp = filter_var(
+            $ip,
+            FILTER_VALIDATE_IP,
+            FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+        );
+
+        if ($isPublicIp === false) {
+            return ['valid' => false, 'error' => 'Requests to private or reserved IP addresses are not allowed'];
+        }
+
+        // Explicit localhost guard (covers hostnames that resolve to loopback)
+        if (in_array($ip, ['127.0.0.1', '0.0.0.0'], true) || strtolower($host) === 'localhost') {
+            return ['valid' => false, 'error' => 'Requests to localhost are not allowed'];
+        }
+
+        return ['valid' => true, 'ip' => $ip, 'host' => $host, 'port' => $port];
+    }
+
+    /**
      * Ensure slug is unique
      */
     private function ensureUniqueSlug(string $slug, ?int $excludeId = null): string
@@ -458,13 +500,27 @@ class KnowledgeBaseController
                 return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
             }
 
+            // Validate URL and resolve hostname before making the request (SSRF prevention)
+            $urlValidation = $this->validateRemoteUrl($imageUrl);
+            if (!$urlValidation['valid']) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => $urlValidation['error']
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
             $ch = curl_init($imageUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false); // No redirects — prevents redirect-based SSRF
             curl_setopt($ch, CURLOPT_TIMEOUT, 30);
             curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+            curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+            // Pin the pre-resolved IP to prevent DNS rebinding between our check and curl's request
+            curl_setopt($ch, CURLOPT_RESOLVE, [
+                "{$urlValidation['host']}:{$urlValidation['port']}:{$urlValidation['ip']}"
+            ]);
             $imageContent = curl_exec($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             $curlError = curl_error($ch);

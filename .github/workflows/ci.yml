@@ -8,6 +8,27 @@ on:
 
 jobs:
   # ============================================
+  # SECRETS SCAN — runs first, fast gate
+  # ============================================
+  secrets-scan:
+    name: Secrets Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan for secrets with TruffleHog
+        uses: trufflesecurity/trufflehog@v3
+        with:
+          path: ./
+          base: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          head: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          extra_args: --only-verified
+
+  # ============================================
   # BACKEND TESTS & LINTING
   # ============================================
   backend-tests:
@@ -85,15 +106,18 @@ jobs:
           DB_DATABASE: tundua_test
           DB_USERNAME: root
           DB_PASSWORD: root
-        continue-on-error: true
+
+      - name: Check PHP Syntax
+        run: find src -name "*.php" -print0 | xargs -0 -n1 php -l
+        working-directory: ./backend
 
       - name: Run PHPUnit Tests
         run: |
           if [ -f "vendor/bin/phpunit" ]; then
             vendor/bin/phpunit --configuration phpunit.xml --coverage-text --coverage-clover=coverage.xml
           else
-            echo "PHPUnit not configured yet - skipping tests"
-            exit 0
+            echo "PHPUnit not found — ensure it is listed in composer.json"
+            exit 1
           fi
         working-directory: ./backend
         env:
@@ -101,7 +125,6 @@ jobs:
           DB_DATABASE: tundua_test
           DB_USERNAME: root
           DB_PASSWORD: root
-        continue-on-error: true
 
       - name: Upload Backend Coverage
         uses: codecov/codecov-action@v3
@@ -136,19 +159,14 @@ jobs:
       - name: Run ESLint
         run: npm run lint
         working-directory: ./frontend
-        continue-on-error: true
 
       - name: Run Frontend Tests
-        run: |
-          echo "Running frontend tests with coverage..."
-          npm run test:ci || echo "⚠️  Some tests failed - review recommended"
-          echo "✅ Test run completed"
+        run: npm run test:ci
         working-directory: ./frontend
         env:
           CI: true
           NEXT_PUBLIC_API_URL: http://localhost:8000/api
           NEXT_PUBLIC_APP_URL: http://localhost:3000
-        continue-on-error: true
 
       - name: Upload Frontend Coverage
         uses: codecov/codecov-action@v3
@@ -159,14 +177,10 @@ jobs:
         continue-on-error: true
 
       - name: Build Frontend
-        run: |
-          echo "Building Next.js production bundle..."
-          npm run build || echo "⚠️  Build had warnings - review recommended"
-          echo "✅ Build completed"
+        run: npm run build
         working-directory: ./frontend
         env:
           NEXT_PUBLIC_API_URL: http://localhost:8000/api
-        continue-on-error: true
 
   # ============================================
   # CODE QUALITY CHECKS
@@ -189,18 +203,15 @@ jobs:
         run: composer install --prefer-dist --no-progress
         working-directory: ./backend
 
-      - name: Check PHP Syntax
-        run: find src -name "*.php" -print0 | xargs -0 -n1 php -l
-        working-directory: ./backend
-
       - name: PHP CodeSniffer (PSR-12)
         run: |
           if [ -f "vendor/bin/phpcs" ]; then
-            vendor/bin/phpcs --standard=PSR12 src/ || true
+            vendor/bin/phpcs --standard=PSR12 src/
           else
             echo "phpcs not installed, skipping..."
           fi
         working-directory: ./backend
+        # PSR-12 style — warning only until backlog is cleared
         continue-on-error: true
 
   # ============================================
@@ -224,12 +235,8 @@ jobs:
         working-directory: ./backend
 
       - name: Check for PHP vulnerabilities
-        run: |
-          echo "Checking for PHP package vulnerabilities..."
-          composer audit --no-dev || echo "⚠️  Some vulnerabilities found - review recommended"
-          echo "✅ PHP security scan completed"
+        run: composer audit --no-dev
         working-directory: ./backend
-        continue-on-error: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -240,13 +247,9 @@ jobs:
         run: npm ci --ignore-scripts
         working-directory: ./frontend
 
-      - name: Check for npm vulnerabilities
-        run: |
-          echo "Checking for HIGH and CRITICAL vulnerabilities in production dependencies..."
-          npm audit --omit=dev --audit-level=high || echo "⚠️  Some vulnerabilities found - review recommended"
-          echo "✅ Security scan completed"
+      - name: Check for npm vulnerabilities (HIGH+CRITICAL)
+        run: npm audit --omit=dev --audit-level=high
         working-directory: ./frontend
-        continue-on-error: true
 
   # ============================================
   # LIGHTHOUSE CI — catches perf/SEO regressions
@@ -300,24 +303,39 @@ jobs:
           temporaryPublicStorage: true
 
   # ============================================
-  # BUILD STATUS
+  # BUILD STATUS — fails the pipeline if any
+  # required job failed or was cancelled
   # ============================================
   build-status:
     name: Build Status
     runs-on: ubuntu-latest
-    needs: [backend-tests, frontend-tests, code-quality, security-scan]
+    needs: [secrets-scan, backend-tests, frontend-tests, code-quality, security-scan]
     if: always()
 
     steps:
-      - name: Check build status
+      - name: Evaluate results
         run: |
-          echo "Backend Tests: ${{ needs.backend-tests.result }}"
-          echo "Frontend Tests: ${{ needs.frontend-tests.result }}"
-          echo "Code Quality: ${{ needs.code-quality.result }}"
-          echo "Security Scan: ${{ needs.security-scan.result }}"
+          echo "Secrets Scan:    ${{ needs.secrets-scan.result }}"
+          echo "Backend Tests:   ${{ needs.backend-tests.result }}"
+          echo "Frontend Tests:  ${{ needs.frontend-tests.result }}"
+          echo "Code Quality:    ${{ needs.code-quality.result }}"
+          echo "Security Scan:   ${{ needs.security-scan.result }}"
 
-          echo "✅ CI/CD Pipeline Completed!"
-          echo "Note: Some checks may show warnings - this is expected during development"
+          FAILED=0
 
-          # Don't fail the build for now - just report
-          exit 0
+          for result in \
+            "${{ needs.secrets-scan.result }}" \
+            "${{ needs.backend-tests.result }}" \
+            "${{ needs.frontend-tests.result }}" \
+            "${{ needs.security-scan.result }}"; do
+            if [[ "$result" != "success" ]]; then
+              FAILED=1
+            fi
+          done
+
+          if [[ $FAILED -eq 1 ]]; then
+            echo "❌ One or more required CI checks failed."
+            exit 1
+          fi
+
+          echo "✅ All required CI checks passed."
