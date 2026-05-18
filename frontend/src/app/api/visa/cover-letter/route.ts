@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     const token = cookieStore.get("auth_token")?.value;
 
     if (!token) {
-      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+      return NextResponse.json({ success: false, error: "Authentication required" }, { status: 401 });
     }
 
     const userResponse = await fetch(
@@ -22,14 +22,14 @@ export async function POST(request: NextRequest) {
     );
 
     if (!userResponse.ok) {
-      return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
+      return NextResponse.json({ success: false, error: "Invalid or expired token" }, { status: 401 });
     }
 
     const userData = await userResponse.json();
     const user = userData.user || userData.data || userData;
 
     if (!user?.id) {
-      return NextResponse.json({ error: "User not found" }, { status: 401 });
+      return NextResponse.json({ success: false, error: "User not found" }, { status: 401 });
     }
 
     const identifier = getRateLimitIdentifier(request, user.id.toString());
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     if (!rateLimitResult.success) {
       return NextResponse.json(
-        { error: "Rate limit exceeded", message: "Too many AI requests. Please try again later." },
+        { success: false, error: "Rate limit exceeded. Too many AI requests. Please try again later." },
         { status: 429 }
       );
     }
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!process.env['ANTHROPIC_API_KEY']) {
-      return NextResponse.json({ error: "AI features are not configured" }, { status: 503 });
+      return NextResponse.json({ success: false, error: "AI features are not configured on this server" }, { status: 503 });
     }
 
     const client = new Anthropic({ apiKey: process.env['ANTHROPIC_API_KEY'] });
@@ -82,7 +82,7 @@ Write ONLY the cover letter text. No preamble, no commentary after.`;
 
     const startTime = Date.now();
     const response = await client.messages.create({
-      model: "claude-3-5-sonnet-20241022",
+      model: "claude-sonnet-4-6",
       max_tokens: 1024,
       messages: [{ role: "user", content: prompt }],
     });
