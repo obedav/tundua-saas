@@ -71,6 +71,9 @@ export function HomeNavbar() {
               <span className={underline} />
             </button>
           ))}
+          <Link href="/visa" className={navLink}>
+            Visa Assistant<span className={underline} />
+          </Link>
           <Link href="/blog" className={navLink}>
             Blog<span className={underline} />
           </Link>
@@ -146,6 +149,9 @@ export function HomeNavbar() {
                 {label}
               </button>
             ))}
+            <Link href="/visa" className="text-slate-600 dark:text-stone-300 hover:text-slate-900 dark:hover:text-white font-medium py-3 px-2 hover:bg-slate-50 dark:hover:bg-stone-800 rounded-lg transition-colors block" onClick={() => setMenuOpen(false)}>
+              Visa Assistant
+            </Link>
             <Link href="/blog" className="text-slate-600 dark:text-stone-300 hover:text-slate-900 dark:hover:text-white font-medium py-3 px-2 hover:bg-slate-50 dark:hover:bg-stone-800 rounded-lg transition-colors block" onClick={() => setMenuOpen(false)}>
               Blog
             </Link>

@@ -8,7 +8,7 @@ import {
   Home, FileText, Plus, User, LogOut, Menu, X, Settings, Shield,
   FolderOpen, CreditCard, Gift, BookOpen, HelpCircle,
   Compass, Globe, ChevronLeft, ChevronRight, Search, ChevronDown,
-  Moon, Sun, Monitor, FileEdit, GraduationCap, Briefcase, Calendar
+  Moon, Sun, Monitor, FileEdit, GraduationCap, Briefcase, Calendar, Plane
 } from "lucide-react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/hooks/useAuth";
@@ -35,6 +35,7 @@ const navigationGroups = [
       { name: "SOP Generator", href: "/dashboard/addons/ai-sop-generator", icon: FileEdit, badgeKey: null, description: "AI-powered SOP generation" },
       { name: "University Report", href: "/dashboard/addons/ai-university-report", icon: GraduationCap, badgeKey: null, description: "Personalized recommendations" },
       { name: "Resume Optimizer", href: "/dashboard/addons/ai-resume-optimizer", icon: Briefcase, badgeKey: null, description: "AI resume optimization" },
+      { name: "Visa Assistant", href: "/dashboard/visa-assistant", icon: Plane, badgeKey: null, description: "AI-powered visa application guide" },
       { name: "View All Services", href: "/dashboard/addons", icon: Compass, badgeKey: null, description: "Browse all AI services" },
     ]
   },
