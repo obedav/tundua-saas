@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import VisaGatedCTA from "@/components/VisaGatedCTA";
 import {
   CheckSquare,
   FileEdit,
@@ -7,7 +8,6 @@ import {
   Calendar,
   Shield,
   GraduationCap,
-  ArrowRight,
   Check,
   Sparkles,
   Globe,
@@ -104,12 +104,11 @@ export default function VisaLandingPage() {
           >
             Sign in
           </Link>
-          <Link
-            href="/auth/register"
+          <VisaGatedCTA
+            variant="plan"
+            label="Get started free"
             className="px-5 py-2 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 text-white text-sm font-semibold hover:from-primary-600 hover:to-primary-700 transition-all shadow-lg shadow-primary-500/30"
-          >
-            Get started free
-          </Link>
+          />
         </div>
       </nav>
 
@@ -144,12 +143,7 @@ export default function VisaLandingPage() {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-            <Link
-              href="/auth/register"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white text-primary-700 font-semibold text-sm hover:bg-primary-50 transition-all shadow-xl shadow-black/20"
-            >
-              Start for free <ArrowRight className="h-4 w-4" />
-            </Link>
+            <VisaGatedCTA variant="primary" label="Start for free" />
             <Link
               href="/auth/login"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm text-white text-sm font-medium hover:bg-white/20 transition-all"
@@ -276,10 +270,15 @@ export default function VisaLandingPage() {
                   <FileEdit className="h-5 w-5 text-white" />
                 </div>
                 <h3 className="text-xl font-bold mb-2">AI Cover Letter Writer</h3>
-                <p className="text-primary-200 text-sm leading-relaxed max-w-sm">
+                <p className="text-primary-200 text-sm leading-relaxed max-w-sm mb-5">
                   Personalised cover letters that address the key concerns of visa officers reviewing
                   Nigerian applications. Powered by Claude AI — in seconds.
                 </p>
+                <VisaGatedCTA
+                  variant="plan"
+                  label="Write My Cover Letter"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/15 hover:bg-white/25 border border-white/30 text-white text-sm font-semibold transition-all"
+                />
               </div>
             </div>
 
@@ -345,12 +344,11 @@ export default function VisaLandingPage() {
                   — same account.
                 </p>
               </div>
-              <Link
-                href="/auth/register"
+              <VisaGatedCTA
+                variant="plan"
+                label="Learn more"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 dark:border-gray-600 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:border-primary-400 hover:text-primary-600 transition-colors"
-              >
-                Learn more <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
+              />
             </div>
           </div>
         </div>
@@ -417,16 +415,15 @@ export default function VisaLandingPage() {
                   ))}
                 </ul>
 
-                <Link
-                  href="/auth/register"
+                <VisaGatedCTA
+                  variant="plan"
+                  label={cta}
                   className={`block text-center py-2.5 rounded-full text-sm font-semibold transition-all ${
                     primary
                       ? "bg-white text-primary-700 hover:bg-primary-50 shadow-lg"
                       : "border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-primary-400 hover:text-primary-600"
                   }`}
-                >
-                  {cta}
-                </Link>
+                />
               </div>
             ))}
           </div>
@@ -456,12 +453,11 @@ export default function VisaLandingPage() {
             stress, the agents, or the confusion.
           </p>
 
-          <Link
-            href="/auth/register"
+          <VisaGatedCTA
+            variant="primary"
+            label="Get started free"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-primary-700 font-semibold text-sm hover:bg-primary-50 transition-all shadow-2xl shadow-black/20"
-          >
-            Get started free <ArrowRight className="h-4 w-4" />
-          </Link>
+          />
         </div>
       </section>
 

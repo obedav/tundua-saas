@@ -5,7 +5,7 @@ import {
   Star, BookOpen, Target, Sparkles,
   GraduationCap, FileCheck, MessageSquare, Clock,
   Award, CheckCircle2, Zap, Heart, MapPin,
-  Trophy, Rocket, Briefcase, Calendar,
+  Trophy, Rocket, Calendar,
 } from "lucide-react";
 import {
   FadeIn, Stagger, StaggerItem, ScaleIn, CountUp,
@@ -19,6 +19,7 @@ import { PackageQuiz } from "@/components/home/PackageQuiz";
 import { FAQAccordion } from "@/components/home/FAQAccordion";
 import { ScrollSectionButton } from "@/components/home/ScrollSectionButton";
 import { ScrollAnimations } from "@/components/home/ScrollAnimations";
+import AIToolsSection from "@/components/home/AIToolsSection";
 
 const FAQS = [
   {
@@ -306,33 +307,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-10">
-            {[
-              { icon: FileCheck, title: "AI SOP Generator", desc: "Professional Statement of Purpose in minutes", color: "from-blue-500 to-blue-600", shadow: "shadow-blue-500/25" },
-              { icon: Briefcase, title: "AI Resume Optimizer", desc: "Optimize your resume for maximum impact", color: "from-teal-500 to-teal-600", shadow: "shadow-teal-500/25" },
-              { icon: GraduationCap, title: "AI University Report", desc: "Get 10 personalized university recommendations", color: "from-green-500 to-green-600", shadow: "shadow-green-500/25" },
-            ].map(({ icon: Icon, title, desc, color, shadow }) => (
-              <div key={title} className="group bg-white dark:bg-stone-800/80 rounded-2xl shadow-lg dark:shadow-stone-950/50 hover:shadow-2xl transition-all duration-300 p-7 border-2 border-blue-100 dark:border-blue-800/50 hover:border-blue-300 dark:hover:border-blue-600 relative overflow-hidden backdrop-blur-sm">
-                <div className="absolute top-0 right-0 bg-gradient-to-br from-emerald-500 to-green-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-                  100% FREE
-                </div>
-                <div className={`w-14 h-14 bg-gradient-to-br ${color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg ${shadow}`}>
-                  <Icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-stone-100 mb-2">{title}</h3>
-                <p className="text-slate-600 dark:text-stone-400 mb-4 text-sm">{desc}</p>
-                <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-stone-400 mb-4">
-                  <Clock className="w-4 h-4" />
-                  <span>Instant delivery</span>
-                  <span className="w-1 h-1 bg-slate-400 rounded-full" />
-                  <span>Unlimited revisions</span>
-                </div>
-                <Link href="/auth/register" className="block w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-center py-3 rounded-lg font-semibold hover:shadow-lg transition-all">
-                  Try Free Now
-                </Link>
-              </div>
-            ))}
-          </div>
+          <AIToolsSection />
 
           <div className="max-w-4xl mx-auto">
             <div className="bg-gradient-to-r from-slate-50 to-blue-50 dark:from-stone-800/80 dark:to-blue-900/30 border-2 border-slate-200 dark:border-stone-700 rounded-2xl p-6 md:p-8 backdrop-blur-sm">
