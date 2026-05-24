@@ -48,24 +48,23 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Log error to console in development and test
     if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
 
-    // Log to error tracking service (e.g., Sentry, LogRocket)
-    // if (typeof window !== 'undefined') {
-    //   Sentry.captureException(error, { extra: errorInfo });
-    // }
+    if (process.env.NODE_ENV === 'production') {
+      import('@sentry/nextjs').then((Sentry) => {
+        Sentry.captureException(error, {
+          extra: { componentStack: errorInfo.componentStack },
+        });
+      }).catch(() => {});
+    }
 
-    // Call custom error handler if provided
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
     }
 
-    this.setState({
-      errorInfo,
-    });
+    this.setState({ errorInfo });
   }
 
   handleReset = () => {

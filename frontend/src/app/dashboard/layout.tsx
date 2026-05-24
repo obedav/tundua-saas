@@ -11,6 +11,7 @@ import {
   Moon, Sun, Monitor, FileEdit, GraduationCap, Briefcase, Calendar, Plane
 } from "lucide-react";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useBadgeCounts } from "@/hooks/useBadgeCounts";
@@ -600,9 +601,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <NotificationCenter />
           </header>
 
-          {/* Page content */}
+          {/* Page content — ErrorBoundary here isolates page-level crashes so
+              the sidebar and nav stay intact while only the content resets. */}
           <main className="p-4 sm:p-6 lg:p-8">
-            {children}
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
           </main>
         </div>
       </div>

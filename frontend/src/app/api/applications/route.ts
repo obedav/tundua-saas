@@ -1,11 +1,26 @@
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import { clientEnv } from '@/lib/env'
+import { rateLimiters, getRateLimitIdentifier } from '@/lib/rate-limit'
 
 const API_URL = clientEnv.NEXT_PUBLIC_API_URL
 
 // GET /api/applications - List user applications
 export async function GET(request: NextRequest) {
+  const rateLimitResult = await rateLimiters.api.limit(getRateLimitIdentifier(request))
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { success: false, error: 'Too many requests' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil((rateLimitResult.reset - Date.now()) / 1000)),
+          'X-RateLimit-Remaining': '0',
+        },
+      }
+    )
+  }
+
   try {
     const cookieStore = await cookies()
     const token = cookieStore.get('auth_token')?.value
@@ -43,6 +58,20 @@ export async function GET(request: NextRequest) {
 
 // POST /api/applications - Create new application
 export async function POST(request: NextRequest) {
+  const rateLimitResult = await rateLimiters.applicationCreate.limit(getRateLimitIdentifier(request))
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { success: false, error: 'Too many requests. You can create up to 3 applications per hour.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil((rateLimitResult.reset - Date.now()) / 1000)),
+          'X-RateLimit-Remaining': '0',
+        },
+      }
+    )
+  }
+
   try {
     const cookieStore = await cookies()
     const token = cookieStore.get('auth_token')?.value

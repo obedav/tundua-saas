@@ -72,7 +72,6 @@ export function PusherProvider({ children }: PusherProviderProps) {
 
     // Handle notification events
     channel.bind('notification', (data: NotificationEvent) => {
-      console.log('New notification:', data);
 
       // Show toast based on priority
       const toastConfig = {
@@ -99,7 +98,6 @@ export function PusherProvider({ children }: PusherProviderProps) {
 
     // Handle application status changes
     channel.bind('application-status-changed', (data: ApplicationStatusEvent) => {
-      console.log('Application status changed:', data);
 
       toast.success('Application Updated', {
         description: `Application ${data.reference_number} status: ${data.new_status}`,
@@ -112,7 +110,6 @@ export function PusherProvider({ children }: PusherProviderProps) {
 
     // Handle payment events
     channel.bind('payment-completed', (data: PaymentEvent) => {
-      console.log('Payment completed:', data);
 
       toast.success('Payment Successful', {
         description: `Your payment of ${data.currency} ${data.amount} has been processed.`,
@@ -124,7 +121,6 @@ export function PusherProvider({ children }: PusherProviderProps) {
     });
 
     channel.bind('payment-failed', (data: PaymentEvent) => {
-      console.log('Payment failed:', data);
 
       toast.error('Payment Failed', {
         description: 'Your payment could not be processed. Please try again.',

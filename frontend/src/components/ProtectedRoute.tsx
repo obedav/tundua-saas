@@ -18,16 +18,10 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
     // Add a delay to prevent premature redirects and allow cookie to be available
     const timer = setTimeout(() => {
       if (!loading) {
-        console.log('🛡️ ProtectedRoute check:', { isAuthenticated, loading, user: user?.email });
-
         if (!isAuthenticated) {
-          console.log('❌ Not authenticated, redirecting to login');
           router.push("/auth/login");
         } else if (requireAdmin && user?.role !== "admin" && user?.role !== "super_admin") {
-          console.log('❌ Not admin, redirecting to dashboard');
           router.push("/dashboard");
-        } else {
-          console.log('✅ Access granted');
         }
       }
     }, 800); // Wait 800ms before checking to allow cookie propagation

@@ -112,6 +112,10 @@ export const rateLimiters = {
   // Resets every hour - users can generate ~40 per day if spread out
   // Premium users: Unlimited (bypasses this limit)
   ai: createRateLimiter(5, "1 h"), // 5 AI requests per hour
+
+  // Application creation — a student takes 10–20 min to fill out each form,
+  // so 3/hour covers any real session. Blocks automated bulk submission entirely.
+  applicationCreate: createRateLimiter(3, "1 h"), // 3 creates per hour per IP
 };
 
 /**

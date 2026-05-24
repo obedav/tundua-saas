@@ -62,26 +62,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const router = useRouter();
 
   const checkAuth = useCallback(async () => {
-    console.log('🔐 AuthContext: Checking authentication...');
     try {
       const response = await fetch('/api/auth/me', {
-        credentials: 'include', // Include cookies
+        credentials: 'include',
       });
-
-      console.log('🔐 AuthContext: Response status:', response.status);
 
       if (response.ok) {
         const data = await response.json();
-        console.log('✅ AuthContext: Authenticated as:', data.data?.email);
         setUser(data.data);
         setIsAuthenticated(true);
       } else {
-        console.log('❌ AuthContext: Not authenticated');
         setIsAuthenticated(false);
         setUser(null);
       }
     } catch (error) {
-      console.error("❌ AuthContext: Auth check failed:", error);
+      console.error("Auth check failed:", error);
       setIsAuthenticated(false);
       setUser(null);
     } finally {
