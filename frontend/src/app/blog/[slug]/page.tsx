@@ -281,6 +281,11 @@ export default async function BlogArticlePage({ params }: PageProps) {
             dangerouslySetInnerHTML={{ __html: rewriteCtaLinks(sanitizeArticleHtml(article.content)) }}
           />
 
+          {/* Inline CTA — compact contextual nudge immediately after article.
+              Placed here (not near the quiz above) to avoid stacking two CTAs
+              before the reader has consumed any content. */}
+          <BlogCTA variant="inline" />
+
           {/* Post-content CTA — lead magnet + advisor card */}
           <BlogCTA variant="mid" />
 

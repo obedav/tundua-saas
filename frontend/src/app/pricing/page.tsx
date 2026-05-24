@@ -4,7 +4,7 @@ import Script from "next/script";
 import { CheckCircle, ArrowRight, Sparkles, Award } from "lucide-react";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
-import { BreadcrumbStructuredData } from "@/components/StructuredData";
+import { BreadcrumbStructuredData, FAQStructuredData } from "@/components/StructuredData";
 
 const APP_URL = process.env["NEXT_PUBLIC_APP_URL"] || "https://tundua.com";
 
@@ -85,6 +85,33 @@ const PLANS = [
     highlight: false,
     isFree: false,
     isCustom: true,
+  },
+];
+
+const FAQS = [
+  {
+    question: "Is the Seeker plan really free forever?",
+    answer: "Yes. The Seeker plan is completely free with no credit card required. You get 5 university searches per month, 1 application draft, and access to the dashboard for as long as you need it.",
+  },
+  {
+    question: "Is the Scholar plan a one-time payment or a subscription?",
+    answer: "Scholar is a one-time payment of $29.99 (₦49,999). There are no monthly fees, no renewals, and no hidden charges. You pay once and keep full access.",
+  },
+  {
+    question: "What does the 90-day money-back guarantee cover?",
+    answer: "If you are not satisfied with Tundua's service for any reason within 90 days of payment, we will issue a full refund — no questions asked. The guarantee applies to the Scholar plan.",
+  },
+  {
+    question: "What is the difference between Scholar and Fellow?",
+    answer: "Scholar gives you unlimited searches, document review, essay editing, and a live counselor. Fellow adds complete done-for-you support: we write your SOP, prepare all documents, handle your visa application, coach you for interviews, and assign a dedicated account manager who stays with you until you depart.",
+  },
+  {
+    question: "Can I upgrade from Seeker to Scholar later?",
+    answer: "Yes. You can upgrade at any time from inside your dashboard. All your existing data, documents, and application drafts are preserved when you upgrade.",
+  },
+  {
+    question: "What payment methods do you accept?",
+    answer: "We accept card payments via Stripe (USD) and Paystack (NGN). Nigerian bank cards, USSD, and bank transfers are all supported through Paystack. No foreign card is required for NGN payments.",
   },
 ];
 
@@ -258,7 +285,28 @@ export default function PricingPage() {
           ))}
         </div>
 
-        {/* FAQ-style trust section */}
+        {/* FAQ Section */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
+            Frequently Asked Questions
+          </h2>
+          <div className="max-w-3xl mx-auto space-y-3">
+            {FAQS.map((faq, index) => (
+              <details
+                key={index}
+                className="group bg-white rounded-xl border border-gray-200 overflow-hidden"
+              >
+                <summary className="flex items-center justify-between cursor-pointer p-5 font-semibold text-gray-900 hover:bg-gray-50 transition-colors list-none">
+                  {faq.question}
+                  <ArrowRight className="w-4 h-4 text-gray-400 group-open:rotate-90 transition-transform flex-shrink-0 ml-4" />
+                </summary>
+                <p className="px-5 pb-5 text-gray-600 leading-relaxed">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+
+        {/* Money-back guarantee */}
         <div className="bg-gray-50 rounded-2xl p-8 md:p-12 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Award className="w-5 h-5 text-primary-600" />
@@ -283,6 +331,8 @@ export default function PricingPage() {
           </div>
         </div>
       </main>
+
+      <FAQStructuredData faqs={FAQS} />
 
       {/* Footer */}
       <footer className="bg-white/50 backdrop-blur-sm border-t border-gray-200/60 py-8 mt-12">

@@ -12,33 +12,42 @@
  * "visit our homepage"-style links.
  */
 
-import DOMPurify from 'dompurify';
-import { JSDOM } from 'jsdom';
-
-// DOMPurify requires a DOM window. In Node.js (server components / SSG builds)
-// there is no global window, so we supply one via jsdom. The instance is created
-// once at module load time so it is not rebuilt on every ISR revalidation.
-// Cast via typeof globalThis because DOMPurify's WindowLike is
-// Pick<typeof globalThis, ...>, which jsdom's Window satisfies at runtime.
-const { window: jsdomWindow } = new JSDOM('');
-const purify = DOMPurify(jsdomWindow as unknown as typeof globalThis);
+import sanitizeHtml from 'sanitize-html';
 
 /**
  * Sanitize CMS-authored HTML before it is injected via dangerouslySetInnerHTML.
- * Strips script tags, event handler attributes (onerror, onload, etc.), and any
- * other XSS vectors while preserving all standard formatting and media elements.
+ * Uses sanitize-html (Node.js native, no DOM/jsdom required) to strip script
+ * tags, event handler attributes, and javascript: URLs while preserving all
+ * standard formatting, media, and structural elements.
  * Always call this before rewriteCtaLinks so rewrites run on clean HTML.
  */
 export function sanitizeArticleHtml(html: string): string {
-  return purify.sanitize(html, {
-    USE_PROFILES: { html: true },
-    FORBID_TAGS: ['script', 'style'],
-    FORBID_ATTR: ['onerror', 'onload', 'onclick', 'onmouseover', 'onfocus', 'onblur'],
+  return sanitizeHtml(html, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+      'img', 'figure', 'figcaption',
+      'iframe',
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'details', 'summary',
+    ]),
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      '*': ['class', 'id', 'style'],
+      'a': ['href', 'name', 'target', 'rel'],
+      'img': ['src', 'alt', 'width', 'height', 'loading'],
+      'iframe': ['src', 'width', 'height', 'frameborder', 'allowfullscreen', 'title'],
+      'td': ['colspan', 'rowspan'],
+      'th': ['colspan', 'rowspan', 'scope'],
+    },
+    // Block javascript: and data: URLs in href/src
+    allowedSchemes: ['http', 'https', 'mailto', 'tel'],
+    allowedSchemesByTag: {
+      img: ['http', 'https', 'data'],
+    },
   });
 }
 
 // Anchor text that almost certainly marks a funnel CTA.
-const CTA_TEXT_RE = /\b(apply|start|free|get\s*started|try|begin|chat|book|sign\s*up|let['’]?s\s+go|join\s+now)\b/i;
+const CTA_TEXT_RE = /\b(apply|start|free|get\s*started|try|begin|chat|book|sign\s*up|let['']?s\s+go|join\s+now)\b/i;
 
 // href values that resolve to the homepage: "/", "", "#", root with query/hash,
 // or absolute URLs to tundua.com with no path.
