@@ -12,7 +12,7 @@ import {
   ParallaxScroll, MagneticButton, PulseGlow, FloatingElement, CardHover,
 } from "@/components/animations/PageAnimations";
 import { ExitIntentPopup } from "@/components/ExitIntentPopup";
-import { FAQStructuredData } from "@/components/StructuredData";
+import { FAQStructuredData, ReviewsStructuredData } from "@/components/StructuredData";
 import { HomeNavbar } from "@/components/home/HomeNavbar";
 import { LiveActivityFeed } from "@/components/home/LiveActivityFeed";
 import { PackageQuiz } from "@/components/home/PackageQuiz";
@@ -658,6 +658,7 @@ export default function HomePage() {
       </footer>
 
       <FAQStructuredData faqs={FAQS} />
+      <ReviewsStructuredData reviews={TESTIMONIALS} />
       <ExitIntentPopup />
     </div>
   );

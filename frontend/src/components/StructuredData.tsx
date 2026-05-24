@@ -11,8 +11,10 @@ import {
   getWebsiteSchema,
   getServiceSchema,
   getBlogPostSchema,
+  getReviewsSchema,
   combineSchemas,
 } from '@/lib/structured-data';
+import type { ReviewInput } from '@/lib/structured-data';
 
 /**
  * Global Structured Data
@@ -117,6 +119,31 @@ export function FAQStructuredData({
   return (
     <Script
       id="structured-data-faq"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      strategy="afterInteractive"
+    />
+  );
+}
+
+/**
+ * Reviews + AggregateRating Structured Data Component
+ *
+ * Outputs a SoftwareApplication schema with aggregateRating and review[].
+ * Google uses this to render star ratings directly in SERPs.
+ * Place on any page that displays visible review/testimonial content.
+ */
+export function ReviewsStructuredData({ reviews }: { reviews: ReviewInput[] }) {
+  if (reviews.length === 0) return null;
+
+  const schema = {
+    '@context': 'https://schema.org',
+    ...getReviewsSchema(reviews),
+  };
+
+  return (
+    <Script
+      id="structured-data-reviews"
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       strategy="afterInteractive"

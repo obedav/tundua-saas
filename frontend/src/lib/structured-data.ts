@@ -8,7 +8,7 @@
  * @see https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data
  */
 
-import type { Organization, WebSite, BreadcrumbList, Service, BlogPosting } from 'schema-dts';
+import type { Organization, WebSite, BreadcrumbList, Service, BlogPosting, SoftwareApplication } from 'schema-dts';
 
 const APP_URL = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
 
@@ -183,6 +183,55 @@ export function getBlogPostSchema(article: {
     },
     ...(article.category ? { articleSection: article.category } : {}),
   } as unknown as BlogPosting;
+}
+
+export interface ReviewInput {
+  name: string;
+  text: string;
+  rating: number;
+  datePublished?: string;
+}
+
+/**
+ * Reviews + AggregateRating schema as SoftwareApplication.
+ * SoftwareApplication is the type Google recommends for web apps and unlocks
+ * star-rating rich snippets in SERPs when paired with aggregateRating.
+ */
+export function getReviewsSchema(reviews: ReviewInput[]): SoftwareApplication {
+  const total = reviews.reduce((sum, r) => sum + r.rating, 0);
+  const avg = reviews.length > 0 ? (total / reviews.length).toFixed(1) : '5.0';
+
+  return {
+    '@type': 'SoftwareApplication',
+    '@id': `${APP_URL}#app`,
+    name: 'Tundua',
+    url: APP_URL,
+    applicationCategory: 'EducationalApplication',
+    operatingSystem: 'Web',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: avg,
+      reviewCount: String(reviews.length),
+      bestRating: '5',
+      worstRating: '1',
+    },
+    review: reviews.map((r) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: r.name },
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: String(r.rating),
+        bestRating: '5',
+      },
+      reviewBody: r.text,
+      datePublished: r.datePublished ?? '2026-01-01',
+    })),
+  } as unknown as SoftwareApplication;
 }
 
 /**
