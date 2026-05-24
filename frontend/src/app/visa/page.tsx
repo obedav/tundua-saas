@@ -1,6 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import VisaGatedCTA from "@/components/VisaGatedCTA";
+import { FAQStructuredData, BreadcrumbStructuredData } from "@/components/StructuredData";
+
+const APP_URL = process.env["NEXT_PUBLIC_APP_URL"] || "https://tundua.com";
 import {
   CheckSquare,
   FileEdit,
@@ -15,9 +18,19 @@ import {
 } from "lucide-react";
 
 export const metadata = {
-  title: "Visa Assistant — Tundua",
+  title: "Visa Assistant — AI-Powered Visa Guidance for Nigerians | Tundua",
   description:
     "AI-powered visa guidance for Nigerian passport holders. Step-by-step document checklists, AI cover letter writer, and 24/7 expert chat. Free to start.",
+  alternates: {
+    canonical: `${APP_URL}/visa`,
+  },
+  openGraph: {
+    title: "Visa Assistant — AI-Powered Visa Guidance for Nigerians | Tundua",
+    description:
+      "Step-by-step visa guidance, smart document checklists, and AI-written cover letters built specifically for Nigerian applicants. Free to start.",
+    url: `${APP_URL}/visa`,
+    type: "website" as const,
+  },
 };
 
 const DESTINATIONS = [
@@ -48,8 +61,8 @@ const PRICING = [
   },
   {
     name: "Pro",
-    price: "₦3,000",
-    per: "per month",
+    price: "₦5,000",
+    per: "one-time payment",
     features: [
       "Everything in Free",
       "Unlimited AI chat",
@@ -61,16 +74,51 @@ const PRICING = [
   },
   {
     name: "Premium",
-    price: "₦10,000",
-    per: "one-time",
+    price: "₦15,000",
+    per: "one-time payment",
     features: [
       "Everything in Pro",
-      "Expert document review",
-      "1-on-1 counsellor session",
-      "Priority support",
+      "Expert document review (up to 5 docs)",
+      "1-on-1 counsellor session (45 min)",
+      "Priority WhatsApp support",
     ],
     cta: "Get Premium",
     primary: false,
+  },
+];
+
+const WHATSAPP_URL = "https://wa.me/2348000000000?text=Hi%2C%20I%20need%20help%20with%20my%20visa%20application";
+
+const VISA_FAQS = [
+  {
+    question: "Can Nigerians really get a UK visa without an agent?",
+    answer:
+      "Yes. The UK visa application process is fully self-service through the UKVI website. You do not need an agent — and using an unlicensed agent increases your fraud risk. Tundua walks you through every step: checklist, cover letter, and timeline. You submit directly to the embassy yourself.",
+  },
+  {
+    question: "What are the most common reasons Nigerian visa applications are refused?",
+    answer:
+      "The top refusal reasons for Nigerians are: insufficient proof of financial ties to Nigeria (funds in bank account), weak cover letter that doesn't address officer concerns, incomplete or inconsistent documents, and missing proof of accommodation or travel insurance. Tundua's AI cover letter writer and smart checklist are specifically designed to address all of these.",
+  },
+  {
+    question: "How much money do I need in my bank account for a UK/Schengen visa?",
+    answer:
+      "For a UK standard visitor visa, UKVI recommends at least £1,000–£2,000 (roughly ₦1.8M–₦3.6M) in your account for a short trip, with funds present for at least 3–6 months. For Schengen, the requirement is typically €50–€100 per day of stay. The exact amount varies — Tundua's AI will tell you the specific requirement for your destination and duration.",
+  },
+  {
+    question: "Is Tundua's visa service really free?",
+    answer:
+      "The Free plan is genuinely free — no credit card required. You get destination guides, a document checklist, and 3 AI questions per day. The paid Pro plan (₦5,000 one-time) adds unlimited AI chat and the AI cover letter writer. There are no hidden fees, no subscriptions, and no automatic charges.",
+  },
+  {
+    question: "What payment methods do you accept?",
+    answer:
+      "We accept payments via Paystack — Nigerian debit/credit cards, USSD (*737#, *901#, etc.), and bank transfers are all supported. No foreign card is required. You will never be charged automatically — all payments are one-time.",
+  },
+  {
+    question: "How is Tundua different from a visa agent?",
+    answer:
+      "Traditional visa agents in Lagos charge ₦50,000–₦200,000, and many are unlicensed or fraudulent. Tundua is a self-service AI platform: we provide the guidance, checklists, and documents — but you submit directly to the embassy. No middlemen, no inflated fees, and no risk of your documents being mishandled.",
   },
 ];
 
@@ -344,11 +392,12 @@ export default function VisaLandingPage() {
                   — same account.
                 </p>
               </div>
-              <VisaGatedCTA
-                variant="plan"
-                label="Learn more"
+              <Link
+                href="/auth/login"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 dark:border-gray-600 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:border-primary-400 hover:text-primary-600 transition-colors"
-              />
+              >
+                Sign in to your account
+              </Link>
             </div>
           </div>
         </div>
@@ -366,6 +415,17 @@ export default function VisaLandingPage() {
           <p className="text-center text-slate-500 dark:text-slate-400 mb-14 text-sm">
             Less than what you&apos;d pay an agent — with better results
           </p>
+
+          {/* Payment trust bar */}
+          <div className="flex flex-wrap items-center justify-center gap-3 mb-8 text-xs text-slate-500 dark:text-slate-400">
+            <span className="font-semibold text-slate-700 dark:text-slate-300">Pay with:</span>
+            <span className="px-3 py-1 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium">Paystack</span>
+            <span className="px-3 py-1 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium">Debit / Credit Card</span>
+            <span className="px-3 py-1 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium">USSD</span>
+            <span className="px-3 py-1 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium">Bank Transfer</span>
+            <span className="text-slate-400">·</span>
+            <span>One-time · No subscriptions</span>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 items-center">
             {PRICING.map(({ name, price, per, features, cta, primary }) => (
@@ -430,6 +490,55 @@ export default function VisaLandingPage() {
         </div>
       </section>
 
+      {/* ── WhatsApp CTA ── */}
+      <section className="bg-white dark:bg-gray-900 px-6 py-10 border-t border-gray-100 dark:border-gray-800">
+        <div className="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/40 rounded-2xl px-7 py-5">
+          <div>
+            <p className="font-bold text-gray-900 dark:text-white text-sm mb-0.5">Have questions before you start?</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Chat with our team on WhatsApp — we reply within minutes.</p>
+          </div>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold transition-all shadow-md shadow-emerald-500/20 whitespace-nowrap"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+            </svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="bg-gray-50 dark:bg-slate-950 px-6 py-20">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-center text-sm font-semibold uppercase tracking-widest text-primary-500 mb-3">
+            FAQ
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-12">
+            Common visa questions, answered
+          </h2>
+          <div className="space-y-3">
+            {VISA_FAQS.map((faq, i) => (
+              <details
+                key={i}
+                className="group bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+              >
+                <summary className="flex items-center justify-between cursor-pointer p-5 font-semibold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors list-none text-sm leading-snug">
+                  {faq.question}
+                  <svg className="w-4 h-4 text-gray-400 flex-shrink-0 ml-4 group-open:rotate-90 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </summary>
+                <p className="px-5 pb-5 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Final CTA ── */}
       <section className="relative overflow-hidden text-white bg-gradient-to-br from-primary-700 via-primary-600 to-secondary-600">
         <div className="absolute inset-0" style={GRID_PATTERN} />
@@ -478,6 +587,14 @@ export default function VisaLandingPage() {
           </a>
         </p>
       </footer>
+
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Visa Assistant", url: "/visa" },
+        ]}
+      />
+      <FAQStructuredData faqs={VISA_FAQS} />
     </main>
   );
 }
