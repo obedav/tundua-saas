@@ -1,10 +1,13 @@
-import axios, { AxiosInstance, AxiosError } from "axios";
+import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from "axios";
 import { clientEnv } from "@/lib/env";
 
 const API_URL = clientEnv.NEXT_PUBLIC_API_URL;
 
 class ApiClient {
   private client: AxiosInstance;
+  private isRefreshing = false;
+  // Queued resolvers waiting for a refresh in progress to complete
+  private refreshQueue: Array<() => void> = [];
 
   constructor() {
     this.client = axios.create({
@@ -16,6 +19,15 @@ class ApiClient {
     });
 
     this.setupInterceptors();
+  }
+
+  private async attemptTokenRefresh(): Promise<boolean> {
+    try {
+      const res = await fetch('/api/auth/refresh', { method: 'POST' });
+      return res.ok;
+    } catch {
+      return false;
+    }
   }
 
   private setupInterceptors() {
@@ -37,20 +49,45 @@ class ApiClient {
         }
         return config;
       },
-      (error) => {
-        return Promise.reject(error);
-      }
+      (error) => Promise.reject(error)
     );
 
-    // Response interceptor to handle errors
+    // Response interceptor — attempt silent token refresh on 401 before redirecting to login
     this.client.interceptors.response.use(
       (response) => response,
       async (error: AxiosError) => {
-        if (error.response?.status === 401) {
-          // Token expired or invalid - redirect to login
-          // The server will clear the httpOnly cookie
-          window.location.href = "/auth/login";
+        const original = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+
+        // Only attempt refresh for 401s on non-refresh requests
+        if (error.response?.status !== 401 || original._retry) {
+          return Promise.reject(error);
         }
+
+        original._retry = true;
+
+        if (this.isRefreshing) {
+          // Another request already triggered a refresh — wait for it then retry
+          return new Promise<unknown>((resolve, reject) => {
+            this.refreshQueue.push(() => {
+              this.client(original).then(resolve).catch(reject);
+            });
+          });
+        }
+
+        this.isRefreshing = true;
+        const refreshed = await this.attemptTokenRefresh();
+        this.isRefreshing = false;
+
+        if (refreshed) {
+          // Flush queued requests with the new cookie now in place
+          this.refreshQueue.forEach((cb) => cb());
+          this.refreshQueue = [];
+          return this.client(original);
+        }
+
+        // Refresh failed — clear queue and send user to login
+        this.refreshQueue = [];
+        window.location.href = '/auth/login';
         return Promise.reject(error);
       }
     );

@@ -42,38 +42,42 @@ export async function POST(request: NextRequest) {
 
     const data = await response.json();
 
-    // The backend might return data in different structures, check all possibilities
-    const token = data.token || data.access_token || data.data?.token || data.data?.access_token;
-    const user = data.user || data.data?.user;
+    const accessToken = data.data?.access_token;
+    const refreshToken = data.data?.refresh_token;
+    const user = data.data?.user;
 
-    if (!token) {
-      console.error('No token found in backend login response');
+    if (!accessToken) {
       return NextResponse.json(
         { success: false, error: 'Login failed: No token received from server' },
         { status: 500 }
       );
     }
 
-    // Set HttpOnly cookie
+    const isProd = process.env.NODE_ENV === 'production';
     const cookieStore = await cookies();
-    cookieStore.set('auth_token', token, {
-      httpOnly: true, // Not accessible via JavaScript (XSS protection)
-      secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-      sameSite: 'lax', // Changed from 'strict' to 'lax' for better compatibility
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+
+    cookieStore.set('auth_token', accessToken, {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: 'lax',
+      maxAge: 60 * 60,        // 1 hour — matches backend JWT_EXPIRY
       path: '/',
     });
 
-    // Create response
-    const nextResponse = NextResponse.json({
-      success: true,
-      data: {
-        user: user,
-        token: token,
-      },
-    });
+    if (refreshToken) {
+      cookieStore.set('refresh_token', refreshToken, {
+        httpOnly: true,
+        secure: isProd,
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 30,  // 30 days — matches backend JWT_REFRESH_EXPIRY
+        path: '/',
+      });
+    }
 
-    return nextResponse;
+    return NextResponse.json({
+      success: true,
+      data: { user, token: accessToken },
+    });
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(
