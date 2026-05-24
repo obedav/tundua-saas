@@ -87,7 +87,7 @@ const PRICING = [
   },
 ];
 
-const WHATSAPP_URL = "https://wa.me/2348000000000?text=Hi%2C%20I%20need%20help%20with%20my%20visa%20application";
+const WHATSAPP_URL = "https://wa.me/2349047185482?text=Hi%2C%20I%20need%20help%20with%20my%20visa%20application";
 
 const VISA_FAQS = [
   {

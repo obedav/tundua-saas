@@ -33,6 +33,7 @@ function registerRoutes($app, array $controllers)
     $activityController = $controllers['activity'];
     $dashboardController = $controllers['dashboard'];
     $addonOrderController = $controllers['addonOrder'];
+    $subscriptionController = $controllers['subscription'];
     $referralController = $controllers['referral'];
     $knowledgeBaseController = $controllers['knowledgeBase'];
     $universityController = $controllers['university'];
@@ -325,6 +326,15 @@ function registerRoutes($app, array $controllers)
             $group->get('/methods', [$paymentController, 'getPaymentMethods']);
             $group->get('/history', [$paymentController, 'getPaymentHistory']);
             $group->get('/{id}', [$paymentController, 'getPayment']);
+        })->add(new AuthMiddleware());
+
+        // ====================================================================
+        // SUBSCRIPTION ROUTES
+        // ====================================================================
+        $v1->group('/subscriptions', function ($group) use ($subscriptionController) {
+            $group->post('/initialize', [$subscriptionController, 'initialize']);
+            $group->get('/status', [$subscriptionController, 'getStatus']);
+            $group->post('/cancel', [$subscriptionController, 'cancel']);
         })->add(new AuthMiddleware());
 
         // ====================================================================

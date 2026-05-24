@@ -23,8 +23,8 @@ export default function ContactPage() {
       icon: Phone,
       title: "Phone",
       description: "Mon–Fri, 9AM–5PM",
-      value: "+1 (234) 567-890",
-      href: "tel:+1234567890",
+      value: "+234 904 718 5482",
+      href: "tel:+2349047185482",
     },
     {
       icon: MessageSquare,

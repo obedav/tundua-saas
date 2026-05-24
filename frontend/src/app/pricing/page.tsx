@@ -11,14 +11,14 @@ const APP_URL = process.env["NEXT_PUBLIC_APP_URL"] || "https://tundua.com";
 export const metadata: Metadata = {
   title: "Pricing - Study Abroad Application Packages",
   description:
-    "Transparent pricing for Tundua's study abroad application packages. Free Seeker plan, Scholar at ₦49,999, and Fellow custom plan. No hidden fees.",
+    "Transparent pricing for Tundua's study abroad application packages. Free Seeker plan, Scholar at $29.99/year (cancel anytime), and Fellow at $149. No hidden fees.",
   alternates: {
     canonical: `${APP_URL}/pricing`,
   },
   openGraph: {
     title: "Pricing - Study Abroad Application Packages | Tundua",
     description:
-      "Transparent pricing for study abroad application support. Free plan available. Scholar at ₦49,999 one-time.",
+      "Transparent pricing for study abroad application support. Free plan available. Scholar at $29.99/year. Fellow at $149.",
     url: `${APP_URL}/pricing`,
   },
 };
@@ -59,15 +59,16 @@ const PLANS = [
       "Scholarship Search",
       "Expert Human Support (live counselor)",
     ],
-    ctaHref: "/auth/register",
+    ctaHref: "/dashboard/billing?plan=scholar",
     ctaLabel: "Get Started",
     highlight: true,
     isFree: false,
+    isAnnual: true,
   },
   {
     name: "Fellow",
-    price: "Custom",
-    priceNGN: "Custom",
+    price: "$149",
+    priceNGN: "Custom pricing",
     description: "End-to-end support from application to visa",
     features: [
       "Everything in Scholar",
@@ -94,16 +95,20 @@ const FAQS = [
     answer: "Yes. The Seeker plan is completely free with no credit card required. You get 5 university searches per month, 1 application draft, and access to the dashboard for as long as you need it.",
   },
   {
-    question: "Is the Scholar plan a one-time payment or a subscription?",
-    answer: "Scholar is a one-time payment of $29.99 (₦49,999). There are no monthly fees, no renewals, and no hidden charges. You pay once and keep full access.",
+    question: "Is Scholar a subscription or a one-time payment?",
+    answer: "Scholar is an annual subscription of $29.99 (₦49,999) per year. You are billed once per year — not monthly. You can cancel at any time before your renewal date and you will never be charged again. There are no lock-in fees and no penalties for cancelling.",
+  },
+  {
+    question: "What happens if I cancel Scholar?",
+    answer: "You keep full access until the end of your current annual period. Cancel before your renewal date and nothing is charged. We send a reminder email 30 days before renewal so there are no surprises.",
   },
   {
     question: "What does the 90-day money-back guarantee cover?",
-    answer: "If you are not satisfied with Tundua's service for any reason within 90 days of payment, we will issue a full refund — no questions asked. The guarantee applies to the Scholar plan.",
+    answer: "If you are not satisfied with Tundua's service for any reason within 90 days of your first payment, we will issue a full refund — no questions asked. The guarantee applies to the Scholar plan.",
   },
   {
     question: "What is the difference between Scholar and Fellow?",
-    answer: "Scholar gives you unlimited searches, document review, essay editing, and a live counselor. Fellow adds complete done-for-you support: we write your SOP, prepare all documents, handle your visa application, coach you for interviews, and assign a dedicated account manager who stays with you until you depart.",
+    answer: "Scholar gives you unlimited searches, document review, essay editing, and a live counselor — everything you need to build and submit a strong application yourself. Fellow ($149) is our done-for-you service: we write your SOP, prepare all documents, handle your visa application, coach you for interviews, and assign a dedicated account manager who stays with you until you depart.",
   },
   {
     question: "Can I upgrade from Seeker to Scholar later?",
@@ -140,11 +145,18 @@ const offersSchema = JSON.stringify({
       item: {
         "@type": "Offer",
         name: "Scholar Plan",
-        description: "Full study abroad application support with expert human counselor",
-        price: "49999",
-        priceCurrency: "NGN",
+        description: "Full study abroad application support with expert human counselor — annual subscription, cancel anytime",
+        price: "29.99",
+        priceCurrency: "USD",
         availability: "https://schema.org/InStock",
         url: `${APP_URL}/auth/register`,
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "29.99",
+          priceCurrency: "USD",
+          billingDuration: "P1Y",
+          billingIncrement: 1,
+        },
       },
     },
     {
@@ -153,7 +165,9 @@ const offersSchema = JSON.stringify({
       item: {
         "@type": "Offer",
         name: "Fellow Plan",
-        description: "End-to-end study abroad support from application to visa",
+        description: "End-to-end study abroad support from application to visa — done-for-you service",
+        price: "149",
+        priceCurrency: "USD",
         availability: "https://schema.org/InStock",
         url: `${APP_URL}/contact`,
       },
@@ -231,8 +245,8 @@ export default function PricingPage() {
               <div className="mb-6">
                 {plan.isCustom ? (
                   <>
-                    <div className="text-4xl font-bold text-amber-600">Custom</div>
-                    <p className="text-amber-700 mt-1 font-medium">Contact for quote</p>
+                    <div className="text-4xl font-bold text-amber-600">{plan.price}</div>
+                    <p className="text-amber-700 mt-1 font-medium">{plan.priceNGN} · Contact for full quote</p>
                   </>
                 ) : plan.isFree ? (
                   <>
@@ -245,8 +259,13 @@ export default function PricingPage() {
                       {plan.price}
                     </div>
                     <p className={`mt-1 ${plan.highlight ? "text-blue-100" : "text-gray-500"}`}>
-                      {plan.priceNGN} · One-time payment
+                      {plan.priceNGN} · per year
                     </p>
+                    {plan.isAnnual && (
+                      <p className={`text-xs mt-1.5 ${plan.highlight ? "text-blue-200" : "text-gray-400"}`}>
+                        Annual subscription · Cancel before renewal · No lock-in
+                      </p>
+                    )}
                   </>
                 )}
               </div>

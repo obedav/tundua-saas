@@ -322,6 +322,105 @@ class PaymentController
 
             $event = json_decode($body);
 
+            // ── Subscription lifecycle ────────────────────────────────────────
+            if ($event->event === 'subscription.create') {
+                $subData   = $event->data;
+                $custEmail = $subData->customer->email ?? null;
+
+                if ($custEmail) {
+                    $stmt = $this->getDb()->prepare("SELECT id FROM users WHERE email = ?");
+                    $stmt->execute([$custEmail]);
+                    $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+                    if ($user) {
+                        $nextDate = isset($subData->next_payment_date)
+                            ? date('Y-m-d H:i:s', strtotime($subData->next_payment_date))
+                            : null;
+
+                        // Upsert subscription record
+                        $stmt = $this->getDb()->prepare("
+                            INSERT INTO subscriptions
+                                (user_id, plan, paystack_subscription_code, paystack_customer_code,
+                                 email_token, status, amount, currency, next_payment_date, created_at)
+                            VALUES (?, 'scholar', ?, ?, ?, 'active', ?, 'NGN', ?, NOW())
+                            ON DUPLICATE KEY UPDATE
+                                status = 'active',
+                                email_token = VALUES(email_token),
+                                next_payment_date = VALUES(next_payment_date),
+                                updated_at = NOW()
+                        ");
+                        $stmt->execute([
+                            $user['id'],
+                            $subData->subscription_code ?? null,
+                            $subData->customer->customer_code ?? null,
+                            $subData->email_token ?? null,
+                            (float)($subData->amount ?? 0) / 100,
+                            $nextDate,
+                        ]);
+
+                        // Activate scholar plan on the user
+                        $expiresAt = $nextDate ?? date('Y-m-d H:i:s', strtotime('+1 year'));
+                        $stmt = $this->getDb()->prepare("
+                            UPDATE users
+                            SET subscription_plan = 'scholar', subscription_expires_at = ?
+                            WHERE id = ?
+                        ");
+                        $stmt->execute([$expiresAt, $user['id']]);
+                    }
+                }
+            }
+
+            if ($event->event === 'invoice.payment_success') {
+                $subCode = $event->data->subscription->subscription_code ?? null;
+                if ($subCode) {
+                    $nextDate = isset($event->data->subscription->next_payment_date)
+                        ? date('Y-m-d H:i:s', strtotime($event->data->subscription->next_payment_date))
+                        : null;
+
+                    $stmt = $this->getDb()->prepare("
+                        UPDATE subscriptions
+                        SET status = 'active', next_payment_date = ?, updated_at = NOW()
+                        WHERE paystack_subscription_code = ?
+                    ");
+                    $stmt->execute([$nextDate, $subCode]);
+
+                    // Extend user's access
+                    if ($nextDate) {
+                        $stmt = $this->getDb()->prepare("
+                            UPDATE users u
+                            JOIN subscriptions s ON s.user_id = u.id
+                            SET u.subscription_plan = 'scholar', u.subscription_expires_at = ?
+                            WHERE s.paystack_subscription_code = ?
+                        ");
+                        $stmt->execute([$nextDate, $subCode]);
+                    }
+                }
+            }
+
+            if ($event->event === 'subscription.disable' || $event->event === 'subscription.not_renew') {
+                $subCode = $event->data->subscription_code ?? null;
+                if ($subCode) {
+                    $newStatus = $event->event === 'subscription.not_renew' ? 'non_renewing' : 'cancelled';
+                    $stmt = $this->getDb()->prepare("
+                        UPDATE subscriptions SET status = ?, updated_at = NOW()
+                        WHERE paystack_subscription_code = ?
+                    ");
+                    $stmt->execute([$newStatus, $subCode]);
+
+                    // If fully cancelled, revert user plan to free
+                    if ($newStatus === 'cancelled') {
+                        $stmt = $this->getDb()->prepare("
+                            UPDATE users u
+                            JOIN subscriptions s ON s.user_id = u.id
+                            SET u.subscription_plan = 'free', u.subscription_expires_at = NULL
+                            WHERE s.paystack_subscription_code = ?
+                        ");
+                        $stmt->execute([$subCode]);
+                    }
+                }
+            }
+            // ─────────────────────────────────────────────────────────────────
+
             if ($event->event === 'charge.success') {
                 $reference = $event->data->reference;
 

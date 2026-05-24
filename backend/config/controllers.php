@@ -30,6 +30,7 @@ use Tundua\Controllers\PartnerController;
 use Tundua\Controllers\TwoFactorController;
 use Tundua\Controllers\LeadController;
 use Tundua\Controllers\DeadlineController;
+use Tundua\Controllers\SubscriptionController;
 
 // Initialize Google OAuth Controller only if the package is installed
 $googleOAuthController = null;
@@ -48,6 +49,7 @@ return [
     'application'   => new ApplicationController(),
     'service'       => new ServiceController(),
     'payment'       => new PaymentController(),
+    'subscription'  => new SubscriptionController(),
     'document'      => new DocumentController(),
     'refund'        => new RefundController(),
     'analytics'     => new AnalyticsController(),
