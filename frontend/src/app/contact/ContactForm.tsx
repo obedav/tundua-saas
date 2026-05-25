@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
+import { trackLeadFormSubmit } from "@/lib/analytics";
 
 export function ContactForm() {
   const [formData, setFormData] = useState({
@@ -36,6 +37,7 @@ export function ContactForm() {
       );
 
       if (response.ok) {
+        trackLeadFormSubmit("contact-page");
         setSubmitted(true);
       } else {
         const data = await response.json().catch(() => null);

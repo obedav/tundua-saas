@@ -10,16 +10,18 @@ const DEFAULT_MESSAGE = "Hi, I need help choosing the right university and apply
 
 /**
  * Sticky bottom CTA bar — mobile only.
- * Shows after the user scrolls 400px so it doesn't interfere with the hero/featured snippet.
- *
- * Mobile is the dominant traffic channel for Nigerian students, so this is the highest-impact
- * conversion surface on the site.
+ * Appears after 150px scroll (clears the hero) and stays visible for the rest of the session.
  */
 export function StickyMobileCTA() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 400);
+    const onScroll = () => {
+      if (window.scrollY > 150) {
+        setVisible(true);
+        window.removeEventListener("scroll", onScroll);
+      }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

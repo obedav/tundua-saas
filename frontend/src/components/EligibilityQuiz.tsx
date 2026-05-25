@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CheckCircle, MessageCircle, Sparkles, ArrowRight } from "lucide-react";
-import { trackEligibilityCheck, trackFormStep, trackWhatsAppClick, trackQuizImpression } from "@/lib/analytics";
+import { CheckCircle, MessageCircle, Sparkles, ArrowRight, Mail } from "lucide-react";
+import { trackEligibilityCheck, trackFormStep, trackWhatsAppClick, trackQuizImpression, trackLeadFormSubmit } from "@/lib/analytics";
 
 const WHATSAPP_NUMBER = process.env['NEXT_PUBLIC_WHATSAPP_NUMBER'] || "2348000000000";
 
@@ -12,14 +12,14 @@ type CourseOption = { id: string; label: string };
 // Country-specific budget tiers — reflects real upfront costs in each destination
 const BUDGETS_BY_COUNTRY: Record<string, BudgetOption[]> = {
   uk: [
-    { id: "low", label: "Under ₦2M upfront", short: "Under ₦2M" },
-    { id: "mid", label: "₦2M – ₦5M upfront", short: "₦2M–₦5M" },
-    { id: "high", label: "Over ₦5M upfront", short: "Over ₦5M" },
+    { id: "low", label: "Under ₦10M upfront", short: "Under ₦10M" },
+    { id: "mid", label: "₦10M – ₦20M upfront", short: "₦10M–₦20M" },
+    { id: "high", label: "Over ₦20M upfront", short: "Over ₦20M" },
   ],
   canada: [
-    { id: "low", label: "Under ₦5M upfront", short: "Under ₦5M" },
-    { id: "mid", label: "₦5M – ₦15M upfront", short: "₦5M–₦15M" },
-    { id: "high", label: "Over ₦15M upfront", short: "Over ₦15M" },
+    { id: "low", label: "Under ₦10M upfront", short: "Under ₦10M" },
+    { id: "mid", label: "₦10M – ₦20M upfront", short: "₦10M–₦20M" },
+    { id: "high", label: "Over ₦20M upfront", short: "Over ₦20M" },
   ],
   australia: [
     { id: "low", label: "Under ₦10M upfront", short: "Under ₦10M" },
@@ -48,12 +48,17 @@ const COUNTRY_LABELS: Record<string, string> = {
   australia: "Australian",
 };
 
+type EmailState = "idle" | "submitting" | "done" | "error";
+
 export function EligibilityQuiz({ source = "blog-eligibility-quiz", country = "uk" }: EligibilityQuizProps) {
   const countryLabel = COUNTRY_LABELS[country] || "UK";
   const budgets = (BUDGETS_BY_COUNTRY[country] ?? BUDGETS_BY_COUNTRY['uk']) as BudgetOption[];
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [budget, setBudget] = useState<BudgetOption | null>(null);
   const [course, setCourse] = useState<CourseOption | null>(null);
+  const [emailName, setEmailName] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
+  const [emailState, setEmailState] = useState<EmailState>("idle");
 
   // Fire a quiz_impression event on mount — separate from form_step_completed so
   // the GA4 funnel reads: impression → step1 → step2 → whatsapp_click cleanly.
@@ -92,6 +97,32 @@ Can you send me a free shortlist of ${countryLabel} universities I qualify for?`
     setStep(1);
     setBudget(null);
     setCourse(null);
+    setEmailName("");
+    setEmailAddress("");
+    setEmailState("idle");
+  };
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEmailState("submitting");
+    try {
+      const res = await fetch(`${process.env['NEXT_PUBLIC_API_URL']}/api/v1/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: emailName.trim(),
+          email: emailAddress.trim(),
+          source: `${source}-email-fallback`,
+          budget: budget?.label,
+          message: `Course: ${course?.label}. Destination: ${countryLabel}.`,
+        }),
+      });
+      if (!res.ok) throw new Error("api error");
+      trackLeadFormSubmit(`${source}-email-fallback`);
+      setEmailState("done");
+    } catch {
+      setEmailState("error");
+    }
   };
 
   return (
@@ -166,7 +197,7 @@ Can you send me a free shortlist of ${countryLabel} universities I qualify for?`
 
           <div className="bg-white rounded-xl border border-amber-200 p-4 mb-4">
             <p className="text-sm text-gray-700 leading-relaxed">
-              <strong>Next step:</strong> Tap below to get your free shortlist on WhatsApp. We&apos;ll send 3–5 universities you qualify for, {country === "australia" ? "tuition fees, CoE costs," : country === "canada" ? "tuition fees, permit costs," : "deposit amounts,"} and exact next steps — usually within 24 hours.
+              <strong>Next step:</strong> Get your free shortlist of 3–5 universities you qualify for, {country === "australia" ? "tuition fees, CoE costs," : country === "canada" ? "tuition fees, permit costs," : "deposit amounts,"} and exact next steps — usually within 24 hours.
             </p>
           </div>
 
@@ -182,9 +213,49 @@ Can you send me a free shortlist of ${countryLabel} universities I qualify for?`
             <ArrowRight className="w-5 h-5" />
           </a>
 
+          <div className="mt-4">
+            <p className="text-xs text-center text-gray-500 mb-3">Prefer email?</p>
+            {emailState === "done" ? (
+              <div className="flex items-center gap-2 justify-center bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+                <CheckCircle className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                <p className="text-sm text-amber-800 font-medium">Shortlist sent — check your inbox within 24 hours.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row gap-2">
+                <input
+                  type="text"
+                  placeholder="Your name"
+                  value={emailName}
+                  onChange={(e) => setEmailName(e.target.value)}
+                  required
+                  className="flex-1 px-3 py-2.5 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400"
+                />
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  value={emailAddress}
+                  onChange={(e) => setEmailAddress(e.target.value)}
+                  required
+                  className="flex-1 px-3 py-2.5 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400"
+                />
+                <button
+                  type="submit"
+                  disabled={emailState === "submitting"}
+                  className="inline-flex items-center justify-center gap-1.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-60 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-colors"
+                >
+                  <Mail className="w-4 h-4" />
+                  {emailState === "submitting" ? "Sending…" : "Send"}
+                </button>
+              </form>
+            )}
+            {emailState === "error" && (
+              <p className="text-xs text-red-600 mt-1 text-center">Something went wrong — try WhatsApp instead.</p>
+            )}
+          </div>
+
           <button
             onClick={reset}
-            className="w-full mt-3 text-xs text-gray-500 hover:text-gray-700 underline"
+            className="w-full mt-4 text-xs text-gray-500 hover:text-gray-700 underline"
           >
             Start over
           </button>
