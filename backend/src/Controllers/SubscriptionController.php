@@ -56,19 +56,25 @@ class SubscriptionController
                 return $this->json($response, ['success' => false, 'error' => 'User not found.'], 404);
             }
 
-            $planCode = $_ENV['PAYSTACK_SCHOLAR_PLAN_CODE'] ?? null;
-            if (!$planCode) {
+            $planCode   = $_ENV['PAYSTACK_SCHOLAR_PLAN_CODE'] ?? null;
+            $secretKey  = $_ENV['PAYSTACK_SECRET_KEY'] ?? null;
+            // Amount in kobo (NGN smallest unit). Must match the plan amount.
+            // e.g. ₦49,999 → 4999900 kobo
+            $planAmount = (int) ($_ENV['PAYSTACK_SCHOLAR_PLAN_AMOUNT'] ?? 4999900);
+
+            if (!$planCode || !$secretKey) {
                 return $this->json($response, [
                     'success' => false,
                     'error' => 'Subscription plan not configured.',
                 ], 500);
             }
 
-            $paystack   = new Paystack($_ENV['PAYSTACK_SECRET_KEY']);
+            $paystack    = new Paystack($secretKey);
             $frontendUrl = $_ENV['APP_URL'] ?? 'http://localhost:3000';
 
             $result = $paystack->transaction->initialize([
                 'email'        => $user['email'],
+                'amount'       => $planAmount,
                 'plan'         => $planCode,
                 'callback_url' => "{$frontendUrl}/dashboard/billing?subscribed=1",
                 'metadata'     => [
@@ -93,7 +99,7 @@ class SubscriptionController
                     'reference'         => $result->data->reference,
                 ],
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             error_log("Subscription init error: " . $e->getMessage());
             return $this->json($response, ['success' => false, 'error' => $e->getMessage()], 500);
         }
@@ -115,7 +121,7 @@ class SubscriptionController
             $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
             $sub = null;
-            if ($user['subscription_plan'] !== 'free') {
+            if ($user && $user['subscription_plan'] !== 'free') {
                 $stmt = $this->getDb()->prepare("
                     SELECT id, plan, status, amount, currency, next_payment_date, cancelled_at, created_at
                     FROM subscriptions
@@ -130,12 +136,12 @@ class SubscriptionController
             return $this->json($response, [
                 'success' => true,
                 'data' => [
-                    'plan'             => $user['subscription_plan'],
-                    'expires_at'       => $user['subscription_expires_at'],
-                    'subscription'     => $sub,
+                    'plan'             => $user['subscription_plan'] ?? 'free',
+                    'expires_at'       => $user['subscription_expires_at'] ?? null,
+                    'subscription'     => $sub ?: null,
                 ],
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return $this->json($response, ['success' => false, 'error' => $e->getMessage()], 500);
         }
     }
@@ -167,7 +173,7 @@ class SubscriptionController
 
             // Tell Paystack to stop renewing
             if ($sub['paystack_subscription_code'] && $sub['email_token']) {
-                $paystack = new Paystack($_ENV['PAYSTACK_SECRET_KEY']);
+                $paystack = new Paystack($_ENV['PAYSTACK_SECRET_KEY'] ?? '');
                 $paystack->subscription->disable([
                     'code'  => $sub['paystack_subscription_code'],
                     'token' => $sub['email_token'],
@@ -186,7 +192,7 @@ class SubscriptionController
                 'success' => true,
                 'message' => 'Your subscription will not renew. You keep access until your current period ends.',
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             error_log("Subscription cancel error: " . $e->getMessage());
             return $this->json($response, ['success' => false, 'error' => $e->getMessage()], 500);
         }

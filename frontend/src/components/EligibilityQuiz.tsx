@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CheckCircle, MessageCircle, Sparkles, ArrowRight } from "lucide-react";
-import { trackEligibilityCheck, trackFormStep, trackWhatsAppClick } from "@/lib/analytics";
+import { trackEligibilityCheck, trackFormStep, trackWhatsAppClick, trackQuizImpression } from "@/lib/analytics";
 
 const WHATSAPP_NUMBER = process.env['NEXT_PUBLIC_WHATSAPP_NUMBER'] || "2348000000000";
 
@@ -55,10 +55,10 @@ export function EligibilityQuiz({ source = "blog-eligibility-quiz", country = "u
   const [budget, setBudget] = useState<BudgetOption | null>(null);
   const [course, setCourse] = useState<CourseOption | null>(null);
 
-  // Fire a "viewed" signal once per mount. Combined with the per-step events below,
-  // this gives a clean view → step1 → step2 → step3 funnel in GA4.
+  // Fire a quiz_impression event on mount — separate from form_step_completed so
+  // the GA4 funnel reads: impression → step1 → step2 → whatsapp_click cleanly.
   useEffect(() => {
-    trackFormStep(source, 0, "viewed");
+    trackQuizImpression(source);
   }, [source]);
 
   const handleBudget = (b: BudgetOption) => {

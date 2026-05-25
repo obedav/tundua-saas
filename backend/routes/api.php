@@ -196,7 +196,7 @@ function registerRoutes($app, array $controllers)
     $app->group('/api/v1', function ($v1) use (
         $authController, $refreshTokenController, $googleOAuthController,
         $applicationController, $serviceController, $paymentController,
-        $documentController, $refundController, $analyticsController,
+        $subscriptionController, $documentController, $refundController, $analyticsController,
         $userController, $notificationController, $activityController,
         $dashboardController, $addonOrderController, $referralController,
         $knowledgeBaseController, $universityController, $aiUsageController,

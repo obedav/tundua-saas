@@ -298,6 +298,20 @@ export const trackEligibilityCheck = (budget: string, course: string) => {
   });
 };
 
+// Impression event fired when a quiz renders — distinct from form_step_completed
+// so it does not inflate funnel step counts in GA4.
+export const trackQuizImpression = (formName: string) => {
+  if (!isGALoaded()) {
+    console.log('[Analytics - Dev] Quiz impression:', { formName });
+    return;
+  }
+  window.gtag('event', 'quiz_impression', {
+    event_category: 'Form',
+    event_label: formName,
+    form_name: formName,
+  });
+};
+
 // Per-step form tracking — diagnose WHERE users drop off.
 // Fire this from multi-step forms (EligibilityQuiz, ApplyForm) at each step.
 export const trackFormStep = (formName: string, step: number, stepLabel: string) => {
