@@ -18,6 +18,7 @@ import { LiveActivityFeed } from "@/components/home/LiveActivityFeed";
 import { PackageQuiz } from "@/components/home/PackageQuiz";
 import { FAQAccordion } from "@/components/home/FAQAccordion";
 import { ScrollSectionButton } from "@/components/home/ScrollSectionButton";
+import { PLANS } from "@/lib/plans";
 import { ScrollAnimations } from "@/components/home/ScrollAnimations";
 import AIToolsSection from "@/components/home/AIToolsSection";
 
@@ -78,65 +79,6 @@ const TESTIMONIALS = [
   },
 ];
 
-const PLANS = [
-  {
-    name: "Seeker", price: "Free", priceNGN: "₦0", description: "Perfect for students exploring their options",
-    features: [
-      { name: "University Search", limit: "5 searches/month" },
-      { name: "Document Checklist", limit: "1 application draft" },
-      { name: "Eligibility Check", limit: "1 check/month" },
-      { name: "Application Dashboard", limit: "" },
-      { name: "University Comparison", limit: "Up to 3 schools" },
-      { name: "Community Forum", limit: "" },
-      { name: "Email Support", limit: "72hr response" },
-    ],
-    badge: "Free Forever", badgeColor: "from-emerald-500 to-teal-500",
-    cardColor: "from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 border-2 border-emerald-300 dark:border-emerald-600/50",
-    ctaHref: "/apply", ctaLabel: "Get Started Free",
-    ctaColor: "bg-gradient-to-r from-emerald-500 to-teal-500 text-white",
-    priceColor: "text-emerald-600 dark:text-emerald-400",
-  },
-  {
-    name: "Scholar", price: "$29.99", priceNGN: "₦49,999", description: "For serious applicants — all limits removed + human support",
-    features: [
-      { name: "Unlimited University Search", limit: "" },
-      { name: "Unlimited Document Review", limit: "" },
-      { name: "Unlimited Eligibility Checks", limit: "" },
-      { name: "Essay Review & Editing", limit: "" },
-      { name: "Priority Email Support", limit: "24hr response" },
-      { name: "Deadline Management", limit: "" },
-      { name: "University Recommendations", limit: "" },
-      { name: "Scholarship Search", limit: "" },
-      { name: "Expert Human Support", limit: "Live counselor" },
-    ],
-    badge: "Most Popular", badgeColor: "from-yellow-400 to-orange-400 text-slate-900",
-    cardColor: "bg-gradient-to-br from-blue-600 to-teal-600 text-white shadow-2xl shadow-teal-500/30",
-    ctaHref: "/auth/register", ctaLabel: "Get Started",
-    ctaColor: "bg-white text-teal-600 hover:bg-blue-50",
-    priceColor: "text-white",
-    highlighted: true,
-  },
-  {
-    name: "Fellow", price: "Custom", priceNGN: "Custom", description: "End-to-end support from application to visa",
-    features: [
-      { name: "Everything in Scholar", limit: "" },
-      { name: "Unlimited Applications", limit: "" },
-      { name: "Complete SOP Writing", limit: "" },
-      { name: "Full Document Preparation", limit: "" },
-      { name: "Visa Application Support", limit: "" },
-      { name: "Interview Coaching", limit: "" },
-      { name: "Dedicated Account Manager", limit: "" },
-      { name: "WhatsApp Priority Support", limit: "" },
-      { name: "Pre-departure Orientation", limit: "" },
-    ],
-    badge: "VIP Service", badgeColor: "from-amber-500 to-orange-500",
-    cardColor: "from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 border-2 border-amber-300 dark:border-amber-600/50",
-    ctaHref: "mailto:hello@tundua.com?subject=Fellow Package Inquiry", ctaLabel: "Contact Us",
-    ctaColor: "bg-gradient-to-r from-amber-500 to-orange-500 text-white",
-    priceColor: "text-amber-600 dark:text-amber-400",
-    isCustom: true,
-  },
-];
 
 export default function HomePage() {
   return (
@@ -510,7 +452,7 @@ export default function HomePage() {
                   </div>
                   {!plan.isCustom && (
                     <p className={`mt-1 ${plan.highlighted ? "text-blue-100" : "text-slate-500 dark:text-stone-400"}`}>
-                      {plan.name === "Seeker" ? "No credit card required" : `${plan.priceNGN} • One-time payment`}
+                      {plan.isFree ? "No credit card required" : `${plan.priceNGN} • per year`}
                     </p>
                   )}
                   {plan.isCustom && <p className={`mt-1 font-medium ${plan.priceColor}`}>Contact for quote</p>}

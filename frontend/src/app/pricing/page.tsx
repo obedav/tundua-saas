@@ -5,6 +5,7 @@ import { CheckCircle, ArrowRight, Sparkles, Award } from "lucide-react";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
 import { BreadcrumbStructuredData, FAQStructuredData } from "@/components/StructuredData";
+import { PLANS } from "@/lib/plans";
 
 const APP_URL = process.env["NEXT_PUBLIC_APP_URL"] || "https://tundua.com";
 
@@ -23,71 +24,6 @@ export const metadata: Metadata = {
   },
 };
 
-const PLANS = [
-  {
-    name: "Seeker",
-    price: "Free",
-    priceNGN: "₦0",
-    description: "Perfect for students exploring their options",
-    features: [
-      "University Search (5 searches/month)",
-      "Document Checklist (1 application draft)",
-      "Eligibility Check (1 check/month)",
-      "Application Dashboard",
-      "University Comparison (up to 3 schools)",
-      "Community Forum",
-      "Email Support (72hr response)",
-    ],
-    ctaHref: "/apply",
-    ctaLabel: "Get Started Free",
-    highlight: false,
-    isFree: true,
-  },
-  {
-    name: "Scholar",
-    price: "$29.99",
-    priceNGN: "₦49,999",
-    description: "For serious applicants — all limits removed + human support",
-    features: [
-      "Unlimited University Search",
-      "Unlimited Document Review",
-      "Unlimited Eligibility Checks",
-      "Essay Review & Editing",
-      "Priority Email Support (24hr response)",
-      "Deadline Management",
-      "University Recommendations",
-      "Scholarship Search",
-      "Expert Human Support (live counselor)",
-    ],
-    ctaHref: "/dashboard/billing?plan=scholar",
-    ctaLabel: "Get Started",
-    highlight: true,
-    isFree: false,
-    isAnnual: true,
-  },
-  {
-    name: "Fellow",
-    price: "$149",
-    priceNGN: "Custom pricing",
-    description: "End-to-end support from application to visa",
-    features: [
-      "Everything in Scholar",
-      "Unlimited Applications",
-      "Complete SOP Writing",
-      "Full Document Preparation",
-      "Visa Application Support",
-      "Interview Coaching",
-      "Dedicated Account Manager",
-      "WhatsApp Priority Support",
-      "Pre-departure Orientation",
-    ],
-    ctaHref: "mailto:hello@tundua.com?subject=Fellow Package Inquiry",
-    ctaLabel: "Contact Us",
-    highlight: false,
-    isFree: false,
-    isCustom: true,
-  },
-];
 
 const FAQS = [
   {
@@ -214,31 +150,19 @@ export default function PricingPage() {
             <div
               key={plan.name}
               className={`relative rounded-3xl p-8 transition-all ${
-                plan.highlight
+                plan.highlighted
                   ? "bg-gradient-to-br from-blue-600 to-teal-600 text-white shadow-2xl shadow-teal-500/30 scale-105"
                   : "bg-white border-2 border-gray-200 hover:border-primary-300 shadow-lg"
               }`}
             >
-              {plan.highlight && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 px-6 py-1 rounded-full text-sm font-bold">
-                  Most Popular
-                </div>
-              )}
-              {plan.isFree && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-6 py-1 rounded-full text-sm font-bold">
-                  Free Forever
-                </div>
-              )}
-              {plan.isCustom && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 py-1 rounded-full text-sm font-bold">
-                  VIP Service
-                </div>
-              )}
+              <div className={`absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r ${plan.badgeColor} px-6 py-1 rounded-full text-sm font-bold`}>
+                {plan.badge}
+              </div>
 
-              <h2 className={`text-2xl font-bold mb-2 ${plan.highlight ? "text-white" : "text-gray-900"}`}>
+              <h2 className={`text-2xl font-bold mb-2 ${plan.highlighted ? "text-white" : "text-gray-900"}`}>
                 {plan.name}
               </h2>
-              <p className={`text-sm mb-6 ${plan.highlight ? "text-blue-100" : "text-gray-500"}`}>
+              <p className={`text-sm mb-6 ${plan.highlighted ? "text-blue-100" : "text-gray-500"}`}>
                 {plan.description}
               </p>
 
@@ -255,14 +179,14 @@ export default function PricingPage() {
                   </>
                 ) : (
                   <>
-                    <div className={`text-4xl font-bold ${plan.highlight ? "text-white" : "text-gray-900"}`}>
+                    <div className={`text-4xl font-bold ${plan.highlighted ? "text-white" : "text-gray-900"}`}>
                       {plan.price}
                     </div>
-                    <p className={`mt-1 ${plan.highlight ? "text-blue-100" : "text-gray-500"}`}>
+                    <p className={`mt-1 ${plan.highlighted ? "text-blue-100" : "text-gray-500"}`}>
                       {plan.priceNGN} · per year
                     </p>
                     {plan.isAnnual && (
-                      <p className={`text-xs mt-1.5 ${plan.highlight ? "text-blue-200" : "text-gray-400"}`}>
+                      <p className={`text-xs mt-1.5 ${plan.highlighted ? "text-blue-200" : "text-gray-400"}`}>
                         Annual subscription · Cancel before renewal · No lock-in
                       </p>
                     )}
@@ -272,9 +196,11 @@ export default function PricingPage() {
 
               <ul className="space-y-3 mb-8">
                 {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-3">
-                    <CheckCircle className={`w-5 h-5 mt-0.5 flex-shrink-0 ${plan.highlight ? "text-green-300" : "text-green-600"}`} />
-                    <span className={`text-sm ${plan.highlight ? "text-white" : "text-gray-700"}`}>{f}</span>
+                  <li key={f.name} className="flex items-start gap-3">
+                    <CheckCircle className={`w-5 h-5 mt-0.5 flex-shrink-0 ${plan.highlighted ? "text-green-300" : "text-green-600"}`} />
+                    <span className={`text-sm ${plan.highlighted ? "text-white" : "text-gray-700"}`}>
+                      {f.name}{f.limit && ` (${f.limit})`}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -290,7 +216,7 @@ export default function PricingPage() {
                 <Link
                   href={plan.ctaHref}
                   className={`block w-full text-center py-4 rounded-full font-semibold transition-all hover:shadow-xl ${
-                    plan.highlight
+                    plan.highlighted
                       ? "bg-white text-teal-600 hover:bg-blue-50"
                       : plan.isFree
                       ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white"
