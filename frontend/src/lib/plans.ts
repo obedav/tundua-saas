@@ -38,9 +38,9 @@ export const PLANS: Plan[] = [
     ctaLabel: "Get Started Free",
     badge: "Free Forever",
     badgeColor: "from-emerald-500 to-teal-500",
-    cardColor: "from-emerald-50 to-teal-50 border-2 border-emerald-300",
+    cardColor: "from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 border-2 border-emerald-300 dark:border-emerald-600/50",
     ctaColor: "bg-gradient-to-r from-emerald-500 to-teal-500 text-white",
-    priceColor: "text-emerald-600",
+    priceColor: "text-emerald-600 dark:text-emerald-400",
     isFree: true,
   },
   {
@@ -89,9 +89,9 @@ export const PLANS: Plan[] = [
     ctaLabel: "Contact Us",
     badge: "VIP Service",
     badgeColor: "from-amber-500 to-orange-500",
-    cardColor: "from-amber-50 to-orange-50 border-2 border-amber-300",
+    cardColor: "from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 border-2 border-amber-300 dark:border-amber-600/50",
     ctaColor: "bg-gradient-to-r from-amber-500 to-orange-500 text-white",
-    priceColor: "text-amber-600",
+    priceColor: "text-amber-600 dark:text-amber-400",
     isCustom: true,
   },
 ];

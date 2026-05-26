@@ -448,14 +448,15 @@ export default function HomePage() {
                 </div>
                 <div className="mb-4 md:mb-6">
                   <div className={`text-4xl md:text-5xl font-bold ${plan.priceColor}`}>
-                    {plan.isCustom ? "Custom" : plan.name === "Seeker" ? "FREE" : plan.price}
+                    {plan.isFree ? "FREE" : plan.price}
                   </div>
-                  {!plan.isCustom && (
-                    <p className={`mt-1 ${plan.highlighted ? "text-blue-100" : "text-slate-500 dark:text-stone-400"}`}>
-                      {plan.isFree ? "No credit card required" : `${plan.priceNGN} • per year`}
-                    </p>
-                  )}
-                  {plan.isCustom && <p className={`mt-1 font-medium ${plan.priceColor}`}>Contact for quote</p>}
+                  <p className={`mt-1 ${plan.highlighted ? "text-blue-100" : "text-slate-500 dark:text-stone-400"}`}>
+                    {plan.isFree
+                      ? "No credit card required"
+                      : plan.isCustom
+                      ? `${plan.priceNGN} · Contact for quote`
+                      : `${plan.priceNGN} • per year`}
+                  </p>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((f) => (
