@@ -415,6 +415,7 @@ function registerRoutes($app, array $controllers)
             $group->get('/featured', [$knowledgeBaseController, 'getFeatured']);
             $group->get('/categories', [$knowledgeBaseController, 'getCategories']);
             $group->get('/{id}', [$knowledgeBaseController, 'getArticle']);
+            $group->post('/{id}/view', [$knowledgeBaseController, 'trackView']);
             $group->post('/{id}/feedback', [$knowledgeBaseController, 'markHelpful']);
         });
 

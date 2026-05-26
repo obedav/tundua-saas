@@ -58,9 +58,6 @@ class KnowledgeBaseController
                 return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
             }
 
-            // Increment view count
-            KnowledgeBaseArticle::incrementViews($article->id);
-
             $response->getBody()->write(json_encode([
                 'success' => true,
                 'article' => $article
@@ -73,6 +70,32 @@ class KnowledgeBaseController
                 'success' => false,
                 'error' => 'Internal server error'
             ]));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
+    }
+
+    /**
+     * Track a real user page view — called client-side only so bots and ISR
+     * revalidations never inflate the count.
+     * POST /api/knowledge-base/{id}/view
+     */
+    public function trackView(Request $request, Response $response, array $args): Response
+    {
+        try {
+            $article = KnowledgeBaseArticle::getByIdOrSlug($args['id']);
+
+            if (!$article) {
+                $response->getBody()->write(json_encode(['success' => false]));
+                return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+            }
+
+            $article->increment('view_count');
+
+            $response->getBody()->write(json_encode(['success' => true]));
+            return $response->withHeader('Content-Type', 'application/json');
+        } catch (\Exception $e) {
+            error_log("Error tracking view: " . $e->getMessage());
+            $response->getBody()->write(json_encode(['success' => false]));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
     }

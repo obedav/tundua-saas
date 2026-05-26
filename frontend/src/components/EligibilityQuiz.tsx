@@ -140,7 +140,7 @@ Can you send me a free shortlist of ${countryLabel} universities I qualify for?`
             Which {countryLabel} universities can you actually afford?
           </h3>
           <p className="text-sm text-gray-600 mb-5">
-            Answer 2 quick questions and we&apos;ll match you to {countryLabel.toLowerCase()} schools that fit your budget.
+            Answer 2 quick questions and we&apos;ll match you to {countryLabel} universities that fit your budget.
           </p>
           <p className="text-sm font-semibold text-gray-900 mb-3">
             Step 1 of 2 — How much can you pay upfront?
@@ -190,7 +190,7 @@ Can you send me a free shortlist of ${countryLabel} universities I qualify for?`
                 Good news — you qualify for several {countryLabel} universities
               </h3>
               <p className="text-sm text-gray-700">
-                Based on your budget ({budget.short}) and course choice ({course.label}), we have a personalised {countryLabel.toLowerCase()} shortlist ready.
+                Based on your budget ({budget.short}) and course choice ({course.label}), we have a personalised {countryLabel} university shortlist ready.
               </p>
             </div>
           </div>

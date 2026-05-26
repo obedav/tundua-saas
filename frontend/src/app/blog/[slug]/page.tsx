@@ -13,6 +13,7 @@ import { InlineLeadForm } from "@/components/InlineLeadForm";
 import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 import { EligibilityQuiz } from "@/components/EligibilityQuiz";
 import { StickyMobileCTA } from "@/components/StickyMobileCTA";
+import { ViewTracker } from "@/components/ViewTracker";
 import { clientEnv } from "@/lib/env";
 import { sanitizeArticleHtml, rewriteCtaLinks } from "@/lib/article-html";
 
@@ -427,6 +428,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
         </div>
       </main>
 
+      <ViewTracker slug={article.slug} />
       <WhatsAppFloat />
       <StickyMobileCTA />
       <ExitIntentPopup />
