@@ -1,4 +1,7 @@
 import type { Config } from "tailwindcss";
+import forms from "@tailwindcss/forms";
+import typography from "@tailwindcss/typography";
+import animate from "tailwindcss-animate";
 
 const config: Config = {
   darkMode: 'class', // Enable class-based dark mode (2025 standard)
@@ -6,6 +9,7 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -173,11 +177,9 @@ const config: Config = {
     },
   },
   plugins: [
-    require('@tailwindcss/forms')({
-      strategy: 'class', // Use class-based forms for better control
-    }),
-    require('@tailwindcss/typography'),
-    require('tailwindcss-animate'),
+    forms({ strategy: 'class' }),
+    typography,
+    animate,
   ],
 };
 
