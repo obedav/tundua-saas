@@ -437,20 +437,20 @@ export default function HomePage() {
             {PLANS.map((plan) => (
               <div
                 key={plan.name}
-                className={`relative rounded-3xl p-8 transition-all hover:scale-105 z-10 ${plan.highlighted ? plan.cardColor : `bg-gradient-to-br ${plan.cardColor} shadow-lg dark:shadow-stone-950/50`}`}
+                className={`relative rounded-3xl p-8 transition-all hover:scale-105 z-10 shadow-lg dark:shadow-stone-950/50 ${plan.cardColor}`}
               >
-                <div className={`absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r ${plan.badgeColor} px-6 py-1 rounded-full text-sm font-bold ${plan.highlighted ? "" : "text-white"}`}>
+                <div className={`absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r ${plan.badgeColor} px-6 py-1 rounded-full text-sm font-bold text-white`}>
                   {plan.badge}
                 </div>
                 <div className="mb-4 md:mb-6">
-                  <h3 className={`text-xl md:text-2xl font-bold mb-2 ${plan.highlighted ? "text-white" : "text-slate-900 dark:text-stone-100"}`}>{plan.name}</h3>
-                  <p className={`text-sm md:text-base ${plan.highlighted ? "text-blue-100" : "text-slate-600 dark:text-stone-400"}`}>{plan.description}</p>
+                  <h3 className={`text-xl md:text-2xl font-bold mb-2 ${plan.headingColor}`}>{plan.name}</h3>
+                  <p className={`text-sm md:text-base ${plan.descColor}`}>{plan.description}</p>
                 </div>
                 <div className="mb-4 md:mb-6">
                   <div className={`text-4xl md:text-5xl font-bold ${plan.priceColor}`}>
                     {plan.isFree ? "FREE" : plan.price}
                   </div>
-                  <p className={`mt-1 ${plan.highlighted ? "text-blue-100" : "text-slate-500 dark:text-stone-400"}`}>
+                  <p className={`mt-1 ${plan.subPriceColor}`}>
                     {plan.isFree
                       ? "No credit card required"
                       : plan.isCustom
@@ -461,23 +461,17 @@ export default function HomePage() {
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((f) => (
                     <li key={f.name} className="flex items-start gap-3">
-                      <CheckCircle className={`h-5 w-5 mt-0.5 flex-shrink-0 ${plan.highlighted ? "text-green-300" : "text-green-600 dark:text-green-400"}`} />
+                      <CheckCircle className={`h-5 w-5 mt-0.5 flex-shrink-0 ${plan.checkColor}`} />
                       <div>
-                        <span className={`font-medium ${plan.highlighted ? "text-white" : "text-slate-900 dark:text-stone-100"}`}>{f.name}</span>
-                        {f.limit && <span className={`ml-1 ${plan.highlighted ? "text-blue-200" : "text-slate-500 dark:text-stone-400"}`}>{f.limit}</span>}
+                        <span className={`font-medium ${plan.featureTextColor}`}>{f.name}</span>
+                        {f.limit && <span className={`ml-1 ${plan.featureLimitColor}`}>{f.limit}</span>}
                       </div>
                     </li>
                   ))}
                 </ul>
-                {plan.isCustom ? (
-                  <a href={plan.ctaHref} className={`block w-full text-center px-6 py-4 rounded-full font-semibold transition-all ${plan.ctaColor} hover:shadow-xl`}>
-                    {plan.ctaLabel}
-                  </a>
-                ) : (
-                  <Link href={plan.ctaHref} className={`block w-full text-center px-6 py-4 rounded-full font-semibold transition-all ${plan.ctaColor} hover:shadow-xl`}>
-                    {plan.ctaLabel}
-                  </Link>
-                )}
+                <Link href={plan.ctaHref} className={`block w-full text-center px-6 py-4 rounded-full font-semibold transition-all ${plan.ctaColor} hover:shadow-xl`}>
+                  {plan.ctaLabel}
+                </Link>
               </div>
             ))}
           </div>

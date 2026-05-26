@@ -149,83 +149,54 @@ export default function PricingPage() {
           {PLANS.map((plan) => (
             <div
               key={plan.name}
-              className={`relative rounded-3xl p-8 transition-all ${
-                plan.highlighted
-                  ? "bg-gradient-to-br from-blue-600 to-teal-600 text-white shadow-2xl shadow-teal-500/30 scale-105"
-                  : "bg-white border-2 border-gray-200 hover:border-primary-300 shadow-lg"
-              }`}
+              className={`relative rounded-3xl p-8 transition-all shadow-lg ${plan.highlighted ? "scale-105" : ""} ${plan.cardColor}`}
             >
-              <div className={`absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r ${plan.badgeColor} px-6 py-1 rounded-full text-sm font-bold`}>
+              <div className={`absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r ${plan.badgeColor} px-6 py-1 rounded-full text-sm font-bold text-white`}>
                 {plan.badge}
               </div>
 
-              <h2 className={`text-2xl font-bold mb-2 ${plan.highlighted ? "text-white" : "text-gray-900"}`}>
+              <h2 className={`text-2xl font-bold mb-2 ${plan.headingColor}`}>
                 {plan.name}
               </h2>
-              <p className={`text-sm mb-6 ${plan.highlighted ? "text-blue-100" : "text-gray-500"}`}>
+              <p className={`text-sm mb-6 ${plan.descColor}`}>
                 {plan.description}
               </p>
 
               <div className="mb-6">
-                {plan.isCustom ? (
-                  <>
-                    <div className="text-4xl font-bold text-amber-600">{plan.price}</div>
-                    <p className="text-amber-700 mt-1 font-medium">{plan.priceNGN} · Contact for full quote</p>
-                  </>
-                ) : plan.isFree ? (
-                  <>
-                    <div className="text-4xl font-bold text-emerald-600">FREE</div>
-                    <p className="text-gray-500 mt-1">No credit card required</p>
-                  </>
-                ) : (
-                  <>
-                    <div className={`text-4xl font-bold ${plan.highlighted ? "text-white" : "text-gray-900"}`}>
-                      {plan.price}
-                    </div>
-                    <p className={`mt-1 ${plan.highlighted ? "text-blue-100" : "text-gray-500"}`}>
-                      {plan.priceNGN} · per year
-                    </p>
-                    {plan.isAnnual && (
-                      <p className={`text-xs mt-1.5 ${plan.highlighted ? "text-blue-200" : "text-gray-400"}`}>
-                        Annual subscription · Cancel before renewal · No lock-in
-                      </p>
-                    )}
-                  </>
+                <div className={`text-4xl font-bold ${plan.priceColor}`}>
+                  {plan.isFree ? "FREE" : plan.price}
+                </div>
+                <p className={`mt-1 ${plan.subPriceColor}`}>
+                  {plan.isFree
+                    ? "No credit card required"
+                    : plan.isCustom
+                    ? `${plan.priceNGN} · Contact for full quote`
+                    : `${plan.priceNGN} · per year`}
+                </p>
+                {plan.isAnnual && (
+                  <p className={`text-xs mt-1.5 ${plan.featureLimitColor}`}>
+                    Annual subscription · Cancel before renewal · No lock-in
+                  </p>
                 )}
               </div>
 
               <ul className="space-y-3 mb-8">
                 {plan.features.map((f) => (
                   <li key={f.name} className="flex items-start gap-3">
-                    <CheckCircle className={`w-5 h-5 mt-0.5 flex-shrink-0 ${plan.highlighted ? "text-green-300" : "text-green-600"}`} />
-                    <span className={`text-sm ${plan.highlighted ? "text-white" : "text-gray-700"}`}>
+                    <CheckCircle className={`w-5 h-5 mt-0.5 flex-shrink-0 ${plan.checkColor}`} />
+                    <span className={`text-sm ${plan.featureTextColor}`}>
                       {f.name}{f.limit && ` (${f.limit})`}
                     </span>
                   </li>
                 ))}
               </ul>
 
-              {plan.isCustom ? (
-                <a
-                  href={plan.ctaHref}
-                  className="block w-full text-center py-4 rounded-full font-semibold bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:shadow-xl transition-all"
-                >
-                  {plan.ctaLabel}
-                </a>
-              ) : (
-                <Link
-                  href={plan.ctaHref}
-                  className={`block w-full text-center py-4 rounded-full font-semibold transition-all hover:shadow-xl ${
-                    plan.highlighted
-                      ? "bg-white text-teal-600 hover:bg-blue-50"
-                      : plan.isFree
-                      ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white"
-                      : "bg-gradient-to-r from-blue-600 to-teal-600 text-white"
-                  }`}
-                >
-                  {plan.ctaLabel}
-                </Link>
-              )}
+              <Link
+                href={plan.ctaHref}
+                className={`block w-full text-center py-4 rounded-full font-semibold transition-all hover:shadow-xl ${plan.ctaColor}`}
+              >
+                {plan.ctaLabel}
+              </Link>
             </div>
           ))}
         </div>

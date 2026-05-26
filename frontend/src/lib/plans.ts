@@ -13,6 +13,12 @@ export type Plan = {
   cardColor: string;
   ctaColor: string;
   priceColor: string;
+  headingColor: string;
+  descColor: string;
+  subPriceColor: string;
+  featureTextColor: string;
+  featureLimitColor: string;
+  checkColor: string;
   isFree?: boolean;
   isCustom?: boolean;
   isAnnual?: boolean;
@@ -38,9 +44,15 @@ export const PLANS: Plan[] = [
     ctaLabel: "Get Started Free",
     badge: "Free Forever",
     badgeColor: "from-emerald-500 to-teal-500",
-    cardColor: "from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 border-2 border-emerald-300 dark:border-emerald-600/50",
+    cardColor: "bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 border-2 border-emerald-300 dark:border-emerald-600/50",
     ctaColor: "bg-gradient-to-r from-emerald-500 to-teal-500 text-white",
     priceColor: "text-emerald-600 dark:text-emerald-400",
+    headingColor: "text-slate-900 dark:text-stone-100",
+    descColor: "text-slate-600 dark:text-stone-400",
+    subPriceColor: "text-slate-500 dark:text-stone-400",
+    featureTextColor: "text-slate-900 dark:text-stone-100",
+    featureLimitColor: "text-slate-500 dark:text-stone-400",
+    checkColor: "text-green-600 dark:text-green-400",
     isFree: true,
   },
   {
@@ -63,9 +75,15 @@ export const PLANS: Plan[] = [
     ctaLabel: "Get Started",
     badge: "Most Popular",
     badgeColor: "from-yellow-400 to-orange-400 text-slate-900",
-    cardColor: "bg-gradient-to-br from-blue-600 to-teal-600 text-white shadow-2xl shadow-teal-500/30",
+    cardColor: "bg-gradient-to-br from-blue-600 to-teal-600 shadow-2xl shadow-teal-500/30",
     ctaColor: "bg-white text-teal-600 hover:bg-blue-50",
     priceColor: "text-white",
+    headingColor: "text-white",
+    descColor: "text-blue-100",
+    subPriceColor: "text-blue-100",
+    featureTextColor: "text-white",
+    featureLimitColor: "text-blue-200",
+    checkColor: "text-green-300",
     isAnnual: true,
     highlighted: true,
   },
@@ -85,13 +103,19 @@ export const PLANS: Plan[] = [
       { name: "WhatsApp Priority Support", limit: "" },
       { name: "Pre-departure Orientation", limit: "" },
     ],
-    ctaHref: "mailto:hello@tundua.com?subject=Fellow Package Inquiry",
-    ctaLabel: "Contact Us",
+    ctaHref: "/apply",
+    ctaLabel: "Get Started",
     badge: "VIP Service",
     badgeColor: "from-amber-500 to-orange-500",
-    cardColor: "from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 border-2 border-amber-300 dark:border-amber-600/50",
+    cardColor: "bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 border-2 border-amber-300 dark:border-amber-600/50",
     ctaColor: "bg-gradient-to-r from-amber-500 to-orange-500 text-white",
     priceColor: "text-amber-600 dark:text-amber-400",
+    headingColor: "text-slate-900 dark:text-stone-100",
+    descColor: "text-slate-600 dark:text-stone-400",
+    subPriceColor: "text-slate-500 dark:text-stone-400",
+    featureTextColor: "text-slate-900 dark:text-stone-100",
+    featureLimitColor: "text-slate-500 dark:text-stone-400",
+    checkColor: "text-green-600 dark:text-green-400",
     isCustom: true,
   },
 ];
