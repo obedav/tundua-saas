@@ -131,7 +131,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
               <p className="text-sm text-gray-600">
                 If this problem persists, please{" "}
                 <a
-                  href="/support"
+                  href="/contact"
                   className="text-primary-600 hover:text-primary-700 font-semibold underline"
                 >
                   contact support

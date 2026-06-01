@@ -143,7 +143,7 @@ export default function ForgotPasswordPage() {
             >
               <p>
                 Need help?{" "}
-                <Link href="/support" className="text-white hover:text-primary-100 font-semibold underline underline-offset-2">
+                <Link href="/contact" className="text-white hover:text-primary-100 font-semibold underline underline-offset-2">
                   Contact Support
                 </Link>
               </p>
@@ -303,7 +303,7 @@ export default function ForgotPasswordPage() {
                   Terms
                 </Link>
                 <span>•</span>
-                <Link href="/support" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+                <Link href="/contact" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   Support
                 </Link>
               </div>

@@ -433,7 +433,7 @@ export default function ResetPasswordPage() {
                   Terms
                 </Link>
                 <span>•</span>
-                <Link href="/support" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+                <Link href="/contact" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   Support
                 </Link>
               </div>

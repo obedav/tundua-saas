@@ -19,7 +19,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'),
+  metadataBase: new URL(process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com'),
   title: {
     default: "Tundua - Study Abroad Application Platform",
     template: "%s | Tundua" // Page titles will be "Page Name | Tundua"
@@ -82,17 +82,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_NG',
-    url: process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com',
+    url: 'https://tundua.com',
     title: "Tundua - Study Abroad Application Platform",
     description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance from ₦49,999.",
     siteName: "Tundua",
-    // OG image auto-generated from src/app/opengraph-image.tsx
+    images: [
+      {
+        url: 'https://tundua.com/images/Og.png',
+        width: 1200,
+        height: 630,
+        alt: "Tundua - Study Abroad Application Platform",
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: "Tundua - Study Abroad Application Platform",
     description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance from ₦49,999.",
-    // Twitter image auto-generated from src/app/twitter-image.tsx
+    images: ['https://tundua.com/images/Og.png'],
     creator: '@tundua',
   },
   robots: {

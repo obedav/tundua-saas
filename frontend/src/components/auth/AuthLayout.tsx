@@ -182,7 +182,7 @@ export default function AuthLayout({
                 <span aria-hidden="true">&bull;</span>
                 <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white transition-colors">Terms</Link>
                 <span aria-hidden="true">&bull;</span>
-                <Link href="/support" className="hover:text-gray-900 dark:hover:text-white transition-colors">Support</Link>
+                <Link href="/contact" className="hover:text-gray-900 dark:hover:text-white transition-colors">Support</Link>
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
                 &copy; {new Date().getFullYear()} Tundua Edu Consults. All rights reserved.
