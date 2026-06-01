@@ -2,434 +2,556 @@
 
 namespace Tundua\Tests\Feature;
 
+use GuzzleHttp\Psr7\ServerRequest;
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Tundua\Controllers\PaymentController;
+use Tundua\Services\PaystackClientInterface;
 use Tundua\Tests\TestCase;
-use Tundua\Models\Application;
-use Tundua\Models\User;
 
 /**
  * Payment Integration Tests
  *
- * Tests payment flows for Stripe and Paystack
- * Uses mocked responses to avoid real charges
+ * Every test exercises real PaymentController logic against an in-memory SQLite
+ * database (injected via constructor DI). The Paystack SDK is replaced by a
+ * PHPUnit mock of PaystackClientInterface so no real API calls are made.
+ *
+ * SOLID principles in play:
+ *  D — PaymentController accepts PaystackClientInterface, so tests inject fakes.
+ *  O — validatePaymentAmount is protected, so the test double can override it
+ *      without changing production code (used for the "success path" init tests
+ *      where PricingService's Eloquent models are not available in SQLite).
+ *  S — Each test asserts one behaviour; helpers handle repeated setup.
+ *
+ * DRY: makeController(), postRequest(), webhookRequest(), and decode() are
+ * defined once and reused across all test methods.
+ *
+ * KISS: No extra testing framework, no Mockery — plain PHPUnit mocks only.
  */
 class PaymentIntegrationTest extends TestCase
 {
-    /**
-     * Test payment initiation - Stripe
-     * @test
-     */
-    public function it_initiates_stripe_payment_successfully()
+    /** Paystack secret configured in phpunit.xml */
+    private const PAYSTACK_SECRET = 'sk_test_fake';
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private function makeController(?PaystackClientInterface $paystack = null): PaymentController
     {
-        // This would normally create a real payment intent
-        // For testing, we mock the Stripe API response
-
-        $paymentData = [
-            'application_id' => 1,
-            'amount' => 50000, // NGN 50,000
-            'currency' => 'NGN',
-            'payment_method' => 'stripe',
-            'description' => 'Application fee payment'
-        ];
-
-        // Mock expected response structure
-        $expectedResponse = [
-            'success' => true,
-            'data' => [
-                'payment_intent_id' => 'pi_test_123456',
-                'client_secret' => 'pi_test_123456_secret_abcd',
-                'amount' => 50000,
-                'currency' => 'NGN',
-                'status' => 'requires_payment_method'
-            ]
-        ];
-
-        // Assert response structure
-        $this->assertIsArray($expectedResponse);
-        $this->assertTrue($expectedResponse['success']);
-        $this->assertArrayHasKey('payment_intent_id', $expectedResponse['data']);
-        $this->assertArrayHasKey('client_secret', $expectedResponse['data']);
+        return new PaymentController(self::$db, $paystack);
     }
 
-    /**
-     * Test payment initiation - Paystack
-     * @test
-     */
-    public function it_initiates_paystack_payment_successfully()
+    private function emptyResponse(): ResponseInterface
     {
-        $paymentData = [
-            'application_id' => 1,
-            'amount' => 50000, // NGN 50,000
-            'currency' => 'NGN',
-            'payment_method' => 'paystack',
-            'email' => 'test@example.com'
-        ];
-
-        // Mock expected Paystack response
-        $expectedResponse = [
-            'success' => true,
-            'data' => [
-                'authorization_url' => 'https://checkout.paystack.com/abc123',
-                'access_code' => 'abc123xyz',
-                'reference' => 'TUN-' . time()
-            ]
-        ];
-
-        $this->assertIsArray($expectedResponse);
-        $this->assertTrue($expectedResponse['success']);
-        $this->assertArrayHasKey('authorization_url', $expectedResponse['data']);
-        $this->assertArrayHasKey('reference', $expectedResponse['data']);
+        return new Response();
     }
 
-    /**
-     * Test payment validation - amount too low
-     * @test
-     */
-    public function it_rejects_payment_with_amount_too_low()
+    private function postRequest(array $body = []): ServerRequestInterface
     {
-        $paymentData = [
-            'application_id' => 1,
-            'amount' => 100, // Too low (min is usually 1000 NGN)
-            'currency' => 'NGN',
-            'payment_method' => 'stripe'
-        ];
-
-        // Expected validation error
-        $this->assertLessThan(1000, $paymentData['amount']);
+        return (new ServerRequest('POST', '/api/payments/paystack/initialize'))
+            ->withParsedBody($body);
     }
 
-    /**
-     * Test payment validation - missing required fields
-     * @test
-     */
-    public function it_rejects_payment_with_missing_fields()
+    private function getRequest(array $queryParams = [], array $attributes = []): ServerRequestInterface
     {
-        $paymentData = [
-            'amount' => 50000
-            // Missing: application_id, currency, payment_method
-        ];
-
-        $this->assertArrayNotHasKey('application_id', $paymentData);
-        $this->assertArrayNotHasKey('currency', $paymentData);
+        $request = new ServerRequest('GET', '/');
+        foreach ($attributes as $key => $value) {
+            $request = $request->withAttribute($key, $value);
+        }
+        if ($queryParams) {
+            $request = $request->withQueryParams($queryParams);
+        }
+        return $request;
     }
 
-    /**
-     * Test Stripe webhook - payment succeeded
-     * @test
-     */
-    public function it_processes_stripe_webhook_payment_succeeded()
+    private function webhookRequest(array $payload): ServerRequestInterface
     {
-        // Mock Stripe webhook payload
-        $webhookPayload = [
-            'id' => 'evt_test_123',
-            'type' => 'payment_intent.succeeded',
-            'data' => [
-                'object' => [
-                    'id' => 'pi_test_123456',
-                    'amount' => 50000,
-                    'currency' => 'ngn',
-                    'status' => 'succeeded',
-                    'metadata' => [
-                        'application_id' => '1',
-                        'user_id' => '1'
-                    ]
-                ]
-            ]
-        ];
+        $body = json_encode($payload);
+        $sig = hash_hmac('sha512', $body, self::PAYSTACK_SECRET);
 
-        // Webhook should:
-        // 1. Verify signature
-        // 2. Update payment status to 'completed'
-        // 3. Update application status to 'submitted'
-        // 4. Log audit event
-
-        $this->assertEquals('payment_intent.succeeded', $webhookPayload['type']);
-        $this->assertEquals('succeeded', $webhookPayload['data']['object']['status']);
+        return new ServerRequest(
+            'POST',
+            '/api/payments/paystack/webhook',
+            ['x-paystack-signature' => $sig, 'Content-Type' => 'application/json'],
+            $body
+        );
     }
 
-    /**
-     * Test Stripe webhook - payment failed
-     * @test
-     */
-    public function it_processes_stripe_webhook_payment_failed()
+    private function decode(ResponseInterface $response): array
     {
-        $webhookPayload = [
-            'id' => 'evt_test_456',
-            'type' => 'payment_intent.payment_failed',
-            'data' => [
-                'object' => [
-                    'id' => 'pi_test_123456',
-                    'status' => 'failed',
-                    'last_payment_error' => [
-                        'message' => 'Card declined'
-                    ]
-                ]
-            ]
-        ];
-
-        // Webhook should:
-        // 1. Update payment status to 'failed'
-        // 2. Log failure reason
-        // 3. Notify user
-
-        $this->assertEquals('payment_intent.payment_failed', $webhookPayload['type']);
-        $this->assertArrayHasKey('last_payment_error', $webhookPayload['data']['object']);
+        return json_decode((string) $response->getBody(), true);
     }
 
-    /**
-     * Test Paystack webhook - payment success
-     * @test
-     */
-    public function it_processes_paystack_webhook_payment_success()
-    {
-        $webhookPayload = [
-            'event' => 'charge.success',
-            'data' => [
-                'reference' => 'TUN-123456',
-                'amount' => 5000000, // Paystack uses kobo (50000 * 100)
-                'currency' => 'NGN',
-                'status' => 'success',
-                'metadata' => [
-                    'application_id' => 1,
-                    'user_id' => 1
-                ]
-            ]
-        ];
+    /** Build a mock PaystackClientInterface with preset return values. */
+    private function mockPaystack(
+        ?object $initResult = null,
+        ?object $verifyResult = null
+    ): PaystackClientInterface {
+        $mock = $this->createMock(PaystackClientInterface::class);
 
-        // Webhook should:
-        // 1. Verify signature
-        // 2. Convert kobo to naira
-        // 3. Update payment status
-        // 4. Update application
+        if ($initResult !== null) {
+            $mock->method('initialize')->willReturn($initResult);
+        }
+        if ($verifyResult !== null) {
+            $mock->method('verify')->willReturn($verifyResult);
+        }
 
-        $this->assertEquals('charge.success', $webhookPayload['event']);
-        $this->assertEquals('success', $webhookPayload['data']['status']);
-        $this->assertEquals(50000, $webhookPayload['data']['amount'] / 100); // Convert kobo
+        return $mock;
     }
 
-    /**
-     * Test webhook signature verification
-     * @test
-     */
-    public function it_verifies_webhook_signatures()
+    /** Stubbed Paystack success response for initializePaystack. */
+    private function paystackInitSuccess(string $ref = 'PAY-TESTREF'): object
     {
-        // Stripe signature verification
-        $stripeSecret = 'whsec_test_secret';
-        $payload = json_encode(['test' => 'data']);
-        $timestamp = time();
-
-        // Signature format: t=timestamp,v1=signature
-        $signatureString = $timestamp . '.' . $payload;
-        $signature = hash_hmac('sha256', $signatureString, $stripeSecret);
-
-        $this->assertIsString($signature);
-        $this->assertEquals(64, strlen($signature)); // SHA256 = 64 hex chars
-    }
-
-    /**
-     * Test refund initiation
-     * @test
-     */
-    public function it_initiates_refund_successfully()
-    {
-        $refundData = [
-            'payment_id' => 1,
-            'amount' => 50000,
-            'reason' => 'Customer requested cancellation',
-            'refund_method' => 'original_payment_method'
-        ];
-
-        // Mock expected refund response
-        $expectedResponse = [
-            'success' => true,
-            'data' => [
-                'refund_id' => 'ref_test_123',
-                'status' => 'pending',
-                'amount' => 50000,
-                'currency' => 'NGN',
-                'estimated_arrival' => '5-10 business days'
-            ]
-        ];
-
-        $this->assertIsArray($expectedResponse);
-        $this->assertTrue($expectedResponse['success']);
-        $this->assertEquals('pending', $expectedResponse['data']['status']);
-    }
-
-    /**
-     * Test refund validation - already refunded
-     * @test
-     */
-    public function it_prevents_duplicate_refunds()
-    {
-        // Simulate payment that's already been refunded
-        $paymentStatus = 'refunded';
-
-        $this->assertEquals('refunded', $paymentStatus);
-
-        // Attempting another refund should fail
-        // Expected error: "Payment already refunded"
-    }
-
-    /**
-     * Test payment verification before processing
-     * @test
-     */
-    public function it_verifies_payment_before_marking_complete()
-    {
-        // When receiving a webhook, should verify with payment provider
-        // Don't trust webhook alone (can be spoofed)
-
-        $paymentReference = 'TUN-123456';
-
-        // For Paystack: Call /transaction/verify/:reference
-        // For Stripe: Retrieve PaymentIntent
-
-        // Mock verification response
-        $verificationResponse = [
+        return (object) [
             'status' => true,
-            'data' => [
+            'data' => (object) [
+                'authorization_url' => 'https://checkout.paystack.com/test',
+                'access_code' => 'test_access_code',
+                'reference' => $ref,
+            ],
+        ];
+    }
+
+    /** Stubbed Paystack success response for verifyPaystack. */
+    private function paystackVerifySuccess(string $ref = 'PAY-TESTREF'): object
+    {
+        return (object) [
+            'status' => true,
+            'data' => (object) [
                 'status' => 'success',
-                'amount' => 5000000, // kobo
-                'reference' => $paymentReference
-            ]
+                'amount' => 5000000,
+                'reference' => $ref,
+            ],
+        ];
+    }
+
+    /**
+     * A minimal test double that bypasses PricingService (Eloquent-based) for
+     * the "happy path" initializePaystack tests. All other controller logic runs
+     * unchanged.
+     */
+    private function controllerWithBypassedValidation(
+        ?PaystackClientInterface $paystack = null,
+        bool $validationPasses = true
+    ): PaymentController {
+        return new class(self::$db, $paystack, $validationPasses) extends PaymentController {
+            private bool $validationPasses;
+
+            public function __construct(?\PDO $db, ?PaystackClientInterface $ps, bool $passes)
+            {
+                parent::__construct($db, $ps);
+                $this->validationPasses = $passes;
+            }
+
+            protected function validatePaymentAmount(array $application): array
+            {
+                if (!$this->validationPasses) {
+                    return ['valid' => false, 'error' => 'Amount mismatch'];
+                }
+                return ['valid' => true, 'expected' => 50000.0, 'currency' => 'NGN'];
+            }
+        };
+    }
+
+    // ── initializePaystack ────────────────────────────────────────────────────
+
+    public function test_init_returns_400_when_application_id_is_missing(): void
+    {
+        $response = $this->makeController()->initializePaystack(
+            $this->postRequest(),
+            $this->emptyResponse()
+        );
+
+        $body = $this->decode($response);
+        $this->assertSame(400, $response->getStatusCode());
+        $this->assertFalse($body['success']);
+        $this->assertStringContainsString('Application ID', $body['error']);
+    }
+
+    public function test_init_returns_404_when_application_does_not_exist(): void
+    {
+        $response = $this->makeController()->initializePaystack(
+            $this->postRequest(['application_id' => 99999]),
+            $this->emptyResponse()
+        );
+
+        $body = $this->decode($response);
+        $this->assertSame(404, $response->getStatusCode());
+        $this->assertFalse($body['success']);
+    }
+
+    public function test_init_returns_400_when_pricing_validation_fails(): void
+    {
+        $userId = $this->createTestUser();
+        // service_tier_id = 0 causes PricingService to return 'not found' → validation fails
+        $appId = $this->createTestApplication($userId, ['service_tier_id' => 0]);
+
+        $response = $this->makeController()->initializePaystack(
+            $this->postRequest(['application_id' => $appId]),
+            $this->emptyResponse()
+        );
+
+        $body = $this->decode($response);
+        $this->assertSame(400, $response->getStatusCode());
+        $this->assertFalse($body['success']);
+    }
+
+    public function test_init_creates_pending_payment_and_returns_authorization_url(): void
+    {
+        $userId = $this->createTestUser();
+        $appId = $this->createTestApplication($userId);
+
+        $controller = $this->controllerWithBypassedValidation(
+            $this->mockPaystack(initResult: $this->paystackInitSuccess())
+        );
+
+        $response = $controller->initializePaystack(
+            $this->postRequest(['application_id' => $appId]),
+            $this->emptyResponse()
+        );
+
+        $body = $this->decode($response);
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($body['success']);
+        $this->assertArrayHasKey('authorization_url', $body['data']);
+        $this->assertArrayHasKey('reference', $body['data']);
+
+        // Payment row must be persisted in the DB as pending
+        $stmt = self::$db->prepare("SELECT status, payment_method FROM payments WHERE application_id = ?");
+        $stmt->execute([$appId]);
+        $payment = $stmt->fetch();
+        $this->assertNotEmpty($payment, 'Payment row was not inserted');
+        $this->assertSame('pending', $payment['status']);
+        $this->assertSame('paystack', $payment['payment_method']);
+    }
+
+    public function test_init_returns_500_when_paystack_sdk_throws(): void
+    {
+        $userId = $this->createTestUser();
+        $appId = $this->createTestApplication($userId);
+
+        $mock = $this->createMock(PaystackClientInterface::class);
+        $mock->method('initialize')->willThrowException(new \Exception('Network error'));
+
+        $controller = $this->controllerWithBypassedValidation($mock);
+
+        $response = $controller->initializePaystack(
+            $this->postRequest(['application_id' => $appId]),
+            $this->emptyResponse()
+        );
+
+        $this->assertSame(500, $response->getStatusCode());
+        $this->assertFalse($this->decode($response)['success']);
+    }
+
+    // ── verifyPaystack ────────────────────────────────────────────────────────
+
+    public function test_verify_returns_400_when_reference_is_missing(): void
+    {
+        $response = $this->makeController()->verifyPaystack(
+            $this->getRequest(),
+            $this->emptyResponse(),
+            []
+        );
+
+        $this->assertSame(400, $response->getStatusCode());
+        $this->assertFalse($this->decode($response)['success']);
+    }
+
+    public function test_verify_returns_500_when_paystack_sdk_throws(): void
+    {
+        $mock = $this->createMock(PaystackClientInterface::class);
+        $mock->method('verify')->willThrowException(new \Exception('Paystack unavailable'));
+
+        $response = $this->makeController($mock)->verifyPaystack(
+            $this->getRequest(),
+            $this->emptyResponse(),
+            ['reference' => 'PAY-FAIL']
+        );
+
+        $this->assertSame(500, $response->getStatusCode());
+    }
+
+    public function test_verify_updates_payment_and_application_on_success(): void
+    {
+        $userId = $this->createTestUser();
+        $appId = $this->createTestApplication($userId);
+        $paymentId = $this->createTestPayment($userId, $appId, [
+            'provider_transaction_id' => 'PAY-VER01',
+        ]);
+
+        $mock = $this->mockPaystack(verifyResult: $this->paystackVerifySuccess('PAY-VER01'));
+
+        $response = $this->makeController($mock)->verifyPaystack(
+            $this->getRequest(),
+            $this->emptyResponse(),
+            ['reference' => 'PAY-VER01']
+        );
+
+        $body = $this->decode($response);
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($body['success']);
+
+        // Payment row updated
+        $stmt = self::$db->prepare("SELECT status FROM payments WHERE id = ?");
+        $stmt->execute([$paymentId]);
+        $this->assertSame('completed', $stmt->fetchColumn());
+
+        // Application row updated
+        $stmt = self::$db->prepare("SELECT payment_status, status FROM applications WHERE id = ?");
+        $stmt->execute([$appId]);
+        $app = $stmt->fetch();
+        $this->assertSame('paid', $app['payment_status']);
+        $this->assertSame('submitted', $app['status']);
+    }
+
+    public function test_verify_returns_500_when_payment_record_not_in_database(): void
+    {
+        // Paystack returns success but we have no matching payment row.
+        // The controller falls through to 'throw' → 500. This test documents
+        // that known behaviour so any future change is caught immediately.
+        $mock = $this->mockPaystack(verifyResult: $this->paystackVerifySuccess('PAY-GHOST'));
+
+        $response = $this->makeController($mock)->verifyPaystack(
+            $this->getRequest(),
+            $this->emptyResponse(),
+            ['reference' => 'PAY-GHOST']
+        );
+
+        $this->assertSame(500, $response->getStatusCode());
+    }
+
+    // ── paystackWebhook ───────────────────────────────────────────────────────
+
+    public function test_webhook_rejects_invalid_signature(): void
+    {
+        $request = new ServerRequest(
+            'POST',
+            '/api/payments/paystack/webhook',
+            ['x-paystack-signature' => 'not-a-real-signature'],
+            '{"event":"charge.success"}'
+        );
+
+        $response = $this->makeController()->paystackWebhook($request, $this->emptyResponse());
+
+        $this->assertSame(401, $response->getStatusCode());
+        $this->assertFalse($this->decode($response)['success']);
+    }
+
+    public function test_webhook_charge_success_marks_payment_completed_and_application_submitted(): void
+    {
+        $userId = $this->createTestUser();
+        $appId = $this->createTestApplication($userId);
+        $this->createTestPayment($userId, $appId, [
+            'provider_transaction_id' => 'PAY-WH001',
+            'status' => 'pending',
+        ]);
+
+        $response = $this->makeController()->paystackWebhook(
+            $this->webhookRequest([
+                'event' => 'charge.success',
+                'data' => ['reference' => 'PAY-WH001'],
+            ]),
+            $this->emptyResponse()
+        );
+
+        $this->assertSame(200, $response->getStatusCode());
+
+        $stmt = self::$db->prepare("SELECT status FROM payments WHERE provider_transaction_id = ?");
+        $stmt->execute(['PAY-WH001']);
+        $this->assertSame('completed', $stmt->fetchColumn());
+
+        $stmt = self::$db->prepare("SELECT payment_status, status FROM applications WHERE id = ?");
+        $stmt->execute([$appId]);
+        $app = $stmt->fetch();
+        $this->assertSame('paid', $app['payment_status']);
+        $this->assertSame('submitted', $app['status']);
+    }
+
+    public function test_webhook_charge_success_is_idempotent_for_already_completed_payment(): void
+    {
+        $userId = $this->createTestUser();
+        $appId = $this->createTestApplication($userId, ['payment_status' => 'paid']);
+        $this->createTestPayment($userId, $appId, [
+            'provider_transaction_id' => 'PAY-IDEM01',
+            'status' => 'completed',
+        ]);
+
+        $payload = ['event' => 'charge.success', 'data' => ['reference' => 'PAY-IDEM01']];
+
+        // Fire the same webhook twice
+        $this->makeController()->paystackWebhook($this->webhookRequest($payload), $this->emptyResponse());
+        $this->makeController()->paystackWebhook($this->webhookRequest($payload), $this->emptyResponse());
+
+        // Exactly one payment row — not duplicated or double-processed
+        $stmt = self::$db->prepare(
+            "SELECT COUNT(*) FROM payments WHERE provider_transaction_id = ? AND status = 'completed'"
+        );
+        $stmt->execute(['PAY-IDEM01']);
+        $this->assertSame(1, (int) $stmt->fetchColumn());
+    }
+
+    public function test_webhook_subscription_create_activates_scholar_plan_on_user(): void
+    {
+        $userId = $this->createTestUser(['email' => 'scholar@test.com']);
+
+        $payload = [
+            'event' => 'subscription.create',
+            'data' => [
+                'customer' => [
+                    'email' => 'scholar@test.com',
+                    'customer_code' => 'CUS-TEST001',
+                ],
+                'subscription_code' => 'SUB-TEST001',
+                'email_token' => 'tok_abc123',
+                'amount' => 4999900,
+                'next_payment_date' => date('Y-m-d', strtotime('+1 year')) . 'T00:00:00.000Z',
+            ],
         ];
 
-        $this->assertTrue($verificationResponse['status']);
-        $this->assertEquals('success', $verificationResponse['data']['status']);
+        $response = $this->makeController()->paystackWebhook(
+            $this->webhookRequest($payload),
+            $this->emptyResponse()
+        );
+
+        $this->assertSame(200, $response->getStatusCode());
+
+        $stmt = self::$db->prepare("SELECT subscription_plan FROM users WHERE id = ?");
+        $stmt->execute([$userId]);
+        $this->assertSame('scholar', $stmt->fetchColumn());
+
+        $stmt = self::$db->prepare("SELECT status FROM subscriptions WHERE user_id = ?");
+        $stmt->execute([$userId]);
+        $this->assertSame('active', $stmt->fetchColumn());
     }
 
-    /**
-     * Test payment timeout handling
-     * @test
-     */
-    public function it_handles_payment_timeouts()
+    public function test_webhook_invoice_payment_success_extends_subscription_and_user_access(): void
     {
-        // Payments pending for > 24 hours should be marked as expired
+        $userId = $this->createTestUser(['email' => 'renew@test.com']);
+        self::$db->prepare("UPDATE users SET subscription_plan = 'scholar' WHERE id = ?")->execute([$userId]);
+        self::$db->prepare("
+            INSERT INTO subscriptions (user_id, plan, paystack_subscription_code, status, amount, currency)
+            VALUES (?, 'scholar', 'SUB-RENEW01', 'active', 49999, 'NGN')
+        ")->execute([$userId]);
 
-        $paymentCreatedAt = strtotime('-25 hours');
-        $now = time();
-        $hoursDiff = ($now - $paymentCreatedAt) / 3600;
+        $nextYear = date('Y-m-d', strtotime('+1 year')) . 'T00:00:00.000Z';
 
-        $this->assertGreaterThan(24, $hoursDiff);
+        $this->makeController()->paystackWebhook(
+            $this->webhookRequest([
+                'event' => 'invoice.payment_success',
+                'data' => [
+                    'subscription' => [
+                        'subscription_code' => 'SUB-RENEW01',
+                        'next_payment_date' => $nextYear,
+                    ],
+                ],
+            ]),
+            $this->emptyResponse()
+        );
 
-        // Should mark as 'expired' and free up the application
+        // User remains on scholar, subscription expiry extended
+        $stmt = self::$db->prepare("SELECT subscription_plan, subscription_expires_at FROM users WHERE id = ?");
+        $stmt->execute([$userId]);
+        $user = $stmt->fetch();
+        $this->assertSame('scholar', $user['subscription_plan']);
+        $this->assertNotNull($user['subscription_expires_at']);
     }
 
-    /**
-     * Test concurrent payment prevention
-     * @test
-     */
-    public function it_prevents_concurrent_payments_for_same_application()
+    public function test_webhook_subscription_disable_reverts_user_to_free_plan(): void
     {
-        $applicationId = 1;
-        $existingPaymentStatus = 'pending';
+        $userId = $this->createTestUser(['email' => 'cancel@test.com']);
+        self::$db->prepare("UPDATE users SET subscription_plan = 'scholar' WHERE id = ?")->execute([$userId]);
+        self::$db->prepare("
+            INSERT INTO subscriptions (user_id, plan, paystack_subscription_code, status, amount, currency)
+            VALUES (?, 'scholar', 'SUB-CANCEL01', 'active', 49999, 'NGN')
+        ")->execute([$userId]);
 
-        // If application already has pending payment, reject new payment
-        $this->assertEquals('pending', $existingPaymentStatus);
+        $this->makeController()->paystackWebhook(
+            $this->webhookRequest([
+                'event' => 'subscription.disable',
+                'data' => ['subscription_code' => 'SUB-CANCEL01'],
+            ]),
+            $this->emptyResponse()
+        );
 
-        // Expected behavior: Return error "Payment already in progress"
+        $stmt = self::$db->prepare("SELECT subscription_plan FROM users WHERE id = ?");
+        $stmt->execute([$userId]);
+        $this->assertSame('free', $stmt->fetchColumn(), 'Cancelled subscription should revert plan to free');
+
+        $stmt = self::$db->prepare("SELECT status FROM subscriptions WHERE paystack_subscription_code = ?");
+        $stmt->execute(['SUB-CANCEL01']);
+        $this->assertSame('cancelled', $stmt->fetchColumn());
     }
 
-    /**
-     * Test payment amount matches application amount
-     * @test
-     */
-    public function it_validates_payment_amount_matches_application()
+    public function test_webhook_subscription_not_renew_sets_status_without_revoking_access(): void
     {
-        $applicationAmount = 50000;
-        $paymentAmount = 45000; // Doesn't match!
+        // subscription.not_renew means "will not auto-renew" but the user keeps
+        // access until expiry. Only subscription.disable should revert to free.
+        $userId = $this->createTestUser(['email' => 'norenew@test.com']);
+        self::$db->prepare("UPDATE users SET subscription_plan = 'scholar' WHERE id = ?")->execute([$userId]);
+        self::$db->prepare("
+            INSERT INTO subscriptions (user_id, plan, paystack_subscription_code, status, amount, currency)
+            VALUES (?, 'scholar', 'SUB-NR01', 'active', 49999, 'NGN')
+        ")->execute([$userId]);
 
-        $this->assertNotEquals($applicationAmount, $paymentAmount);
+        $this->makeController()->paystackWebhook(
+            $this->webhookRequest([
+                'event' => 'subscription.not_renew',
+                'data' => ['subscription_code' => 'SUB-NR01'],
+            ]),
+            $this->emptyResponse()
+        );
 
-        // Should reject: "Payment amount doesn't match application total"
+        // Plan must NOT change
+        $stmt = self::$db->prepare("SELECT subscription_plan FROM users WHERE id = ?");
+        $stmt->execute([$userId]);
+        $this->assertSame('scholar', $stmt->fetchColumn(), 'not_renew must not revoke access');
+
+        // But subscription status must be updated
+        $stmt = self::$db->prepare("SELECT status FROM subscriptions WHERE paystack_subscription_code = ?");
+        $stmt->execute(['SUB-NR01']);
+        $this->assertSame('non_renewing', $stmt->fetchColumn());
     }
 
-    /**
-     * Test currency validation
-     * @test
-     */
-    public function it_validates_currency()
+    // ── getPaymentHistory ─────────────────────────────────────────────────────
+
+    public function test_payment_history_returns_accurate_summary_totals(): void
     {
-        $allowedCurrencies = ['NGN', 'USD', 'GBP', 'EUR'];
-        $providedCurrency = 'NGN';
+        $userId = $this->createTestUser();
+        $appId = $this->createTestApplication($userId);
 
-        $this->assertContains($providedCurrency, $allowedCurrencies);
+        $this->createTestPayment($userId, $appId, ['amount' => 50000, 'status' => 'completed']);
+        $this->createTestPayment($userId, $appId, ['amount' => 25000, 'status' => 'completed']);
+        $this->createTestPayment($userId, $appId, ['amount' => 10000, 'status' => 'pending']);
 
-        $invalidCurrency = 'XYZ';
-        $this->assertNotContains($invalidCurrency, $allowedCurrencies);
+        $request = $this->getRequest(attributes: ['user_id' => $userId]);
+        $response = $this->makeController()->getPaymentHistory($request, $this->emptyResponse());
+
+        $body = $this->decode($response);
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($body['success']);
+        $this->assertSame(3, $body['summary']['total_count']);
+        $this->assertSame(2, $body['summary']['completed_count']);
+        $this->assertSame(1, $body['summary']['pending_count']);
+        $this->assertEqualsWithDelta(75000.0, $body['summary']['total_paid'], 0.01);
     }
 
-    /**
-     * Test payment receipt generation
-     * @test
-     */
-    public function it_generates_payment_receipt()
+    public function test_payment_history_filters_by_status(): void
     {
-        $paymentData = [
-            'reference' => 'TUN-123456',
-            'amount' => 50000,
-            'currency' => 'NGN',
-            'payment_method' => 'Paystack',
-            'paid_at' => date('Y-m-d H:i:s'),
-            'status' => 'completed'
-        ];
+        $userId = $this->createTestUser();
+        $appId = $this->createTestApplication($userId);
 
-        // Receipt should include:
-        $this->assertArrayHasKey('reference', $paymentData);
-        $this->assertArrayHasKey('amount', $paymentData);
-        $this->assertArrayHasKey('paid_at', $paymentData);
-        $this->assertEquals('completed', $paymentData['status']);
-    }
+        $this->createTestPayment($userId, $appId, ['status' => 'completed']);
+        $this->createTestPayment($userId, $appId, ['status' => 'pending']);
 
-    /**
-     * Test webhook idempotency
-     * @test
-     */
-    public function it_handles_duplicate_webhooks_idempotently()
-    {
-        // Webhooks can be sent multiple times
-        // Should process only once
+        $request = $this->getRequest(
+            queryParams: ['status' => 'completed'],
+            attributes: ['user_id' => $userId]
+        );
+        $response = $this->makeController()->getPaymentHistory($request, $this->emptyResponse());
 
-        $webhookId = 'evt_test_123';
-        $processedWebhooks = ['evt_test_123']; // Already processed
-
-        $this->assertContains($webhookId, $processedWebhooks);
-
-        // Should skip processing: "Webhook already processed"
-    }
-
-    /**
-     * Test payment metadata storage
-     * @test
-     */
-    public function it_stores_payment_metadata()
-    {
-        $metadata = [
-            'application_id' => 1,
-            'user_id' => 1,
-            'ip_address' => '192.168.1.1',
-            'user_agent' => 'Mozilla/5.0...',
-            'payment_method' => 'card',
-            'card_last4' => '4242',
-            'card_brand' => 'visa'
-        ];
-
-        $this->assertArrayHasKey('application_id', $metadata);
-        $this->assertArrayHasKey('card_last4', $metadata);
-        $this->assertEquals(4, strlen($metadata['card_last4']));
-    }
-
-    /**
-     * Test failed payment retry limit
-     * @test
-     */
-    public function it_limits_payment_retries()
-    {
-        $failedAttempts = 5;
-        $maxAttempts = 3;
-
-        $this->assertGreaterThan($maxAttempts, $failedAttempts);
-
-        // Should block further attempts: "Maximum retry limit reached"
+        $body = $this->decode($response);
+        $this->assertSame(1, $body['summary']['total_count']);
+        $this->assertSame('completed', $body['payments'][0]['status']);
     }
 }
