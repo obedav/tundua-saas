@@ -18,10 +18,15 @@ $dotenv->load();
 // Configure session for OAuth state management
 if (session_status() === PHP_SESSION_NONE) {
     $isProduction = ($_ENV['APP_ENV'] ?? 'production') === 'production';
+    // Explicit domain prevents the cookie from being scoped to the internal
+    // hostname (e.g. localhost) when PHP runs behind a reverse proxy on syskay.
+    // Without the correct domain, the session cookie won't be sent when Google
+    // redirects back to the /callback route, causing oauth2state to be missing.
+    $sessionDomain = $_ENV['SESSION_DOMAIN'] ?? '';
     session_set_cookie_params([
         'lifetime' => (int)($_ENV['SESSION_LIFETIME'] ?? 120) * 60,
         'path' => '/',
-        'domain' => '',
+        'domain' => $sessionDomain,
         'secure' => $isProduction,
         'httponly' => true,
         'samesite' => 'Lax'

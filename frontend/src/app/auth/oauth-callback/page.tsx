@@ -54,11 +54,16 @@ function OAuthCallbackHandler() {
 
       toast.success("Successfully logged in with Google!");
 
-      if (userRole === "admin" || userRole === "super_admin") {
-        router.push("/dashboard/admin");
-      } else {
-        router.push("/dashboard");
-      }
+      // Use a full page navigation instead of SPA router.push so that
+      // AuthContext re-initialises AFTER the cookies are in the browser.
+      // router.push would preserve the stale isAuthenticated=false state
+      // that was set before the tokens arrived, causing an immediate
+      // redirect back to /auth/login by ProtectedRoute.
+      const destination =
+        userRole === "admin" || userRole === "super_admin"
+          ? "/dashboard/admin"
+          : "/dashboard";
+      window.location.href = destination;
     } else {
       toast.error("Authentication failed. Please try again.");
       router.push("/auth/login");
