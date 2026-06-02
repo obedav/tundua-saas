@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CheckCircle, MessageCircle, Sparkles, ArrowRight, Mail } from "lucide-react";
-import { trackEligibilityCheck, trackFormStep, trackWhatsAppClick, trackQuizImpression, trackLeadFormSubmit } from "@/lib/analytics";
+import { trackEligibilityCheck, trackFormStart, trackFormStep, trackWhatsAppClick, trackQuizImpression, trackLeadFormSubmit } from "@/lib/analytics";
 
 const WHATSAPP_NUMBER = process.env['NEXT_PUBLIC_WHATSAPP_NUMBER'] || "2348000000000";
 
@@ -69,6 +69,7 @@ export function EligibilityQuiz({ source = "blog-eligibility-quiz", country = "u
   const handleBudget = (b: BudgetOption) => {
     setBudget(b);
     setStep(2);
+    trackFormStart(source);
     trackFormStep(source, 1, `budget:${b.id}`);
   };
 

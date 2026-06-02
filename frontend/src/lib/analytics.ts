@@ -312,6 +312,21 @@ export const trackQuizImpression = (formName: string) => {
   });
 };
 
+// Form start — fire once when the user first interacts with a form.
+// Must precede the first form_step_completed so GA4 funnel counts are accurate.
+export const trackFormStart = (formName: string) => {
+  if (!isGALoaded()) {
+    console.log('[Analytics - Dev] Form start:', { formName });
+    return;
+  }
+
+  window.gtag('event', 'form_start', {
+    event_category: 'Form',
+    event_label: formName,
+    form_name: formName,
+  });
+};
+
 // Per-step form tracking — diagnose WHERE users drop off.
 // Fire this from multi-step forms (EligibilityQuiz, ApplyForm) at each step.
 export const trackFormStep = (formName: string, step: number, stepLabel: string) => {

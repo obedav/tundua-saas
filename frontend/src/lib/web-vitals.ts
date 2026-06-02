@@ -45,41 +45,29 @@ function getRating(metric: Metric): 'good' | 'needs-improvement' | 'poor' {
 }
 
 /**
- * Send metric to Google Analytics
- * Requires GA to be set up in your app
+ * Log metric to the dev console only — NOT sent to GA4.
+ *
+ * Core Web Vitals (LCP, CLS, INP) are already collected automatically by
+ * Google Search Console via the Chrome UX Report, so sending them as GA4
+ * events is redundant and pollutes the event stream (they were 43 % of all
+ * events). Keep them here purely for local performance debugging.
  */
 function sendToGoogleAnalytics(metric: Metric) {
-  // Check if gtag is available
-  if (typeof window === 'undefined' || !window.gtag) {
-    return;
-  }
-
-  const rating = getRating(metric);
-
-  // Send as a single event so all vitals appear under one event name in GA4
-  // instead of polluting the event stream with 6 separate event types.
-  window.gtag('event', 'web_vitals', {
-    metric_name: metric.name,
-    value: Math.round(
-      metric.name === 'CLS' ? metric.value * 1000 : metric.value
-    ),
-    metric_id: metric.id,
-    metric_value: metric.value,
-    metric_delta: metric.delta,
-    metric_rating: rating,
-    event_category: 'Web Vitals',
-    event_label: metric.id,
-    non_interaction: true,
-  });
-
-  // Log in development
   if (process.env.NODE_ENV === 'development') {
+    const rating = getRating(metric);
     console.log('[Web Vitals]', {
       name: metric.name,
       value: metric.value,
       rating,
       id: metric.id,
     });
+    if (rating === 'poor') {
+      console.warn(
+        `⚠️ Poor ${metric.name}: ${metric.value.toFixed(2)} (threshold: ${
+          THRESHOLDS[metric.name as keyof typeof THRESHOLDS]?.needsImprovement
+        })`
+      );
+    }
   }
 }
 
@@ -128,24 +116,12 @@ function sendToGoogleAnalytics(metric: Metric) {
  * Sends metrics to both Google Analytics and custom endpoint
  */
 export function reportWebVitals(metric: Metric) {
-  // Send to Google Analytics
+  // Dev console logging only — GA4 reporting intentionally removed.
+  // See sendToGoogleAnalytics for the reasoning.
   sendToGoogleAnalytics(metric);
 
-  // Optionally send to your custom analytics
-  // Uncomment if you have a custom endpoint
+  // Uncomment to also send to your own API endpoint:
   // sendToCustomAnalytics(metric);
-
-  // Log performance warnings in development
-  if (process.env.NODE_ENV === 'development') {
-    const rating = getRating(metric);
-    if (rating === 'poor') {
-      console.warn(
-        `⚠️ Poor ${metric.name} performance: ${metric.value.toFixed(2)} (threshold: ${
-          THRESHOLDS[metric.name as keyof typeof THRESHOLDS]?.needsImprovement
-        })`
-      );
-    }
-  }
 }
 
 /**
