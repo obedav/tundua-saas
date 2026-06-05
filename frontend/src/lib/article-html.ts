@@ -53,6 +53,17 @@ const CTA_TEXT_RE = /\b(apply|start|free|get\s*started|try|begin|chat|book|sign\
 // or absolute URLs to tundua.com with no path.
 const HOMEPAGE_HREF_RE = /^(?:https?:\/\/(?:www\.)?tundua\.com)?\/?(?:[#?].*)?$/i;
 
+/**
+ * Wrap every <table> in a horizontally-scrollable div so wide tables scroll
+ * independently on mobile instead of forcing the whole article to scroll.
+ * Simple string replacement is safe here — blog articles never have nested tables.
+ */
+export function wrapTablesForMobile(html: string): string {
+  return html
+    .replace(/<table\b/gi, '<div class="article-table-scroll"><table')
+    .replace(/<\/table>/gi, '</table></div>');
+}
+
 export function rewriteCtaLinks(html: string): string {
   return html.replace(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi, (match, attrs: string, inner: string) => {
     const hrefMatch = /\bhref\s*=\s*(['"])([^'"]*)\1/i.exec(attrs);

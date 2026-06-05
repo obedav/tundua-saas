@@ -31,24 +31,28 @@ class SubscriptionController
             'plan_code'   => 'PAYSTACK_SCHOLAR_PLAN_CODE',
             'plan_amount' => 'PAYSTACK_SCHOLAR_PLAN_AMOUNT',
             'default'     => 7500000, // e.g. ₦75,000 → 7500000 kobo
+            'recurring'   => true,
         ],
         'application_support' => [
             'label'       => 'Application Support',
             'plan_code'   => 'PAYSTACK_APPLICATION_SUPPORT_PLAN_CODE',
             'plan_amount' => 'PAYSTACK_APPLICATION_SUPPORT_PLAN_AMOUNT',
             'default'     => 25000000, // e.g. ₦250,000 → 25000000 kobo
+            'recurring'   => false,
         ],
         'fellow' => [
             'label'       => 'Fellow',
             'plan_code'   => 'PAYSTACK_FELLOW_PLAN_CODE',
             'plan_amount' => 'PAYSTACK_FELLOW_PLAN_AMOUNT',
             'default'     => 50000000, // e.g. ₦500,000 → 50000000 kobo
+            'recurring'   => false,
         ],
         'premium_concierge' => [
             'label'       => 'Premium Concierge',
             'plan_code'   => 'PAYSTACK_PREMIUM_CONCIERGE_PLAN_CODE',
             'plan_amount' => 'PAYSTACK_PREMIUM_CONCIERGE_PLAN_AMOUNT',
             'default'     => 100000000, // e.g. ₦1,000,000 → 100000000 kobo
+            'recurring'   => false,
         ],
     ];
 
@@ -78,7 +82,8 @@ class SubscriptionController
             $secretKey  = $_ENV['PAYSTACK_SECRET_KEY']  ?? null;
             $planAmount = (int) ($_ENV[$config['plan_amount']] ?? $config['default']);
 
-            if (!$planCode || !$secretKey) {
+            // plan_code is only required for recurring plans
+            if (!$secretKey || ($config['recurring'] && !$planCode)) {
                 return $this->json($response, [
                     'success' => false,
                     'error'   => 'Subscription plan not configured.',
@@ -136,10 +141,9 @@ class SubscriptionController
             $paystack    = new Paystack($secretKey);
             $frontendUrl = $_ENV['APP_URL'] ?? 'http://localhost:3000';
 
-            $result = $paystack->transaction->initialize([
+            $transactionData = [
                 'email'        => $user['email'],
                 'amount'       => $planAmount,
-                'plan'         => $planCode,
                 'callback_url' => "{$frontendUrl}/dashboard/billing?subscribed=1",
                 'metadata'     => [
                     'user_id' => $userId,
@@ -150,7 +154,13 @@ class SubscriptionController
                         'value'         => $config['label'],
                     ]],
                 ],
-            ]);
+            ];
+
+            if ($config['recurring']) {
+                $transactionData['plan'] = $planCode;
+            }
+
+            $result = $paystack->transaction->initialize($transactionData);
 
             if (!$result->status) {
                 throw new \Exception('Paystack initialization failed.');

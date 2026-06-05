@@ -426,3 +426,25 @@ html {
     display: none;
   }
 }
+
+/* Article prose: each table scrolls horizontally within its own container.
+   Applied by wrapTablesForMobile() in article-html.ts — applies to all blog articles. */
+.article-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  margin: 24px 0;
+}
+
+.article-table-scroll table {
+  min-width: 600px;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .article-table-scroll td,
+  .article-table-scroll th {
+    font-size: 13px !important;
+    padding: 8px 10px !important;
+  }
+}

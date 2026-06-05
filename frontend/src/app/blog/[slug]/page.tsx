@@ -15,7 +15,7 @@ import { EligibilityQuiz } from "@/components/EligibilityQuiz";
 import { StickyMobileCTA } from "@/components/StickyMobileCTA";
 import { ViewTracker } from "@/components/ViewTracker";
 import { clientEnv } from "@/lib/env";
-import { sanitizeArticleHtml, rewriteCtaLinks } from "@/lib/article-html";
+import { sanitizeArticleHtml, rewriteCtaLinks, wrapTablesForMobile } from "@/lib/article-html";
 
 // ISR: Revalidate every 30 minutes so content stays fresh
 export const revalidate = 1800;
@@ -279,7 +279,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
               and forces tables to allow horizontal scroll inside their own container. */}
           <div
             className="prose prose-base sm:prose-lg max-w-none overflow-x-auto prose-headings:text-gray-900 prose-headings:break-words prose-p:text-gray-700 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline prose-img:max-w-full prose-img:h-auto"
-            dangerouslySetInnerHTML={{ __html: rewriteCtaLinks(sanitizeArticleHtml(article.content)) }}
+            dangerouslySetInnerHTML={{ __html: wrapTablesForMobile(rewriteCtaLinks(sanitizeArticleHtml(article.content))) }}
           />
 
           {/* Inline CTA — compact contextual nudge immediately after article.
