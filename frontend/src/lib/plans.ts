@@ -20,9 +20,9 @@ export type Plan = {
   featureLimitColor: string;
   checkColor: string;
   isFree?: boolean;
-  isCustom?: boolean;
   isAnnual?: boolean;
   highlighted?: boolean;
+  paymentNote?: string;
 };
 
 export const PLANS: Plan[] = [
@@ -57,8 +57,8 @@ export const PLANS: Plan[] = [
   },
   {
     name: "Scholar",
-    price: "$29.99",
-    priceNGN: "₦49,999",
+    price: "$49",
+    priceNGN: "₦75,000",
     description: "For serious applicants — all limits removed + human support",
     features: [
       { name: "Unlimited University Search", limit: "" },
@@ -73,6 +73,36 @@ export const PLANS: Plan[] = [
     ],
     ctaHref: "/dashboard/billing?plan=scholar",
     ctaLabel: "Get Started",
+    badge: "Annual Plan",
+    badgeColor: "from-blue-500 to-indigo-500",
+    cardColor: "bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-2 border-blue-300 dark:border-blue-600/50",
+    ctaColor: "bg-gradient-to-r from-blue-600 to-indigo-600 text-white",
+    priceColor: "text-blue-700 dark:text-blue-400",
+    headingColor: "text-slate-900 dark:text-stone-100",
+    descColor: "text-slate-600 dark:text-stone-400",
+    subPriceColor: "text-slate-500 dark:text-stone-400",
+    featureTextColor: "text-slate-900 dark:text-stone-100",
+    featureLimitColor: "text-slate-500 dark:text-stone-400",
+    checkColor: "text-blue-600 dark:text-blue-400",
+    isAnnual: true,
+  },
+  {
+    name: "Application Support",
+    price: "$159",
+    priceNGN: "₦250,000",
+    description: "We handle your application from start to offer letter",
+    features: [
+      { name: "Everything in Scholar", limit: "" },
+      { name: "Dedicated counselor assigned", limit: "" },
+      { name: "University shortlist", limit: "Up to 5 schools" },
+      { name: "Full document preparation", limit: "" },
+      { name: "Application submission on your behalf", limit: "" },
+      { name: "Offer letter management", limit: "" },
+      { name: "WhatsApp support", limit: "" },
+      { name: "Payment plan available", limit: "50% now, 50% on offer letter" },
+    ],
+    ctaHref: "/apply",
+    ctaLabel: "Get Started",
     badge: "Most Popular",
     badgeColor: "from-yellow-400 to-orange-400 text-slate-900",
     cardColor: "bg-gradient-to-br from-blue-600 to-teal-600 shadow-2xl shadow-teal-500/30",
@@ -84,13 +114,13 @@ export const PLANS: Plan[] = [
     featureTextColor: "text-white",
     featureLimitColor: "text-blue-200",
     checkColor: "text-green-300",
-    isAnnual: true,
     highlighted: true,
+    paymentNote: "Pay 50% now, 50% on offer letter",
   },
   {
     name: "Fellow",
-    price: "$149",
-    priceNGN: "Custom pricing",
+    price: "$315",
+    priceNGN: "₦500,000",
     description: "End-to-end support from application to visa",
     features: [
       { name: "Everything in Scholar", limit: "" },
@@ -105,7 +135,7 @@ export const PLANS: Plan[] = [
     ],
     ctaHref: "/apply",
     ctaLabel: "Get Started",
-    badge: "VIP Service",
+    badge: "Full Service",
     badgeColor: "from-amber-500 to-orange-500",
     cardColor: "bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 border-2 border-amber-300 dark:border-amber-600/50",
     ctaColor: "bg-gradient-to-r from-amber-500 to-orange-500 text-white",
@@ -116,6 +146,35 @@ export const PLANS: Plan[] = [
     featureTextColor: "text-slate-900 dark:text-stone-100",
     featureLimitColor: "text-slate-500 dark:text-stone-400",
     checkColor: "text-green-600 dark:text-green-400",
-    isCustom: true,
+    paymentNote: "Pay ₦250,000 now, ₦250,000 on offer letter",
+  },
+  {
+    name: "Premium Concierge",
+    price: "$625+",
+    priceNGN: "₦1,000,000+",
+    description: "For complex cases that need personal expert attention",
+    features: [
+      { name: "Everything in Fellow", limit: "" },
+      { name: "Multiple country applications", limit: "" },
+      { name: "Complex profile handling", limit: "3rd class, gaps, prior visa refusals" },
+      { name: "Dedicated personal advisor", limit: "Direct line" },
+      { name: "Unlimited application attempts", limit: "" },
+      { name: "Family package available", limit: "" },
+      { name: "Direct WhatsApp to senior counselor", limit: "" },
+    ],
+    ctaHref: "/contact",
+    ctaLabel: "Contact Us",
+    badge: "VIP Service",
+    badgeColor: "from-purple-500 to-violet-500",
+    cardColor: "bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-900/30 dark:to-violet-900/30 border-2 border-purple-300 dark:border-purple-600/50",
+    ctaColor: "bg-gradient-to-r from-purple-600 to-violet-600 text-white",
+    priceColor: "text-purple-700 dark:text-purple-400",
+    headingColor: "text-slate-900 dark:text-stone-100",
+    descColor: "text-slate-600 dark:text-stone-400",
+    subPriceColor: "text-slate-500 dark:text-stone-400",
+    featureTextColor: "text-slate-900 dark:text-stone-100",
+    featureLimitColor: "text-slate-500 dark:text-stone-400",
+    checkColor: "text-green-600 dark:text-green-400",
+    paymentNote: "Contact for exact quote",
   },
 ];

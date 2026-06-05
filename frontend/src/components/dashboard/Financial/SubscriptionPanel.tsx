@@ -31,8 +31,8 @@ const PLAN_LABELS: Record<string, string> = {
 
 const PLAN_AMOUNTS: Record<string, string> = {
   free: "₦0",
-  scholar: "₦49,999 / year",
-  fellow: "$149",
+  scholar: "₦75,000 / year",
+  fellow: "₦500,000",
 };
 
 function fmtDate(d: string | null) {
@@ -213,7 +213,7 @@ export default function SubscriptionPanel() {
           <h3 className="font-bold text-gray-900 dark:text-white mb-1">Upgrade to Scholar</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
             Unlimited searches, essay editing, and a live counselor.{" "}
-            <strong className="text-gray-700 dark:text-gray-300">₦49,999/year · Cancel anytime before renewal.</strong>
+            <strong className="text-gray-700 dark:text-gray-300">₦75,000/year · Cancel anytime before renewal.</strong>
           </p>
           <button
             onClick={handleCheckout}

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     default: "Tundua - Study Abroad Application Platform",
     template: "%s | Tundua" // Page titles will be "Page Name | Tundua"
   },
-  description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance. Professional counseling and application management from ₦49,999.",
+  description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance. Professional counseling and application management from ₦75,000 per year.",
   keywords: [
     // Core service
     "study abroad",
@@ -84,7 +84,7 @@ export const metadata: Metadata = {
     locale: 'en_NG',
     url: 'https://tundua.com',
     title: "Tundua - Study Abroad Application Platform",
-    description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance from ₦49,999.",
+    description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance from ₦75,000.",
     siteName: "Tundua",
     images: [
       {
@@ -98,7 +98,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "Tundua - Study Abroad Application Platform",
-    description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance from ₦49,999.",
+    description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance from ₦75,000.",
     images: ['https://tundua.com/images/Og.png'],
     creator: '@tundua',
   },

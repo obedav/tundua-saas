@@ -8,6 +8,9 @@ import PublicPageBackground from "@/components/PublicPageBackground";
 export const metadata: Metadata = {
   title: "Contact Us | Tundua",
   description: "Get in touch with the Tundua team. We're here to help with your study abroad questions.",
+  alternates: {
+    canonical: `${process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com'}/contact`,
+  },
 };
 
 export default function ContactPage() {

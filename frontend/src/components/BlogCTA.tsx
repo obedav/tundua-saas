@@ -160,9 +160,9 @@ export function BlogCTA({ variant }: BlogCTAProps) {
             <CheckCircle className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-gray-900">Application Support</p>
-              <p className="text-sm text-gray-600">School selection + document prep + application review</p>
+              <p className="text-sm text-gray-600">School selection + document prep + application submission</p>
             </div>
-            <span className="ml-auto font-bold text-gray-900 whitespace-nowrap">₦89,000</span>
+            <span className="ml-auto font-bold text-gray-900 whitespace-nowrap">₦250,000</span>
           </div>
           <div className="flex items-start gap-3 p-3 bg-primary-50 rounded-lg border border-primary-100">
             <Star className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
@@ -170,7 +170,7 @@ export function BlogCTA({ variant }: BlogCTAProps) {
               <p className="font-semibold text-gray-900">Full Admission + Visa Support</p>
               <p className="text-sm text-gray-600">Everything included — from application to visa guidance</p>
             </div>
-            <span className="ml-auto font-bold text-primary-700 whitespace-nowrap">₦149,000+</span>
+            <span className="ml-auto font-bold text-primary-700 whitespace-nowrap">₦500,000</span>
           </div>
         </div>
       </div>

@@ -34,7 +34,7 @@ export default function FAQSection() {
     {
       id: 3,
       question: "Can I get a refund if my application is rejected?",
-      answer: "Yes! We offer a 90-day money-back guarantee. If your application is rejected within 90 days of payment, you can request a full refund through our Refund Center. Note that this applies to our service fees, not third-party costs like university application fees.",
+      answer: "Yes. If we do not secure you at least one university offer within 90 days, we refund your service charge in full. You can request a refund through the Refund Center. Note that this applies to our service fees, not third-party costs like university application fees.",
       category: "Payments",
       helpful: 92,
     },

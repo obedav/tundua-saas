@@ -123,15 +123,15 @@ export default function AIServicesCards() {
             </p>
             <div className="flex flex-col sm:flex-row sm:items-baseline gap-2">
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-bold">$29.99</span>
+                <span className="text-4xl font-bold">$49</span>
                 <span className="text-lg text-blue-200">USD</span>
               </div>
               <span className="text-blue-200 hidden sm:inline">/</span>
               <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-bold">₦49,999</span>
+                <span className="text-3xl font-bold">₦75,000</span>
                 <span className="text-lg text-blue-200">NGN</span>
               </div>
-              <span className="text-sm text-blue-200 ml-1">one-time</span>
+              <span className="text-sm text-blue-200 ml-1">per year</span>
             </div>
           </div>
           <Link

@@ -12,14 +12,14 @@ const APP_URL = process.env["NEXT_PUBLIC_APP_URL"] || "https://tundua.com";
 export const metadata: Metadata = {
   title: "Pricing - Study Abroad Application Packages",
   description:
-    "Transparent pricing for Tundua's study abroad application packages. Free Seeker plan, Scholar at $29.99/year (cancel anytime), and Fellow at $149. No hidden fees.",
+    "Transparent pricing for Tundua's study abroad application packages. Free Seeker plan, Scholar at $49/year, Application Support at $159, Fellow at $315, and Premium Concierge from $625. No hidden fees.",
   alternates: {
     canonical: `${APP_URL}/pricing`,
   },
   openGraph: {
     title: "Pricing - Study Abroad Application Packages | Tundua",
     description:
-      "Transparent pricing for study abroad application support. Free plan available. Scholar at $29.99/year. Fellow at $149.",
+      "Transparent pricing for study abroad application support. Free plan available. Scholar at $49/year. Application Support at $159. Fellow at $315. Premium Concierge from $625.",
     url: `${APP_URL}/pricing`,
   },
 };
@@ -32,19 +32,23 @@ const FAQS = [
   },
   {
     question: "Is Scholar a subscription or a one-time payment?",
-    answer: "Scholar is an annual subscription of $29.99 (₦49,999) per year. You are billed once per year — not monthly. You can cancel at any time before your renewal date and you will never be charged again. There are no lock-in fees and no penalties for cancelling.",
+    answer: "Scholar is an annual subscription of $49 (₦75,000) per year. You are billed once per year — not monthly. You can cancel at any time before your renewal date and you will never be charged again. There are no lock-in fees and no penalties for cancelling.",
   },
   {
     question: "What happens if I cancel Scholar?",
     answer: "You keep full access until the end of your current annual period. Cancel before your renewal date and nothing is charged. We send a reminder email 30 days before renewal so there are no surprises.",
   },
   {
-    question: "What does the 90-day money-back guarantee cover?",
-    answer: "If you are not satisfied with Tundua's service for any reason within 90 days of your first payment, we will issue a full refund — no questions asked. The guarantee applies to the Scholar plan.",
+    question: "What does the 90-day guarantee cover?",
+    answer: "If we do not secure you at least one university offer within 90 days, we refund your service charge in full. This applies to the Application Support, Fellow, and Premium Concierge plans.",
   },
   {
-    question: "What is the difference between Scholar and Fellow?",
-    answer: "Scholar gives you unlimited searches, document review, essay editing, and a live counselor — everything you need to build and submit a strong application yourself. Fellow ($149) is our done-for-you service: we write your SOP, prepare all documents, handle your visa application, coach you for interviews, and assign a dedicated account manager who stays with you until you depart.",
+    question: "What is the difference between Scholar, Application Support, and Fellow?",
+    answer: "Scholar ($49/year) gives you unlimited platform access, essay editing, and a live counselor — the tools to build and submit a strong application yourself. Application Support ($159) goes further: a dedicated counselor is assigned to you, we shortlist up to 5 schools, prepare all documents, and submit applications on your behalf. Fellow ($315) adds full visa support, SOP writing, interview coaching, and a dedicated account manager who stays with you until you depart.",
+  },
+  {
+    question: "What does Application Support's payment plan look like?",
+    answer: "You pay 50% upfront to begin your application. The remaining 50% is only due when you receive your offer letter — so you are not paying in full until we have delivered a result.",
   },
   {
     question: "Can I upgrade from Seeker to Scholar later?",
@@ -52,7 +56,7 @@ const FAQS = [
   },
   {
     question: "What payment methods do you accept?",
-    answer: "We accept card payments via Stripe (USD) and Paystack (NGN). Nigerian bank cards, USSD, and bank transfers are all supported through Paystack. No foreign card is required for NGN payments.",
+    answer: "We accept card payments via Paystack (NGN and USD). Nigerian bank cards, USSD, and bank transfers are all supported. No foreign card is required for NGN payments.",
   },
 ];
 
@@ -82,13 +86,13 @@ const offersSchema = JSON.stringify({
         "@type": "Offer",
         name: "Scholar Plan",
         description: "Full study abroad application support with expert human counselor — annual subscription, cancel anytime",
-        price: "29.99",
+        price: "49",
         priceCurrency: "USD",
         availability: "https://schema.org/InStock",
         url: `${APP_URL}/auth/register`,
         priceSpecification: {
           "@type": "UnitPriceSpecification",
-          price: "29.99",
+          price: "49",
           priceCurrency: "USD",
           billingDuration: "P1Y",
           billingIncrement: 1,
@@ -100,9 +104,35 @@ const offersSchema = JSON.stringify({
       position: 3,
       item: {
         "@type": "Offer",
+        name: "Application Support",
+        description: "Dedicated counselor, document prep, application submission, and offer letter management — pay 50% now, 50% on offer letter",
+        price: "159",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+        url: `${APP_URL}/apply`,
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 4,
+      item: {
+        "@type": "Offer",
         name: "Fellow Plan",
-        description: "End-to-end study abroad support from application to visa — done-for-you service",
-        price: "149",
+        description: "End-to-end study abroad support from application to visa — full done-for-you service",
+        price: "315",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+        url: `${APP_URL}/apply`,
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 5,
+      item: {
+        "@type": "Offer",
+        name: "Premium Concierge",
+        description: "Personal expert attention for complex cases — multiple countries, visa refusals, study gaps, family packages",
+        price: "625",
         priceCurrency: "USD",
         availability: "https://schema.org/InStock",
         url: `${APP_URL}/contact`,
@@ -145,7 +175,7 @@ export default function PricingPage() {
         </div>
 
         {/* Plan Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-16">
           {PLANS.map((plan) => (
             <div
               key={plan.name}
@@ -169,8 +199,8 @@ export default function PricingPage() {
                 <p className={`mt-1 ${plan.subPriceColor}`}>
                   {plan.isFree
                     ? "No credit card required"
-                    : plan.isCustom
-                    ? `${plan.priceNGN} · Contact for full quote`
+                    : plan.paymentNote
+                    ? `${plan.priceNGN} · ${plan.paymentNote}`
                     : `${plan.priceNGN} · per year`}
                 </p>
                 {plan.isAnnual && (
@@ -229,7 +259,7 @@ export default function PricingPage() {
             <h2 className="text-xl font-bold text-gray-900">90-Day Money-Back Guarantee</h2>
           </div>
           <p className="text-gray-600 max-w-xl mx-auto mb-6">
-            Not satisfied? Get a full refund within 90 days — no questions asked. We stand behind our service.
+            If we do not secure you at least one university offer within 90 days, we refund your service charge in full.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

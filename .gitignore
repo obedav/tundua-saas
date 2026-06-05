@@ -27,3 +27,6 @@ make-admin.sql
 
 # Husky internals
 .husky/_/.gitignore
+
+# Blog content — stored locally, never committed
+blog-content/

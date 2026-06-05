@@ -433,7 +433,7 @@ export default function HomePage() {
             </h2>
             <p className="text-lg md:text-xl text-slate-600 dark:text-stone-400 mb-4">Choose the package that fits your needs</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
             {PLANS.map((plan) => (
               <div
                 key={plan.name}
@@ -453,9 +453,9 @@ export default function HomePage() {
                   <p className={`mt-1 ${plan.subPriceColor}`}>
                     {plan.isFree
                       ? "No credit card required"
-                      : plan.isCustom
-                      ? `${plan.priceNGN} · Contact for quote`
-                      : `${plan.priceNGN} • per year`}
+                      : plan.paymentNote
+                      ? `${plan.priceNGN} · ${plan.paymentNote}`
+                      : `${plan.priceNGN} · per year`}
                   </p>
                 </div>
                 <ul className="space-y-3 mb-8">

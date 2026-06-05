@@ -86,16 +86,16 @@ export default function RefundCenter() {
           <div className="flex-1">
             <h2 className="text-2xl font-bold mb-2">90-Day Money-Back Guarantee</h2>
             <p className="text-white/90 mb-4">
-              Not satisfied with our service? Request a full refund within 90 days of your payment, no questions asked.
+              If we do not secure you at least one university offer within 90 days, we refund your service charge in full.
             </p>
             <div className="flex flex-wrap gap-4 text-sm">
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4" />
-                <span>Full refund within 90 days</span>
+                <span>Full refund if no offer in 90 days</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4" />
-                <span>No questions asked</span>
+                <span>Service charge refunded in full</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4" />

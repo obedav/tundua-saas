@@ -142,8 +142,7 @@ export default function AddOnPurchaseModal({
           {/* Terms */}
           <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg">
             <p className="text-sm text-blue-900 dark:text-blue-300">
-              <strong>90-Day Money-Back Guarantee:</strong> If you&apos;re not satisfied with this service,
-              you can request a full refund within 90 days of purchase.
+              <strong>90-Day Guarantee:</strong> If we do not secure you at least one university offer within 90 days, we refund your service charge in full.
             </p>
           </div>
         </div>
