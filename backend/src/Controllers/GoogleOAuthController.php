@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Tundua\Models\User;
 use Tundua\Services\AuthService;
+use Tundua\Database\Database;
 use Exception;
 
 class GoogleOAuthController
@@ -15,6 +16,15 @@ class GoogleOAuthController
     private ?Google $provider = null;
     private AuthService $authService;
     private bool $isConfigured = false;
+    private ?\PDO $db = null;
+
+    private function getDb(): \PDO
+    {
+        if ($this->db === null) {
+            $this->db = Database::getConnection();
+        }
+        return $this->db;
+    }
 
     public function __construct(AuthService $authService)
     {
@@ -170,17 +180,15 @@ class GoogleOAuthController
             unset($_SESSION['oauth2state']);
             unset($_SESSION['oauth_user_type']);
 
-            // Store tokens server-side under a short-lived one-time code.
-            // The frontend POSTs to /api/v1/auth/exchange to collect them.
-            // Tokens never appear in the URL, so they are not captured by
-            // analytics scripts (PostHog, GA4), server access logs, or browser history.
+            // Store tokens in the DB under a short-lived one-time code.
+            // DB lookup requires no session cookie, so it works correctly
+            // even when the frontend fetch() is cross-origin (SameSite=Lax blocks sessions).
             $code = bin2hex(random_bytes(32));
-            $_SESSION['oauth_exchange'][$code] = [
-                'access_token'  => $accessToken,
-                'refresh_token' => $refreshToken,
-                'user_role'     => $user->role,
-                'expires_at'    => time() + 60,
-            ];
+            $stmt = $this->getDb()->prepare(
+                "INSERT INTO oauth_codes (code, user_id, access_token, refresh_token, user_role, expires_at)
+                 VALUES (?, ?, ?, ?, ?, ?)"
+            );
+            $stmt->execute([$code, $user->id, $accessToken, $refreshToken, $user->role, time() + 60]);
 
             $frontendUrl = $_ENV['APP_URL'];
             $redirectUrl = $frontendUrl . '/auth/oauth-callback?code=' . $code;
@@ -224,7 +232,10 @@ class GoogleOAuthController
         $data = $request->getParsedBody();
         $code = trim($data['code'] ?? '');
 
-        if (!$code || !isset($_SESSION['oauth_exchange'][$code])) {
+        // Purge expired codes on every call (lightweight housekeeping, no cron needed)
+        $this->getDb()->prepare("DELETE FROM oauth_codes WHERE expires_at < UNIX_TIMESTAMP()")->execute();
+
+        if (!$code) {
             $response->getBody()->write(json_encode([
                 'success' => false,
                 'error'   => 'Invalid or expired code',
@@ -232,16 +243,22 @@ class GoogleOAuthController
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
-        $entry = $_SESSION['oauth_exchange'][$code];
-        unset($_SESSION['oauth_exchange'][$code]); // single-use: invalidate immediately
+        $stmt = $this->getDb()->prepare(
+            "SELECT * FROM oauth_codes WHERE code = ? AND expires_at > UNIX_TIMESTAMP()"
+        );
+        $stmt->execute([$code]);
+        $entry = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        if ($entry['expires_at'] < time()) {
+        if (!$entry) {
             $response->getBody()->write(json_encode([
                 'success' => false,
-                'error'   => 'Code has expired. Please sign in again.',
+                'error'   => 'Invalid or expired code',
             ]));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
+
+        // Single-use: delete immediately so the code cannot be replayed
+        $this->getDb()->prepare("DELETE FROM oauth_codes WHERE code = ?")->execute([$code]);
 
         $response->getBody()->write(json_encode([
             'success'       => true,
