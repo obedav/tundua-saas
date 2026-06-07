@@ -26,9 +26,7 @@ function OAuthCallbackHandler() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const accessToken = searchParams.get("access_token");
-    const refreshToken = searchParams.get("refresh_token");
-    const userRole = searchParams.get("user_role");
+    const code = searchParams.get("code");
     const error = searchParams.get("error");
 
     if (error) {
@@ -37,37 +35,74 @@ function OAuthCallbackHandler() {
       return;
     }
 
-    if (accessToken && refreshToken) {
-      Cookies.set("auth_token", accessToken, {
-        expires: 7,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-      });
-
-      Cookies.set("refresh_token", refreshToken, {
-        expires: 30,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-      });
-
-      toast.success("Successfully logged in with Google!");
-
-      // Use a full page navigation instead of SPA router.push so that
-      // AuthContext re-initialises AFTER the cookies are in the browser.
-      // router.push would preserve the stale isAuthenticated=false state
-      // that was set before the tokens arrived, causing an immediate
-      // redirect back to /auth/login by ProtectedRoute.
-      const destination =
-        userRole === "admin" || userRole === "super_admin"
-          ? "/dashboard/admin"
-          : "/dashboard";
-      window.location.href = destination;
-    } else {
+    if (!code) {
       toast.error("Authentication failed. Please try again.");
       router.push("/auth/login");
+      return;
     }
+
+    // Exchange the one-time code for tokens via a POST request.
+    // Tokens are never placed in the URL, so they are not captured by
+    // analytics scripts, server logs, or browser history.
+    async function exchangeCode() {
+      try {
+        const res = await fetch(
+          `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/auth/exchange`,
+          {
+            method: "POST",
+            credentials: "include", // sends the PHP session cookie
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code }),
+          }
+        );
+
+        if (!res.ok) {
+          toast.error("Authentication failed. Please try again.");
+          router.push("/auth/login");
+          return;
+        }
+
+        const data = await res.json();
+
+        if (!data.success || !data.access_token) {
+          toast.error(data.error || "Authentication failed. Please try again.");
+          router.push("/auth/login");
+          return;
+        }
+
+        Cookies.set("auth_token", data.access_token, {
+          expires: 7,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+        });
+
+        Cookies.set("refresh_token", data.refresh_token, {
+          expires: 30,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+        });
+
+        toast.success("Successfully logged in with Google!");
+
+        // Use a full page navigation instead of SPA router.push so that
+        // AuthContext re-initialises AFTER the cookies are in the browser.
+        // router.push would preserve the stale isAuthenticated=false state
+        // that was set before the tokens arrived, causing an immediate
+        // redirect back to /auth/login by ProtectedRoute.
+        const destination =
+          data.user_role === "admin" || data.user_role === "super_admin"
+            ? "/dashboard/admin"
+            : "/dashboard";
+        window.location.href = destination;
+      } catch {
+        toast.error("Authentication failed. Please try again.");
+        router.push("/auth/login");
+      }
+    }
+
+    exchangeCode();
   }, [searchParams, router]);
 
   return <LoadingCard />;

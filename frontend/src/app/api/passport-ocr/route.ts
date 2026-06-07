@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { cookies } from 'next/headers';
 
 /**
  * API Route - Passport OCR via Gemini Vision
@@ -9,6 +10,39 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
  */
 export async function POST(request: NextRequest) {
   try {
+    // AUTH CHECK — validate session before processing any passport image
+    const cookieStore = await cookies();
+    const token = cookieStore.get('auth_token')?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    const userResponse = await fetch(
+      `${process.env['NEXT_PUBLIC_API_URL']}/api/v1/auth/me`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    if (!userResponse.ok) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid or expired session' },
+        { status: 401 }
+      );
+    }
+
+    const userData = await userResponse.json();
+    const user = userData.user || userData.data || userData;
+
+    if (!user?.id) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
     const apiKey = process.env['GOOGLE_GEMINI_API_KEY'] || process.env['GEMINI_API_KEY'];
 
     if (!apiKey) {

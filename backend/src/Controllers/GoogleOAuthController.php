@@ -170,13 +170,20 @@ class GoogleOAuthController
             unset($_SESSION['oauth2state']);
             unset($_SESSION['oauth_user_type']);
 
-            // Redirect to frontend with tokens
-            $frontendUrl = $_ENV['APP_URL'];
-            $redirectUrl = $frontendUrl . '/auth/oauth-callback?' . http_build_query([
-                'access_token' => $accessToken,
+            // Store tokens server-side under a short-lived one-time code.
+            // The frontend POSTs to /api/v1/auth/exchange to collect them.
+            // Tokens never appear in the URL, so they are not captured by
+            // analytics scripts (PostHog, GA4), server access logs, or browser history.
+            $code = bin2hex(random_bytes(32));
+            $_SESSION['oauth_exchange'][$code] = [
+                'access_token'  => $accessToken,
                 'refresh_token' => $refreshToken,
-                'user_role' => $user->role
-            ]);
+                'user_role'     => $user->role,
+                'expires_at'    => time() + 60,
+            ];
+
+            $frontendUrl = $_ENV['APP_URL'];
+            $redirectUrl = $frontendUrl . '/auth/oauth-callback?code=' . $code;
 
             return $response
                 ->withHeader('Location', $redirectUrl)
@@ -203,5 +210,45 @@ class GoogleOAuthController
             $redirectUrl = $frontendUrl . '/auth/login?error=' . urlencode($errorMessage);
             return $response->withHeader('Location', $redirectUrl)->withStatus(302);
         }
+    }
+
+    /**
+     * Exchange a one-time code for JWT tokens
+     * POST /api/v1/auth/exchange
+     *
+     * The code is stored in the PHP session by handleCallback and is valid for 60 seconds.
+     * It is deleted on first use, so it cannot be replayed.
+     */
+    public function exchangeCode(Request $request, Response $response): Response
+    {
+        $data = $request->getParsedBody();
+        $code = trim($data['code'] ?? '');
+
+        if (!$code || !isset($_SESSION['oauth_exchange'][$code])) {
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error'   => 'Invalid or expired code',
+            ]));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+
+        $entry = $_SESSION['oauth_exchange'][$code];
+        unset($_SESSION['oauth_exchange'][$code]); // single-use: invalidate immediately
+
+        if ($entry['expires_at'] < time()) {
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error'   => 'Code has expired. Please sign in again.',
+            ]));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+
+        $response->getBody()->write(json_encode([
+            'success'       => true,
+            'access_token'  => $entry['access_token'],
+            'refresh_token' => $entry['refresh_token'],
+            'user_role'     => $entry['user_role'],
+        ]));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }

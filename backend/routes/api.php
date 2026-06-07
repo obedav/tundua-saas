@@ -168,21 +168,19 @@ function registerRoutes($app, array $controllers)
     // ========================================================================
 
     $app->get('/health', function (Request $request, Response $response) {
+        $dbConnected = false;
         try {
-            // Test database connection
             $db = \Tundua\Database\Database::getConnection();
             $stmt = $db->query('SELECT 1');
-            $dbStatus = $stmt ? 'connected' : 'disconnected';
+            $dbConnected = (bool) $stmt;
         } catch (\Exception $e) {
-            $dbStatus = 'error: ' . $e->getMessage();
+            error_log('Health check DB error: ' . $e->getMessage());
         }
 
         $data = [
-            'status' => 'ok',
+            'status'    => 'ok',
             'timestamp' => date('Y-m-d H:i:s'),
-            'database' => $dbStatus,
-            'php_version' => PHP_VERSION,
-            'memory_usage' => round(memory_get_usage() / 1024 / 1024, 2) . ' MB'
+            'database'  => ['connected' => $dbConnected],
         ];
 
         $response->getBody()->write(json_encode($data));
@@ -225,6 +223,7 @@ function registerRoutes($app, array $controllers)
             if ($googleOAuthController) {
                 $group->get('/google', [$googleOAuthController, 'redirectToGoogle']);
                 $group->get('/google/callback', [$googleOAuthController, 'handleCallback']);
+                $group->post('/exchange', [$googleOAuthController, 'exchangeCode']);
             } else {
                 // Fallback routes when Google OAuth is not configured
                 $group->get('/google', function ($request, $response) {

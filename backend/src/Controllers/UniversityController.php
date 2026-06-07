@@ -53,6 +53,10 @@ class UniversityController
         // Filter by platform availability
         if (!empty($params['platform'])) {
             $platform = strtolower($params['platform']);
+            $allowed = ['applyboard', 'edvoy', 'studygroup', 'adventus'];
+            if (!in_array($platform, $allowed, true)) {
+                return $this->errorResponse($response, 'Invalid platform', 400);
+            }
             $query->where("available_on_$platform", true);
         }
 

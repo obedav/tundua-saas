@@ -505,15 +505,16 @@ class PaymentController
     public function getPayment(Request $request, Response $response, array $args): Response
     {
         $paymentId = $args['id'] ?? null;
+        $userId    = $request->getAttribute('user_id');
 
         try {
             $stmt = $this->getDb()->prepare("
                 SELECT p.*, a.reference_number, a.total_amount as application_amount
                 FROM payments p
                 LEFT JOIN applications a ON p.application_id = a.id
-                WHERE p.id = ?
+                WHERE p.id = ? AND p.user_id = ?
             ");
-            $stmt->execute([$paymentId]);
+            $stmt->execute([$paymentId, $userId]);
             $payment = $stmt->fetch(\PDO::FETCH_ASSOC);
 
             if (!$payment) {

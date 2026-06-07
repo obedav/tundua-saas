@@ -54,9 +54,12 @@ class RefundController
                 $sanitizedRef = 'unknown';
             }
 
-            // Validate file type
-            $clientMediaType = $uploadedFile->getClientMediaType();
-            if ($clientMediaType !== 'application/pdf') {
+            // Validate file type using server-side magic-byte inspection.
+            // getClientMediaType() is client-controlled and trivially spoofed;
+            // finfo reads the actual file bytes to detect the real content type.
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $detectedMime = $finfo->buffer($uploadedFile->getStream()->read(8192));
+            if ($detectedMime !== 'application/pdf') {
                 $response->getBody()->write(json_encode([
                     'success' => false,
                     'error' => 'Only PDF files are allowed'

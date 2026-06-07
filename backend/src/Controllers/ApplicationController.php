@@ -17,14 +17,16 @@ class ApplicationController
     public function create(Request $request, Response $response): Response
     {
         try {
-            $data = $request->getParsedBody();
             $userId = $request->getAttribute('user_id');
 
-            // Service tier is not required for draft creation
-            // It will be validated when submitting the application
-
-            // Add user ID
+            $allowed = [
+                'personal_info', 'academic_background', 'destination_country',
+                'programme_type', 'intake_year', 'intake_month', 'notes',
+                'service_tier_id',
+            ];
+            $data = array_intersect_key($request->getParsedBody(), array_flip($allowed));
             $data['user_id'] = $userId;
+            $data['status']  = 'draft';
 
             // Create application
             $application = Application::createApplication($data);
@@ -173,6 +175,13 @@ class ApplicationController
                 ]));
                 return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
             }
+
+            $allowed = [
+                'personal_info', 'academic_background', 'destination_country',
+                'programme_type', 'intake_year', 'intake_month', 'notes',
+                'service_tier_id',
+            ];
+            $data = array_intersect_key($data, array_flip($allowed));
 
             // Update application
             $success = Application::updateApplication($id, $data);
