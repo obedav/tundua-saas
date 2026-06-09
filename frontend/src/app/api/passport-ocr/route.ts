@@ -2,15 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { cookies } from 'next/headers';
 
-/**
- * API Route - Passport OCR via Gemini Vision
- *
- * Uses Gemini's vision capabilities to extract passport data
- * with much higher accuracy than client-side Tesseract.js
- */
+
 export async function POST(request: NextRequest) {
   try {
-    // AUTH CHECK — validate session before processing any passport image
+    
     const cookieStore = await cookies();
     const token = cookieStore.get('auth_token')?.value;
 
@@ -112,7 +107,7 @@ Set confidence as a percentage (0-100) based on how clearly you can read the dat
 
     const responseText = result.response.text().trim();
 
-    // Parse JSON from response (handle markdown code blocks)
+    
     let jsonStr = responseText;
     const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)```/);
     if (jsonMatch && jsonMatch[1]) {

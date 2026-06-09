@@ -95,7 +95,7 @@ function getReadingTime(html: string): number {
 
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
+  const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com';
   try {
     const { slug } = await params;
     const data = await getKnowledgeBaseArticle(slug);
@@ -107,20 +107,32 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const apiUrl = process.env['NEXT_PUBLIC_API_URL'] || '';
     const ogImages = article.featured_image
-      ? [{ url: `${apiUrl}${article.featured_image}` }]
+      ? [{
+          url: article.featured_image.startsWith('http')
+            ? article.featured_image
+            : `${apiUrl}${article.featured_image}`,
+        }]
       : undefined;
+
+    const description = article.excerpt || article.title;
 
     return {
       title: article.title,
-      description: article.excerpt || article.title,
+      description,
       alternates: { canonical: `${appUrl}/blog/${slug}` },
       openGraph: {
         title: article.title,
-        description: article.excerpt || article.title,
+        description,
+        url: `${appUrl}/blog/${slug}`,
         type: "article",
         publishedTime: article.published_at ?? article.created_at,
         modifiedTime: article.updated_at,
         ...(ogImages ? { images: ogImages } : {}),
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: article.title,
+        description,
       },
     };
   } catch {

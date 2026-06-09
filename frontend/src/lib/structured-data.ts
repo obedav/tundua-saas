@@ -10,7 +10,7 @@
 
 import type { Organization, WebSite, BreadcrumbList, Service, BlogPosting, SoftwareApplication } from 'schema-dts';
 
-const APP_URL = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
+const APP_URL = process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com';
 
 /**
  * Organization Schema

@@ -139,6 +139,13 @@ const nextConfig = {
    */
   async redirects() {
     return [
+      // Canonicalise to non-www. Must come first so all other redirects inherit the correct host.
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.tundua.com' }],
+        destination: 'https://tundua.com/:path*',
+        permanent: true,
+      },
       // Old homepage
       { source: '/index.html', destination: '/', permanent: true },
       // Old static pages

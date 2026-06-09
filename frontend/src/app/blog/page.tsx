@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "Study Abroad Blog - Guides, Tips & Rankings (2026)",
   description: "Expert guides on studying abroad from Nigeria. Cheapest UK universities, visa requirements, application tips, and budget guides.",
   alternates: {
-    canonical: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/blog`,
+    canonical: `${process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com'}/blog`,
   },
   keywords: [
     "study abroad blog",

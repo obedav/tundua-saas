@@ -5,7 +5,6 @@
  * Must be placed in the <head> or <body> of your HTML
  */
 
-import Script from 'next/script';
 import {
   getOrganizationSchema,
   getWebsiteSchema,
@@ -30,11 +29,9 @@ export function GlobalStructuredData() {
   ) as string;
 
   return (
-    <Script
-      id="structured-data-global"
+    <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: schemas }}
-      strategy="beforeInteractive"
     />
   );
 }
@@ -67,16 +64,14 @@ export function BreadcrumbStructuredData({
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}${item.url}`,
+      item: `${process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com'}${item.url}`,
     })),
   };
 
   return (
-    <Script
-      id="structured-data-breadcrumb"
+    <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      strategy="afterInteractive"
     />
   );
 }
@@ -117,11 +112,9 @@ export function FAQStructuredData({
   };
 
   return (
-    <Script
-      id="structured-data-faq"
+    <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      strategy="afterInteractive"
     />
   );
 }
@@ -142,11 +135,9 @@ export function ReviewsStructuredData({ reviews }: { reviews: ReviewInput[] }) {
   };
 
   return (
-    <Script
-      id="structured-data-reviews"
+    <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      strategy="afterInteractive"
     />
   );
 }
@@ -178,11 +169,9 @@ export function BlogPostStructuredData({
   };
 
   return (
-    <Script
-      id="structured-data-blog-post"
+    <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      strategy="afterInteractive"
     />
   );
 }

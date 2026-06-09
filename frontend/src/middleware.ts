@@ -7,10 +7,19 @@ import type { NextRequest } from 'next/server';
  * This runs on EVERY request before reaching your pages.
  * Adds critical security headers to protect against common attacks.
  */
+// Matches query strings that embed an external domain reference, e.g. ?whoisdatacenter.com/
+const SPAM_QS_RE = /[?&][^=&]*\.[a-z]{2,6}[/?]/i;
+
 export function middleware(_request: NextRequest) {
   // Redirect malformed URLs like /& to homepage
   if (_request.nextUrl.pathname === '/&' || _request.nextUrl.pathname.startsWith('/&')) {
     return NextResponse.redirect(new URL('/', _request.url), 301);
+  }
+
+  // Block spam referrer-injection URLs (e.g. ?whoisdatacenter.com/)
+  const rawSearch = _request.nextUrl.search;
+  if (rawSearch && SPAM_QS_RE.test(rawSearch)) {
+    return NextResponse.redirect(new URL(_request.nextUrl.pathname, _request.url), 301);
   }
 
   const response = NextResponse.next();
