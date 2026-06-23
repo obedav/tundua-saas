@@ -236,6 +236,7 @@ export interface KnowledgeBaseArticle {
   not_helpful_count: number;
   is_featured: boolean;
   is_published: boolean;
+  country_target: string | null;
   metadata: Record<string, unknown> | null;
   published_at: string | null;
   created_at: string;

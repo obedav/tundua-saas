@@ -280,6 +280,9 @@ class KnowledgeBaseController
             $article->tags = isset($data['tags']) ? (is_array($data['tags']) ? $data['tags'] : json_decode($data['tags'], true)) : [];
             $article->is_published = $isPublished;
             $article->is_featured = isset($data['is_featured']) && $data['is_featured'];
+            $article->country_target = isset($data['country_target']) && $data['country_target'] !== ''
+                ? strtolower(trim((string)$data['country_target']))
+                : null;
             $article->author_id = $request->getAttribute('user_id');
             $article->view_count = 0;
             $article->helpful_count = 0;
@@ -363,6 +366,11 @@ class KnowledgeBaseController
                 if (!$wasPublished && $article->is_published && !$article->published_at) {
                     $article->published_at = date('Y-m-d H:i:s');
                 }
+            }
+            if (array_key_exists('country_target', $data)) {
+                $article->country_target = $data['country_target'] !== '' && $data['country_target'] !== null
+                    ? strtolower(trim((string)$data['country_target']))
+                    : null;
             }
 
             $article->save();

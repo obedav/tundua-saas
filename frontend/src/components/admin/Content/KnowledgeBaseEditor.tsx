@@ -40,6 +40,7 @@ interface EditorState {
   excerpt: string;
   featured_image: string | null;
   category: string;
+  country_target: string;
   tags: string[];
   faqs: FAQ[];
   is_published: boolean;
@@ -53,6 +54,7 @@ const emptyEditor: EditorState = {
   excerpt: "",
   featured_image: null,
   category: "",
+  country_target: "",
   tags: [],
   faqs: [],
   is_published: false,
@@ -150,6 +152,7 @@ export default function KnowledgeBaseEditor() {
       excerpt: article.excerpt || "",
       featured_image: article.featured_image || null,
       category: article.category || "",
+      country_target: article.country_target || "",
       tags: article.tags || [],
       faqs: existingFaqs,
       is_published: article.is_published,
@@ -180,6 +183,7 @@ export default function KnowledgeBaseEditor() {
       excerpt: editor.excerpt,
       featured_image: editor.featured_image,
       category: editor.category || "General",
+      country_target: editor.country_target || null,
       tags: editor.tags,
       is_published: publish !== undefined ? publish : editor.is_published,
       is_featured: editor.is_featured,
@@ -700,6 +704,29 @@ export default function KnowledgeBaseEditor() {
                 ))}
               </datalist>
             )}
+          </div>
+
+          {/* Target Country */}
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Target country
+            </label>
+            <select
+              value={editor.country_target}
+              onChange={(e) => setEditor({ ...editor, country_target: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">All countries</option>
+              <option value="nigeria">Nigeria</option>
+              <option value="ghana">Ghana</option>
+              <option value="kenya">Kenya</option>
+              <option value="egypt">Egypt</option>
+              <option value="morocco">Morocco</option>
+              <option value="zambia">Zambia</option>
+              <option value="uganda">Uganda</option>
+              <option value="tanzania">Tanzania</option>
+              <option value="south-africa">South Africa</option>
+            </select>
           </div>
 
           {/* Tags */}

@@ -43,6 +43,7 @@ export async function createArticle(data: {
   tags?: string[];
   is_published?: boolean;
   is_featured?: boolean;
+  country_target?: string | null;
   metadata?: Record<string, unknown>;
 }) {
   try {
@@ -71,6 +72,7 @@ export async function updateArticle(id: number, data: {
   tags?: string[];
   is_published?: boolean;
   is_featured?: boolean;
+  country_target?: string | null;
   metadata?: Record<string, unknown>;
 }) {
   try {
