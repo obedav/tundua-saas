@@ -1,18 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle } from "lucide-react";
+import { Send } from "lucide-react";
 import { trackLeadFormSubmit } from "@/lib/analytics";
 import { getUtmPayload } from "@/lib/utm";
-
-interface FormData {
-  name: string;
-  email: string;
-  phone: string;
-  country: string;
-  budget: string;
-  message: string;
-}
+import { LeadDetailsForm } from "@/components/LeadDetailsForm";
 
 const COUNTRIES = [
   "United Kingdom",
@@ -24,29 +16,37 @@ const COUNTRIES = [
   "Other",
 ];
 
-const BUDGETS = [
-  "Under ₦100,000",
-  "₦100,000 - ₦200,000",
-  "₦200,000 - ₦500,000",
-  "₦500,000+",
-  "Not sure yet",
-];
+function generateStartDates(): string[] {
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const now = new Date();
+  const dates: string[] = [];
+  for (let i = 1; i <= 18; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+    dates.push(`${months[d.getMonth()]} ${d.getFullYear()}`);
+  }
+  return dates;
+}
+
+const START_DATES = generateStartDates();
+
+interface FormData {
+  name: string;
+  country: string;
+  start_date: string;
+}
 
 export function ApplyForm() {
   const [formData, setFormData] = useState<FormData>({
     name: "",
-    email: "",
-    phone: "",
     country: "",
-    budget: "",
-    message: "",
+    start_date: "",
   });
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [leadId, setLeadId] = useState<number | null>(null);
   const [error, setError] = useState("");
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -64,11 +64,8 @@ export function ApplyForm() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
             country: formData.country,
-            budget: formData.budget,
-            message: formData.message,
+            start_date: formData.start_date,
             source: "apply-page",
             utm: getUtmPayload(),
           }),
@@ -76,7 +73,8 @@ export function ApplyForm() {
       );
 
       if (response.ok) {
-        setSubmitted(true);
+        const data = await response.json();
+        setLeadId(data.lead_id);
         trackLeadFormSubmit("apply-page");
       } else {
         const data = await response.json().catch(() => null);
@@ -89,27 +87,8 @@ export function ApplyForm() {
     }
   };
 
-  if (submitted) {
-    return (
-      <div className="text-center py-12">
-        <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">Application Received!</h3>
-        <p className="text-gray-600 mb-4">
-          We&apos;ll review your details and contact you within 24 hours.
-        </p>
-        <p className="text-sm text-gray-500">
-          Want faster response?{" "}
-          <a
-            href={`https://wa.me/${process.env['NEXT_PUBLIC_WHATSAPP_NUMBER'] || "2348000000000"}?text=${encodeURIComponent("Hi, I just submitted an application on tundua.com")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-green-600 hover:text-green-700 font-medium"
-          >
-            Chat on WhatsApp
-          </a>
-        </p>
-      </div>
-    );
+  if (leadId !== null) {
+    return <LeadDetailsForm leadId={leadId} />;
   }
 
   return (
@@ -130,91 +109,42 @@ export function ApplyForm() {
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="apply-email" className="block text-sm font-medium text-gray-700 mb-1">
-            Email
-          </label>
-          <input
-            type="email"
-            id="apply-email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            placeholder="you@example.com"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-          />
-        </div>
-        <div>
-          <label htmlFor="apply-phone" className="block text-sm font-medium text-gray-700 mb-1">
-            Phone / WhatsApp
-          </label>
-          <input
-            type="tel"
-            id="apply-phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-            placeholder="+234 800 000 0000"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="apply-country" className="block text-sm font-medium text-gray-700 mb-1">
-            Country of Interest
-          </label>
-          <select
-            id="apply-country"
-            name="country"
-            value={formData.country}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-          >
-            <option value="">Select country</option>
-            {COUNTRIES.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="apply-budget" className="block text-sm font-medium text-gray-700 mb-1">
-            Budget Range
-          </label>
-          <select
-            id="apply-budget"
-            name="budget"
-            value={formData.budget}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-          >
-            <option value="">Select budget</option>
-            {BUDGETS.map((b) => (
-              <option key={b} value={b}>{b}</option>
-            ))}
-          </select>
-        </div>
+      <div>
+        <label htmlFor="apply-country" className="block text-sm font-medium text-gray-700 mb-1">
+          Where do you want to study?
+        </label>
+        <select
+          id="apply-country"
+          name="country"
+          value={formData.country}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+        >
+          <option value="">Select country</option>
+          {COUNTRIES.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
       </div>
 
       <div>
-        <label htmlFor="apply-message" className="block text-sm font-medium text-gray-700 mb-1">
-          Tell us about your goals <span className="text-gray-400">(optional)</span>
+        <label htmlFor="apply-start-date" className="block text-sm font-medium text-gray-700 mb-1">
+          When do you want to start?
         </label>
-        <textarea
-          id="apply-message"
-          name="message"
-          value={formData.message}
+        <select
+          id="apply-start-date"
+          name="start_date"
+          value={formData.start_date}
           onChange={handleChange}
-          rows={3}
-          placeholder="e.g. I want to study nursing in the UK starting September 2026"
+          required
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-        />
+        >
+          <option value="">Select intake month</option>
+          {START_DATES.map((d) => (
+            <option key={d} value={d}>{d}</option>
+          ))}
+        </select>
       </div>
 
       {error && (
@@ -229,7 +159,7 @@ export function ApplyForm() {
         className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <Send className="w-4 h-4" />
-        {loading ? "Submitting..." : "Submit Application"}
+        {loading ? "Submitting..." : "Get Started"}
       </button>
 
       <p className="text-xs text-gray-400 text-center">

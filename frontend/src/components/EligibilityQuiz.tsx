@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CheckCircle, MessageCircle, Sparkles, ArrowRight, Mail } from "lucide-react";
-import { trackEligibilityCheck, trackFormStart, trackFormStep, trackWhatsAppClick, trackQuizImpression, trackLeadFormSubmit } from "@/lib/analytics";
+import { trackEligibilityCheck, trackFormStart, trackFormStep, trackQuizToWhatsAppClick, trackQuizImpression, trackLeadFormSubmit } from "@/lib/analytics";
 
 const WHATSAPP_NUMBER = process.env['NEXT_PUBLIC_WHATSAPP_NUMBER'] || "2348000000000";
 
@@ -48,6 +48,12 @@ const COUNTRY_LABELS: Record<string, string> = {
   australia: "Australian",
 };
 
+const VISA_TYPES: Record<string, string> = {
+  uk: "UK Student Visa",
+  canada: "Study Permit",
+  australia: "Student Visa (Subclass 500)",
+};
+
 type EmailState = "idle" | "submitting" | "done" | "error";
 
 export function EligibilityQuiz({ source = "blog-eligibility-quiz", country = "uk" }: EligibilityQuizProps) {
@@ -83,14 +89,16 @@ export function EligibilityQuiz({ source = "blog-eligibility-quiz", country = "u
   };
 
   const buildWhatsAppUrl = () => {
+    const visaType = VISA_TYPES[country] ?? "Student Visa";
     const message = `Hi Tundua, I just used your eligibility check on the blog.
 
 📊 My situation:
 • Destination: ${countryLabel}
+• Visa type: ${visaType}
 • Budget: ${budget?.label}
 • Course: ${course?.label}
 
-Can you send me a free shortlist of ${countryLabel} universities I qualify for?`;
+Can you help me continue with Tundua and send me a free shortlist of ${countryLabel} universities I qualify for?`;
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   };
 
@@ -206,7 +214,7 @@ Can you send me a free shortlist of ${countryLabel} universities I qualify for?`
             href={buildWhatsAppUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackWhatsAppClick(source)}
+            onClick={() => trackQuizToWhatsAppClick(source, country, VISA_TYPES[country] ?? "Student Visa")}
             className="w-full inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3.5 rounded-xl font-bold transition-all hover:scale-[1.02] shadow-md"
           >
             <MessageCircle className="w-5 h-5" />

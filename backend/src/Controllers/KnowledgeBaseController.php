@@ -18,9 +18,10 @@ class KnowledgeBaseController
             $queryParams = $request->getQueryParams();
             $category = $queryParams['category'] ?? null;
             $search = $queryParams['search'] ?? null;
+            $country = $queryParams['country'] ?? null;
             $limit = isset($queryParams['limit']) ? (int)$queryParams['limit'] : 50;
 
-            $articles = KnowledgeBaseArticle::getPublishedArticles($category, $search, $limit);
+            $articles = KnowledgeBaseArticle::getPublishedArticles($category, $search, $limit, $country);
 
             $response->getBody()->write(json_encode([
                 'success' => true,

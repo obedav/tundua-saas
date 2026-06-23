@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator as v;
 use Tundua\Models\Lead;
 use Tundua\Services\EmailService;
+use Tundua\Services\LeadScoringService;
 
 /**
  * LeadController — accept public funnel form submissions.
@@ -28,6 +29,7 @@ class LeadController
         'email'        => 255,
         'phone'        => 50,
         'country'      => 100,
+        'start_date'   => 30,
         'budget'       => 100,
         'message'      => 2000,
         'source'       => 100,
@@ -45,8 +47,8 @@ class LeadController
      * POST /api/v1/leads
      *
      * Body (JSON):
-     *   required: name, email, source
-     *   optional: phone, country, budget, message, utm { source,medium,campaign,term,content,gclid,fbclid,landing_page,referrer }
+     *   required: name, country, start_date
+     *   optional: email, phone, budget, message, source, utm { source,medium,campaign,term,content,gclid,fbclid,landing_page,referrer }
      *
      * Returns 201 { success:true, lead_id } on success; 400 on validation error; 500 on unexpected failure.
      */
@@ -71,7 +73,14 @@ class LeadController
             return $this->json($response, ['success' => false, 'error' => 'Could not save your submission. Please try again.'], 500);
         }
 
-        // 4. Fire-and-observe admin notification. We intentionally do NOT fail the
+        // 4. Score the lead. Non-fatal — a scoring failure must not block the 201.
+        try {
+            LeadScoringService::withDefaultRules()->scoreAndSave($lead);
+        } catch (\Throwable $e) {
+            error_log('Lead scoring failed: ' . $e->getMessage());
+        }
+
+        // 5. Fire-and-observe admin notification. We intentionally do NOT fail the
         //    request if the email fails — the lead is safely in the DB, and the
         //    admin can work from the database if email is down.
         try {
@@ -84,7 +93,71 @@ class LeadController
     }
 
     /**
-     * Validate required + optional fields. Returns a field-keyed error map.
+     * PATCH /api/v1/leads/{id}/details
+     *
+     * Body (JSON):
+     *   optional: email, phone, budget, message
+     *
+     * Returns 200 { success:true } on success; 400 on validation error; 404 if not found; 500 on failure.
+     */
+    public function updateDetails(Request $request, Response $response, array $args): Response
+    {
+        $lead = Lead::find((int)($args['id'] ?? 0));
+        if ($lead === null) {
+            return $this->json($response, ['success' => false, 'error' => 'Lead not found'], 404);
+        }
+
+        $data = $request->getParsedBody() ?? [];
+
+        $errors = $this->validateOptionalLengths($data, [
+            'country'    => self::LIMITS['country'],
+            'start_date' => self::LIMITS['start_date'],
+            'phone'      => self::LIMITS['phone'],
+            'budget'     => self::LIMITS['budget'],
+            'message'    => self::LIMITS['message'],
+        ]);
+
+        $email = strtolower(trim((string)($data['email'] ?? '')));
+        if ($email !== '' && (mb_strlen($email) > self::LIMITS['email'] || !v::email()->validate($email))) {
+            $errors['email'] = 'Invalid email';
+        }
+
+        if (!empty($errors)) {
+            return $this->json($response, ['success' => false, 'error' => 'Validation failed', 'details' => $errors], 400);
+        }
+
+        $updates = [];
+        if ($email !== '') {
+            $updates['email'] = $email;
+        }
+        foreach (['country', 'start_date', 'phone', 'budget', 'message'] as $field) {
+            $val = $this->trimField($data, $field, self::LIMITS[$field]);
+            if ($val !== null) {
+                $updates[$field] = $val;
+            }
+        }
+
+        if (!empty($updates)) {
+            try {
+                $lead->update($updates);
+            } catch (\Throwable $e) {
+                error_log('Lead details update failed: ' . $e->getMessage());
+                return $this->json($response, ['success' => false, 'error' => 'Could not update your details. Please try again.'], 500);
+            }
+        }
+
+        // Rescore whenever this endpoint is hit — country or start_date may have changed.
+        try {
+            LeadScoringService::withDefaultRules()->scoreAndSave($lead);
+        } catch (\Throwable $e) {
+            error_log('Lead rescoring failed: ' . $e->getMessage());
+        }
+
+        return $this->json($response, ['success' => true], 200);
+    }
+
+    /**
+     * Validate required + optional fields for lead creation. Returns a field-keyed error map.
      */
     private function validate(array $data): array
     {
@@ -96,26 +169,56 @@ class LeadController
             $errors['name'] = 'Name is too long';
         }
 
+        if (empty(trim((string)($data['country'] ?? '')))) {
+            $errors['country'] = 'Country is required';
+        } elseif (mb_strlen((string)$data['country']) > self::LIMITS['country']) {
+            $errors['country'] = 'Country is too long';
+        }
+
+        if (empty(trim((string)($data['start_date'] ?? '')))) {
+            $errors['start_date'] = 'Start date is required';
+        } elseif (mb_strlen((string)$data['start_date']) > self::LIMITS['start_date']) {
+            $errors['start_date'] = 'Start date is too long';
+        }
+
+        // Email is optional at creation; if provided it must be valid.
         $email = strtolower(trim((string)($data['email'] ?? '')));
-        if ($email === '') {
-            $errors['email'] = 'Email is required';
-        } elseif (mb_strlen($email) > self::LIMITS['email'] || !v::email()->validate($email)) {
+        if ($email !== '' && (mb_strlen($email) > self::LIMITS['email'] || !v::email()->validate($email))) {
             $errors['email'] = 'Invalid email';
         }
 
-        if (empty(trim((string)($data['source'] ?? '')))) {
-            $errors['source'] = 'Source is required';
-        } elseif (mb_strlen((string)$data['source']) > self::LIMITS['source']) {
-            $errors['source'] = 'Source is too long';
-        }
+        return array_merge($errors, $this->validateOptionalLengths($data, [
+            'phone'   => self::LIMITS['phone'],
+            'budget'  => self::LIMITS['budget'],
+            'message' => self::LIMITS['message'],
+            'source'  => self::LIMITS['source'],
+        ]));
+    }
 
-        foreach (['phone' => 'phone', 'country' => 'country', 'budget' => 'budget', 'message' => 'message'] as $field => $label) {
-            if (isset($data[$field]) && mb_strlen((string)$data[$field]) > self::LIMITS[$field]) {
-                $errors[$field] = ucfirst($label) . ' is too long';
+    /**
+     * Validate that present, non-empty optional fields don't exceed their character limits.
+     * Reused by validate() and updateDetails() to keep the rule in one place.
+     */
+    private function validateOptionalLengths(array $data, array $fieldLimits): array
+    {
+        $errors = [];
+        foreach ($fieldLimits as $field => $limit) {
+            if (isset($data[$field]) && $data[$field] !== '' && mb_strlen((string)$data[$field]) > $limit) {
+                $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . ' is too long';
             }
         }
-
         return $errors;
+    }
+
+    /**
+     * Trim and truncate a string field from a source array. Returns null when absent or empty.
+     */
+    private function trimField(array $src, string $key, int $max): ?string
+    {
+        if (!isset($src[$key]) || $src[$key] === '') {
+            return null;
+        }
+        return mb_substr(trim((string)$src[$key]), 0, $max);
     }
 
     /**
@@ -126,31 +229,27 @@ class LeadController
     {
         $utm = is_array($data['utm'] ?? null) ? $data['utm'] : [];
 
-        $get = function (array $src, string $key, int $max): ?string {
-            if (!isset($src[$key]) || $src[$key] === '') {
-                return null;
-            }
-            return mb_substr(trim((string)$src[$key]), 0, $max);
-        };
+        $email = strtolower(trim((string)($data['email'] ?? '')));
 
         return [
-            'name'    => mb_substr(trim((string)$data['name']), 0, self::LIMITS['name']),
-            'email'   => strtolower(mb_substr(trim((string)$data['email']), 0, self::LIMITS['email'])),
-            'phone'   => $get($data, 'phone',   self::LIMITS['phone']),
-            'country' => $get($data, 'country', self::LIMITS['country']),
-            'budget'  => $get($data, 'budget',  self::LIMITS['budget']),
-            'message' => $get($data, 'message', self::LIMITS['message']),
-            'source'  => mb_substr(trim((string)$data['source']), 0, self::LIMITS['source']),
+            'name'       => mb_substr(trim((string)$data['name']), 0, self::LIMITS['name']),
+            'email'      => $email !== '' ? mb_substr($email, 0, self::LIMITS['email']) : null,
+            'phone'      => $this->trimField($data, 'phone',      self::LIMITS['phone']),
+            'country'    => mb_substr(trim((string)$data['country']), 0, self::LIMITS['country']),
+            'start_date' => mb_substr(trim((string)$data['start_date']), 0, self::LIMITS['start_date']),
+            'budget'     => $this->trimField($data, 'budget',     self::LIMITS['budget']),
+            'message'    => $this->trimField($data, 'message',    self::LIMITS['message']),
+            'source'     => $this->trimField($data, 'source',     self::LIMITS['source']) ?? 'web',
 
-            'utm_source'   => $get($utm, 'utm_source',   self::LIMITS['utm_field']) ?? $get($data, 'utm_source',   self::LIMITS['utm_field']),
-            'utm_medium'   => $get($utm, 'utm_medium',   self::LIMITS['utm_field']) ?? $get($data, 'utm_medium',   self::LIMITS['utm_field']),
-            'utm_campaign' => $get($utm, 'utm_campaign', self::LIMITS['utm_field']) ?? $get($data, 'utm_campaign', self::LIMITS['utm_field']),
-            'utm_term'     => $get($utm, 'utm_term',     self::LIMITS['utm_field']) ?? $get($data, 'utm_term',     self::LIMITS['utm_field']),
-            'utm_content'  => $get($utm, 'utm_content',  self::LIMITS['utm_field']) ?? $get($data, 'utm_content',  self::LIMITS['utm_field']),
-            'gclid'        => $get($utm, 'gclid',        self::LIMITS['utm_field']) ?? $get($data, 'gclid',        self::LIMITS['utm_field']),
-            'fbclid'       => $get($utm, 'fbclid',       self::LIMITS['utm_field']) ?? $get($data, 'fbclid',       self::LIMITS['utm_field']),
-            'landing_page' => $get($utm, 'landing_page', self::LIMITS['url'])       ?? $get($data, 'landing_page', self::LIMITS['url']),
-            'referrer'     => $get($utm, 'referrer',     self::LIMITS['url'])       ?? $get($data, 'referrer',     self::LIMITS['url']),
+            'utm_source'   => $this->trimField($utm, 'utm_source',   self::LIMITS['utm_field']) ?? $this->trimField($data, 'utm_source',   self::LIMITS['utm_field']),
+            'utm_medium'   => $this->trimField($utm, 'utm_medium',   self::LIMITS['utm_field']) ?? $this->trimField($data, 'utm_medium',   self::LIMITS['utm_field']),
+            'utm_campaign' => $this->trimField($utm, 'utm_campaign', self::LIMITS['utm_field']) ?? $this->trimField($data, 'utm_campaign', self::LIMITS['utm_field']),
+            'utm_term'     => $this->trimField($utm, 'utm_term',     self::LIMITS['utm_field']) ?? $this->trimField($data, 'utm_term',     self::LIMITS['utm_field']),
+            'utm_content'  => $this->trimField($utm, 'utm_content',  self::LIMITS['utm_field']) ?? $this->trimField($data, 'utm_content',  self::LIMITS['utm_field']),
+            'gclid'        => $this->trimField($utm, 'gclid',        self::LIMITS['utm_field']) ?? $this->trimField($data, 'gclid',        self::LIMITS['utm_field']),
+            'fbclid'       => $this->trimField($utm, 'fbclid',       self::LIMITS['utm_field']) ?? $this->trimField($data, 'fbclid',       self::LIMITS['utm_field']),
+            'landing_page' => $this->trimField($utm, 'landing_page', self::LIMITS['url'])       ?? $this->trimField($data, 'landing_page', self::LIMITS['url']),
+            'referrer'     => $this->trimField($utm, 'referrer',     self::LIMITS['url'])       ?? $this->trimField($data, 'referrer',     self::LIMITS['url']),
 
             'ip_address' => $this->clientIp($request),
             'user_agent' => mb_substr((string)($request->getHeaderLine('User-Agent') ?: ''), 0, self::LIMITS['user_agent']) ?: null,

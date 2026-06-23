@@ -344,6 +344,28 @@ export const trackFormStep = (formName: string, step: number, stepLabel: string)
   });
 };
 
+// Fired when a user clicks the WhatsApp CTA directly from a quiz result screen.
+// Distinct from the generic whatsapp_click so GA4 can measure quiz → WhatsApp
+// conversion rate as its own funnel step. Internally delegates to trackWhatsAppClick
+// so the existing generate_lead value assignment is not duplicated.
+export const trackQuizToWhatsAppClick = (source: string, country: string, visaType: string) => {
+  if (!isGALoaded()) {
+    console.log('[Analytics - Dev] Quiz to WhatsApp click:', { source, country, visaType });
+    return;
+  }
+
+  window.gtag('event', 'quiz_to_whatsapp_click', {
+    event_category: 'CTA',
+    event_label: source,
+    quiz_country: country,
+    quiz_visa_type: visaType,
+    currency: 'NGN',
+    value: LEAD_VALUE_NGN.whatsapp,
+  });
+
+  trackWhatsAppClick(source);
+};
+
 // Declare gtag on window object for TypeScript
 declare global {
   interface Window {

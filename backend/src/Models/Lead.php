@@ -19,6 +19,7 @@ class Lead extends Model
         'email',
         'phone',
         'country',
+        'start_date',
         'budget',
         'message',
         'source',
@@ -35,10 +36,12 @@ class Lead extends Model
         'user_agent',
         'status',
         'notes',
+        'lead_score',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'lead_score' => 'integer',
     ];
 }

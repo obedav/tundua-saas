@@ -266,6 +266,7 @@ function registerRoutes($app, array $controllers)
         // No auth — this is the top-of-funnel entry point. Rate limiting is
         // applied centrally in RateLimitMiddleware's $endpointLimits.
         $v1->post('/leads', [$leadController, 'create']);
+        $v1->patch('/leads/{id}/details', [$leadController, 'updateDetails']);
 
         // ====================================================================
         // SERVICE CONFIGURATION ROUTES (PUBLIC)

@@ -157,7 +157,7 @@ export function getBlogPostSchema(article: {
     '@type': 'BlogPosting',
     headline: article.title,
     url: `${APP_URL}/blog/${article.slug}`,
-    description: article.excerpt || '',
+    ...(article.excerpt ? { description: article.excerpt } : {}),
     inLanguage: 'en-NG',
     datePublished: article.published_at || article.updated_at || new Date().toISOString(),
     dateModified: article.updated_at || new Date().toISOString(),
@@ -171,7 +171,7 @@ export function getBlogPostSchema(article: {
     publisher: {
       '@type': 'Organization',
       '@id': `${APP_URL}#organization`,
-      name: 'Tundua',
+      name: 'Tundua Edu Consults',
       logo: {
         '@type': 'ImageObject',
         url: `${APP_URL}/logo.png`,

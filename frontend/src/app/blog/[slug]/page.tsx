@@ -16,6 +16,9 @@ import { StickyMobileCTA } from "@/components/StickyMobileCTA";
 import { ViewTracker } from "@/components/ViewTracker";
 import { clientEnv } from "@/lib/env";
 import { sanitizeArticleHtml, rewriteCtaLinks, wrapTablesForMobile } from "@/lib/article-html";
+import { buildSeoTitle } from "@/lib/seo-title";
+import { buildMetaDescription } from "@/lib/text";
+import { buildGeoMetadata } from "@/lib/geo-metadata";
 
 // ISR: Revalidate every 30 minutes so content stays fresh
 export const revalidate = 1800;
@@ -66,6 +69,7 @@ interface Article {
   published_at?: string | null;
   created_at: string;
   updated_at: string;
+  country_target?: string | null;
 }
 
 interface RelatedArticle {
@@ -114,14 +118,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         }]
       : undefined;
 
-    const description = article.excerpt || article.title;
+    const seoTitle = buildSeoTitle(article.title, article.tags);
+    const explicitDesc = typeof article.metadata?.['meta_description'] === 'string'
+      ? article.metadata['meta_description']
+      : null;
+    const originCountry = ['Nigeria', 'Ghana', 'Kenya', 'Egypt', 'Morocco', 'Zambia', 'Uganda', 'Tanzania']
+      .find(c => (article.tags ?? []).some(t => t.toLowerCase().includes(c.toLowerCase())));
+    const description = explicitDesc
+      ?? buildMetaDescription(article.excerpt || article.content || article.title, originCountry);
+    const geo = buildGeoMetadata(article.country_target);
 
     return {
-      title: article.title,
+      title: seoTitle,
       description,
-      alternates: { canonical: `${appUrl}/blog/${slug}` },
+      alternates: {
+        canonical: `${appUrl}/blog/${slug}`,
+        ...(geo ? { languages: geo.languages } : {}),
+      },
       openGraph: {
-        title: article.title,
+        title: seoTitle,
         description,
         url: `${appUrl}/blog/${slug}`,
         type: "article",
@@ -131,9 +146,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       },
       twitter: {
         card: 'summary_large_image',
-        title: article.title,
+        title: seoTitle,
         description,
       },
+      ...(geo ? { other: geo.other } : {}),
     };
   } catch {
     return { title: "Blog | Tundua" };

@@ -3,6 +3,7 @@
 namespace Tundua\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Tundua\Filters\ArticleCountryFilter;
 
 class KnowledgeBaseArticle extends Model
 {
@@ -19,6 +20,7 @@ class KnowledgeBaseArticle extends Model
         'author_id',
         'is_published',
         'is_featured',
+        'country_target',
         'view_count',
         'helpful_count',
         'not_helpful_count',
@@ -41,7 +43,7 @@ class KnowledgeBaseArticle extends Model
     /**
      * Get all published articles
      */
-    public static function getPublishedArticles(?string $category = null, ?string $search = null, int $limit = 50): array
+    public static function getPublishedArticles(?string $category = null, ?string $search = null, int $limit = 50, ?string $country = null): array
     {
         try {
             $query = self::where('is_published', true);
@@ -56,6 +58,10 @@ class KnowledgeBaseArticle extends Model
                       ->orWhere('content', 'LIKE', "%{$search}%")
                       ->orWhere('excerpt', 'LIKE', "%{$search}%");
                 });
+            }
+
+            if ($country) {
+                $query = (new ArticleCountryFilter())->apply($query, $country);
             }
 
             return $query
