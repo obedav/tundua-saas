@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Tundua\Controllers\KnowledgeBaseController;
 use Tundua\Models\KnowledgeBaseArticle;
+use Tundua\Services\InternalLinkService;
+use Tundua\Services\InternalLinking\CaseInsensitiveKeywordMatcher;
 
 class ArticleCountryTargetTest extends TestCase
 {
@@ -56,7 +58,9 @@ class ArticleCountryTargetTest extends TestCase
     #[Test]
     public function article_saved_with_country_target_ghana_is_returned_by_get_endpoint(): void
     {
-        $controller = new KnowledgeBaseController();
+        $controller = new KnowledgeBaseController(
+            new InternalLinkService(new CaseInsensitiveKeywordMatcher())
+        );
 
         // POST — create an article with country_target = 'ghana'
         $createRequest = (new ServerRequestFactory())

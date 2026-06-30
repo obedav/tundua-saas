@@ -31,6 +31,8 @@ use Tundua\Controllers\TwoFactorController;
 use Tundua\Controllers\LeadController;
 use Tundua\Controllers\DeadlineController;
 use Tundua\Controllers\SubscriptionController;
+use Tundua\Services\InternalLinkService;
+use Tundua\Services\InternalLinking\CaseInsensitiveKeywordMatcher;
 
 // Initialize Google OAuth Controller only if the package is installed
 $googleOAuthController = null;
@@ -59,7 +61,9 @@ return [
     'dashboard'     => new DashboardController(),
     'addonOrder'    => new AddonOrderController(),
     'referral'      => new ReferralController(),
-    'knowledgeBase' => new KnowledgeBaseController(),
+    'knowledgeBase' => new KnowledgeBaseController(
+        new InternalLinkService(new CaseInsensitiveKeywordMatcher())
+    ),
     'university'    => new UniversityController(),
     'aiUsage'       => new AIUsageController(),
     'pusher'        => new PusherController(),

@@ -489,11 +489,15 @@ class EmailService
 
         $name    = htmlspecialchars((string)($lead['name']    ?? ''), ENT_QUOTES, 'UTF-8');
         $email   = htmlspecialchars((string)($lead['email']   ?? ''), ENT_QUOTES, 'UTF-8');
-        $phone   = htmlspecialchars((string)($lead['phone']   ?? '—'), ENT_QUOTES, 'UTF-8');
+        $phone   = htmlspecialchars((string)($lead['phone']   ?? ''), ENT_QUOTES, 'UTF-8');
         $country = htmlspecialchars((string)($lead['country'] ?? '—'), ENT_QUOTES, 'UTF-8');
         $budget  = htmlspecialchars((string)($lead['budget']  ?? '—'), ENT_QUOTES, 'UTF-8');
         $source  = htmlspecialchars((string)($lead['source']  ?? 'unknown'), ENT_QUOTES, 'UTF-8');
         $message = nl2br(htmlspecialchars((string)($lead['message'] ?? ''), ENT_QUOTES, 'UTF-8'));
+
+        $noContactBanner = ($email === '' && $phone === '')
+            ? "<div style='background:#fef2f2;border-left:4px solid #ef4444;padding:12px 16px;margin-bottom:16px;border-radius:4px;font-size:13px;color:#b91c1c;'><strong>⚠ No contact method on file.</strong> Neither email nor phone was captured for this lead — follow up via the source channel.</div>"
+            : '';
 
         // Compact attribution block — one line per set value. Skips empties so the
         // email stays readable for organic leads with no UTMs.
@@ -536,10 +540,11 @@ class EmailService
               <p style='margin:4px 0 0;opacity:0.9;font-size:14px;'>Reply within 24 hours for the best conversion rate.</p>
             </div>
             <div style='padding:20px 24px;'>
+              {$noContactBanner}
               <table style='width:100%;border-collapse:collapse;font-size:14px;'>
                 <tr><td style='padding:6px 0;color:#6b7280;width:140px;'>Name</td><td style='padding:6px 0;font-weight:600;'>{$name}</td></tr>
-                <tr><td style='padding:6px 0;color:#6b7280;'>Email</td><td style='padding:6px 0;'><a href='mailto:{$email}'>{$email}</a></td></tr>
-                <tr><td style='padding:6px 0;color:#6b7280;'>Phone</td><td style='padding:6px 0;'>{$phone}</td></tr>
+                <tr><td style='padding:6px 0;color:#6b7280;'>Email</td><td style='padding:6px 0;'>" . ($email !== '' ? "<a href='mailto:{$email}'>{$email}</a>" : "<span style='color:#9ca3af;'>—</span>") . "</td></tr>
+                <tr><td style='padding:6px 0;color:#6b7280;'>Phone</td><td style='padding:6px 0;'>" . ($phone !== '' ? $phone : "<span style='color:#9ca3af;'>—</span>") . "</td></tr>
                 <tr><td style='padding:6px 0;color:#6b7280;'>Country</td><td style='padding:6px 0;'>{$country}</td></tr>
                 <tr><td style='padding:6px 0;color:#6b7280;'>Budget</td><td style='padding:6px 0;'>{$budget}</td></tr>
               </table>

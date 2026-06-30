@@ -72,3 +72,9 @@ registerRoutes($app, $controllers);
 
 // Run
 $app->run();
+
+// Flush the FastCGI response to the client immediately so shutdown callbacks
+// (Vepaar webhook, deferred analytics, etc.) do not add latency to HTTP responses.
+if (function_exists('fastcgi_finish_request')) {
+    fastcgi_finish_request();
+}

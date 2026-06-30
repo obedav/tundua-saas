@@ -59,7 +59,7 @@ class LeadCreationTest extends TestCase
     }
 
     #[Test]
-    public function post_with_three_fields_returns_201_and_creates_lead(): void
+    public function post_with_required_fields_and_email_returns_201_and_creates_lead(): void
     {
         $request = (new ServerRequestFactory())
             ->createServerRequest('POST', '/api/v1/leads')
@@ -67,6 +67,7 @@ class LeadCreationTest extends TestCase
                 'name'       => 'Amaka Osei',
                 'country'    => 'Nigeria',
                 'start_date' => 'September 2026',
+                'email'      => 'amaka@example.com',
             ]);
 
         $controller = new LeadController();
@@ -83,7 +84,31 @@ class LeadCreationTest extends TestCase
         $this->assertSame('Amaka Osei', $lead->name);
         $this->assertSame('Nigeria', $lead->country);
         $this->assertSame('September 2026', $lead->start_date);
-        $this->assertNull($lead->email);
+        $this->assertSame('amaka@example.com', $lead->email);
+        $this->assertNull($lead->phone);
         $this->assertSame('new', $lead->status);
+    }
+
+    #[Test]
+    public function post_with_no_contact_method_returns_422_and_creates_no_lead(): void
+    {
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', '/api/v1/leads')
+            ->withParsedBody([
+                'name'       => 'Amaka Osei',
+                'country'    => 'Nigeria',
+                'start_date' => 'September 2026',
+            ]);
+
+        $controller = new LeadController();
+        $result = $controller->create($request, new Response());
+
+        $this->assertSame(422, $result->getStatusCode());
+
+        $body = json_decode((string)$result->getBody(), true);
+        $this->assertFalse($body['success']);
+        $this->assertArrayHasKey('error', $body);
+
+        $this->assertSame(0, Lead::count());
     }
 }

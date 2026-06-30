@@ -240,6 +240,40 @@ class KnowledgeBaseArticle extends Model
     }
 
     /**
+     * One-shot candidate list for InternalLinkService.
+     *
+     * Returns every published article as ['slug', 'url', 'keywords'] where
+     * keywords is the article's tags array.  Articles with no tags produce an
+     * empty keywords list and will simply never match — that is correct.
+     *
+     * Called once per getArticle() request; never called on list endpoints.
+     *
+     * @return array<int, array{slug: string, url: string, keywords: string[]}>
+     */
+    public static function getLinkCandidates(): array
+    {
+        try {
+            return self::where('is_published', true)
+                ->select(['slug', 'tags'])
+                ->get()
+                ->map(static function (self $row): array {
+                    $keywords = is_array($row->tags)
+                        ? array_values(array_filter(array_map('strval', $row->tags)))
+                        : [];
+                    return [
+                        'slug'     => (string)$row->slug,
+                        'url'      => '/blog/' . $row->slug,
+                        'keywords' => $keywords,
+                    ];
+                })
+                ->all();
+        } catch (\Exception $e) {
+            error_log('Error getting link candidates: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
      * Get all categories
      */
     public static function getCategories(): array

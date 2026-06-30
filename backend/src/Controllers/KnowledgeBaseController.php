@@ -5,9 +5,14 @@ namespace Tundua\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Tundua\Models\KnowledgeBaseArticle;
+use Tundua\Services\InternalLinkService;
 
 class KnowledgeBaseController
 {
+    public function __construct(
+        private readonly InternalLinkService $internalLinkService,
+    ) {}
+
     /**
      * Get all published articles
      * GET /api/knowledge-base
@@ -59,9 +64,22 @@ class KnowledgeBaseController
                 return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
             }
 
+            // Build the serialisable array first so we can overwrite content
+            // without touching the model (no risk of accidental persistence).
+            $articleData = $article->toArray();
+
+            // One DB query fetches all published candidates; inject() skips the
+            // current slug automatically so we never self-link.
+            $candidates = KnowledgeBaseArticle::getLinkCandidates();
+            $articleData['content'] = $this->internalLinkService->inject(
+                (string)($articleData['content'] ?? ''),
+                $candidates,
+                (string)$article->slug,
+            );
+
             $response->getBody()->write(json_encode([
                 'success' => true,
-                'article' => $article
+                'article' => $articleData,
             ]));
             return $response->withHeader('Content-Type', 'application/json');
 

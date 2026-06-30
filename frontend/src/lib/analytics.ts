@@ -366,6 +366,15 @@ export const trackQuizToWhatsAppClick = (source: string, country: string, visaTy
   trackWhatsAppClick(source);
 };
 
+// Generic low-level event — the single place where raw gtag("event") is called.
+// All higher-level track* functions delegate here or call gtag directly after an
+// isGALoaded() guard. External callers should prefer the typed wrappers above;
+// use trackEvent only when the event name is dynamic (e.g. api-integrations).
+export const trackEvent = (name: string, params?: Record<string, unknown>): void => {
+  if (!isGALoaded()) return;
+  window.gtag('event', name, params ?? {});
+};
+
 // Declare gtag on window object for TypeScript
 declare global {
   interface Window {

@@ -8,6 +8,7 @@ use Respect\Validation\Validator as v;
 use Tundua\Models\Lead;
 use Tundua\Services\EmailService;
 use Tundua\Services\LeadScoringService;
+use Tundua\Services\VepaарWebhookService;
 
 /**
  * LeadController — accept public funnel form submissions.
@@ -62,6 +63,16 @@ class LeadController
             return $this->json($response, ['success' => false, 'error' => 'Validation failed', 'details' => $errors], 400);
         }
 
+        // 1b. At least one usable contact method is required.
+        $hasEmail = trim((string)($data['email'] ?? '')) !== '';
+        $hasPhone = trim((string)($data['phone'] ?? '')) !== '';
+        if (!$hasEmail && !$hasPhone) {
+            return $this->json($response, [
+                'success' => false,
+                'error'   => 'Please provide an email address or WhatsApp number so we can reach you.',
+            ], 422);
+        }
+
         // 2. Sanitize + assemble the row. Attribution block is flattened into top-level columns.
         $row = $this->buildRow($data, $request);
 
@@ -80,7 +91,11 @@ class LeadController
             error_log('Lead scoring failed: ' . $e->getMessage());
         }
 
-        // 5. Fire-and-observe admin notification. We intentionally do NOT fail the
+        // 5. Sync to Vepaar CRM. Registered as a shutdown callback so it fires
+        //    after fastcgi_finish_request() — the 201 is already with the client.
+        VepaарWebhookService::dispatch($lead);
+
+        // 6. Fire-and-observe admin notification. We intentionally do NOT fail the
         //    request if the email fails — the lead is safely in the DB, and the
         //    admin can work from the database if email is down.
         try {

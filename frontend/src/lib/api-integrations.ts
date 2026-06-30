@@ -6,6 +6,7 @@
  */
 
 import { apiClient } from "./api-client";
+import { trackEvent as gaTrackEvent } from "@/lib/analytics";
 
 // ============================================================================
 // DASHBOARD STATS
@@ -344,12 +345,7 @@ export const trackEvent = (event: {
     // Also send to third-party analytics
     if (typeof window !== "undefined") {
       // Google Analytics
-      if ((window as any).gtag) {
-        (window as any).gtag("event", event.type, {
-          page: event.page,
-          ...event.metadata,
-        });
-      }
+      gaTrackEvent(event.type, { page: event.page, ...event.metadata });
 
       // Mixpanel
       if ((window as any).mixpanel) {

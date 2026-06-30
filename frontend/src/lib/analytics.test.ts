@@ -235,6 +235,25 @@ describe('Analytics Helper', () => {
     });
   });
 
+  describe('trackEvent', () => {
+    it('fires gtag with the correct event name and params', () => {
+      const mockGtag = vi.fn();
+      (window as any).gtag = mockGtag;
+
+      analytics.trackEvent('quiz_impression', { form_name: 'eligibility_quiz' });
+
+      expect(mockGtag).toHaveBeenCalledWith('event', 'quiz_impression', {
+        form_name: 'eligibility_quiz',
+      });
+    });
+
+    it('does not throw when window.gtag is undefined', () => {
+      expect(() =>
+        analytics.trackEvent('quiz_impression', { form_name: 'eligibility_quiz' })
+      ).not.toThrow();
+    });
+  });
+
   describe('User authentication events', () => {
     it('should track signup event', () => {
       const mockGtag = vi.fn();

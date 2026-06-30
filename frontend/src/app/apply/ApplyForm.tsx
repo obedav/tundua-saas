@@ -29,10 +29,13 @@ function generateStartDates(): string[] {
 
 const START_DATES = generateStartDates();
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 interface FormData {
   name: string;
   country: string;
   start_date: string;
+  contact: string;
 }
 
 export function ApplyForm() {
@@ -40,6 +43,7 @@ export function ApplyForm() {
     name: "",
     country: "",
     start_date: "",
+    contact: "",
   });
   const [loading, setLoading] = useState(false);
   const [leadId, setLeadId] = useState<number | null>(null);
@@ -53,8 +57,18 @@ export function ApplyForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const contact = formData.contact.trim();
+    if (!contact) {
+      setError("Please enter your email or WhatsApp number so we can reach you.");
+      return;
+    }
+
     setLoading(true);
     setError("");
+
+    const isEmail = EMAIL_RE.test(contact);
+    const contactPayload = isEmail ? { email: contact } : { phone: contact };
 
     try {
       const response = await fetch(
@@ -68,6 +82,7 @@ export function ApplyForm() {
             start_date: formData.start_date,
             source: "apply-page",
             utm: getUtmPayload(),
+            ...contactPayload,
           }),
         }
       );
@@ -145,6 +160,22 @@ export function ApplyForm() {
             <option key={d} value={d}>{d}</option>
           ))}
         </select>
+      </div>
+
+      <div>
+        <label htmlFor="apply-contact" className="block text-sm font-medium text-gray-700 mb-1">
+          Email or WhatsApp number <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="apply-contact"
+          name="contact"
+          value={formData.contact}
+          onChange={handleChange}
+          required
+          placeholder="you@email.com or +234 800 000 0000"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+        />
       </div>
 
       {error && (
