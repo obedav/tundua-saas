@@ -93,7 +93,11 @@ class LeadController
 
         // 5. Sync to Vepaar CRM. Registered as a shutdown callback so it fires
         //    after fastcgi_finish_request() — the 201 is already with the client.
-        VepaарWebhookService::dispatch($lead);
+        try {
+            VepaарWebhookService::dispatch($lead);
+        } catch (\Throwable $e) {
+            error_log('Vepaar dispatch failed: ' . $e->getMessage());
+        }
 
         // 6. Fire-and-observe admin notification. We intentionally do NOT fail the
         //    request if the email fails — the lead is safely in the DB, and the

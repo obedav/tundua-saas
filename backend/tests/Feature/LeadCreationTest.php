@@ -90,6 +90,80 @@ class LeadCreationTest extends TestCase
     }
 
     #[Test]
+    public function post_with_phone_number_returns_201_and_stores_phone(): void
+    {
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', '/api/v1/leads')
+            ->withParsedBody([
+                'name'       => 'Tunde Bello',
+                'country'    => 'Nigeria',
+                'start_date' => 'January 2027',
+                'phone'      => '+2347039328174',
+                'source'     => 'apply-page',
+            ]);
+
+        $controller = new LeadController();
+        $result = $controller->create($request, new Response());
+
+        $this->assertSame(201, $result->getStatusCode());
+
+        $body = json_decode((string)$result->getBody(), true);
+        $this->assertTrue($body['success']);
+        $this->assertArrayHasKey('lead_id', $body);
+
+        $this->assertSame(1, Lead::count());
+        $lead = Lead::first();
+        $this->assertSame('Tunde Bello', $lead->name);
+        $this->assertSame('+2347039328174', $lead->phone);
+        $this->assertNull($lead->email);
+        $this->assertSame('apply-page', $lead->source);
+    }
+
+    #[Test]
+    public function patch_details_returns_200_and_saves_optional_fields(): void
+    {
+        // Create a lead to update.
+        $createRequest = (new ServerRequestFactory())
+            ->createServerRequest('POST', '/api/v1/leads')
+            ->withParsedBody([
+                'name'       => 'Fatima Musa',
+                'country'    => 'Nigeria',
+                'start_date' => 'January 2027',
+                'phone'      => '+2348012345678',
+                'source'     => 'apply-page',
+            ]);
+
+        $controller = new LeadController();
+        $createResult = $controller->create($createRequest, new Response());
+        $this->assertSame(201, $createResult->getStatusCode());
+
+        $createBody = json_decode((string)$createResult->getBody(), true);
+        $leadId = $createBody['lead_id'];
+
+        // PATCH the details endpoint with optional fields.
+        $patchRequest = (new ServerRequestFactory())
+            ->createServerRequest('PATCH', "/api/v1/leads/{$leadId}/details")
+            ->withParsedBody([
+                'email'   => 'fatima@example.com',
+                'budget'  => '₦10M – ₦20M upfront',
+                'message' => 'I am a nurse looking for a January intake.',
+            ]);
+
+        $result = $controller->updateDetails($patchRequest, new Response(), ['id' => (string)$leadId]);
+
+        $this->assertSame(200, $result->getStatusCode());
+
+        $body = json_decode((string)$result->getBody(), true);
+        $this->assertTrue($body['success']);
+
+        $lead = Lead::find($leadId);
+        $this->assertSame('fatima@example.com', $lead->email);
+        $this->assertSame('₦10M – ₦20M upfront', $lead->budget);
+        $this->assertSame('I am a nurse looking for a January intake.', $lead->message);
+        $this->assertSame('+2348012345678', $lead->phone);
+    }
+
+    #[Test]
     public function post_with_no_contact_method_returns_422_and_creates_no_lead(): void
     {
         $request = (new ServerRequestFactory())

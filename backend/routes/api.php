@@ -563,6 +563,16 @@ function registerRoutes($app, array $controllers)
 
     $app->any('/api/{path:.*}', function (Request $request, Response $response, array $args) {
         $path = $args['path'];
+
+        // Guard: if the path already starts with "v1", the request is for a
+        // versioned URL that simply didn't match any registered route.
+        // Redirecting it would prepend /api/v1/ a second time, turning
+        // /api/v1/leads/123/details → /api/v1/v1/leads/123/details → loop.
+        if (str_starts_with($path, 'v1')) {
+            $response->getBody()->write(json_encode(['success' => false, 'error' => 'Not found']));
+            return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+        }
+
         $queryString = $request->getUri()->getQuery();
         $redirectUrl = '/api/v1/' . $path;
         if ($queryString) {
