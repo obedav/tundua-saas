@@ -173,7 +173,7 @@ export function ApplyForm() {
           value={formData.contact}
           onChange={handleChange}
           required
-          placeholder="you@email.com or +234 800 000 0000"
+          placeholder="e.g. you@email.com or +234 800 000 0000"
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
         />
       </div>
