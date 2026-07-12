@@ -13,6 +13,7 @@ const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  output: 'standalone',
   // swcMinify is now default in Next.js 15, no need to specify
 
   // Turbopack - stable in Next.js 15, enabled for faster dev builds
