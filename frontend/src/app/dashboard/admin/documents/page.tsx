@@ -106,7 +106,7 @@ export default function AdminDocumentsPage() {
       console.log('API URL:', process.env['NEXT_PUBLIC_API_URL']);
       const response = await apiClient.downloadDocument(doc.id);
       console.log('Download successful, response:', response);
-      const blob = new Blob([response.data], { type: response.headers['content-type'] || 'application/octet-stream' });
+      const blob = new Blob([response.data], { type: (response.headers['content-type'] as string) || 'application/octet-stream' });
       const url = window.URL.createObjectURL(blob);
       setPreviewUrl(url);
     } catch (error: any) {
