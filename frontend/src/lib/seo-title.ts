@@ -48,5 +48,5 @@ export function buildSeoTitle(title: string, tags: string[] = []): string {
       : `${count} Cheapest ${dest} Universities for ${who} (${year})`;
   }
 
-  return `${title} | Tundua`;
+  return title;
 }

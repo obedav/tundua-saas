@@ -26,9 +26,12 @@ export function sanitizeArticleHtml(html: string): string {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
       'img', 'figure', 'figcaption',
       'iframe',
-      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'h2', 'h3', 'h4', 'h5', 'h6',
       'details', 'summary',
     ]),
+    transformTags: {
+      'h1': 'h2',
+    },
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
       '*': ['class', 'id', 'style'],

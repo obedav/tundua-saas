@@ -71,7 +71,7 @@ export const PLANS: Plan[] = [
       { name: "Scholarship Search", limit: "" },
       { name: "Expert Human Support", limit: "Live counselor" },
     ],
-    ctaHref: "/dashboard/billing?plan=scholar",
+    ctaHref: "/apply",
     ctaLabel: "Get Started",
     badge: "Annual Plan",
     badgeColor: "from-blue-500 to-indigo-500",
