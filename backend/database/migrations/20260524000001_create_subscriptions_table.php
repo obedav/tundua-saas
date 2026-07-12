@@ -38,7 +38,7 @@ class CreateSubscriptionsTable extends AbstractMigration
               ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
               ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'update' => 'CURRENT_TIMESTAMP'])
               ->addIndex(['user_id'])
-              ->addIndex(['paystack_subscription_code'], ['unique' => true, 'null' => true])
+              ->addIndex(['paystack_subscription_code'], ['unique' => true])
               ->addIndex(['status'])
               ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
               ->create();
