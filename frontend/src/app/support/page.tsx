@@ -6,7 +6,7 @@ import PublicPageBackground from "@/components/PublicPageBackground";
 import SupportFAQ from "./SupportFAQ";
 
 export const metadata: Metadata = {
-  title: "Help Center | Tundua",
+  title: "Help Center",
   description:
     "Find answers to common questions about study abroad applications, visa guidance, payments, and technical issues. Reach our Lagos-based support team via WhatsApp, email, or phone.",
   openGraph: {

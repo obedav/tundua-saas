@@ -500,6 +500,7 @@ function registerRoutes($app, array $controllers)
             $group->get('', [$knowledgeBaseController, 'getAllArticles']);
             $group->post('', [$knowledgeBaseController, 'createArticle']);
             $group->post('/upload-image', [$knowledgeBaseController, 'downloadImage']);
+            $group->post('/upload-image-file', [$knowledgeBaseController, 'uploadImageFile']);
             $group->put('/{id}', [$knowledgeBaseController, 'updateArticle']);
             $group->delete('/{id}', [$knowledgeBaseController, 'deleteArticle']);
         })->add(new AdminMiddleware())->add(new AuthMiddleware());

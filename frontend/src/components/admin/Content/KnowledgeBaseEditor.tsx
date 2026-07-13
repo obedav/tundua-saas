@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   BookOpen,
   Plus,
@@ -15,6 +15,7 @@ import {
   X,
   Loader2,
   Image,
+  Upload,
 } from "lucide-react";
 import {
   getAdminArticles,
@@ -22,6 +23,7 @@ import {
   updateArticle,
   deleteArticle,
   uploadBlogImage,
+  uploadBlogImageFile,
 } from "@/lib/actions/admin-knowledge-base";
 import type { KnowledgeBaseArticle } from "@/types/api";
 
@@ -88,6 +90,7 @@ export default function KnowledgeBaseEditor() {
   const [tagInput, setTagInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [uploadingImage, setUploadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Delete confirmation
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
@@ -275,6 +278,27 @@ export default function KnowledgeBaseEditor() {
       setError("Failed to upload image");
     } finally {
       setUploadingImage(false);
+    }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingImage(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const result = await uploadBlogImageFile(formData);
+      if (result.success && result.image_url) {
+        setEditor({ ...editor, featured_image: result.image_url });
+      } else {
+        setError(result.error || "Failed to upload image");
+      }
+    } catch {
+      setError("Failed to upload image");
+    } finally {
+      setUploadingImage(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -804,6 +828,35 @@ export default function KnowledgeBaseEditor() {
                   <span className="text-xs">No image set</span>
                 </div>
                 <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploadingImage}
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                >
+                  {uploadingImage ? (
+                    <>
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="h-3.5 w-3.5" />
+                      Upload from device
+                    </>
+                  )}
+                </button>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-px bg-gray-200 dark:bg-gray-600" />
+                  <span className="text-xs text-gray-400 dark:text-gray-500">or</span>
+                  <div className="flex-1 h-px bg-gray-200 dark:bg-gray-600" />
+                </div>
+                <input
                   type="text"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
@@ -813,7 +866,7 @@ export default function KnowledgeBaseEditor() {
                 <button
                   onClick={handleImageDownload}
                   disabled={uploadingImage || !imageUrl.trim()}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 transition-colors"
                 >
                   {uploadingImage ? (
                     <>

@@ -644,6 +644,90 @@ class KnowledgeBaseController
     }
 
     /**
+     * Upload image file directly
+     * POST /api/admin/knowledge-base/upload-image-file
+     */
+    public function uploadImageFile(Request $request, Response $response): Response
+    {
+        try {
+            $uploadedFiles = $request->getUploadedFiles();
+
+            if (empty($uploadedFiles['file'])) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'No file uploaded'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            $uploadedFile = $uploadedFiles['file'];
+
+            if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'File upload failed'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            if ($uploadedFile->getSize() > 5 * 1024 * 1024) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Image exceeds maximum size of 5MB'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            $imageContent = (string) $uploadedFile->getStream();
+
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($imageContent);
+
+            $allowedTypes = [
+                'image/jpeg' => 'jpg',
+                'image/png'  => 'png',
+                'image/webp' => 'webp',
+                'image/gif'  => 'gif',
+            ];
+
+            if (!isset($allowedTypes[$mimeType])) {
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Invalid image type. Allowed: jpg, png, webp, gif'
+                ]));
+                return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            }
+
+            $extension = $allowedTypes[$mimeType];
+
+            $storageDir = dirname(__DIR__, 2) . '/public/uploads/blog-images';
+            if (!is_dir($storageDir)) {
+                mkdir($storageDir, 0755, true);
+            }
+
+            $filename = uniqid('blog_') . '_' . time() . '.' . $extension;
+            $filePath = $storageDir . '/' . $filename;
+
+            file_put_contents($filePath, $imageContent);
+            chmod($filePath, 0644);
+
+            $response->getBody()->write(json_encode([
+                'success' => true,
+                'image_url' => '/uploads/blog-images/' . $filename
+            ]));
+            return $response->withHeader('Content-Type', 'application/json');
+
+        } catch (\Exception $e) {
+            error_log("Error uploading image file: " . $e->getMessage());
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error' => 'Internal server error'
+            ]));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
+    }
+
+    /**
      * Mark article as helpful/not helpful
      * POST /api/knowledge-base/{id}/feedback
      */

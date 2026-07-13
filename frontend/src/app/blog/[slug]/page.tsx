@@ -106,7 +106,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const article: Article | null = data?.data?.article || data?.article || null;
 
     if (!article) {
-      return { title: "Article Not Found | Tundua Blog" };
+      return { title: "Article Not Found" };
     }
 
     const apiUrl = process.env['NEXT_PUBLIC_API_URL'] || '';
@@ -152,7 +152,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ...(geo ? { other: geo.other } : {}),
     };
   } catch {
-    return { title: "Blog | Tundua" };
+    return { title: "Blog" };
   }
 }
 

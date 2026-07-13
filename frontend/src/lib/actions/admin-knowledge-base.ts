@@ -108,6 +108,28 @@ export async function uploadBlogImage(imageUrl: string) {
   }
 }
 
+export async function uploadBlogImageFile(formData: FormData) {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('auth_token')?.value;
+    const headers: Record<string, string> = {
+      'Accept': 'application/json',
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+    };
+    const response = await fetch(`${API_URL}/api/v1/admin/knowledge-base/upload-image-file`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Failed to upload image file:', error);
+    return { success: false, error: 'Failed to upload image file' };
+  }
+}
+
 export async function deleteArticle(id: number) {
   try {
     const headers = await getAuthHeaders();

@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 export const metadata = {
-  title: "Visa Assistant — AI-Powered Visa Guidance for Nigerians | Tundua",
+  title: "Visa Assistant — AI-Powered Visa Guidance for Nigerians",
   description:
     "AI-powered visa guidance for Nigerian passport holders. Step-by-step document checklists, AI cover letter writer, and 24/7 expert chat. Free to start.",
   alternates: {
