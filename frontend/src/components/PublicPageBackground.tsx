@@ -18,10 +18,10 @@ export default function PublicPageBackground() {
         }}
       />
 
-      {/* Gradient orbs */}
-      <div className="fixed top-0 right-0 -z-10 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/20 to-teal-400/20 rounded-full blur-3xl" />
-      <div className="fixed bottom-0 left-0 -z-10 w-[500px] h-[500px] bg-gradient-to-br from-teal-400/20 to-cyan-400/20 rounded-full blur-3xl" />
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-[600px] h-[600px] bg-gradient-to-br from-purple-400/10 to-blue-400/10 rounded-full blur-3xl" />
+      {/* Gradient orbs — will-change:transform isolates each to its own compositor layer */}
+      <div className="fixed top-0 right-0 -z-10 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/20 to-teal-400/20 rounded-full blur-3xl" style={{ willChange: 'transform' }} />
+      <div className="fixed bottom-0 left-0 -z-10 w-[500px] h-[500px] bg-gradient-to-br from-teal-400/20 to-cyan-400/20 rounded-full blur-3xl" style={{ willChange: 'transform' }} />
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-[600px] h-[600px] bg-gradient-to-br from-purple-400/10 to-blue-400/10 rounded-full blur-3xl" style={{ willChange: 'transform' }} />
     </>
   );
 }

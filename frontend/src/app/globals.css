@@ -397,12 +397,30 @@
 /* Smooth scroll & color-mode transitions — must be outside @layer to avoid specificity issues */
 html {
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
-* {
+/* Scope color transitions to interactive elements only — applying to * causes scroll jank */
+a,
+button,
+input,
+select,
+textarea,
+label,
+[role='button'],
+[role='link'],
+.transition-colors {
   transition-property: background-color, border-color, color, fill, stroke;
   transition-duration: 200ms;
   transition-timing-function: ease-out;
+}
+
+/* Promote sticky/fixed elements to their own compositor layer for smooth scroll */
+header,
+nav,
+[class*='sticky'],
+[class*='fixed'] {
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
