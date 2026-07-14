@@ -208,6 +208,7 @@ export default async function BlogPage({
                         src={`${process.env['NEXT_PUBLIC_API_URL'] || ''}${article.featured_image}`}
                         alt={`Featured image for: ${article.title}`}
                         fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover"
                       />
                     </div>
@@ -273,6 +274,7 @@ export default async function BlogPage({
                   key={article.id}
                   href={`/blog/${article.slug}`}
                   className="group bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-all"
+                  style={{ contentVisibility: 'auto', containIntrinsicSize: '0 160px' }}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
@@ -305,6 +307,7 @@ export default async function BlogPage({
                           src={`${process.env['NEXT_PUBLIC_API_URL'] || ''}${article.featured_image}`}
                           alt={`${article.title} - article thumbnail`}
                           fill
+                          sizes="80px"
                           className="object-cover"
                         />
                       </div>
