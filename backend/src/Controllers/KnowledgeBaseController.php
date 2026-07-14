@@ -301,6 +301,7 @@ class KnowledgeBaseController
             $article->country_target = isset($data['country_target']) && $data['country_target'] !== ''
                 ? strtolower(trim((string)$data['country_target']))
                 : null;
+            $article->metadata = isset($data['metadata']) ? $data['metadata'] : null;
             $article->author_id = $request->getAttribute('user_id');
             $article->view_count = 0;
             $article->helpful_count = 0;
@@ -389,6 +390,9 @@ class KnowledgeBaseController
                 $article->country_target = $data['country_target'] !== '' && $data['country_target'] !== null
                     ? strtolower(trim((string)$data['country_target']))
                     : null;
+            }
+            if (array_key_exists('metadata', $data)) {
+                $article->metadata = $data['metadata'];
             }
 
             $article->save();
