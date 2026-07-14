@@ -614,17 +614,29 @@ class KnowledgeBaseController
 
             $extension = $allowedTypes[$mimeType];
 
-            // Blog images are public content — save under public/uploads so Apache
-            // serves them directly. The private storage/ dir is outside the web root.
+            // Blog images are public content — save under public/uploads so the web
+            // server serves them directly. The private storage/ dir is outside the web root.
             $storageDir = dirname(__DIR__, 2) . '/public/uploads/blog-images';
-            if (!is_dir($storageDir)) {
-                mkdir($storageDir, 0755, true);
+            if (!is_dir($storageDir) && !mkdir($storageDir, 0755, true)) {
+                error_log("downloadImage: cannot create uploads dir: $storageDir");
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Server cannot create uploads directory — check PHP-FPM write permissions on public/'
+                ]));
+                return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
             }
 
             $filename = uniqid('blog_') . '_' . time() . '.' . $extension;
             $filePath = $storageDir . '/' . $filename;
 
-            file_put_contents($filePath, $imageContent);
+            if (file_put_contents($filePath, $imageContent) === false) {
+                error_log("downloadImage: cannot write file: $filePath");
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Server cannot write image file — check PHP-FPM write permissions on public/uploads/'
+                ]));
+                return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+            }
             chmod($filePath, 0644);
 
             $response->getBody()->write(json_encode([
@@ -701,14 +713,26 @@ class KnowledgeBaseController
             $extension = $allowedTypes[$mimeType];
 
             $storageDir = dirname(__DIR__, 2) . '/public/uploads/blog-images';
-            if (!is_dir($storageDir)) {
-                mkdir($storageDir, 0755, true);
+            if (!is_dir($storageDir) && !mkdir($storageDir, 0755, true)) {
+                error_log("uploadImageFile: cannot create uploads dir: $storageDir");
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Server cannot create uploads directory — check PHP-FPM write permissions on public/'
+                ]));
+                return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
             }
 
             $filename = uniqid('blog_') . '_' . time() . '.' . $extension;
             $filePath = $storageDir . '/' . $filename;
 
-            file_put_contents($filePath, $imageContent);
+            if (file_put_contents($filePath, $imageContent) === false) {
+                error_log("uploadImageFile: cannot write file: $filePath");
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'error' => 'Server cannot write image file — check PHP-FPM write permissions on public/uploads/'
+                ]));
+                return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+            }
             chmod($filePath, 0644);
 
             $response->getBody()->write(json_encode([

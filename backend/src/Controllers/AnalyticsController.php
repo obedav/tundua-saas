@@ -266,7 +266,7 @@ class AnalyticsController
                 COUNT(*) as count
             FROM applications
             WHERE universities IS NOT NULL
-            GROUP BY universities
+            GROUP BY universities, destination_country
             ORDER BY count DESC
             LIMIT ?
         ");

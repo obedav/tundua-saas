@@ -35,7 +35,7 @@ const nextConfig = {
 
     // ✅ Server Actions enabled by default in Next.js 15
     serverActions: {
-      bodySizeLimit: '2mb', // Increase if needed for file uploads
+      bodySizeLimit: '10mb',
       // Allow both development and production origins
       allowedOrigins: [
         'localhost:3000',
