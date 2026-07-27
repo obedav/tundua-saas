@@ -47,6 +47,7 @@ export default function RegisterPage() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [selectedType, setSelectedType] = useState<"student" | "partner" | null>(null);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
 
   const {
     register,
@@ -57,10 +58,13 @@ export default function RegisterPage() {
   } = useForm<RegisterFormData>({ resolver: zodResolver(registerSchema) });
 
   // Pre-fill email from gate modal redirect (?email=...&tool=...)
+  // Also capture referral code (?ref=TUN-XXXXXXXX) so it credits the referrer on signup
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const emailParam = params.get("email");
     if (emailParam) setValue("email", emailParam);
+    const ref = params.get("ref");
+    if (ref) setReferralCode(ref);
   }, [setValue]);
 
   const password = watch("password");
@@ -80,6 +84,7 @@ export default function RegisterPage() {
         email: data.email,
         phone: data.phone,
         password: data.password,
+        ...(referralCode ? { referral_code: referralCode } : {}),
       });
       if (response.data.success) {
         setShowSuccess(true);

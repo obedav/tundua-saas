@@ -92,11 +92,11 @@ export const trackPaymentInitiated = (_applicationId: number, amount: number, me
   });
 };
 
-export const trackPaymentCompleted = (transactionId: string, amount: number, currency: string = 'NGN') => {
+export const trackPaymentCompleted = (transactionId: string, amount: number, currency: string = 'NGN', tierName: string = 'Study Abroad Application') => {
   trackPurchase(transactionId, amount, currency, [
     {
       item_id: transactionId,
-      item_name: 'Study Abroad Application',
+      item_name: tierName,
       price: amount,
       quantity: 1,
     },

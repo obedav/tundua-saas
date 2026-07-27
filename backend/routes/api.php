@@ -554,6 +554,12 @@ function registerRoutes($app, array $controllers)
             $group->put('/{id}', [$deadlineController, 'update']);
             $group->delete('/{id}', [$deadlineController, 'destroy']);
         })->add(new AdminMiddleware())->add(new AuthMiddleware());
+
+        // Admin Lead Routes
+        $v1->group('/admin/leads', function ($group) use ($leadController) {
+            $group->get('', [$leadController, 'getAllLeads']);
+            $group->patch('/{id}/status', [$leadController, 'updateStatus']);
+        })->add(new AdminMiddleware())->add(new AuthMiddleware());
     });
 
     // ========================================================================

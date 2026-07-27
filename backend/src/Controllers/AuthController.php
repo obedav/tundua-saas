@@ -5,6 +5,7 @@ namespace Tundua\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Tundua\Models\User;
+use Tundua\Models\Referral;
 use Tundua\Services\AuthService;
 use Tundua\Services\EmailService;
 use Tundua\Services\AuditLogger;
@@ -46,6 +47,7 @@ class AuthController
         $email = strtolower(trim($data['email']));
         $password = $data['password'];
         $phone = isset($data['phone']) ? $this->authService->sanitizeInput($data['phone']) : null;
+        $incomingReferralCode = isset($data['referral_code']) ? trim($data['referral_code']) : null;
 
         // Validate email
         if (!$this->authService->validateEmail($email)) {
@@ -105,6 +107,21 @@ class AuthController
                 'error' => 'Failed to create user'
             ]));
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
+
+        // Credit the referrer if a referral code was supplied at signup
+        if ($incomingReferralCode) {
+            try {
+                $referrer = User::where('referral_code', $incomingReferralCode)->first();
+                if ($referrer && $referrer->id !== $user->id) {
+                    $referral = Referral::createReferral($referrer->id, $email, 'direct_link');
+                    if ($referral) {
+                        Referral::markAsSignedUp($email, $user->id);
+                    }
+                }
+            } catch (\Exception $e) {
+                error_log("Referral processing error on signup: " . $e->getMessage());
+            }
         }
 
         // Send verification email

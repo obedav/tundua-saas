@@ -100,6 +100,7 @@ class ApiClient {
     email: string;
     password: string;
     phone?: string;
+    referral_code?: string;
   }) {
     return this.client.post("/api/v1/auth/register", data);
   }
@@ -247,6 +248,14 @@ class ApiClient {
   // Admin endpoints
   async getAllApplications(params?: import("@/types/api").AdminApplicationParams) {
     return this.client.get("/api/v1/admin/applications", { params });
+  }
+
+  async getAdminLeads(params?: { status?: string; page?: number; per_page?: number }) {
+    return this.client.get("/api/v1/admin/leads", { params });
+  }
+
+  async updateLeadStatus(id: number, status: string) {
+    return this.client.patch(`/api/v1/admin/leads/${id}/status`, { status });
   }
 
   async updateApplicationStatus(id: number, status: string) {

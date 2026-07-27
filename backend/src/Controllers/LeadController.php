@@ -291,6 +291,77 @@ class LeadController
         return isset($server['REMOTE_ADDR']) ? mb_substr((string)$server['REMOTE_ADDR'], 0, 45) : null;
     }
 
+    /**
+     * GET /api/v1/admin/leads
+     *
+     * Admin-only. Returns paginated list of all leads ordered by newest first.
+     * Query params: status (filter), page, per_page.
+     */
+    public function getAllLeads(Request $request, Response $response): Response
+    {
+        $params  = $request->getQueryParams();
+        $status  = isset($params['status']) && $params['status'] !== '' ? $params['status'] : null;
+        $page    = max(1, (int)($params['page'] ?? 1));
+        $perPage = min(100, max(1, (int)($params['per_page'] ?? 50)));
+
+        try {
+            $query = Lead::orderBy('created_at', 'desc');
+            if ($status !== null) {
+                $query->where('status', $status);
+            }
+
+            $total = $query->count();
+            $leads = $query->offset(($page - 1) * $perPage)->limit($perPage)->get();
+
+            return $this->json($response, [
+                'success' => true,
+                'data'    => [
+                    'leads'    => $leads,
+                    'total'    => $total,
+                    'page'     => $page,
+                    'per_page' => $perPage,
+                ],
+            ], 200);
+        } catch (\Throwable $e) {
+            error_log('Admin getAllLeads failed: ' . $e->getMessage());
+            return $this->json($response, ['success' => false, 'error' => 'Internal server error'], 500);
+        }
+    }
+
+    /**
+     * PATCH /api/v1/admin/leads/{id}/status
+     *
+     * Admin-only. Update a lead's status.
+     * Body: { status: 'new'|'contacted'|'qualified'|'converted'|'lost' }
+     */
+    public function updateStatus(Request $request, Response $response, array $args): Response
+    {
+        $lead = Lead::find((int)($args['id'] ?? 0));
+        if ($lead === null) {
+            return $this->json($response, ['success' => false, 'error' => 'Lead not found'], 404);
+        }
+
+        $data   = $request->getParsedBody() ?? [];
+        $status = $data['status'] ?? null;
+
+        $valid = ['new', 'contacted', 'qualified', 'converted', 'lost'];
+        if (!in_array($status, $valid, true)) {
+            return $this->json($response, [
+                'success' => false,
+                'error'   => 'Invalid status. Allowed: ' . implode(', ', $valid),
+            ], 400);
+        }
+
+        try {
+            $lead->update(['status' => $status]);
+        } catch (\Throwable $e) {
+            error_log('Lead status update failed: ' . $e->getMessage());
+            return $this->json($response, ['success' => false, 'error' => 'Could not update status'], 500);
+        }
+
+        return $this->json($response, ['success' => true], 200);
+    }
+
     private function json(Response $response, array $payload, int $status): Response
     {
         $response->getBody()->write(json_encode($payload));
