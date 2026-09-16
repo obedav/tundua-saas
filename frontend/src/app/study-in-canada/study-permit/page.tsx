@@ -179,15 +179,15 @@ export default function CanadaStudyPermitPage() {
         </section>
 
         {/* Common refusal reasons */}
-        <section className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-8">
+        <section className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
           <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <AlertCircle className="w-5 h-5 text-amber-600" />
+            <AlertCircle className="w-5 h-5 text-red-600" />
             Common reasons Nigerian applicants are refused
           </h2>
           <ul className="space-y-2">
             {REFUSAL_REASONS.map((reason) => (
               <li key={reason} className="flex items-start gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0 mt-2" />
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 mt-2" />
                 <span className="text-sm text-gray-800">{reason}</span>
               </li>
             ))}

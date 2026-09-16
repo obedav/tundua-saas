@@ -23,6 +23,7 @@ const KEY_FACTS = [
   { label: "Post-study work", value: "2–4 years (Graduate visa)" },
   { label: "Tuition (Master's)", value: "AUD $22,000–$45,000/yr" },
   { label: "Work rights", value: "48 hrs/fortnight (term time)" },
+  { label: "Intakes", value: "Feb & July" },
 ];
 
 const TOPIC_LINKS = [

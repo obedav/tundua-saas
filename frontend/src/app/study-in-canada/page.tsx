@@ -66,9 +66,9 @@ const TOPIC_CLUSTERS = [
     icon: GraduationCap,
     title: "Universities",
     links: [
-      { label: "Canada universities with low deposit", href: "/blog" },
-      { label: "Canada universities accepting HND", href: "/blog" },
-      { label: "Canada universities without IELTS", href: "/blog" },
+      { label: "Canada universities with low deposit", href: "/study-in-canada/cost" },
+      { label: "Canada universities accepting HND", href: "/apply" },
+      { label: "Canada universities without IELTS", href: "/apply" },
       { label: "Browse all Canada universities", href: "/universities" },
     ],
   },
@@ -78,8 +78,8 @@ const TOPIC_CLUSTERS = [
     links: [
       { label: "Canada Study Permit guide", href: "/study-in-canada/study-permit" },
       { label: "Canada study permit fees 2026", href: "/study-in-canada/cost" },
-      { label: "Canada medical exam in Nigeria", href: "/blog" },
-      { label: "Canada study permit refusal reasons", href: "/blog" },
+      { label: "Canada medical exam in Nigeria", href: "/study-in-canada/study-permit" },
+      { label: "Canada study permit refusal reasons", href: "/study-in-canada/study-permit" },
     ],
   },
   {
@@ -87,8 +87,8 @@ const TOPIC_CLUSTERS = [
     title: "Costs & Funding",
     links: [
       { label: "Cost of studying in Canada 2026", href: "/study-in-canada/cost" },
-      { label: "Canada universities low tuition deposit", href: "/blog" },
-      { label: "Canada scholarships for Nigerians", href: "/blog" },
+      { label: "Canada universities low tuition deposit", href: "/study-in-canada/cost" },
+      { label: "Canada scholarships for Nigerians", href: "/apply" },
     ],
   },
 ];

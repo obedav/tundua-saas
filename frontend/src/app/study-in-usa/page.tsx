@@ -23,6 +23,7 @@ const KEY_FACTS = [
   { label: "Post-study work (OPT)", value: "12 months (STEM: 36 months)" },
   { label: "Tuition (Master's)", value: "USD $20,000–$60,000/yr" },
   { label: "Programme duration", value: "1.5–2 years" },
+  { label: "Intakes", value: "Aug & Jan" },
 ];
 
 const TOPIC_LINKS = [

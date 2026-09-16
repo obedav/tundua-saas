@@ -490,6 +490,20 @@ export default function VisaLandingPage() {
         </div>
       </section>
 
+      {/* ── AI disclaimer — shown before pricing so users see it before purchasing ── */}
+      <div className="bg-white dark:bg-gray-900 px-6 pb-6">
+        <div className="max-w-4xl mx-auto rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/10 p-4 text-sm text-amber-800 dark:text-amber-300">
+          <p className="font-semibold mb-1">About AI-generated content</p>
+          <p className="leading-relaxed">
+            Tundua&apos;s AI tools generate document checklists and cover letter drafts based on the
+            information you provide. AI output is a starting point — always verify requirements on
+            official embassy and immigration websites before submitting your application. Document
+            review (Premium plan) is handled by Tundua staff; your documents are not shared with
+            third parties.
+          </p>
+        </div>
+      </div>
+
       {/* ── Pricing ── */}
       <section className="bg-white dark:bg-slate-950 px-6 py-20">
         <div className="max-w-4xl mx-auto">
@@ -589,10 +603,9 @@ export default function VisaLandingPage() {
         </div>
       </section>
 
-      {/* ── E-E-A-T trust section — P1: reviewer, sources, AI disclaimer ── */}
+      {/* ── E-E-A-T trust section — reviewer badge + official sources ── */}
       <section className="bg-white dark:bg-gray-900 px-6 py-10 border-t border-gray-100 dark:border-gray-800">
-        <div className="max-w-3xl mx-auto space-y-4">
-          {/* Reviewer badge */}
+        <div className="max-w-3xl mx-auto">
           <div className="flex flex-wrap items-center justify-between gap-4 p-5 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3">
               <div className="h-9 w-9 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
@@ -604,43 +617,10 @@ export default function VisaLandingPage() {
               </div>
             </div>
             <div className="flex flex-wrap gap-3 text-xs">
-              <a
-                href="https://www.gov.uk/standard-visitor"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary-600 dark:text-primary-400 hover:underline"
-              >
-                UK visitor visa ↗
-              </a>
-              <a
-                href="https://www.gov.uk/student-visa"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary-600 dark:text-primary-400 hover:underline"
-              >
-                UK student visa ↗
-              </a>
-              <a
-                href="https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary-600 dark:text-primary-400 hover:underline"
-              >
-                Canada study permit ↗
-              </a>
+              <a href="https://www.gov.uk/standard-visitor" target="_blank" rel="noopener noreferrer" className="text-primary-600 dark:text-primary-400 hover:underline">UK visitor visa ↗</a>
+              <a href="https://www.gov.uk/student-visa" target="_blank" rel="noopener noreferrer" className="text-primary-600 dark:text-primary-400 hover:underline">UK student visa ↗</a>
+              <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit.html" target="_blank" rel="noopener noreferrer" className="text-primary-600 dark:text-primary-400 hover:underline">Canada study permit ↗</a>
             </div>
-          </div>
-
-          {/* AI output disclaimer */}
-          <div className="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/10 p-4 text-sm text-amber-800 dark:text-amber-300">
-            <p className="font-semibold mb-1">About AI-generated content</p>
-            <p className="leading-relaxed">
-              Tundua&apos;s AI tools generate document checklists and cover letter drafts based on the
-              information you provide. AI output is a starting point — always verify requirements on
-              official embassy and immigration websites before submitting your application. Document
-              review (Premium plan) is handled by Tundua staff; your documents are not shared with
-              third parties.
-            </p>
           </div>
         </div>
       </section>

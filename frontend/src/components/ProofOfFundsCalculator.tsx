@@ -22,7 +22,7 @@ const COURSE_LENGTHS = [
 type CourseLengthValue = 1 | 1.5 | 2 | 3;
 
 export default function ProofOfFundsCalculator() {
-  const [courseLength, setCourseLength] = useState<CourseLengthValue>(2);
+  const [courseLength, setCourseLength] = useState<CourseLengthValue>(1);
 
   const ihsTotal = Math.ceil(UK_IHS_ANNUAL_RATE * courseLength);
 
