@@ -11,8 +11,9 @@ ini_set('display_errors', '0');
 error_reporting(E_ALL);
 ini_set('log_errors', '1');
 
-// Load environment variables
-$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+// Load environment variables (staging uses a separate .env.staging file)
+$envFile = ($_ENV['APP_ENV'] ?? '') === 'staging' ? '.env.staging' : '.env';
+$dotenv = Dotenv::createImmutable(__DIR__ . '/..', $envFile);
 $dotenv->load();
 
 // Configure session for OAuth state management

@@ -8,7 +8,8 @@
 // Load environment variables
 require_once __DIR__ . '/vendor/autoload.php';
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$envFile = ($_ENV['APP_ENV'] ?? '') === 'staging' ? '.env.staging' : '.env';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__, $envFile);
 $dotenv->load();
 
 return [
@@ -21,6 +22,17 @@ return [
         'default_environment' => $_ENV['APP_ENV'] ?? 'development',
 
         'production' => [
+            'adapter' => 'mysql',
+            'host' => $_ENV['DB_HOST'],
+            'name' => $_ENV['DB_DATABASE'],
+            'user' => $_ENV['DB_USERNAME'],
+            'pass' => $_ENV['DB_PASSWORD'],
+            'port' => $_ENV['DB_PORT'] ?? 3306,
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+        ],
+
+        'staging' => [
             'adapter' => 'mysql',
             'host' => $_ENV['DB_HOST'],
             'name' => $_ENV['DB_DATABASE'],
