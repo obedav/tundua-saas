@@ -12,7 +12,8 @@ error_reporting(E_ALL);
 ini_set('log_errors', '1');
 
 // Load environment variables (staging uses a separate .env.staging file)
-$envFile = ($_ENV['APP_ENV'] ?? '') === 'staging' ? '.env.staging' : '.env';
+$appEnv = $_ENV['APP_ENV'] ?? $_SERVER['APP_ENV'] ?? (getenv('APP_ENV') ?: '');
+$envFile = $appEnv === 'staging' ? '.env.staging' : '.env';
 $dotenv = Dotenv::createImmutable(__DIR__ . '/..', $envFile);
 $dotenv->load();
 

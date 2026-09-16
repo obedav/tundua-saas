@@ -8,7 +8,8 @@
 // Load environment variables
 require_once __DIR__ . '/vendor/autoload.php';
 
-$envFile = ($_ENV['APP_ENV'] ?? '') === 'staging' ? '.env.staging' : '.env';
+$appEnv = $_ENV['APP_ENV'] ?? $_SERVER['APP_ENV'] ?? (getenv('APP_ENV') ?: '');
+$envFile = $appEnv === 'staging' ? '.env.staging' : '.env';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__, $envFile);
 $dotenv->load();
 
