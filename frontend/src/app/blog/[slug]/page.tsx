@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Clock, Eye, ThumbsUp, ThumbsDown, Tag, BookOpen, ArrowRight } from "lucide-react";
+import { ArrowLeft, Clock, Eye, ThumbsUp, ThumbsDown, Tag, BookOpen, ArrowRight, CheckCircle } from "lucide-react";
 import { getKnowledgeBaseArticle, getRelatedArticles, getPopularArticles } from "@/lib/actions/knowledge-base";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
@@ -252,15 +252,32 @@ export default async function BlogArticlePage({ params }: PageProps) {
               </p>
             )}
 
+            {/* E-E-A-T signals — author, verification date, reading metadata */}
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500">
+              <span className="flex items-center gap-1.5 font-medium text-gray-700">
+                <BookOpen className="w-4 h-4" />
+                Tundua Education Team
+              </span>
               <span className="flex items-center gap-1.5">
                 <Clock className="w-4 h-4" />
+                Published{" "}
                 {new Date(article.created_at).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
                 })}
               </span>
+              {article.updated_at !== article.created_at && (
+                <span className="flex items-center gap-1.5 text-green-700 font-medium">
+                  <CheckCircle className="w-4 h-4" />
+                  Verified{" "}
+                  {new Date(article.updated_at).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              )}
               <span className="flex items-center gap-1.5">
                 <Eye className="w-4 h-4" />
                 {article.view_count} views

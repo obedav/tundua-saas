@@ -172,6 +172,28 @@ const nextConfig = {
         destination: '/blog/canada-universities-low-tuition-deposit-international-students-2026',
         permanent: true,
       },
+      // Destination hub — resolve any old /study-abroad/uk path to the new canonical hub
+      {
+        source: '/study-abroad/uk',
+        destination: '/study-in-uk',
+        permanent: true,
+      },
+      // Tool redirects — legacy or guessable URLs pointing to canonical tool pages
+      {
+        source: '/tools/eligibility-checker',
+        destination: '/tools/uk-university-eligibility-checker',
+        permanent: true,
+      },
+      {
+        source: '/tools/funds-calculator',
+        destination: '/tools/proof-of-funds-calculator',
+        permanent: true,
+      },
+      {
+        source: '/study-abroad/canada',
+        destination: '/study-in-canada',
+        permanent: true,
+      },
     ];
   },
 

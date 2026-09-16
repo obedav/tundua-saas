@@ -15,21 +15,28 @@ import {
   Sparkles,
   Globe,
   Star,
+  ArrowRight,
 } from "lucide-react";
 
 export const metadata = {
-  title: "Visa Assistant — AI-Powered Visa Guidance for Nigerians",
+  title: "AI Visa Assistant for Nigerians | Checklists & Cover Letters | Tundua",
   description:
-    "AI-powered visa guidance for Nigerian passport holders. Step-by-step document checklists, AI cover letter writer, and 24/7 expert chat. Free to start.",
+    "Prepare your visa application with personalised document checklists, cover-letter support, financial guidance and timelines for UK, Canada, Schengen and other destinations.",
   alternates: {
     canonical: `${APP_URL}/visa`,
   },
   openGraph: {
-    title: "Visa Assistant — AI-Powered Visa Guidance for Nigerians | Tundua",
+    title: "AI Visa Assistant for Nigerians | Checklists & Cover Letters | Tundua",
     description:
-      "Step-by-step visa guidance, smart document checklists, and AI-written cover letters built specifically for Nigerian applicants. Free to start.",
+      "Prepare your visa application with personalised document checklists, cover-letter support, financial guidance and timelines for UK, Canada, Schengen and other destinations.",
     url: `${APP_URL}/visa`,
     type: "website" as const,
+  },
+  twitter: {
+    card: "summary_large_image" as const,
+    title: "AI Visa Assistant for Nigerians | Checklists & Cover Letters | Tundua",
+    description:
+      "Prepare your visa application with personalised document checklists, cover-letter support, financial guidance and timelines for UK, Canada, Schengen and other destinations.",
   },
 };
 
@@ -93,7 +100,7 @@ const VISA_FAQS = [
   {
     question: "Can Nigerians really get a UK visa without an agent?",
     answer:
-      "Yes. The UK visa application process is fully self-service through the UKVI website. You do not need an agent — and using an unlicensed agent increases your fraud risk. Tundua walks you through every step: checklist, cover letter, and timeline. You submit directly to the embassy yourself.",
+      "Yes. The UK visa application process is fully self-service through the UKVI website. You do not need an agent — and using an unlicensed agent increases your risk. Tundua walks you through every step: checklist, cover letter, and timeline. You remain in control of your application. Tundua helps you prepare, but you submit through the official immigration website and the authorised visa application process for your destination.",
   },
   {
     question: "What are the most common reasons Nigerian visa applications are refused?",
@@ -101,9 +108,9 @@ const VISA_FAQS = [
       "The top refusal reasons for Nigerians are: insufficient proof of financial ties to Nigeria (funds in bank account), weak cover letter that doesn't address officer concerns, incomplete or inconsistent documents, and missing proof of accommodation or travel insurance. Tundua's AI cover letter writer and smart checklist are specifically designed to address all of these.",
   },
   {
-    question: "How much money do I need in my bank account for a UK/Schengen visa?",
+    question: "How much money do I need in my bank account for a UK or Schengen visa?",
     answer:
-      "For a UK standard visitor visa, UKVI recommends at least £1,000–£2,000 (roughly ₦1.8M–₦3.6M) in your account for a short trip, with funds present for at least 3–6 months. For Schengen, the requirement is typically €50–€100 per day of stay. The exact amount varies — Tundua's AI will tell you the specific requirement for your destination and duration.",
+      "There is no fixed minimum bank balance for a UK Standard Visitor visa. You must show that you can reasonably afford the full cost of your trip without working or relying on public funds. Your available funds should be consistent with your income, trip duration, accommodation arrangements and normal financial activity. Significant or unusual deposits should be supported with evidence of their source. Requirements for Schengen visas vary by destination country and trip duration, so applicants should verify the current rules of the country handling their application.",
   },
   {
     question: "Is Tundua's visa service really free?",
@@ -118,7 +125,46 @@ const VISA_FAQS = [
   {
     question: "How is Tundua different from a visa agent?",
     answer:
-      "Traditional visa agents in Lagos charge ₦50,000–₦200,000, and many are unlicensed or fraudulent. Tundua is a self-service AI platform: we provide the guidance, checklists, and documents — but you submit directly to the embassy. No middlemen, no inflated fees, and no risk of your documents being mishandled.",
+      "Traditional visa agents in Lagos charge ₦50,000–₦200,000, and many are unlicensed or fraudulent. Tundua is a self-service AI platform: we provide the guidance, checklists, and documents — but you remain in control of your application and submit through the official immigration channel yourself. No middlemen, no inflated fees.",
+  },
+];
+
+const VISA_GUIDE_CARDS = [
+  {
+    title: "UK visitor visa for Nigerians",
+    desc: "Document checklist, financial evidence guidance and cover letter support for the UK Standard Visitor visa.",
+    href: null,
+    tag: "Inside the tool",
+  },
+  {
+    title: "UK student visa (Student route)",
+    desc: "CAS-based student visa guidance — maintenance funds, TB test, and credibility interview preparation.",
+    href: "/study-in-uk/visa",
+    tag: "Read guide",
+  },
+  {
+    title: "Canada study permit",
+    desc: "IRCC study permit document checklist and proof-of-funds guidance for Nigerian students.",
+    href: "/study-in-canada/study-permit",
+    tag: "Read guide",
+  },
+  {
+    title: "Schengen visa guidance",
+    desc: "Document checklist and financial requirements for Schengen applications. Requirements vary by destination country — verify with the relevant embassy.",
+    href: null,
+    tag: "Inside the tool",
+  },
+  {
+    title: "Visa cover letter preparation",
+    desc: "AI-generated, personalised cover letters that address the specific concerns of visa officers reviewing Nigerian applications.",
+    href: null,
+    tag: "Inside the tool",
+  },
+  {
+    title: "Proof-of-funds guidance",
+    desc: "Understand exactly how much money you need and how to present your bank statements for UK and Canada applications.",
+    href: "/tools/proof-of-funds-calculator",
+    tag: "Calculator",
   },
 ];
 
@@ -162,31 +208,30 @@ export default function VisaLandingPage() {
 
       {/* ── Hero ── */}
       <section className="relative overflow-hidden text-white bg-gradient-to-br from-primary-700 via-primary-600 to-secondary-600">
-        {/* subtle grid overlay */}
         <div className="absolute inset-0" style={GRID_PATTERN} />
-        {/* radial glow */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(255,255,255,0.12)_0%,transparent_60%)]" />
 
         <div className="relative max-w-4xl mx-auto px-6 py-14 sm:py-20 text-center">
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-sm font-medium text-white/80 mb-8">
             <Sparkles className="h-3.5 w-3.5 text-yellow-300" />
-            Powered by Claude AI · Built for Nigeria 🇳🇬
+            AI-powered · Built for Nigeria 🇳🇬
           </div>
 
-          {/* Headline */}
+          {/* Headline — P0: replaced "Done Right, First Time" */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.08] tracking-tight mb-4">
-            Your Visa Application,{" "}
+            AI Visa Assistant{" "}
             <br className="hidden sm:block" />
             <span className="bg-gradient-to-r from-white via-sky-100 to-violet-200 bg-clip-text text-transparent">
-              Done Right — First Time
+              for Nigerian Applicants
             </span>
           </h1>
 
-          {/* Subheading */}
+          {/* Subheading — P0: removed "No fraud", "No confusion" absolutes */}
           <p className="text-base sm:text-lg text-white/75 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Step-by-step guidance, smart document checklists, AI-written cover letters, and timeline
-            tracking. No agents. No confusion. No fraud.
+            Prepare UK, Canada, Schengen, US and other visa applications with personalised document
+            checklists, cover-letter guidance and application timelines. Start free and remain in
+            control of your application.
           </p>
 
           {/* CTAs */}
@@ -204,9 +249,7 @@ export default function VisaLandingPage() {
           <div className="flex flex-wrap justify-center gap-10 mb-8">
             {STATS.map(({ n, label }) => (
               <div key={label} className="text-center">
-                <div className="text-3xl font-extrabold text-white">
-                  {n}
-                </div>
+                <div className="text-3xl font-extrabold text-white">{n}</div>
                 <div className="text-sm text-white/65 mt-1">{label}</div>
               </div>
             ))}
@@ -229,7 +272,6 @@ export default function VisaLandingPage() {
       {/* ── How it works ── */}
       <section className="bg-gray-50 dark:bg-gray-900 px-6 py-20">
         <div className="max-w-5xl mx-auto">
-          {/* Eyebrow */}
           <p className="text-center text-sm font-semibold uppercase tracking-widest text-primary-500 mb-3">
             How it works
           </p>
@@ -237,9 +279,7 @@ export default function VisaLandingPage() {
             Four steps from signup to travel day
           </h2>
 
-          {/* Steps */}
           <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* connecting line — desktop only */}
             <div className="hidden lg:block absolute top-10 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-primary-400 via-violet-400 to-emerald-400 opacity-30" />
 
             {[
@@ -257,7 +297,7 @@ export default function VisaLandingPage() {
                 shadow: "shadow-violet-500/30",
                 n: "2",
                 label: "Get your document checklist",
-                desc: "AI generates a tailored list for your exact application.",
+                desc: "A personalised checklist based on the information you provide.",
               },
               {
                 icon: FileEdit,
@@ -307,9 +347,8 @@ export default function VisaLandingPage() {
             Everything built for Nigerian applicants
           </h2>
 
-          {/* Asymmetric bento */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Row 1 — large + small */}
+            {/* AI Cover Letter Writer */}
             <div className="md:col-span-2 rounded-4xl bg-gradient-to-br from-primary-600 to-primary-800 p-8 text-white relative overflow-hidden">
               <div className="absolute -right-8 -bottom-8 h-40 w-40 rounded-full bg-white/5" />
               <div className="absolute -right-4 -bottom-4 h-24 w-24 rounded-full bg-white/5" />
@@ -320,7 +359,7 @@ export default function VisaLandingPage() {
                 <h3 className="text-xl font-bold mb-2">AI Cover Letter Writer</h3>
                 <p className="text-primary-200 text-sm leading-relaxed max-w-sm mb-5">
                   Personalised cover letters that address the key concerns of visa officers reviewing
-                  Nigerian applications. Powered by Claude AI — in seconds.
+                  Nigerian applications. AI-generated in seconds, personalised to your situation.
                 </p>
                 <VisaGatedCTA
                   variant="plan"
@@ -344,15 +383,15 @@ export default function VisaLandingPage() {
               </div>
             </div>
 
-            {/* Row 2 — 3 equal */}
+            {/* Smart Checklists — P0: removed "Exactly what your embassy requires" */}
             <div className="rounded-4xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-7">
               <div className="h-11 w-11 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mb-5">
                 <CheckSquare className="h-5 w-5 text-primary-600 dark:text-primary-400" />
               </div>
               <h3 className="font-bold text-gray-900 dark:text-white mb-2">Smart Checklists</h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                Country-specific and visa-type-specific lists tailored to Nigerian applicants. Exactly
-                what your embassy requires.
+                A personalised checklist based on the information you provide — covering documents
+                typically required for your destination and visa category.
               </p>
             </div>
 
@@ -367,18 +406,19 @@ export default function VisaLandingPage() {
               </p>
             </div>
 
+            {/* Zero Fraud Risk → Keep Control — P0: removed absolute claim */}
             <div className="rounded-4xl bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800/30 p-7">
               <div className="h-11 w-11 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-5">
                 <Shield className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
               </div>
-              <h3 className="font-bold text-gray-900 dark:text-white mb-2">Zero Fraud Risk</h3>
+              <h3 className="font-bold text-gray-900 dark:text-white mb-2">Keep Control of Your Documents</h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                No middlemen. No inflated fees. No fake visa agents. Your documents go directly to
-                the embassy — through you.
+                No middlemen. No inflated fees. Reduce your exposure to unverified agents by
+                preparing everything yourself, through official channels.
               </p>
             </div>
 
-            {/* Bonus card spanning full */}
+            {/* Connected card */}
             <div className="md:col-span-3 rounded-4xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-7 flex flex-col sm:flex-row items-start sm:items-center gap-5">
               <div className="h-12 w-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0">
                 <GraduationCap className="h-6 w-6 text-purple-600 dark:text-purple-400" />
@@ -403,8 +443,55 @@ export default function VisaLandingPage() {
         </div>
       </section>
 
+      {/* ── Visa type guides — P1: content section for SEO context ── */}
+      <section className="bg-gray-50 dark:bg-slate-950 px-6 py-16">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-center text-sm font-semibold uppercase tracking-widest text-primary-500 mb-3">
+            Destination guides
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-12">
+            Visa guidance by destination &amp; type
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {VISA_GUIDE_CARDS.map(({ title, desc, href, tag }) => {
+              const inner = (
+                <>
+                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-2">{title}</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-3">{desc}</p>
+                  <span
+                    className={`text-xs font-medium px-2.5 py-1 rounded-full ${
+                      href
+                        ? "bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+                    }`}
+                  >
+                    {tag}
+                  </span>
+                </>
+              );
+              return href ? (
+                <Link
+                  key={title}
+                  href={href}
+                  className="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 hover:shadow-md hover:border-primary-200 dark:hover:border-primary-700 transition-all flex flex-col"
+                >
+                  {inner}
+                </Link>
+              ) : (
+                <div
+                  key={title}
+                  className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 flex flex-col"
+                >
+                  {inner}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* ── Pricing ── */}
-      <section className="bg-gray-50 dark:bg-slate-950 px-6 py-20">
+      <section className="bg-white dark:bg-slate-950 px-6 py-20">
         <div className="max-w-4xl mx-auto">
           <p className="text-center text-sm font-semibold uppercase tracking-widest text-primary-500 mb-3">
             Pricing
@@ -412,8 +499,9 @@ export default function VisaLandingPage() {
           <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-3">
             Simple, honest pricing
           </h2>
+          {/* P0: removed "with better results" */}
           <p className="text-center text-slate-500 dark:text-slate-400 mb-14 text-sm">
-            Less than what you&apos;d pay an agent — with better results
+            Affordable, self-service visa preparation — at a fraction of what agents charge
           </p>
 
           {/* Payment trust bar */}
@@ -443,19 +531,13 @@ export default function VisaLandingPage() {
                   </span>
                 )}
 
-                <div
-                  className={`font-bold text-lg mb-1 ${
-                    primary ? "text-white" : "text-gray-900 dark:text-white"
-                  }`}
-                >
+                <div className={`font-bold text-lg mb-1 ${primary ? "text-white" : "text-gray-900 dark:text-white"}`}>
                   {name}
                 </div>
                 <div className={`text-3xl font-extrabold mb-0.5 ${primary ? "text-white" : "text-gray-900 dark:text-white"}`}>
                   {price}
                 </div>
-                <div
-                  className={`text-xs mb-6 ${primary ? "text-primary-200" : "text-gray-400 dark:text-gray-500"}`}
-                >
+                <div className={`text-xs mb-6 ${primary ? "text-primary-200" : "text-gray-400 dark:text-gray-500"}`}>
                   {per}
                 </div>
 
@@ -463,13 +545,9 @@ export default function VisaLandingPage() {
                   {features.map((f) => (
                     <li
                       key={f}
-                      className={`flex items-center gap-2 text-sm ${
-                        primary ? "text-primary-100" : "text-gray-600 dark:text-gray-300"
-                      }`}
+                      className={`flex items-center gap-2 text-sm ${primary ? "text-primary-100" : "text-gray-600 dark:text-gray-300"}`}
                     >
-                      <Check
-                        className={`h-4 w-4 flex-shrink-0 ${primary ? "text-white" : "text-green-500"}`}
-                      />
+                      <Check className={`h-4 w-4 flex-shrink-0 ${primary ? "text-white" : "text-green-500"}`} />
                       {f}
                     </li>
                   ))}
@@ -511,6 +589,62 @@ export default function VisaLandingPage() {
         </div>
       </section>
 
+      {/* ── E-E-A-T trust section — P1: reviewer, sources, AI disclaimer ── */}
+      <section className="bg-white dark:bg-gray-900 px-6 py-10 border-t border-gray-100 dark:border-gray-800">
+        <div className="max-w-3xl mx-auto space-y-4">
+          {/* Reviewer badge */}
+          <div className="flex flex-wrap items-center justify-between gap-4 p-5 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-3">
+              <div className="h-9 w-9 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
+                <Shield className="h-4 w-4 text-primary-600 dark:text-primary-400" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">Reviewed by Tundua Visa Support Team</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Information reviewed September 2026</p>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3 text-xs">
+              <a
+                href="https://www.gov.uk/standard-visitor"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-600 dark:text-primary-400 hover:underline"
+              >
+                UK visitor visa ↗
+              </a>
+              <a
+                href="https://www.gov.uk/student-visa"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-600 dark:text-primary-400 hover:underline"
+              >
+                UK student visa ↗
+              </a>
+              <a
+                href="https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-600 dark:text-primary-400 hover:underline"
+              >
+                Canada study permit ↗
+              </a>
+            </div>
+          </div>
+
+          {/* AI output disclaimer */}
+          <div className="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/10 p-4 text-sm text-amber-800 dark:text-amber-300">
+            <p className="font-semibold mb-1">About AI-generated content</p>
+            <p className="leading-relaxed">
+              Tundua&apos;s AI tools generate document checklists and cover letter drafts based on the
+              information you provide. AI output is a starting point — always verify requirements on
+              official embassy and immigration websites before submitting your application. Document
+              review (Premium plan) is handled by Tundua staff; your documents are not shared with
+              third parties.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ── */}
       <section className="bg-gray-50 dark:bg-slate-950 px-6 py-20">
         <div className="max-w-3xl mx-auto">
@@ -539,6 +673,30 @@ export default function VisaLandingPage() {
         </div>
       </section>
 
+      {/* ── Related guides — P2: internal linking ── */}
+      <section className="bg-white dark:bg-gray-900 px-6 py-10 border-t border-gray-100 dark:border-gray-800">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Related guides</p>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {[
+              { href: "/study-in-uk/visa", label: "UK Student Visa for Nigerians — complete guide" },
+              { href: "/study-in-uk/cost", label: "Cost of studying in the UK 2026–27" },
+              { href: "/study-in-canada/study-permit", label: "Canada study permit for Nigerian students" },
+              { href: "/tools/proof-of-funds-calculator", label: "UK proof-of-funds calculator" },
+              { href: "/study-in-uk", label: "Study in the UK — complete guide" },
+              { href: "/study-in-canada", label: "Study in Canada — complete guide" },
+            ].map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="flex items-center gap-2 text-sm text-primary-600 dark:text-primary-400 hover:underline">
+                  <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" />
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* ── Final CTA ── */}
       <section className="relative overflow-hidden text-white bg-gradient-to-br from-primary-700 via-primary-600 to-secondary-600">
         <div className="absolute inset-0" style={GRID_PATTERN} />
@@ -546,15 +704,15 @@ export default function VisaLandingPage() {
         <div className="relative max-w-3xl mx-auto px-6 py-24 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-sm font-medium text-white/80 mb-8">
             <Star className="h-3.5 w-3.5 text-yellow-300" />
-            Trusted by Nigerian students & travellers
+            Trusted by Nigerian students &amp; travellers
           </div>
 
+          {/* P0: removed "get your visa the smart way" */}
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-            Ready to get your visa{" "}
+            Ready to prepare your{" "}
             <span className="bg-gradient-to-r from-white via-sky-100 to-violet-200 bg-clip-text text-transparent">
-              the smart way
+              visa application?
             </span>
-            ?
           </h2>
 
           <p className="text-white/75 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
@@ -595,6 +753,49 @@ export default function VisaLandingPage() {
         ]}
       />
       <FAQStructuredData faqs={VISA_FAQS} />
+
+      {/* P1: WebApplication + Offer structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            name: "Tundua Visa Assistant",
+            description:
+              "AI-powered visa preparation tool for Nigerian applicants — personalised document checklists, cover letter generation, and application timeline guidance for UK, Canada, Schengen and other destinations.",
+            url: `${APP_URL}/visa`,
+            applicationCategory: "UtilitiesApplication",
+            operatingSystem: "Web browser",
+            inLanguage: "en",
+            offers: [
+              {
+                "@type": "Offer",
+                name: "Free",
+                price: "0",
+                priceCurrency: "NGN",
+                description: "Destination guide, document checklist, and 3 AI chat questions per day",
+              },
+              {
+                "@type": "Offer",
+                name: "Pro",
+                price: "5000",
+                priceCurrency: "NGN",
+                description: "Unlimited AI chat and AI cover letter generation — one-time payment",
+              },
+              {
+                "@type": "Offer",
+                name: "Premium",
+                price: "15000",
+                priceCurrency: "NGN",
+                description:
+                  "Expert document review, counsellor session, and priority WhatsApp support — one-time payment",
+              },
+            ],
+            dateModified: "2026-09-16",
+          }),
+        }}
+      />
     </main>
   );
 }

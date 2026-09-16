@@ -109,7 +109,7 @@ export default function HomePage() {
               <FadeIn direction="up" delay={0.1}>
                 <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/10 to-teal-500/10 dark:from-blue-500/20 dark:to-teal-500/20 border border-blue-200 dark:border-blue-700/50 rounded-full px-4 py-2 mb-6">
                   <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                  <span className="text-sm font-semibold text-blue-900 dark:text-blue-300">Your Application Success Partner</span>
+                  <span className="text-sm font-semibold text-blue-900 dark:text-blue-300">Study Abroad Platform for Nigerian &amp; African Students</span>
                 </div>
               </FadeIn>
               <FadeIn direction="up" delay={0.2}>
@@ -122,8 +122,7 @@ export default function HomePage() {
               </FadeIn>
               <FadeIn direction="up" delay={0.3}>
                 <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-stone-300 mb-8 leading-relaxed">
-                  Professional application management with expert guidance, document review, and submission support.
-                  Trusted by students worldwide.
+                  Tundua is a university application platform built for Nigerian and African students. Find and apply to universities in the <strong className="text-slate-800 dark:text-stone-200">UK, Canada, Australia and the USA</strong> — with expert study abroad consultants, AI-powered tools, and full application management from start to acceptance.
                 </p>
               </FadeIn>
               <Stagger className="flex flex-wrap gap-6 mb-10" staggerDelay={0.15}>
@@ -543,7 +542,11 @@ export default function HomePage() {
               <ul className="space-y-3 text-slate-400 dark:text-stone-500">
                 <li><ScrollSectionButton sectionId="services" className="hover:text-white transition-colors">Services</ScrollSectionButton></li>
                 <li><ScrollSectionButton sectionId="pricing" className="hover:text-white transition-colors">Pricing</ScrollSectionButton></li>
-                <li><ScrollSectionButton sectionId="quiz" className="hover:text-white transition-colors">Take the Quiz</ScrollSectionButton></li>
+                <li><Link href="/study-in-uk" className="hover:text-white transition-colors">Study in the UK</Link></li>
+                <li><Link href="/study-in-canada" className="hover:text-white transition-colors">Study in Canada</Link></li>
+                <li><Link href="/universities" className="hover:text-white transition-colors">Universities</Link></li>
+                <li><Link href="/tools/university-finder" className="hover:text-white transition-colors">University Finder</Link></li>
+                <li><Link href="/tools/uk-university-eligibility-checker" className="hover:text-white transition-colors">Eligibility Checker</Link></li>
                 <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
                 <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
                 <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>

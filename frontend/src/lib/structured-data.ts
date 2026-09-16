@@ -8,7 +8,7 @@
  * @see https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data
  */
 
-import type { Organization, WebSite, BreadcrumbList, Service, BlogPosting, SoftwareApplication } from 'schema-dts';
+import type { Organization, WebSite, BreadcrumbList, Service, BlogPosting, SoftwareApplication, HowTo } from 'schema-dts';
 
 const APP_URL = process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com';
 
@@ -19,12 +19,18 @@ const APP_URL = process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com';
  */
 export function getOrganizationSchema(): Organization {
   return {
-    '@type': 'Organization',
+    '@type': ['Organization', 'EducationalOrganization'],
     '@id': `${APP_URL}#organization`,
     name: 'Tundua',
+    alternateName: 'Tundua Edu Consults',
     url: APP_URL,
-    logo: `${APP_URL}/logo.png`,
-    description: 'Complete study abroad application support from ₦89,000. Apply to top universities with expert guidance.',
+    logo: {
+      '@type': 'ImageObject',
+      url: `${APP_URL}/images/logo.png`,
+      width: '200',
+      height: '67',
+    },
+    description: 'Tundua is a study abroad application platform helping Nigerian and African students find and apply to universities in the UK, Canada, Australia and the USA. Expert counseling, AI tools, and end-to-end application support from ₦89,000.',
     email: 'support@tundua.com',
     address: {
       '@type': 'PostalAddress',
@@ -33,6 +39,15 @@ export function getOrganizationSchema(): Organization {
       addressRegion: 'Lagos',
       addressCountry: 'NG',
     },
+    areaServed: ['NG', 'GH', 'KE', 'ZM', 'UG', 'TZ', 'EG', 'MA'],
+    knowsAbout: [
+      'University applications',
+      'Study abroad',
+      'UK student visa',
+      'Canada student visa',
+      'Statement of Purpose writing',
+      'International student admissions',
+    ],
     sameAs: [
       'https://x.com/tundua',
       'https://www.instagram.com/tundua',
@@ -251,6 +266,32 @@ export function generateJsonLd(data: object): string {
     '@context': 'https://schema.org',
     ...data,
   });
+}
+
+/**
+ * HowTo Schema
+ * Maps a step-by-step process so Google can surface it as a rich result.
+ */
+export function getHowToSchema(opts: {
+  name: string;
+  description: string;
+  steps: Array<{ name: string; text: string; url?: string }>;
+  totalTime?: string;
+}): HowTo {
+  return {
+    '@type': 'HowTo',
+    '@id': `${APP_URL}#how-to-apply`,
+    name: opts.name,
+    description: opts.description,
+    ...(opts.totalTime ? { totalTime: opts.totalTime } : {}),
+    step: opts.steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: String(i + 1),
+      name: s.name,
+      text: s.text,
+      ...(s.url ? { url: `${APP_URL}${s.url}` } : {}),
+    })),
+  } as unknown as HowTo;
 }
 
 /**
