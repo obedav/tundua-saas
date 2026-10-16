@@ -1,18 +1,17 @@
 import type { Metadata } from "next";
+import { buildPageMetadata, STARTING_PRICE_NGN } from "@/lib/seo";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
 import { BreadcrumbStructuredData } from "@/components/StructuredData";
 import { ApplyForm } from "./ApplyForm";
 import { GraduationCap, CheckCircle, Users, Globe, Shield } from "lucide-react";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Apply to Study Abroad - Free Consultation",
   description:
     "Start your study abroad application with Tundua. Get matched with affordable universities, expert guidance on documents, and step-by-step admission support.",
-  alternates: {
-    canonical: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/apply`,
-  },
-};
+  path: "/apply",
+});
 
 const STATS = [
   { icon: Users, label: "Students Helped", value: "500+" },
@@ -25,7 +24,7 @@ const BENEFITS = [
   "Document preparation support",
   "Application review by experts",
   "Visa guidance included",
-  "Affordable packages from ₦89,000",
+  `Affordable packages from ${STARTING_PRICE_NGN}`,
   "90-day money-back guarantee",
 ];
 

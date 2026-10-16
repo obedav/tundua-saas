@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ACADEMIC_CYCLE } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight, CheckCircle, AlertCircle, Globe, Clock } from "lucide-react";
 import PublicNavbar from "@/components/PublicNavbar";
@@ -17,11 +18,11 @@ import {
 } from "@/lib/constants/canada-data";
 
 export const metadata: Metadata = {
-  title: `Canada Study Permit Guide 2026 — Nigerian Students | IRCC Requirements`,
+  title: `Canada Study Permit Guide ${ACADEMIC_CYCLE} — Nigerian Students | IRCC Requirements`,
   description: `How to apply for a Canada study permit from Nigeria. Fee CAD $${CANADA_STUDY_PERMIT_FEE_CAD} + biometrics CAD $${CANADA_BIOMETRICS_FEE_CAD}. Refusal rate ~${CANADA_STUDY_PERMIT_REFUSAL_RATE_NG_PERCENT}%. Processing ${CANADA_STUDY_PERMIT_PROCESSING_WEEKS} weeks. Full IRCC requirements.`,
   alternates: { canonical: "/study-in-canada/study-permit" },
   openGraph: {
-    title: "Canada Study Permit Guide 2026 — For Nigerian Students",
+    title: `Canada Study Permit Guide ${ACADEMIC_CYCLE} — For Nigerian Students`,
     description: `IRCC study permit guide: fees, documents, refusal rate ${CANADA_STUDY_PERMIT_REFUSAL_RATE_NG_PERCENT}%, and timeline for Nigerian applicants. September 2026.`,
     url: "/study-in-canada/study-permit",
     type: "article",

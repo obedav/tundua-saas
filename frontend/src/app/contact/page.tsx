@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Mail, Phone, MessageSquare, MapPin, Clock, Send } from "lucide-react";
 import { ContactForm } from "./ContactForm";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Contact Us",
-  description: "Get in touch with the Tundua team. We're here to help with your study abroad questions.",
-  alternates: {
-    canonical: `${process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com'}/contact`,
-  },
-};
+  description:
+    "Get in touch with the Tundua team. We're here to help with your study abroad questions.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   const contactMethods = [

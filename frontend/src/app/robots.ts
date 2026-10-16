@@ -1,9 +1,7 @@
 import type { MetadataRoute } from "next";
-import { clientEnv } from "@/lib/env";
+import { SITE_URL } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = clientEnv.NEXT_PUBLIC_APP_URL || "https://tundua.com";
-
   return {
     rules: [
       {
@@ -12,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/dashboard/", "/auth/", "/api/", "/*?*whoisdatacenter*"],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

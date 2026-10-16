@@ -12,7 +12,8 @@ import {
   ParallaxScroll, MagneticButton, PulseGlow, FloatingElement, CardHover,
 } from "@/components/animations/PageAnimations";
 import { ExitIntentPopup } from "@/components/ExitIntentPopup";
-import { FAQStructuredData, ReviewsStructuredData } from "@/components/StructuredData";
+import type { Metadata } from "next";
+import { FAQStructuredData } from "@/components/StructuredData";
 import { HomeNavbar } from "@/components/home/HomeNavbar";
 import { LiveActivityFeed } from "@/components/home/LiveActivityFeed";
 import { PackageQuiz } from "@/components/home/PackageQuiz";
@@ -21,6 +22,11 @@ import { ScrollSectionButton } from "@/components/home/ScrollSectionButton";
 import { PLANS } from "@/lib/plans";
 import { ScrollAnimations } from "@/components/home/ScrollAnimations";
 import AIToolsSection from "@/components/home/AIToolsSection";
+
+// Title/description inherit from the root layout; the homepage only needs its canonical.
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const FAQS = [
   {
@@ -573,7 +579,6 @@ export default function HomePage() {
       </footer>
 
       <FAQStructuredData faqs={FAQS} />
-      <ReviewsStructuredData reviews={TESTIMONIALS} />
       <ExitIntentPopup />
     </div>
   );

@@ -8,9 +8,10 @@
  * @see https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data
  */
 
-import type { Organization, WebSite, BreadcrumbList, Service, BlogPosting, SoftwareApplication, HowTo } from 'schema-dts';
+import type { Organization, WebSite, BreadcrumbList, Service, BlogPosting } from 'schema-dts';
+import { SITE_URL as APP_URL, LOGO_URL, STARTING_PRICE_NGN, STARTING_PRICE_NGN_VALUE } from '@/lib/seo';
 
-const APP_URL = process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com';
+const AREA_SERVED = ['NG', 'GH', 'KE', 'ZM', 'UG', 'TZ', 'EG', 'MA'];
 
 /**
  * Organization Schema
@@ -26,11 +27,11 @@ export function getOrganizationSchema(): Organization {
     url: APP_URL,
     logo: {
       '@type': 'ImageObject',
-      url: `${APP_URL}/images/logo.png`,
+      url: LOGO_URL,
       width: '200',
       height: '67',
     },
-    description: 'Tundua is a study abroad application platform helping Nigerian and African students find and apply to universities in the UK, Canada, Australia and the USA. Expert counseling, AI tools, and end-to-end application support from ₦89,000.',
+    description: `Tundua is a study abroad application platform helping Nigerian and African students find and apply to universities in the UK, Canada, Australia and the USA. Expert counseling, AI tools, and end-to-end application support from ${STARTING_PRICE_NGN}.`,
     email: 'support@tundua.com',
     address: {
       '@type': 'PostalAddress',
@@ -39,7 +40,7 @@ export function getOrganizationSchema(): Organization {
       addressRegion: 'Lagos',
       addressCountry: 'NG',
     },
-    areaServed: ['NG', 'GH', 'KE', 'ZM', 'UG', 'TZ', 'EG', 'MA'],
+    areaServed: AREA_SERVED,
     knowsAbout: [
       'University applications',
       'Study abroad',
@@ -66,7 +67,7 @@ export function getWebsiteSchema(): WebSite {
     '@id': `${APP_URL}#website`,
     url: APP_URL,
     name: 'Tundua - Study Abroad Application Platform',
-    description: 'Complete study abroad application support from ₦89,000. Apply to top universities with expert guidance.',
+    description: `Complete study abroad application support from ${STARTING_PRICE_NGN}. Apply to top universities with expert guidance.`,
     publisher: {
       '@id': `${APP_URL}#organization`,
     },
@@ -98,14 +99,11 @@ export function getServiceSchema(): Service {
     description: 'Complete study abroad application support including professional counseling, document review, and application management.',
     offers: {
       '@type': 'Offer',
-      price: '89000',
+      price: STARTING_PRICE_NGN_VALUE,
       priceCurrency: 'NGN',
       availability: 'https://schema.org/InStock',
     },
-    areaServed: {
-      '@type': 'Country',
-      name: 'Global',
-    },
+    areaServed: AREA_SERVED,
   };
 }
 
@@ -189,7 +187,7 @@ export function getBlogPostSchema(article: {
       name: 'Tundua Edu Consults',
       logo: {
         '@type': 'ImageObject',
-        url: `${APP_URL}/logo.png`,
+        url: LOGO_URL,
       },
     },
     mainEntityOfPage: {
@@ -200,54 +198,7 @@ export function getBlogPostSchema(article: {
   } as unknown as BlogPosting;
 }
 
-export interface ReviewInput {
-  name: string;
-  text: string;
-  rating: number;
-  datePublished?: string;
-}
 
-/**
- * Reviews + AggregateRating schema as SoftwareApplication.
- * SoftwareApplication is the type Google recommends for web apps and unlocks
- * star-rating rich snippets in SERPs when paired with aggregateRating.
- */
-export function getReviewsSchema(reviews: ReviewInput[]): SoftwareApplication {
-  const total = reviews.reduce((sum, r) => sum + r.rating, 0);
-  const avg = reviews.length > 0 ? (total / reviews.length).toFixed(1) : '5.0';
-
-  return {
-    '@type': 'SoftwareApplication',
-    '@id': `${APP_URL}#app`,
-    name: 'Tundua',
-    url: APP_URL,
-    applicationCategory: 'EducationalApplication',
-    operatingSystem: 'Web',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: avg,
-      reviewCount: String(reviews.length),
-      bestRating: '5',
-      worstRating: '1',
-    },
-    review: reviews.map((r) => ({
-      '@type': 'Review',
-      author: { '@type': 'Person', name: r.name },
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: String(r.rating),
-        bestRating: '5',
-      },
-      reviewBody: r.text,
-      datePublished: r.datePublished ?? '2026-01-01',
-    })),
-  } as unknown as SoftwareApplication;
-}
 
 /**
  * Generate JSON-LD script tag content
@@ -268,31 +219,6 @@ export function generateJsonLd(data: object): string {
   });
 }
 
-/**
- * HowTo Schema
- * Maps a step-by-step process so Google can surface it as a rich result.
- */
-export function getHowToSchema(opts: {
-  name: string;
-  description: string;
-  steps: Array<{ name: string; text: string; url?: string }>;
-  totalTime?: string;
-}): HowTo {
-  return {
-    '@type': 'HowTo',
-    '@id': `${APP_URL}#how-to-apply`,
-    name: opts.name,
-    description: opts.description,
-    ...(opts.totalTime ? { totalTime: opts.totalTime } : {}),
-    step: opts.steps.map((s, i) => ({
-      '@type': 'HowToStep',
-      position: String(i + 1),
-      name: s.name,
-      text: s.text,
-      ...(s.url ? { url: `${APP_URL}${s.url}` } : {}),
-    })),
-  } as unknown as HowTo;
-}
 
 /**
  * Combine multiple schemas into one JSON-LD graph

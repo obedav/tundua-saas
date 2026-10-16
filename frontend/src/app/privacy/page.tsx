@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Privacy Policy",
-  description: "Tundua's Privacy Policy explains how we collect, use, and protect your personal information.",
-};
+  description:
+    "Tundua's Privacy Policy explains how we collect, use, and protect your personal information.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (

@@ -10,62 +10,9 @@ import { BreadcrumbStructuredData } from "@/components/StructuredData";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { buildSeoTitle } from "@/lib/seo-title";
 import { buildGeoMetadata } from "@/lib/geo-metadata";
+import { STUDY_ABROAD_COUNTRIES } from "@/lib/constants/study-abroad";
 
 const WHATSAPP_NUMBER = process.env['NEXT_PUBLIC_WHATSAPP_NUMBER'] || "2348000000000";
-
-interface CountryConfig {
-  name: string;
-  adjective: string;
-  h1: string;
-  metaDescription: string;
-  searchTerm: string;
-}
-
-// Open/Closed: add a new country by adding one entry here. No new files.
-const COUNTRY_CONFIG: Record<string, CountryConfig> = {
-  nigeria: {
-    name: "Nigeria",
-    adjective: "Nigerian",
-    h1: "Study Abroad from Nigeria (2026)",
-    metaDescription: "The complete guide for Nigerian students studying abroad in 2026 — cheapest UK universities, Canadian study permits, Australian visa costs, and step-by-step application help.",
-    searchTerm: "Nigeria",
-  },
-  ghana: {
-    name: "Ghana",
-    adjective: "Ghanaian",
-    h1: "Study Abroad from Ghana (2026)",
-    metaDescription: "The complete guide for Ghanaian students studying abroad in 2026 — UK universities, Canadian study permits, Australian visa requirements, and Tundua application support.",
-    searchTerm: "Ghana",
-  },
-  egypt: {
-    name: "Egypt",
-    adjective: "Egyptian",
-    h1: "Study Abroad from Egypt (2026)",
-    metaDescription: "The complete guide for Egyptian students studying abroad in 2026 — UK universities, Canadian study permits, Australian visa requirements, and Tundua application support.",
-    searchTerm: "Egypt",
-  },
-  morocco: {
-    name: "Morocco",
-    adjective: "Moroccan",
-    h1: "Study Abroad from Morocco (2026)",
-    metaDescription: "The complete guide for Moroccan students studying abroad in 2026 — UK universities, Canadian study permits, Australian visa requirements, and Tundua application support.",
-    searchTerm: "Morocco",
-  },
-  kenya: {
-    name: "Kenya",
-    adjective: "Kenyan",
-    h1: "Study Abroad from Kenya (2026)",
-    metaDescription: "The complete guide for Kenyan students studying abroad in 2026 — UK universities, Canadian study permits, Australian visa requirements, and Tundua application support.",
-    searchTerm: "Kenya",
-  },
-  zambia: {
-    name: "Zambia",
-    adjective: "Zambian",
-    h1: "Study Abroad from Zambia (2026)",
-    metaDescription: "The complete guide for Zambian students studying abroad in 2026 — UK universities, Canadian study permits, Australian visa requirements, and Tundua application support.",
-    searchTerm: "Zambia",
-  },
-};
 
 interface Article {
   id: number;
@@ -89,12 +36,12 @@ export const revalidate = 1800;
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return Object.keys(COUNTRY_CONFIG).map((country) => ({ country }));
+  return Object.keys(STUDY_ABROAD_COUNTRIES).map((country) => ({ country }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { country } = await params;
-  const config = COUNTRY_CONFIG[country];
+  const config = STUDY_ABROAD_COUNTRIES[country];
   if (!config) notFound();
 
   const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com';
@@ -106,7 +53,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: config.metaDescription,
     alternates: {
       canonical: `${appUrl}/study-abroad/${country}`,
-      ...(geo ? { languages: geo.languages } : {}),
     },
     openGraph: {
       title: metaTitle,
@@ -119,13 +65,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: metaTitle,
       description: config.metaDescription,
     },
-    ...(geo ? { other: geo.other } : {}),
+    ...(geo ? { other: geo } : {}),
   };
 }
 
 export default async function CountryLandingPage({ params }: PageProps) {
   const { country } = await params;
-  const config = COUNTRY_CONFIG[country];
+  const config = STUDY_ABROAD_COUNTRIES[country];
   if (!config) notFound();
 
   let articles: Article[] = [];
@@ -217,7 +163,7 @@ export default async function CountryLandingPage({ params }: PageProps) {
                     )}
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2 mb-1">
-                        {buildSeoTitle(article.title, article.tags ?? [])}
+                        {buildSeoTitle(article.title, article.tags ?? [], new Date(article.created_at).getFullYear())}
                       </h3>
                       {article.excerpt && (
                         <p className="text-sm text-gray-500 line-clamp-2 mb-2">{article.excerpt}</p>

@@ -1,21 +1,17 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { HelpCircle, MessageCircle, Mail, Phone, Clock, Zap, LogIn, ExternalLink } from "lucide-react";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
 import SupportFAQ from "./SupportFAQ";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Help Center",
   description:
     "Find answers to common questions about study abroad applications, visa guidance, payments, and technical issues. Reach our Lagos-based support team via WhatsApp, email, or phone.",
-  openGraph: {
-    title: "Help Center | Tundua Edu Consults",
-    description:
-      "Browse FAQs or contact our team directly. We respond within 2 hours on WhatsApp.",
-    url: "https://tundua.com/support",
-  },
-};
+  path: "/support",
+});
 
 const channels = [
   {

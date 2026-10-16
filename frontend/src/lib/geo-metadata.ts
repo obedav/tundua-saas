@@ -1,28 +1,21 @@
-import { COUNTRY_ISO, COUNTRY_LANG, COUNTRY_NAMES } from '@/lib/constants/countries';
+import { COUNTRY_ISO, COUNTRY_NAMES } from '@/lib/constants/countries';
 
-const APP_URL = process.env['NEXT_PUBLIC_APP_URL'] ?? 'https://tundua.com';
-
-export interface GeoMetaAdditions {
-  other: Record<string, string>;
-  languages: Record<string, string>;
-}
-
-export function buildGeoMetadata(targetCountry: string | null | undefined): GeoMetaAdditions | null {
+/**
+ * geo.* meta tags for content targeted at a specific origin country.
+ *
+ * Deliberately emits no hreflang: all content is English and there are no
+ * per-language equivalents, so hreflang alternates would point at unrelated pages.
+ */
+export function buildGeoMetadata(targetCountry: string | null | undefined): Record<string, string> | null {
   if (!targetCountry) return null;
 
   const slug = targetCountry.toLowerCase().trim();
   const iso = COUNTRY_ISO[slug];
-  const lang = COUNTRY_LANG[slug];
 
-  if (!iso || !lang) return null;
+  if (!iso) return null;
 
   return {
-    other: {
-      'geo.region': iso,
-      'geo.placename': COUNTRY_NAMES[slug] ?? slug,
-    },
-    languages: {
-      [lang]: `${APP_URL}/study-abroad/${slug}`,
-    },
+    'geo.region': iso,
+    'geo.placename': COUNTRY_NAMES[slug] ?? slug,
   };
 }

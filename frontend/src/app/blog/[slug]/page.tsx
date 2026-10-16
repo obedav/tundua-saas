@@ -118,7 +118,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         }]
       : undefined;
 
-    const seoTitle = buildSeoTitle(article.title, article.tags);
+    const seoTitle = buildSeoTitle(article.title, article.tags, new Date(article.updated_at).getFullYear());
     const explicitDesc = typeof article.metadata?.['meta_description'] === 'string'
       ? article.metadata['meta_description']
       : null;
@@ -133,7 +133,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       alternates: {
         canonical: `${appUrl}/blog/${slug}`,
-        ...(geo ? { languages: geo.languages } : {}),
       },
       openGraph: {
         title: seoTitle,
@@ -149,7 +148,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title: seoTitle,
         description,
       },
-      ...(geo ? { other: geo.other } : {}),
+      ...(geo ? { other: geo } : {}),
     };
   } catch {
     return { title: "Blog" };

@@ -10,18 +10,6 @@ export const COUNTRY_ISO: Record<string, string> = {
   'south-africa': 'ZA',
 };
 
-export const COUNTRY_LANG: Record<string, string> = {
-  nigeria: 'en',
-  ghana: 'en',
-  kenya: 'en',
-  zambia: 'en',
-  uganda: 'en',
-  tanzania: 'en',
-  egypt: 'ar',
-  morocco: 'fr-MA',
-  'south-africa': 'en',
-};
-
 export const COUNTRY_NAMES: Record<string, string> = {
   nigeria: 'Nigeria',
   ghana: 'Ghana',
@@ -32,4 +20,16 @@ export const COUNTRY_NAMES: Record<string, string> = {
   uganda: 'Uganda',
   tanzania: 'Tanzania',
   'south-africa': 'South Africa',
+};
+
+export const COUNTRY_ADJECTIVES: Record<string, string> = {
+  nigeria: 'Nigerian',
+  ghana: 'Ghanaian',
+  kenya: 'Kenyan',
+  egypt: 'Egyptian',
+  morocco: 'Moroccan',
+  zambia: 'Zambian',
+  uganda: 'Ugandan',
+  tanzania: 'Tanzanian',
+  'south-africa': 'South African',
 };

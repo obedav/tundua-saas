@@ -9,6 +9,7 @@ import { Toaster } from "sonner";
 import { GlobalStructuredData } from "@/components/StructuredData";
 import { WebVitalsReporter } from "@/components/WebVitalsReporter";
 import { SkipLinks } from "@/components/accessibility/SkipLink";
+import { SITE_URL, STARTING_PRICE_NGN } from "@/lib/seo";
 import "@/lib/env"; // Import to validate env vars on app startup
 
 const inter = Inter({
@@ -19,12 +20,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Tundua - Study Abroad Application Platform",
     template: "%s | Tundua" // Page titles will be "Page Name | Tundua"
   },
-  description: "Tundua is a study abroad application platform for Nigerian and African students. Find and apply to universities in the UK, Canada, Australia and USA with expert consultants, AI tools, and full application support from ₦89,000.",
+  description: `Tundua is a study abroad application platform for Nigerian and African students. Find and apply to universities in the UK, Canada, Australia and USA with expert consultants, AI tools, and full application support from ${STARTING_PRICE_NGN}.`,
   keywords: [
     // Core platform identity
     "study abroad platform",
@@ -89,13 +90,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_NG',
-    url: 'https://tundua.com',
+    url: SITE_URL,
     title: "Tundua - Study Abroad Application Platform",
-    description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance from ₦75,000.",
+    description: `Start your study abroad journey for FREE. Apply to top universities with expert guidance from ${STARTING_PRICE_NGN}.`,
     siteName: "Tundua",
     images: [
       {
-        url: 'https://tundua.com/images/Og.png',
+        url: '/images/Og.png',
         width: 1200,
         height: 630,
         alt: "Tundua - Study Abroad Application Platform",
@@ -105,8 +106,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "Tundua - Study Abroad Application Platform",
-    description: "Start your study abroad journey for FREE. Apply to top universities with expert guidance from ₦75,000.",
-    images: ['https://tundua.com/images/Og.png'],
+    description: `Start your study abroad journey for FREE. Apply to top universities with expert guidance from ${STARTING_PRICE_NGN}.`,
+    images: ['/images/Og.png'],
     creator: '@tundua',
   },
   robots: {
@@ -130,7 +131,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en-NG" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-15M99B1B4W"

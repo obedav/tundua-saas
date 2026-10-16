@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Terms of Service",
-  description: "Tundua's Terms of Service outlines the rules and guidelines for using our study abroad application platform.",
-};
+  description:
+    "Tundua's Terms of Service outlines the rules and guidelines for using our study abroad application platform.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import {
   GraduationCap,
@@ -13,13 +14,12 @@ import {
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicPageBackground from "@/components/PublicPageBackground";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "About Us",
-  description: "Learn about Tundua's mission to make studying abroad accessible to every student. Our story, values, and the team behind the platform.",
-  alternates: {
-    canonical: `${process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com'}/about`,
-  },
-};
+  description:
+    "Learn about Tundua's mission to make studying abroad accessible to every student. Our story, values, and the team behind the platform.",
+  path: "/about",
+});
 
 export default function AboutPage() {
   const values = [

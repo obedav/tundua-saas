@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildPageMetadata, ACADEMIC_CYCLE } from "@/lib/seo";
 import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
@@ -9,21 +10,12 @@ import PublicPageBackground from "@/components/PublicPageBackground";
 import { BreadcrumbStructuredData } from "@/components/StructuredData";
 import { BlogEmailCapture } from "@/components/blog/BlogEmailCapture";
 
-export const metadata: Metadata = {
-  title: "Study Abroad Blog - Guides, Tips & Rankings (2026)",
-  description: "Expert guides on studying abroad from Nigeria. Cheapest UK universities, visa requirements, application tips, and budget guides.",
-  alternates: {
-    canonical: `${process.env['NEXT_PUBLIC_APP_URL'] || 'https://tundua.com'}/blog`,
-  },
-  keywords: [
-    "study abroad blog",
-    "cheapest universities UK",
-    "study in UK from Nigeria",
-    "international student guides",
-    "university application tips",
-    "study abroad budget guide",
-  ],
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: `Study Abroad Blog - Guides, Tips & Rankings (${ACADEMIC_CYCLE})`,
+  description:
+    "Expert guides on studying abroad from Nigeria. Cheapest UK universities, visa requirements, application tips, and budget guides.",
+  path: "/blog",
+});
 
 interface Article {
   id: number;
