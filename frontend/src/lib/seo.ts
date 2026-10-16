@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { PLANS } from '@/lib/plans';
+import { PAID_PLANS, priceNGNValue } from '@/lib/plans';
 
 /**
  * Single source of truth for site-wide SEO constants.
@@ -14,9 +14,9 @@ export const LOGO_URL = `${SITE_URL}/images/logo.png`;
 export const ACADEMIC_CYCLE = '2026–27';
 
 /** Cheapest paid plan, derived from PLANS so marketing copy never drifts from real pricing. */
-const STARTING_PLAN = PLANS.find((plan) => plan.priceNGN !== '₦0') ?? PLANS[0]!;
+const STARTING_PLAN = PAID_PLANS[0]!;
 export const STARTING_PRICE_NGN = STARTING_PLAN.priceNGN;
-export const STARTING_PRICE_NGN_VALUE = STARTING_PRICE_NGN.replace(/\D/g, '');
+export const STARTING_PRICE_NGN_VALUE = String(priceNGNValue(STARTING_PLAN));
 
 export const absoluteUrl = (path: string) => `${SITE_URL}${path}`;
 

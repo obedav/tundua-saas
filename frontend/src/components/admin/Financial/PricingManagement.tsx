@@ -2,15 +2,18 @@
 
 import { useState } from "react";
 import { Banknote, Edit, Save } from "lucide-react";
+import { PAID_PLANS, priceNGNValue } from "@/lib/plans";
 
 export default function PricingManagement() {
   const [editing, setEditing] = useState(false);
 
-  const serviceTiers = [
-    { id: 1, name: "Basic Package", price: 89000, description: "3 university applications" },
-    { id: 2, name: "Standard Package", price: 149000, description: "5 university applications" },
-    { id: 3, name: "Premium Package", price: 249000, description: "8 university applications" },
-  ];
+  const serviceTiers = PAID_PLANS.map((plan) => ({
+    id: plan.name,
+    name: plan.name,
+    price: priceNGNValue(plan),
+    priceLabel: plan.priceNGN,
+    description: plan.description,
+  }));
 
   return (
     <div className="space-y-6">
@@ -31,7 +34,7 @@ export default function PricingManagement() {
       {/* Service Tiers */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Service Tiers</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {serviceTiers.map((tier) => (
             <div key={tier.id} className="border border-gray-200 rounded-lg p-4">
               <h3 className="font-semibold text-gray-900 mb-2">{tier.name}</h3>
@@ -45,7 +48,7 @@ export default function PricingManagement() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                   />
                 ) : (
-                  <span className="text-2xl font-bold text-gray-900">₦{tier.price.toLocaleString('en-NG')}</span>
+                  <span className="text-2xl font-bold text-gray-900">{tier.priceLabel}</span>
                 )}
               </div>
             </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { HelpCircle, ChevronDown, ChevronUp, Search, MessageCircle } from "lucide-react";
+import { PAID_PLANS } from "@/lib/plans";
 
 interface FAQ {
   id: number;
@@ -62,7 +63,7 @@ export default function FAQSection() {
     {
       id: 7,
       question: "Can I apply to multiple universities?",
-      answer: "Absolutely! We recommend applying to 3-5 universities to maximize your chances. Each university application is processed separately. Our Standard and Premium tiers include multiple university applications at discounted rates.",
+      answer: "Absolutely! We recommend applying to 3-5 universities to maximize your chances. Each university application is processed separately. Application Support covers a shortlist of up to 5 universities, and Fellow includes unlimited applications.",
       category: "Applications",
       helpful: 91,
     },
@@ -76,14 +77,14 @@ export default function FAQSection() {
     {
       id: 9,
       question: "How do I contact support?",
-      answer: "You can reach our support team via live chat (bottom right corner), email (support@tundua.com), or phone during business hours. Standard and Premium tier customers get priority support with faster response times.",
+      answer: "You can reach our support team via live chat (bottom right corner), email (support@tundua.com), or phone during business hours. Paid plan customers get priority support with faster response times.",
       category: "Support",
       helpful: 96,
     },
     {
       id: 10,
       question: "What's the difference between service tiers?",
-      answer: "Basic (₦89,000) covers essential application processing. Standard (₦149,000) adds priority processing, document review, and interview prep. Premium (₦249,000) includes everything plus dedicated advisor, comprehensive support, and post-admission assistance.",
+      answer: PAID_PLANS.map((plan) => `${plan.name} (${plan.priceNGN}): ${plan.description}.`).join(" "),
       category: "Services",
       helpful: 93,
     },

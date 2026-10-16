@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CheckCircle, ChevronRight, User, FileText, CreditCard, Rocket } from "lucide-react";
+import { PAID_PLANS } from "@/lib/plans";
 
 interface WizardStep {
   id: number;
@@ -175,30 +176,25 @@ export default function WelcomeWizard() {
 
             {currentStep === 2 && (
               <div className="grid grid-cols-1 gap-3 w-full max-w-md">
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-primary-200 dark:border-primary-700 text-left">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-gray-900 dark:text-white">Basic</h4>
-                    <span className="text-primary-600 dark:text-primary-400 font-bold">₦89,000</span>
+                {PAID_PLANS.map((plan) => (
+                  <div
+                    key={plan.name}
+                    className={`bg-white dark:bg-gray-800 rounded-lg p-4 text-left border ${
+                      plan.highlighted ? "border-primary-400 ring-2 ring-primary-400" : "border-primary-200 dark:border-primary-700"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-gray-900 dark:text-white">{plan.name}</h4>
+                      <span className="text-primary-600 dark:text-primary-400 font-bold">{plan.priceNGN}</span>
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{plan.description}</p>
+                    {plan.highlighted && (
+                      <span className="text-xs bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 px-2 py-1 rounded-full mt-2 inline-block">
+                        {plan.badge}
+                      </span>
+                    )}
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Essential application processing</p>
-                </div>
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-primary-400 text-left ring-2 ring-primary-400">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-gray-900 dark:text-white">Standard</h4>
-                    <span className="text-primary-600 dark:text-primary-400 font-bold">₦149,000</span>
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Priority processing + extras</p>
-                  <span className="text-xs bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 px-2 py-1 rounded-full mt-2 inline-block">
-                    Most Popular
-                  </span>
-                </div>
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-purple-200 text-left">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-gray-900 dark:text-white">Premium</h4>
-                    <span className="text-purple-600 dark:text-purple-400 font-bold">₦249,000</span>
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Complete support package</p>
-                </div>
+                ))}
               </div>
             )}
 

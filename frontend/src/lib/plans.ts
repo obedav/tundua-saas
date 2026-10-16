@@ -178,3 +178,9 @@ export const PLANS: Plan[] = [
     paymentNote: "Contact for exact quote",
   },
 ];
+
+/** Paid plans in display order (cheapest first). */
+export const PAID_PLANS = PLANS.filter((plan) => !plan.isFree);
+
+/** Numeric NGN amount, e.g. "₦1,000,000+" → 1000000. */
+export const priceNGNValue = (plan: Plan) => Number(plan.priceNGN.replace(/\D/g, ''));
